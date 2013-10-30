@@ -39,7 +39,7 @@ handlers:
 - url: /attendee/css
   static_dir: attendee/css
 
-- url: attendee/js
+- url: /attendee/js
   static_dir: attendee/js
 
 - url: /attendee/img
