@@ -9,9 +9,57 @@ handlers:
   static_files: favicon.ico
   upload: favicon\.ico
 
+- url: /admin/css
+  static_dir: admin/css
+
+- url: /admin/js
+  static_dir: admin/js
+
+- url: /admin/img
+  static_dir: admin/img
+  
+- url: /staff/css
+  static_dir: staff/css
+
+- url: /staff/js
+  static_dir: staff/js
+
+- url: /staff/img
+  static_dir: staff/img
+  
+- url: /sponsor/css
+  static_dir: sponsor/css
+
+- url: /sponsor/js
+  static_dir: sponsor/js
+
+- url: /sponsor/img
+  static_dir: sponsor/img
+
+- url: /attendee/css
+  static_dir: attendee/css
+
+- url: attendee/js
+  static_dir: attendee/js
+
+- url: /attendee/img
+  static_dir: attendee/img
+
+- url: /css
+  static_dir: css
+
+- url: /js
+  static_dir: js
+
+- url: /img
+  static_dir: img
+
 - url: .*
   script: main.app
 
 libraries:
 - name: webapp2
   version: "2.5.2"
+
+- name: jinja2
+  version: latest
