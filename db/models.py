@@ -19,4 +19,4 @@ class Attendee(db.Model):
 	email = db.EmailProperty()
 	standing = db.IntegerProperty() # 0=fresh, 1=soph, 2=jr, 3=sr, 4=grad
 	teamID = db.IntegerProperty()
-    registrationTime = db.DateTimeProperty()
+	registrationTime = db.DateTimeProperty()
