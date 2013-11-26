@@ -21,6 +21,10 @@ handlers:
 - url: /assets
   static_dir: assets
 
+- url: /sponsor
+  static_files: assets/HackIllinoisSponsorship.pdf
+  upload: assets/HackIllinoisSponsorship\.pdf
+
 - url: .*
   script: main.app
 

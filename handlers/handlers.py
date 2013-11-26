@@ -23,23 +23,19 @@ class IndexHandler(MainHandler.Handler):
         self.render("index.html")
 
     def post(self):
-        
+
         email = self.request.get("register-email")
         if re.match(email_regex, email):
-        
+
             today = datetime.datetime.now().date()
-        
+
             newSignup = SignUp(email=email)
             newSignup.register_date = today
             newSignup.put()
-        
-            logging.info('Signup with email %s', email)
-        
-        self.redirect("/")
 
-class SponsorHandler(MainHandler.Handler):
-    def get(self):
-        self.redirect("/assets/HackIllinoisSponsorship.pdf")
+            logging.info('Signup with email %s', email)
+
+        self.redirect("/")
 
 class ErrorHandler(MainHandler.Handler):
     def get(self):
@@ -48,9 +44,9 @@ class ErrorHandler(MainHandler.Handler):
 class EmailBackupHandler(MainHandler.Handler):
     def get(self):
         if "X-Appengine-Cron" in self.request.headers:
-        
+
             emails = []
-        
+
             q = SignUp.all()
             for e in q:
                 emails.append(e.email)
@@ -65,4 +61,8 @@ class EmailBackupHandler(MainHandler.Handler):
 
         self.redirect("/")
 
-handlers = [('/', IndexHandler),('/sponsor', SponsorHandler),('/emailbackup',EmailBackupHandler),('.*', ErrorHandler)]
+handlers = [
+    ('/', IndexHandler),
+    ('/emailbackup', EmailBackupHandler),
+    ('.*', ErrorHandler)
+]
