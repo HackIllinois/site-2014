@@ -1,7 +1,7 @@
 Development Setup Guide
 ----
 
-This isn't meant to be an extensive guide, just a quick help for getting setup. If you don't understand something on the list, please ask for help. (Also, if someone wants to edit this and make it an extensive guide, feel free!)
+This isn't meant to be an extensive guide, just a quick help for getting setup. If you don't understand something on the list, please ask for help. (Also, if someone wants to edit this and make it better, feel free!)
 
 **Prereqs: ** Make sure Python is installed on your computer. Then install the [Google App Engine SDK for Python](https://developers.google.com/appengine/downloads#Google_App_Engine_SDK_for_Python).
 
