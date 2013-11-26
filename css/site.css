@@ -106,7 +106,8 @@ html, body {
 	-moz-appearance: none;
 }
 
-@media (max-width: 480px) {
+@media only screen
+and (max-width: 480px) {
 	.splash {
 		margin-top: 50px;
 	}
@@ -115,6 +116,13 @@ html, body {
 	}
 }
 
+@media only screen
+and (max-width: 600px)
+and (orientation: landscape) {
+	.splash {
+		margin-top: 50px;
+	}
+}
 
 @-webkit-keyframes spin {
 0% { -webkit-transform: rotate(0deg);}
