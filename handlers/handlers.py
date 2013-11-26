@@ -37,6 +37,10 @@ class IndexHandler(MainHandler.Handler):
         
         self.redirect("/")
 
+class SponsorHandler(MainHandler.Handler):
+    def get(self):
+        self.redirect("/assets/HackIllinoisSponsorship.pdf")
+
 class ErrorHandler(MainHandler.Handler):
     def get(self):
         self.redirect("/")
@@ -61,4 +65,4 @@ class EmailBackupHandler(MainHandler.Handler):
 
         self.redirect("/")
 
-handlers = [('/', IndexHandler),('/emailbackup',EmailBackupHandler),('.*', ErrorHandler)]
+handlers = [('/', IndexHandler),('/sponsor', SponsorHandler),('/emailbackup',EmailBackupHandler),('.*', ErrorHandler)]
