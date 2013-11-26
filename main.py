@@ -15,13 +15,6 @@
 # limitations under the License.
 #
 import webapp2
-from admin.handlers import admin_handlers
-from sponsor.handlers import sponsor_handlers
-from staff.handlers import staff_handlers
-from attendee.handlers import attendee_handlers
+from handlers import handlers
 
-app = webapp2.WSGIApplication(
-    admin_handlers.handlers+
-    sponsor_handlers.handlers+
-    staff_handlers.handlers+
-    attendee_handlers.handlers, debug=True)
+app = webapp2.WSGIApplication(handlers.handlers, debug=True)
