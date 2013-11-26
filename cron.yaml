@@ -1,0 +1,4 @@
+cron:
+- description: daily email update
+  url: /emailbackup
+  schedule: every day 06:00

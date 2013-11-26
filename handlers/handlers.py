@@ -5,10 +5,12 @@ import MainHandler
 import datetime
 import logging
 import re
+import json
 
 from db import db
 from db import models
 from google.appengine.ext import db
+from google.appengine.api import mail
 
 email_regex = r"^[A-Za-z0-9\.\+_-]+@[A-Za-z0-9\._-]+\.[a-zA-Z]*$"
 
@@ -39,4 +41,24 @@ class ErrorHandler(MainHandler.Handler):
     def get(self):
         self.redirect("/")
 
-handlers = [('/', IndexHandler),('.*', ErrorHandler)]
+class EmailBackupHandler(MainHandler.Handler):
+    def get(self):
+        if "X-Appengine-Cron" in self.request.headers:
+        
+            emails = []
+        
+            q = SignUp.all()
+            for e in q:
+                emails.append(e.email)
+
+            body_str = json.dumps(emails)
+            logging.info(body_str)
+
+            mail.send_mail(sender="db-backup@hackillinois.org",
+                           to="db-backup@hackillinois.org",
+                           subject="Email Backup: "+str(datetime.datetime.now().date()),
+                           body=body_str)
+
+        self.redirect("/")
+
+handlers = [('/', IndexHandler),('/emailbackup',EmailBackupHandler),('.*', ErrorHandler)]
