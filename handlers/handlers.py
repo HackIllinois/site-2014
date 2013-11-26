@@ -1,5 +1,5 @@
 import sys
-sys.path.append("../..")
+# sys.path.append("../..")
 
 import MainHandler
 import datetime
@@ -9,16 +9,14 @@ import json
 
 from db import db
 from db import models
+from db.models import SignUp
 from google.appengine.ext import db
 from google.appengine.api import mail
 
 email_regex = r"^[A-Za-z0-9\.\+_-]+@[A-Za-z0-9\._-]+\.[a-zA-Z]*$"
 
-class SignUp(db.Model):
-    email = db.StringProperty(required=True)
-    register_date = db.DateProperty()
-
 class IndexHandler(MainHandler.Handler):
+    """ Handler for the homepage """
     def get(self):
         self.render("index.html")
 
@@ -38,10 +36,12 @@ class IndexHandler(MainHandler.Handler):
         self.redirect("/")
 
 class ErrorHandler(MainHandler.Handler):
+    """ 404 Handler """
     def get(self):
         self.redirect("/")
 
 class EmailBackupHandler(MainHandler.Handler):
+    """ Endpoint for email backups of the database. """
     def get(self):
         if "X-Appengine-Cron" in self.request.headers:
 

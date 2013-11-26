@@ -78,3 +78,8 @@ class Sponsor(db.Model):
         if type(note) == Note:
             self.notes.append(note.key())
         return type(note) == Note
+
+class SignUp(db.Model):
+    """ Emails collected before launching the full site """
+    email = db.StringProperty(required=True)
+    register_date = db.DateProperty()
