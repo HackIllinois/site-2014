@@ -22,11 +22,9 @@ class IndexHandler(MainHandler.Handler):
 
     def post(self):
 
-        email = self.request.get("register-email")
-        logging.info(self.request.headers)
-        
-        if re.match(email_regex, email):
+        email = self.request.body
 
+        if re.match(email_regex, email):
             today = datetime.datetime.now().date()
 
             newSignup = SignUp(email=email)
