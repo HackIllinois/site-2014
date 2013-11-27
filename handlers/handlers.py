@@ -23,6 +23,8 @@ class IndexHandler(MainHandler.Handler):
     def post(self):
 
         email = self.request.get("register-email")
+        logging.info(self.request.headers)
+        
         if re.match(email_regex, email):
 
             today = datetime.datetime.now().date()
@@ -33,7 +35,6 @@ class IndexHandler(MainHandler.Handler):
 
             logging.info('Signup with email %s', email)
 
-        self.redirect("/")
 
 class ErrorHandler(MainHandler.Handler):
     """ 404 Handler """
