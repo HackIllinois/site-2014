@@ -92,6 +92,11 @@ html, body {
 	border: 1px solid rgba(255,255,255, .5);
 	color: #fff;
 }
+
+.email-error {
+	border: 1px solid #ef3e36;
+}
+
 .reg-email:focus {
 	border: 1px solid #fff;
 	outline: none;
