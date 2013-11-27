@@ -121,6 +121,7 @@ html, body {
 and (max-width: 480px) {
 	.splash {
 		margin-top: 50px;
+		width: 100%;
 	}
 	.send {
 		width: 254px;
