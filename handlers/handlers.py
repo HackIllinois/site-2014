@@ -53,7 +53,7 @@ class EmailBackupHandler(MainHandler.Handler):
             body_str = json.dumps(emails)
             logging.info(body_str)
 
-            mail.send_mail(sender="db-backup@hackillinois.org",
+            mail.send_mail(sender="rob@hackillinois.org",
                            to="db-backup@hackillinois.org",
                            subject="Email Backup: "+str(datetime.datetime.now().date()),
                            body=body_str)
