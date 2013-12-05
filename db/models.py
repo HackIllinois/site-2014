@@ -5,7 +5,7 @@ from db import db
 from db import models
 import datetime as dt
 
-a = models.Attendee.new('Alex Burck', 'burck1@illinois.edu', 3)
+a = models.Attendee.new('Alex', 'Burck', 'burck1@illinois.edu', 3)
 a.isAdmin = True
 a.isParticipant = False
 a.put() # don't forget this
@@ -24,7 +24,8 @@ s.put()
 '''
 
 class Attendee(db.Model):
-    name = db.StringProperty(required=True)
+    nameFirst = db.StringProperty(required=True)
+    nameLast = db.StringProperty(required=True)
     isAdmin = db.BooleanProperty(default=False) #Set Default to False
     isParticipant = db.BooleanProperty(default=True) #Set Default to False
     email = db.EmailProperty(required=True)
@@ -33,8 +34,8 @@ class Attendee(db.Model):
     team = db.Key()
 
     @classmethod
-    def new(cls, mName, mEmail, mStanding):
-        return cls(name=mName, email=mEmail, standing=mStanding)
+    def new(cls, mNameFirst, mNameLast, mEmail, mStanding):
+        return cls(nameFirst=mNameFirst, nameLast=mNameLast, email=mEmail, standing=mStanding)
 
 
 class Team(db.Model):
