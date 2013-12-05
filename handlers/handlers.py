@@ -33,6 +33,16 @@ class IndexHandler(MainHandler.Handler):
 
             logging.info('Signup with email %s', email)
 
+class RegisterHandler(MainHandler.Handler):
+    """ Handler for registration page. """  
+    def post(self):
+        name = self.request.get('name')
+        if not name:
+            self.write("No registration name.")
+            return
+
+        self.write("Thanks for registering, " + name + "!")
+        return
 
 class ErrorHandler(MainHandler.Handler):
     """ 404 Handler """
@@ -63,5 +73,6 @@ class EmailBackupHandler(MainHandler.Handler):
 handlers = [
     ('/', IndexHandler),
     ('/emailbackup', EmailBackupHandler),
+    ('/register', RegisterHandler),
     ('.*', ErrorHandler)
 ]
