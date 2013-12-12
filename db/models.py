@@ -23,18 +23,83 @@ s.addNote(n)
 s.put()
 '''
 
+def _get_required(cls):
+    '''
+    private method for getting a list of all required properties of a class
+    '''
+    properties = cls.properties()
+    required = []
+    for p in properties:
+        if properties[p].required:
+            required.append(p)
+    return required
+
+
+def add(cls, data):
+    '''
+    Creates a model and adds it to the database
+    WILL NOT override data if already there
+
+    @param cls: the class model to use
+    @param data: the data to add in the database
+    @return: whether or not the data was added to the database
+
+    ex: add(Attendee, {'nameFirst':'John', 'nameLast':'Doe', 'email':'doe1@illinois.edu', 'standing':3})
+    '''
+    cls.new(data).put()
+    # TODO: add check if already in database
+    return True
+
+def update(cls, search, data):
+    '''
+    Creates a model and adds it to the database
+    WILL override data if already there
+
+    @param cls: the class model to use
+    @param search: the parameters to search with
+    @param data: the data to change in the database
+    @return: whether or not the data was found in the database
+
+    ex: update(Attendee, {'nameFirst':'John', 'nameLast':'Doe'}, {'email':'doe1@illinois.edu', 'standing':3})
+    '''
+    pass
+
+def add_or_update(cls, data):
+    if not add(cls, data):
+        required = _get_required(cls)
+        search = {}
+        for r in required:
+            if r in data:
+                search[r] = data[r]
+                del data[r]
+        update(cls, search, data)
+
+
 class Attendee(db.Model):
     nameFirst = db.StringProperty(required=True)
     nameLast = db.StringProperty(required=True)
     isAdmin = db.BooleanProperty(default=False) #Set Default to False
-    isParticipant = db.BooleanProperty(default=True) #Set Default to False
+    isParticipant = db.BooleanProperty(default=False) #Set Default to False
     email = db.EmailProperty(required=True)
-    standing = db.IntegerProperty() # 0=fresh, 1=soph, 2=jr, 3=sr, 4=grad
+    standing = db.IntegerProperty(choices=[0,1,2,3,4,5]) # 0=fresh, 1=soph, 2=jr, 3=sr, 4=grad, 5=other
     registrationTime = db.DateTimeProperty(auto_now_add=True)
     team = db.Key()
 
     @classmethod
-    def new(cls, mNameFirst, mNameLast, mEmail, mStanding):
+    def new(cls, data):
+        required = _get_required(cls)
+        for r in required:
+            if r not in data:
+                raise BadValueError('Property %s is required' % r)
+
+        # TODO: use required as params instead of hardcoding
+        attendee = cls(nameFirst='PlaceHolder', nameLast='PlaceHolder', email='PlaceHolder')
+        for k in data:
+            setattr(attendee, k, data[k])
+        return attendee
+
+    @classmethod
+    def new2(cls, mNameFirst, mNameLast, mEmail, mStanding):
         return cls(nameFirst=mNameFirst, nameLast=mNameLast, email=mEmail, standing=mStanding)
 
 
@@ -43,7 +108,20 @@ class Team(db.Model):
     teamMembers = db.ListProperty(type(db.Key()))
 
     @classmethod
-    def new(cls, mName):
+    def new(cls, data):
+        required = _get_required(cls)
+        for r in required:
+            if r not in data:
+                raise BadValueError('Property %s is required' % r)
+
+        # TODO: use required as params instead of hardcoding
+        team = cls(name='PlaceHolder')
+        for k in data:
+            setattr(team, k, data[k])
+        return team
+
+    @classmethod
+    def new2(cls, mName):
         return cls(name=mName)
 
     def addMember(self, person):
@@ -61,7 +139,20 @@ class Note(db.Model):
     text = db.StringProperty(required=True)
 
     @classmethod
-    def new(cls, mEmailTo, mEmailFrom, mDateTime, mSubject, mText):
+    def new(cls, data):
+        required = _get_required(cls)
+        for r in required:
+            if r not in data:
+                raise BadValueError('Property %s is required' % r)
+
+        # TODO: use required as params instead of hardcoding
+        team = cls(emailTo='PlaceHolder', emailFrom='PlaceHolder', dateTime='PlaceHolder', text='PlaceHolder')
+        for k in data:
+            setattr(team, k, data[k])
+        return team
+
+    @classmethod
+    def new2(cls, mEmailTo, mEmailFrom, mDateTime, mSubject, mText):
         return cls(emailTo=mEmailTo, emailFrom=mEmailFrom, dateTime=mDateTime, subject=mSubject, text=mText)
 
 class Sponsor(db.Model):
@@ -72,7 +163,20 @@ class Sponsor(db.Model):
     notes = db.ListProperty(type(db.Key()))
 
     @classmethod
-    def new(cls, mCompanyName, mContactName, mEmail):
+    def new(cls, data):
+        required = _get_required(cls)
+        for r in required:
+            if r not in data:
+                raise BadValueError('Property %s is required' % r)
+
+        # TODO: use required as params instead of hardcoding
+        team = cls(companyName='PlaceHolder', emailFrom='PlaceHolder')
+        for k in data:
+            setattr(team, k, data[k])
+        return team
+
+    @classmethod
+    def new2(cls, mCompanyName, mContactName, mEmail):
         return cls(companyName=mCompanyName, contactName=mContactName, email=mEmail)
 
     def addNote(self, note):
