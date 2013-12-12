@@ -10,7 +10,7 @@ import json
 from db import db
 from db import models
 from db.models import SignUp
-from google.appengine.ext import db
+from google.appengine.ext import ndb
 from google.appengine.api import mail
 
 email_regex = r"^[A-Za-z0-9\.\+_-]+@[A-Za-z0-9\._-]+\.[a-zA-Z]*$"
