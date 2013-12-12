@@ -34,7 +34,10 @@ class IndexHandler(MainHandler.Handler):
             logging.info('Signup with email %s', email)
 
 class RegisterHandler(MainHandler.Handler):
-    """ Handler for registration page. """  
+    """ Handler for registration page. """
+    def get(self):
+        self.render("register.html")
+
     def post(self):
         name = self.request.get('name')
         if not name:
