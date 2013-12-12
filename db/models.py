@@ -1,32 +1,18 @@
 from google.appengine.ext import ndb
 import datetime as dt
 
-''' Test Script
-import os
-import pprint
-
-from google.appengine.api import memcache
-from google.appengine.api import mail
-from google.appengine.api import urlfetch
-from google.appengine.ext import ndb
-from db import db
-from db import models
-import datetime as dt
-
-data = {'nameFirst':'Alex', 'nameLast':'Burck', 'email':'burck1@illinois.edu', 'standing':4}
-me = models.add(models.Attendee, data)
-
-data = {'name':'Test'}
-t = models.add(models.Team, data)
-t.addMember(me)
-
-data = {'companyName':'Test Company', 'contactName':'Qwerty Uiop', 'email':'qwerty@company.com'}
-s = models.add(models.Sponsor, data)
-
-data = {'emailTo':'burck1@illinois.edu', 'emailFrom':'qwerty@company.com', 'dateTime':dt.datetime.now(), 'subject':'Test', 'text':'Test'}
-n = models.add(models.Note, data)
-s.addNote(n)
 '''
+NDB cheatsheet: https://docs.google.com/document/d/1AefylbadN456_Z7BZOpZEXDq8cR8LYu7QgI7bt5V0Iw/edit#
+
+To run all unit tests:
+
+from pprint import pprint
+from db import models
+ut = models.UnitTest()
+pprint(ut.run_all())
+
+'''
+
 
 def _get_required(cls):
     '''
@@ -196,3 +182,98 @@ class SignUp(ndb.Model):
     """ Emails collected before launching the full site """
     email = ndb.StringProperty(required=True)
     register_date = ndb.DateProperty()
+
+
+
+class UnitTest(object):
+    ''' To run all unit tests:
+    from pprint import pprint
+    from db import models
+    ut = models.UnitTest()
+    pprint(ut.run_all())
+    '''
+    import sys
+
+    def test_add_attendee(self):
+        passed = True
+        data = {'nameFirst':'Alex', 'nameLast':'Burck', 'email':'burck1@illinois.edu', 'standing':4}
+        try:
+            me = add(Attendee, data)
+        except:
+            passed = False
+            e = sys.exc_info()[0]
+            print "Error: %s" % e
+        return passed
+
+
+    def test_add_team(self):
+        passed = True
+        data = {'name':'Test'}
+        try:
+            t = add(Team, data)
+        except:
+            passed = False
+            e = sys.exc_info()[0]
+            print "Error: %s" % e
+        return passed
+
+    def test_add_attendee_to_team(self):
+        passed = True
+        data = {'nameFirst':'Alex', 'nameLast':'Burck', 'email':'burck1@illinois.edu', 'standing':4}
+        me = add(Attendee, data)
+        data = {'name':'Test'}
+        t = add(Team, data)
+        try:
+            passed = t.addMember(me)
+        except:
+            passed = False
+            e = sys.exc_info()[0]
+            print "Error: %s" % e
+        return passed
+
+    def test_add_sponsor(self):
+        passed = True
+        data = {'companyName':'Test Company', 'contactName':'Qwerty Uiop', 'email':'qwerty@company.com'}
+        try:
+            s = add(Sponsor, data)
+        except:
+            passed = False
+            e = sys.exc_info()[0]
+            print "Error: %s" % e
+        return passed
+
+    def test_add_note(self):
+        passed = True
+        data = {'emailTo':'burck1@illinois.edu', 'emailFrom':'qwerty@company.com', 'dateTime':dt.datetime.now(), 'subject':'Test', 'text':'Test'}
+        try:
+            n = add(Note, data)
+        except:
+            passed = False
+            e = sys.exc_info()[0]
+            print "Error: %s" % e
+        return passed
+
+    def test_add_note_to_sponsor(self):
+        passed = True
+        data = {'companyName':'Test Company', 'contactName':'Qwerty Uiop', 'email':'qwerty@company.com'}
+        s = add(Sponsor, data)
+        data = {'emailTo':'burck1@illinois.edu', 'emailFrom':'qwerty@company.com', 'dateTime':dt.datetime.now(), 'subject':'Test', 'text':'Test'}
+        n = add(Note, data)
+        try:
+            passed = s.addNote(n)
+        except:
+            passed = False
+            e = sys.exc_info()[0]
+            print "Error: %s" % e
+        return passed
+
+    def run_all(self):
+        tests = { self.test_add_attendee:'Add Attendee',
+                  self.test_add_team:'Add Team',
+                  self.test_add_attendee_to_team:'Add Attendee to Team',
+                  self.test_add_sponsor:'Add Sponsor',
+                  self.test_add_note:'Add Note',
+                  self.test_add_note_to_sponsor:'Add Note to Sponsor' }
+
+        results = { tests[f]:f() for f in tests }
+        return results
