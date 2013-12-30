@@ -3,6 +3,7 @@ import datetime as dt
 
 '''
 NDB cheatsheet: https://docs.google.com/document/d/1AefylbadN456_Z7BZOpZEXDq8cR8LYu7QgI7bt5V0Iw/edit#
+NDB documentation: https://developers.google.com/appengine/docs/python/ndb/
 
 To run all unit tests:
 
@@ -25,48 +26,192 @@ def _get_required(cls):
             required.append(p)
     return required
 
-
-def add(cls, data):
+def f_add(cls, data, search = {}):
     '''
     Creates a model and adds it to the database
     WILL NOT override data if already there
 
     @param cls: the class model to use
     @param data: the data to add in the database
+    @param search: properties to search the database
     @return: whether or not the data was added to the database
 
     ex: add(Attendee, {'nameFirst':'John', 'nameLast':'Doe', 'email':'doe1@illinois.edu', 'standing':3})
+    Returns True if "doe1@illinois.edu" is not already in the database and data is successfully added
+    Returns False otherwise
+    OR
+    add(Attendee, {'nameFirst':'John', 'nameLast':'Doe', 'email':'doe1@illinois.edu', 'standing':3}, {'email':'doe1@illinois.edu'})
+    Same result
     '''
     o = cls.new(data)
     o.put()
     # TODO: add check if already in database
     return o
 
-def update(cls, search, data):
+def add(cls, data, search = {}):
     '''
     Creates a model and adds it to the database
-    WILL override data if already there
+    WILL NOT override data if already there
+    WILL NOT add data if similar data is already there, determined by "search" or model's unique_properties() attribute
+
+    @param cls: the class model to use
+    @param data: the data to add in the database
+    @param search: properties to search the database
+    @return: whether or not the data was added to the database
+
+    ex: add(Attendee, {'nameFirst':'John', 'nameLast':'Doe', 'email':'doe1@illinois.edu', 'standing':3})
+    Returns True if "doe1@illinois.edu" is not already in the database and data is successfully added
+    Returns False otherwise
+    OR
+    add(Attendee, {'nameFirst':'John', 'nameLast':'Doe', 'email':'doe1@illinois.edu', 'standing':3}, {'email':'doe1@illinois.edu'})
+    Same result
+    '''
+    if(search == {}):
+        try:
+            properties = cls.unique_properties()
+            for p in properties:
+                search[p] = data[p]
+        except AttributeError:
+            #class does not have attribute unique_properties()
+            o = cls.new(data)
+            o.put()
+            return o
+        except LookupError:
+            #data does not key "p"
+            return False
+    if not in_database(cls, search):
+        o = cls.new(data)
+        o.put()
+        return o
+    return False
+
+def delete_search(cls, search):
+    '''
+    deletes a model in the database
 
     @param cls: the class model to use
     @param search: the parameters to search with
-    @param data: the data to change in the database
-    @return: whether or not the data was found in the database
+    @return: nothing
 
-    ex: update(Attendee, {'nameFirst':'John', 'nameLast':'Doe'}, {'email':'doe1@illinois.edu', 'standing':3})
+    ex: update_model(Attendee, {'email':'doe1@illinois.edu', 'standing':3})
     '''
-    pass
+    #These functions need to be changed to delete all references a model ex. an Attendee in a Team
+    m = search_database(cls, search).get()
+    if m != None:
+        delete(cls, m.key)
 
-def add_or_update(cls, data):
-    if not add(cls, data):
-        required = _get_required(cls)
-        search = {}
-        for r in required:
-            if r in data:
-                search[r] = data[r]
-                del data[r]
-        update(cls, search, data)
+def delete(cls, key):
+    '''
+    deletes a model in the database
 
+    @param cls: the class model to use
+    @param key: key to delete
+    @return: nothing
 
+    ex: update_model(Attendee, key)
+    '''
+    #These functions need to be changed to delete all references a model ex. an Attendee in a Team
+    key.delete()
+
+def update_search(cls, data, search = {}):
+    '''
+    Updates a model in the database
+    WILL override data if already there
+
+    @param cls: the class model to use
+    @param data: the data to change in the database
+    @param search: the parameters to search with
+    @return: whether or not the data was found in the database and updated
+
+    ex: update_model(Attendee, {'nameFirst':'John', 'nameLast':'Doe'}, {'email':'doe1@illinois.edu', 'standing':3})
+    '''
+    if(search == {}):
+        try:
+            properties = cls.unique_properties()
+            for p in properties:
+                search[p] = data[p]
+        except AttributeError:
+            #class does not have attribute unique_properties()
+            return False
+        except LookupError:
+            #data does not key "p"
+            return False
+    m = search_database(cls, search).get()
+    if m != None:
+        return update(cls, data, m.key)
+    return False
+	
+def update(cls, data, key):
+    '''
+    Updates a model in the database
+    WILL override data if already there
+
+    @param cls: the class model to use
+    @param data: the data to change in the database
+    @param key: key of model
+    @return: whether or not the data was updated
+
+    ex: update_model(Attendee, {'nameFirst':'John', 'nameLast':'Doe'}, key)
+    '''
+    u = key.get()
+    for p in data:
+        setattr(u, p, data[p])
+    u.put()
+    return u
+
+def add_or_update(cls, data, search = {}):
+    '''
+    Adds or updates a model in the database
+    WILL override data if already there
+
+    @param cls: the class model to use
+    @param data: the data to change in the database
+    @param search: the parameters to search with
+    @return: nothing
+
+    ex: update_model(Attendee, {'nameFirst':'John', 'nameLast':'Doe'}, {'email':'doe1@illinois.edu', 'standing':3})
+    '''
+    if not add(cls, data, search):
+        update(cls, data, search)
+
+def in_database(cls, search):
+    '''
+    Determines if the data already in the database, determined by "search"
+    DOES NOT effect the database
+
+    @param cls: the class model to use
+    @param search: the data used to search the database
+    @return: True if the data is in the database, False otherwise
+
+    ex: in_database(Attendee, {'email':'doe1@illinois.edu'})
+    Returns True if "doe1@illinois.edu" is already in the database
+    Returns False otherwise
+    '''
+    return search_database(cls,search).get() != None
+
+def search_database(cls, search, perfect_match=True):
+    '''
+    Searches the database for models matching "search"
+    DOES NOT effect the database
+
+    @param cls: the class model to use
+    @param search: the data used to search the database
+    @perfect_match:	True = every argument matches : False = one argument matches
+    @return: iterator of models
+
+    ex: search_database(Attendee, {'email':'doe1@illinois.edu'})
+    '''
+    if search == {}:
+        return cls.gql()
+    q = "WHERE "
+    if perfect_match:
+        ao = " AND "
+    else:
+	    ao = " OR "
+    for param in search:
+        q += param + " = '" + search[param] + "'" + ao
+    return cls.gql(q[:-len(ao)])
+    
 class Attendee(ndb.Model):
     nameFirst = ndb.StringProperty(required=True)
     nameLast = ndb.StringProperty(required=True)
@@ -89,7 +234,11 @@ class Attendee(ndb.Model):
         for k in data:
             setattr(attendee, k, data[k])
         return attendee
-
+	
+    @classmethod
+    def unique_properties(cls):
+        return ['email']
+	
     @classmethod
     def new2(cls, mNameFirst, mNameLast, mEmail, mStanding):
         return cls(nameFirst=mNameFirst, nameLast=mNameLast, email=mEmail, standing=mStanding)
@@ -112,6 +261,10 @@ class Team(ndb.Model):
             setattr(team, k, data[k])
         return team
 
+    @classmethod
+    def unique_properties(cls):
+        return ['name']
+		
     @classmethod
     def new2(cls, mName):
         return cls(name=mName)
@@ -184,7 +337,6 @@ class SignUp(ndb.Model):
     register_date = ndb.DateProperty()
 
 
-
 class UnitTest(object):
     ''' To run all unit tests:
     from pprint import pprint
@@ -198,7 +350,7 @@ class UnitTest(object):
         passed = True
         data = {'nameFirst':'Alex', 'nameLast':'Burck', 'email':'burck1@illinois.edu', 'standing':4}
         try:
-            me = add(Attendee, data)
+            me = f_add(Attendee, data)
         except:
             passed = False
             e = sys.exc_info()[0]
@@ -210,7 +362,7 @@ class UnitTest(object):
         passed = True
         data = {'name':'Test'}
         try:
-            t = add(Team, data)
+            t = f_add(Team, data)
         except:
             passed = False
             e = sys.exc_info()[0]
@@ -220,9 +372,9 @@ class UnitTest(object):
     def test_add_attendee_to_team(self):
         passed = True
         data = {'nameFirst':'Alex', 'nameLast':'Burck', 'email':'burck1@illinois.edu', 'standing':4}
-        me = add(Attendee, data)
+        me = f_add(Attendee, data)
         data = {'name':'Test'}
-        t = add(Team, data)
+        t = f_add(Team, data)
         try:
             passed = t.addMember(me)
         except:
@@ -235,7 +387,7 @@ class UnitTest(object):
         passed = True
         data = {'companyName':'Test Company', 'contactName':'Qwerty Uiop', 'email':'qwerty@company.com'}
         try:
-            s = add(Sponsor, data)
+            s = f_add(Sponsor, data)
         except:
             passed = False
             e = sys.exc_info()[0]
@@ -246,7 +398,7 @@ class UnitTest(object):
         passed = True
         data = {'emailTo':'burck1@illinois.edu', 'emailFrom':'qwerty@company.com', 'dateTime':dt.datetime.now(), 'subject':'Test', 'text':'Test'}
         try:
-            n = add(Note, data)
+            n = f_add(Note, data)
         except:
             passed = False
             e = sys.exc_info()[0]
@@ -256,9 +408,9 @@ class UnitTest(object):
     def test_add_note_to_sponsor(self):
         passed = True
         data = {'companyName':'Test Company', 'contactName':'Qwerty Uiop', 'email':'qwerty@company.com'}
-        s = add(Sponsor, data)
+        s = f_add(Sponsor, data)
         data = {'emailTo':'burck1@illinois.edu', 'emailFrom':'qwerty@company.com', 'dateTime':dt.datetime.now(), 'subject':'Test', 'text':'Test'}
-        n = add(Note, data)
+        n = f_add(Note, data)
         try:
             passed = s.addNote(n)
         except:
@@ -274,6 +426,59 @@ class UnitTest(object):
                   self.test_add_sponsor:'Add Sponsor',
                   self.test_add_note:'Add Note',
                   self.test_add_note_to_sponsor:'Add Note to Sponsor' }
+
+        results = { tests[f]:f() for f in tests }
+        return results
+		
+
+class UnitTest2(object):
+    ''' To run all unit tests:
+    from pprint import pprint
+    from db import models
+    ut = models.UnitTest2()
+    pprint(ut.run_all())
+    '''
+    import sys
+
+    def test_add_attendee(self):
+        passed = True
+        data = {'nameFirst':'Alex', 'nameLast':'Burck', 'email':'burck1@illinois.edu', 'standing':4}
+        try:
+            me = add(Attendee, data)
+        except:
+            passed = False
+            e = sys.exc_info()[0]
+            print "Error: %s" % e
+        return passed
+
+    def test_update_attendee(self):
+        passed = True
+        data = {'standing':1}
+        search = {'email':'burck1@illinois.edu'}
+        try:
+            me = update_search(Attendee, data, search)
+        except:
+            passed = False
+            e = sys.exc_info()[0]
+            print "Error: %s" % e
+        return passed
+
+    def test_delete_attendee(self):
+        passed = True
+        search = {'email':'burck1@illinois.edu'}
+        try:
+            me = delete_search(Attendee, search)
+        except:
+            passed = False
+            e = sys.exc_info()[0]
+            print "Error: %s" % e
+        return passed
+
+    def run_all(self):
+        tests = { self.test_add_attendee:'Add Attendee',
+                  self.test_update_attendee:'Update Attendee',
+                  self.test_delete_attendee:'Delete Attendee' 
+                  }
 
         results = { tests[f]:f() for f in tests }
         return results
