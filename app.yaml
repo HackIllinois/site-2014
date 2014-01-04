@@ -6,8 +6,8 @@ threadsafe: yes
 
 handlers:
 - url: /favicon\.ico
-  static_files: favicon.ico
-  upload: favicon\.ico
+  static_files: assets/img/favicon.ico
+  upload: assets/img/favicon\.ico
 
 - url: /css
   static_dir: css
@@ -16,22 +16,22 @@ handlers:
   static_dir: js
 
 - url: /img
-  static_dir: img
+  static_dir: assets/img
 
 - url: /assets
   static_dir: assets
 
 - url: /sponsor(s?)(/?)
-  static_files: assets/HackIllinois Sponsorship.pdf
-  upload: assets/HackIllinois Sponsorship\.pdf
+  static_files: assets/docs/HackIllinois Sponsorship.pdf
+  upload: assets/docs/HackIllinois Sponsorship\.pdf
 
 - url: /sponsor(s?)/startup(/?)
-  static_files: assets/special_sponsorship/HackIllinois Startup.pdf
-  upload: assets/special_sponsorship/HackIllinois Startup\.pdf
+  static_files: assets/docs/special_sponsorship/HackIllinois Startup.pdf
+  upload: assets/docs/special_sponsorship/HackIllinois Startup\.pdf
 
 - url: /sponsor(s?)/api(/?)
-  static_files: assets/special_sponsorship/HackIllinois API.pdf
-  upload: assets/special_sponsorship/HackIllinois API\.pdf
+  static_files: assets/docs/special_sponsorship/HackIllinois API.pdf
+  upload: assets/docs/special_sponsorship/HackIllinois API\.pdf
 
 - url: .*
   script: main.app
