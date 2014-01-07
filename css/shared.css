@@ -15,7 +15,7 @@ html, body {
 }
 
 .bg-stars {
-    background-image: url('../assets/starbackground.jpg');
+    background-image: url('../assets/img/starbackground.jpg');
     background-size: cover;
     z-index:-2;
 }
