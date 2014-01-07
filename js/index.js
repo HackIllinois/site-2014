@@ -5,7 +5,7 @@ $( document ).ready(function() {
         if (!email_check.test(email)) {
             $('.reg-email').addClass("email-error");
             return false;
-        } 
+        }
         else {
             $.ajax({
                 type: "POST",
@@ -21,4 +21,3 @@ $( document ).ready(function() {
         }
     });
 });
-

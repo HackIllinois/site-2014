@@ -1,0 +1,98 @@
+.modal-content {
+    background-color: black;
+}
+.modal-body {
+    background-color: black;
+}
+
+.modal-header {
+    border-bottom:1px solid white;
+}
+
+.modal-footer {
+    border-top:1px solid black;
+}
+
+.close {
+    color: white;
+}
+
+.close:hover {
+    color: white;
+}
+
+textarea {
+    background-color: black;
+    color: #FFF;
+    width: 500px;
+    resize: none;
+}
+
+textarea#setter {
+    left: -1000px;
+    position: absolute;
+}
+
+.cursor {
+    font-size: 12px;
+    background-color: gray;
+    color: gray;
+    position: relative;
+    opacity: 0.5;
+    -webkit-animation: blink 1.5s linear 0s infinite;
+    -moz-animation: blink 1.5s linear 0s infinite;
+    -ms-animation: blink 1.5s linear 0s infinite;
+    -o-animation: blink 1.5s linear 0s infinite;
+}
+
+@-webkit-keyframes blink {
+    0%   { background-color: gray; color: gray; }
+    47%  { background-color: gray; color: gray; }
+    50%  { background-color: #000; color: #000; }
+    97%  { background-color: #000; color: #000; }
+    100% { background-color: gray; color: gray; }
+}
+
+@-moz-keyframes blink {
+    0%   { background-color: gray; color: gray; }
+    47%  { background-color: gray; color: gray; }
+    50%  { background-color: #000; color: #000; }
+    97%  { background-color: #000; color: #000; }
+    100% { background-color: gray; color: gray; }
+}
+
+@-ms-keyframes blink {
+    0%   { background-color: gray; color: gray; }
+    47%  { background-color: gray; color: gray; }
+    50%  { background-color: #000; color: #000; }
+    97%  { background-color: #000; color: #000; }
+    100% { background-color: gray; color: gray; }
+}
+
+@-o-keyframes blink {
+    0%   { background-color: gray; color: gray; }
+    47%  { background-color: gray; color: gray; }
+    50%  { background-color: #000; color: #000; }
+    97%  { background-color: #000; color: #000; }
+    100% { background-color: gray; color: gray; }
+}
+
+#terminal {
+    margin: 8px;
+    cursor: text;
+    height: 300px;
+    border: 1px solid black;
+    overflow: auto;
+    background-color: black;
+    color: gray;
+    text-align: left;
+}
+
+#writer {
+    font-family: cursor, courier;
+    font-weight: bold;
+}
+
+#getter {
+    margin: 5px;
+}

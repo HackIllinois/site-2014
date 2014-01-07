@@ -1,0 +1,71 @@
+/**
+** @author: HackIllinois Staff
+**/
+
+html, body {
+    height: 100%;
+}
+
+.wrapper {
+    height: auto !important; /* ie6 ignores !important, so this will be overridden below */
+    min-height: 100%; /* ie6 ignores min-height completely */
+    height: 100%;
+    background-color: #000000; /* fallback for stars */
+    width: 100%;
+}
+
+.bg-stars {
+    background-image: url('../assets/starbackground.jpg');
+    background-size: cover;
+    z-index:-2;
+}
+
+.t-centered {
+    text-align: center;
+}
+
+.constellations {
+    height: 1300px;
+    margin-top: -250px;
+    vertical-align:middle;
+    display: block;
+    position:fixed;
+    margin-left: -80px;
+    z-index:0;
+    opacity: 0.6;
+
+    -webkit-animation: spin 250s infinite linear;
+    -moz-animation: spin 250s infinite linear;
+    -o-animation: spin 250s infinite linear;
+    -ms-animation: spin 250s infinite linear;
+}
+
+.logo-main-svg {
+    width: 260px;
+    margin: 0 auto;
+}
+
+.info-text {
+    margin-top: 40px;
+    font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size: 32px;
+    color: #fff;
+    font-weight: bold;
+}
+
+@-webkit-keyframes spin {
+0% { -webkit-transform: rotate(0deg);}
+100% { -webkit-transform: rotate(360deg);}
+}
+@-moz-keyframes spin {
+0% { -moz-transform: rotate(0deg);}
+100% { -moz-transform: rotate(360deg);}
+}
+@-o-keyframes spin {
+0% { -o-transform: rotate(0deg);}
+100% { -o-transform: rotate(360deg);}
+}
+@-ms-keyframes spin {
+0% { -ms-transform: rotate(0deg);}
+100% { -ms-transform: rotate(360deg);}
+}

@@ -1,0 +1,78 @@
+/**
+** @author: HackIllinois Staff
+**/
+
+.splash {
+	width: 360px;
+	position: relative;
+	z-index: 100;
+	margin: 150px auto;
+}
+
+.reg-container > h3 {
+	margin-top: 40px;
+	font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+	font-size: 20px;
+	color: #fff;
+}
+
+.reg-form {
+	display:block;
+	margin-top: 40px;
+}
+
+.reg-email {
+	font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+	font-size: 13px;
+	padding: 9px 16px;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	background: rgba(255,255,255, .3);
+	border: none;
+	width: 220px;
+	border: 1px solid rgba(255,255,255, .5);
+	color: #fff;
+}
+
+.email-error {
+	border: 1px solid #ef3e36;
+}
+
+.reg-email:focus {
+	border: 1px solid #fff;
+	outline: none;
+
+}
+
+.send {
+	font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+	font-size: 13px;
+	background: #ef3e36;
+	color: #fff;
+	cursor: pointer;
+	padding: 10px 16px;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	border: none;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+}
+
+@media only screen
+and (max-width: 480px) {
+	.splash {
+		margin-top: 50px;
+		width: 100%;
+	}
+	.send {
+		width: 254px;
+	}
+}
+
+@media only screen
+and (max-width: 600px)
+and (orientation: landscape) {
+	.splash {
+		margin-top: 50px;
+	}
+}
