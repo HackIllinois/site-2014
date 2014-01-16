@@ -1,4 +1,7 @@
 import MainHandler
+import cgi
+import db.models as models
+import logging
 
 class RegisterHandler(MainHandler.Handler):
     """ Handler for registration page.
@@ -7,10 +10,34 @@ class RegisterHandler(MainHandler.Handler):
         self.render("register.html")
 
     def post(self):
-        name = self.request.get('name')
-        if not name:
-            self.write("No registration name.")
-            return
+        x = {}
 
-        self.write("Thanks for registering, " + name + "!")
-        return
+        x['nameFirst'] = cgi.escape(self.request.get('nameFirst'))
+        x['nameLast'] = cgi.escape(self.request.get('nameLast'))
+        x['email'] = cgi.escape(self.request.get('email'))
+        x['gender'] = cgi.escape(self.request.get('gender'))
+        x['school'] = cgi.escape(self.request.get('school'))
+        x['standing'] = cgi.escape(self.request.get('year'))
+
+        x['experience'] = cgi.escape(self.request.get('experience'))
+        # x['resume'] = self.request.get('resume')
+        x['linkedin'] = cgi.escape(self.request.get('linkedin'))
+        x['github'] = cgi.escape(self.request.get('github'))
+
+        x['shirt'] = cgi.escape(self.request.get('shirt'))
+        x['food'] = cgi.escape(self.request.get('food'))
+
+        r = cgi.escape(self.request.get('recruiters'))
+        if r == 'True':
+            x['recruiters'] = True
+        p = cgi.escape(self.request.get('picture'))
+        if p == 'True':
+            x['picture'] = True
+        t = cgi.escape(self.request.get('termsOfService'))
+        if t == 'True':
+            x['termsOfService'] = True
+
+        models.add(models.Attendee, x)
+        logging.info('Signup with email %s', x['email'])
+
+        self.render("registration_complete.html")

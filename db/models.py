@@ -140,7 +140,7 @@ def update_search(cls, data, search = {}):
     if m != None:
         return update(cls, data, m.key)
     return False
-	
+
 def update(cls, data, key):
     '''
     Updates a model in the database
@@ -211,15 +211,31 @@ def search_database(cls, search, perfect_match=True):
     for param in search:
         q += param + " = '" + search[param] + "'" + ao
     return cls.gql(q[:-len(ao)])
-    
+
 class Attendee(ndb.Model):
     nameFirst = ndb.StringProperty(required=True)
     nameLast = ndb.StringProperty(required=True)
-    isAdmin = ndb.BooleanProperty(default=False) #Set Default to False
-    isParticipant = ndb.BooleanProperty(default=False) #Set Default to False
     email = ndb.StringProperty(required=True)
-    standing = ndb.IntegerProperty(choices=[0,1,2,3,4,5]) # 0=fresh, 1=soph, 2=jr, 3=sr, 4=grad, 5=other
+    gender = ndb.StringProperty(choices=['Male','Female','NA'])
+    school = ndb.StringProperty()
+    standing = ndb.StringProperty(choices=['Freshman','Sophomore','Junior','Senior','Grad','Other'])
+
+    experience = ndb.TextProperty() # unlimited length, not indexed
+    resume = ndb.BlobProperty(compressed=True)
+    linkedin = ndb.StringProperty()
+    github = ndb.StringProperty()
+
+    shirt = ndb.StringProperty(choices=['XS','S','M','L','XL','XXL'])
+    food = ndb.StringProperty(choices=['None','Vegetarian','Vegan','Gluten Free'])
+
+    recruiters = ndb.BooleanProperty(default=False)
+    picture = ndb.BooleanProperty(default=False)
+    termsOfService = ndb.BooleanProperty(default=False)
+
+    isAdmin = ndb.BooleanProperty(default=False)
+    isParticipant = ndb.BooleanProperty(default=False)
     registrationTime = ndb.DateTimeProperty(auto_now_add=True)
+
     team = ndb.KeyProperty()
 
     @classmethod
@@ -234,11 +250,11 @@ class Attendee(ndb.Model):
         for k in data:
             setattr(attendee, k, data[k])
         return attendee
-	
+
     @classmethod
     def unique_properties(cls):
         return ['email']
-	
+
     @classmethod
     def new2(cls, mNameFirst, mNameLast, mEmail, mStanding):
         return cls(nameFirst=mNameFirst, nameLast=mNameLast, email=mEmail, standing=mStanding)
@@ -264,7 +280,7 @@ class Team(ndb.Model):
     @classmethod
     def unique_properties(cls):
         return ['name']
-		
+
     @classmethod
     def new2(cls, mName):
         return cls(name=mName)
@@ -429,7 +445,7 @@ class UnitTest(object):
 
         results = { tests[f]:f() for f in tests }
         return results
-		
+
 
 class UnitTest2(object):
     ''' To run all unit tests:
@@ -477,7 +493,7 @@ class UnitTest2(object):
     def run_all(self):
         tests = { self.test_add_attendee:'Add Attendee',
                   self.test_update_attendee:'Update Attendee',
-                  self.test_delete_attendee:'Delete Attendee' 
+                  self.test_delete_attendee:'Delete Attendee'
                   }
 
         results = { tests[f]:f() for f in tests }

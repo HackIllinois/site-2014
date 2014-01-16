@@ -54,10 +54,10 @@
 						<div class="controls col-sm-9">
 							<div class="row">
 								<div class="col-xs-6">
-									<input id="first_name" name="first_name" type="text" placeholder="First Name" class="form-control" required="required">
+									<input id="nameFirst" name="nameFirst" type="text" placeholder="First Name" class="form-control" required="required">
 								</div>
 								<div class="col-xs-6">
-									<input id="last_name" name="last_name" type="text" placeholder="Last Name" class="form-control" required="required">
+									<input id="nameLast" name="nameLast" type="text" placeholder="Last Name" class="form-control" required="required">
 								</div>
 							</div>
 						</div>
@@ -84,7 +84,7 @@
 								Female
 							</label>
 							<label class="radio-inline" for="gender-2">
-								<input type="radio" name="gender" id="gender-2" value="I choose not to specify" required="required">
+								<input type="radio" name="gender" id="gender-2" value="NA" required="required">
 								I choose not to specify
 							</label>
 						</div>
@@ -136,7 +136,11 @@
 								Senior
 							</label>
 							<label class="radio-inline" for="year-4">
-								<input type="radio" name="year" id="year-4" value="Other" required="required">
+								<input type="radio" name="year" id="year-4" value="Grad" required="required">
+								Grad
+							</label>
+							<label class="radio-inline" for="year-5">
+								<input type="radio" name="year" id="year-5" value="Other" required="required">
 								Other
 							</label>
 						</div>
@@ -243,8 +247,8 @@
 						<label class="control-label col-sm-3 sr-only" for="recruiters">Share with recruiters</label>
 						<div class="controls col-sm-9">
 							<label class="checkbox" for="recruiters-0">
-								<input type="checkbox" name="recruiters" id="recruiters-0" value="Let us share this information with recruiters.">
-								Let us share this information with recruiters.
+								<input type="checkbox" name="recruiters" id="recruiters-0" value="True">
+								Let us share this information with recruiters. (Optional)
 							</label>
 						</div>
 					</div>
@@ -254,7 +258,7 @@
 						<label class="control-label col-sm-3 sr-only" for="picture">Allow picture to be taken</label>
 						<div class="controls col-sm-9">
 							<label class="checkbox" for="picture-0">
-								<input type="checkbox" name="picture" id="picture-0" value="I agree that my picture will be taken." required="required">
+								<input type="checkbox" name="picture" id="picture-0" value="True" required="required">
 								I agree that my picture will be taken.
 							</label>
 						</div>
@@ -262,10 +266,10 @@
 
 					<!-- Multiple Checkboxes (inline) -->
 					<div class="form-group">
-						<label class="control-label col-sm-3 sr-only" for="terms_of_service">Agree to terms of service</label>
+						<label class="control-label col-sm-3 sr-only" for="termsOfService">Agree to terms of service</label>
 						<div class="controls col-sm-9">
-							<label class="checkbox" for="terms_of_service-0">
-								<input type="checkbox" name="terms_of_service" id="terms_of_service-0" value="By signing up, I accept the Terms of Service" required="required">
+							<label class="checkbox" for="termsOfService-0">
+								<input type="checkbox" name="termsOfService" id="termsOfService-0" value="True" required="required">
 								By signing up, I accept the Terms of Service
 							</label>
 						</div>
