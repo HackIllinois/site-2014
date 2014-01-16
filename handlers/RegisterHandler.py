@@ -17,6 +17,8 @@ class RegisterHandler(MainHandler.Handler):
         x['email'] = cgi.escape(self.request.get('email'))
         x['gender'] = cgi.escape(self.request.get('gender'))
         x['school'] = cgi.escape(self.request.get('school'))
+        if x['school'] == 'Other':
+            x['school'] = cgi.escape(self.request.get('schoolOther'))
         x['standing'] = cgi.escape(self.request.get('year'))
 
         x['experience'] = cgi.escape(self.request.get('experience'))

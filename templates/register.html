@@ -94,7 +94,7 @@
 					<div class="form-group">
 						<label class="control-label col-sm-3" for="school">School</label>
 						<div class="controls col-sm-9">
-							<select id="school" name="school" class="form-control" required="required">
+							<select id="school" name="school" class="form-control" required="required" onchange="CheckOther(this.value);">
 								<option selected>Select one...</option>
 								<option>University of Illinois--Urbana-Champaign</option>
 								<option>Massachusetts Institute of Technology</option>
@@ -112,6 +112,14 @@
 								<option>University of Washington</option>
 								<option>Other</option>
 							</select>
+						</div>
+					</div>
+
+					<!-- Text input-->
+					<div id="schoolOtherDiv" class="form-group hidden">
+						<label class="control-label col-sm-3" for="schoolOther">School</label>
+						<div class="controls col-sm-9">
+							<input id="schoolOther" name="schoolOther" type="text" placeholder="Your School" class="form-control">
 						</div>
 					</div>
 
@@ -284,5 +292,6 @@
 
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 	<script src="js/libraries/bootstrap.min.js"></script>
+	<script src="js/register.js"></script>
 </body>
 </html>
