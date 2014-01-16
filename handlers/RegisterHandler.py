@@ -29,6 +29,8 @@ class RegisterHandler(MainHandler.Handler):
         x['shirt'] = cgi.escape(self.request.get('shirt'))
         x['food'] = cgi.escape(self.request.get('food'))
 
+        x['teamMembers'] = cgi.escape(self.request.get('team'))
+
         r = cgi.escape(self.request.get('recruiters'))
         if r == 'True':
             x['recruiters'] = True

@@ -236,6 +236,8 @@ class Attendee(ndb.Model):
     isParticipant = ndb.BooleanProperty(default=False)
     registrationTime = ndb.DateTimeProperty(auto_now_add=True)
 
+    teamMembers = ndb.TextProperty()
+
     team = ndb.KeyProperty()
 
     @classmethod
