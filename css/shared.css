@@ -3,21 +3,19 @@
 **/
 
 html, body {
-    height: 100%;
+    min-height:100%;
 }
 
-.wrapper {
-    height: auto !important; /* ie6 ignores !important, so this will be overridden below */
-    min-height: 100%; /* ie6 ignores min-height completely */
-    height: 100%;
-    background-color: #000000; /* fallback for stars */
-    width: 100%;
-}
-
-.bg-stars {
-    background-image: url('../assets/img/starbackground.jpg');
+html {
+    background: url('../assets/img/starbackground.jpg') no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
     background-size: cover;
-    z-index:-2;
+}
+
+body {
+    background: transparent;
 }
 
 .t-centered {
@@ -25,19 +23,26 @@ html, body {
 }
 
 .constellations {
-    height: 1300px;
-    margin-top: -250px;
-    vertical-align:middle;
-    display: block;
-    position:fixed;
-    margin-left: -80px;
-    z-index:0;
+    min-height: 100%;
+    min-width: 1705px;
+    width: 100%;
+    height: auto;
+    position: fixed;
+    top: 0;
+    left: 0;
     opacity: 0.6;
 
     -webkit-animation: spin 250s infinite linear;
     -moz-animation: spin 250s infinite linear;
     -o-animation: spin 250s infinite linear;
     -ms-animation: spin 250s infinite linear;
+}
+
+@media screen and (max-width: 1705px) {
+    .constellations {
+        left: 50%;
+        margin-left: -852px;
+    }
 }
 
 .logo-main-svg {
