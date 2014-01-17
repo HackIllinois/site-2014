@@ -206,6 +206,10 @@ p {
 	-moz-appearance: none;
 }
 
+.content-container {
+	margin: 0 auto;
+}
+
 .content{
 	-moz-border-radius: 3px;
 	-webkit-border-radius: 3px;
