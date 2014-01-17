@@ -1,9 +1,7 @@
 {% extends "base/base.html" %}
 
 {% block head %}
-
 <link rel="stylesheet" type="text/css" href="css/site.css">
-
 {% endblock head %}
 
 
@@ -168,3 +166,8 @@
 <script src="js/index.js"></script>
 
 {% endblock body %}
+
+
+{% block spaceship %}
+{% include "misc/spaceship.html" %}
+{% endblock spaceship %}
