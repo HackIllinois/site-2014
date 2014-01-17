@@ -208,6 +208,7 @@ p {
 
 .content-container {
 	margin: 0 auto;
+	z-index: 1000;
 }
 
 .content{
