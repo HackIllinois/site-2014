@@ -5,7 +5,7 @@ $( document ).ready(function() {
         if (!email_check.test(email)) {
             $('.reg-email').addClass("email-error");
             return false;
-        } 
+        }
         else {
             $.ajax({
                 type: "POST",
@@ -13,7 +13,7 @@ $( document ).ready(function() {
                 data: email,
                 success: function () {
                     $(".reg-form").fadeOut("slow", function () {
-                        $(".reg-container").append("<h3>You're all set! We'll be in touch soon.</h3>");
+                        $(".reg-success").fadeIn("slow");
                     });
                 }
             });

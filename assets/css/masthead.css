@@ -1,0 +1,44 @@
+.splash-masthead {
+	font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;	
+	margin: 50px auto;
+}
+
+.splash-masthead a {
+	text-decoration: none;
+}
+
+.info-tagline {
+	text-decoration: none; 
+}
+
+.about {
+	font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+	width: 100%;
+	padding: 0;
+}
+
+.rules-text, .about-text {
+	line-height: 1.6;
+	padding-bottom: 1.3em;
+}
+
+.first-text {
+	padding-top: 0px;
+}
+
+.last-text {
+	padding-bottom: 50px;
+}
+
+.heading-text {
+	font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+	color: #ef3e36;
+	font-size: 14px;
+	line-height: 1.8;
+	font-weight: 700;
+	text-transform: uppercase;
+}
+
+.venue-name {
+	font-weight: bold;
+}

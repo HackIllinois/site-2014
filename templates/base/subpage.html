@@ -1,0 +1,42 @@
+{% extends "base/base.html" %}
+
+{% block template_head %}
+<link rel="stylesheet" type="text/css" href="/css/subpage.css">
+<link rel="stylesheet" type="text/css" href="/css/masthead.css">
+{% endblock template_head %}
+
+
+{% block body %}
+<div class="wrapper-stars bg-stars stars-masthead">
+    <div id="grid" class="pure-g-r">
+        <div id="column-main" class="pure-u-1 t-centered">
+            <div id="logo">
+                <div class="splash splash-masthead">
+                    <a href="/">
+                        <img class="logo-main-svg" src="/img/hackillinois_logo.svg">
+                        <h5>Imagine. Learn. Launch.</h5>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% block subpage_body %}{% endblock %}
+<div class="pure-g-r footer">
+    <div class="pure-u-1">
+        <hr></div>
+    <div class="pure-u-1-2">
+        © HackIllinois 2014
+        Co-hosted by <a href="http://www.inin.com" target="_blank">Interactive Intelligence</a>.
+    </div>
+    <div class="pure-u-1-2">
+        <ul class="footer-links">
+            <li><a href="/">Home</a></li>
+            <li><a href="/rules">Rules</a></li>
+            <li><a href="/schedule">Schedule</a></li>
+            <li><a href="/travel">Travel</a></li>
+            <li><a href="/sponsor">Sponsor</a></li>
+        </ul>
+    </div>
+</div>
+{% endblock body %}

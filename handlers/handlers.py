@@ -1,13 +1,18 @@
-from IndexHandler import IndexHandler
 from EmailBackupHandler import EmailBackupHandler
-from RegisterHandler import RegisterHandler
 from ErrorHandler import ErrorHandler
+from IndexHandler import IndexHandler
+from RegisterHandler import RegisterHandler
+from SubpageHandlers import RulesHandler, ScheduleHandler, TravelHandler
 from TropoHandler import TropoHandler
+
 
 handlers = [
     ('/', IndexHandler),
     ('/emailbackup', EmailBackupHandler),
     ('/register', RegisterHandler),
+    ('/rules', RulesHandler),
+    ('/schedule', ScheduleHandler),
+    ('/travel', TravelHandler),
     ('/tropo', TropoHandler),
     ('.*', ErrorHandler)
 ]
