@@ -13,7 +13,7 @@ $( document ).ready(function() {
                 data: email,
                 success: function () {
                     $(".reg-form").fadeOut("slow", function () {
-                        $(".reg-container").append("<h3>You're all set! We'll be in touch soon.</h3>");
+                        $(".reg-success").fadeIn("slow");
                     });
                 }
             });
@@ -21,3 +21,4 @@ $( document ).ready(function() {
         }
     });
 });
+
