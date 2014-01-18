@@ -363,6 +363,9 @@ and (max-width: 768px) {
 	.social-icons > a:last-child {
 		font-size: 30px;
 	}
+	.footer-copy {
+		text-align: center;
+	}
 }
 
 
