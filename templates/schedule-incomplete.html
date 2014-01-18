@@ -1,0 +1,92 @@
+{% extends "base/subpage.html" %}
+
+{% block subpage_body %}
+
+<style type="text/css">
+.bullets {
+    width: 300px;
+}
+
+ul.hil-schedule {
+    font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    list-style: none;
+    list-style-type: none;
+    position: relative;
+    margin: 0 auto;
+    border-top: 1px solid #ef3e36; 
+}
+li.schedule-item {
+    padding-bottom: 0px;
+    padding-top: 0px;
+    margin-top: -1px;
+}
+
+li.schedule-item > time {
+    padding: 25px 20px 0px 0px;
+    height: 30px;
+    padding-right: 20px;
+    border-right: 1px solid #ef3e36;
+    padding-bottom: 0px;
+}
+
+li.schedule-item > h6 {
+    padding: 25px 0px 5px 0px;
+    display: inline-block;
+    padding-left: 20px; 
+    padding-bottom: 0px;
+}
+
+li.schedule-item > h6::before {
+    position: absolute;
+    display: block;
+    left: 72px;
+    right: 5px;
+    width: 7px;
+    height: 7px;
+    margin-top: 4px;
+    content: "";
+    background-color: #fff;
+    border: 1px solid #ef3e36;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    -ms-border-radius: 10px;
+    -o-border-radius: 10px;
+    border-radius: 10px;
+    z-index: 2;
+}
+
+.schedule-heading {
+}
+</style>
+
+<div class="wrapper-content sticky-footer-wrapper-fix">
+    <div class="grid-scaffold">
+        <div class="pure-g-r">
+            <div class="pure-u-1 section-divide">
+                <header class="section-title section-text">
+                    <span>Schedule</span>
+                </header>
+            </div>
+            <div class="pure-u-1-2">
+                <div class="bullets">    
+                    <h3 class="schedule-heading">Friday, April 11 2014</h3>
+                    <ul class="hil-schedule">
+                        <li class="first-schedule-item schedule-item">
+                            <time class="first-time-item">6 PM</time>
+                            <h6>Registration</h6>
+                        </li>
+                        <li class="schedule-item">
+                            <time>8 PM</time>
+                            <h6>Kickoff + API Demos</h6>
+                        </li>
+                        <li class="schedule-item">
+                            <time>10 PM</time>
+                            <h6>Ready, set, Hack!</h6>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock subpage_body %}
