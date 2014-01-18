@@ -338,7 +338,7 @@ p {
 
 .social-icons {
 	font-size: 22px;
-	text-align: center;
+	text-align: right;
 	margin-top: -5px;
 }
 
@@ -350,6 +350,11 @@ p {
 	padding-left: 30px;
 	margin-top: 2px;
 	font-size: 26px;
+}
+
+.social-follow {
+	text-align: center;
+	margin-top: 20px;
 }
 
 @media only screen
@@ -364,6 +369,9 @@ and (max-width: 768px) {
 		font-size: 30px;
 	}
 	.footer-copy {
+		text-align: center;
+	}
+	.social-icons {
 		text-align: center;
 	}
 }
