@@ -129,12 +129,12 @@ p {
 }
 
 .constellations {
-	height: 1300px;
-	margin-top: -250px;
-	vertical-align:middle;
+	min-height: 120%;
+	min-width: 120%;
+	margin-top: -10%;
+	margin-left: -10%;
 	display: block;
 	position:fixed;
-	margin-left: -80px;
 	z-index:0;
 	opacity: 0.6;
 
