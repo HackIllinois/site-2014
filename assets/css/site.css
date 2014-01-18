@@ -118,7 +118,7 @@ p {
 }
 
 .bg-stars {
-	background-image: url('/img/starbackground.jpg');
+	background-image: url('/img/starbackground.compressed.jpg');
 	background-size: cover;
 	z-index:-100;
 	background-attachment: fixed;
