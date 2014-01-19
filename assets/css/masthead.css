@@ -42,3 +42,93 @@
 .venue-name {
 	font-weight: bold;
 }
+
+.bullets-centered {
+    width: 278px;
+    padding-top: 25px;
+    padding-bottom: 15px;
+    margin: 0 auto; 
+}
+
+ul.hil-schedule {
+    font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    list-style: none;
+    list-style-type: none;
+    position: relative;
+    margin: 0 auto; 
+}
+li.schedule-item {
+    padding-bottom: 0px;
+    padding-top: 0px;
+    margin-top: -1px;
+}
+
+li.schedule-item > time {
+    padding: 25px 20px 0px 0px;
+    height: 30px;
+    padding-right: 20px;
+    border-right: 2px solid #e7e9ea;
+    padding-bottom: 0px;
+    width: 56px;
+    display: inline-block;
+    text-align: right;
+}
+
+li.schedule-item > h6 {
+    padding: 25px 0px 5px 0px;
+    display: inline-block;
+    padding-left: 20px; 
+    padding-bottom: 0px;
+}
+
+li.schedule-item > h6::before {
+    position: absolute;
+    display: block;
+    left: 72px;
+    right: 5px;
+    width: 8px;
+    height: 8px;
+    margin-top: 4px;
+    content: "";
+    background-color: #fff;
+    border: 1px solid #ef3e36;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    -ms-border-radius: 10px;
+    -o-border-radius: 10px;
+    border-radius: 10px;
+    z-index: 2;
+}
+
+li.schedule-item > h6.no-dot {
+    padding: 0;
+    border-left: 2px solid #e7e9ea;
+    margin-left: 76px;
+    padding-left: 25px;
+}
+
+li.schedule-item > h6.no-dot::before {
+    display: none;
+}
+
+
+li.no-time > time {
+    padding-top: 13px;
+}
+
+.schedule-heading {
+    border-bottom: 2px solid #e7e9ea;
+}
+
+li.second-last-child {
+    padding-bottom: 20px;
+}
+
+li.schedule-item > time.last-time {
+    height: 20px;
+}
+
+li.after-no-dot {
+    margin-top: -12px;
+    padding-bottom: 5px;
+}
