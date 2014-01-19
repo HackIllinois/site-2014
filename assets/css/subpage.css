@@ -316,6 +316,13 @@ and (max-width: 768px) {
 	.desktop-cohost-collapse {
 		display: none;
 	}
+	.footer-copy {
+		text-align: center;
+	}
+	ul.footer-links {
+		margin-top: 10px;
+		text-align: center;
+	}
 }
 
 @media only screen
