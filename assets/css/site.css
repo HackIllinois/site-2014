@@ -307,7 +307,7 @@ p {
 
 @media (max-width: 480px) {
 	.splash {
-		margin-top: 50px;
+		/*margin-top: 50px;*/
 	}
 	.send {
 		width: 254px;
