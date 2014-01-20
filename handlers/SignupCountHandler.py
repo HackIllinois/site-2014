@@ -14,11 +14,17 @@ class SignupCountHandler(MainHandler.Handler):
         q = SignUp.query()
         domains = []
         only_edu = 'onlyEdu' in self.request.query_string
+
+        total_emails = 0
         for signup in q.iter():
             domain = signup.email.split('@',1)[1].lower()
+            total_emails += 1
             if only_edu and not domain.endswith('.edu'):
                 continue
             domains.append(domain)
+
+        self.write('<strong>Total Emails: </strong>%d<br>' % total_emails)
+
         c = Counter(domains)
         for key in aliases:
             if key not in c:
