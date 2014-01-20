@@ -1,8 +1,27 @@
 import MainHandler
+import operator
+from collections import Counter
 from db.models import SignUp
 
 class SignupCountHandler(MainHandler.Handler):
     """ Handler for a quick page to count the number of email signups we have """
     def get(self):
-        num_signups = SignUp.query().count()
-        self.write(num_signups)
+        aliases = {
+            'illinois.edu': ['uiuc.edu','acm.uiuc.edu'],
+            'gmail.com': ['googlemail.com'],
+        }
+        q = SignUp.query()
+        domains = []
+        for signup in q.iter():
+            domain = signup.email.split('@',1)[1].lower()
+            domains.append(domain)
+        c = Counter(domains)
+        for key in aliases:
+            for alias in aliases[key]:
+                c[key] += c[alias]
+                del c[alias]
+        sorted_counts = sorted(c.iteritems(), key=operator.itemgetter(1), reverse=True)
+        self.write("<ul>")
+        for counts in sorted_counts:
+            self.write("<li>" + counts[0] + ": " + str(counts[1]) + "</li>")
+        self.write("</ul>")
