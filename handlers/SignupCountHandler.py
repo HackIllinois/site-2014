@@ -1,3 +1,4 @@
+import cgi
 import MainHandler
 import operator
 from collections import Counter
@@ -12,11 +13,16 @@ class SignupCountHandler(MainHandler.Handler):
         }
         q = SignUp.query()
         domains = []
+        only_edu = 'onlyEdu' in self.request.query_string
         for signup in q.iter():
             domain = signup.email.split('@',1)[1].lower()
+            if only_edu and not domain.endswith('.edu'):
+                continue
             domains.append(domain)
         c = Counter(domains)
         for key in aliases:
+            if key not in c:
+                continue
             for alias in aliases[key]:
                 c[key] += c[alias]
                 del c[alias]
