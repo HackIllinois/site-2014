@@ -24,6 +24,11 @@ class SignupCountHandler(MainHandler.Handler):
 
         self.write('<strong>Total Emails: </strong>%d<br>' % sum(c.values()))
 
+        if only_edu:
+            self.write('<a href="/signupcount">Show all Domains</a><br>')
+        else:
+            self.write('<a href="/signupcount?onlyEdu">Show Only .edu Domains</a><br>')
+
         for key in aliases:
             if key not in c:
                 continue
