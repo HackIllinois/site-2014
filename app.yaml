@@ -31,13 +31,17 @@ handlers:
   static_files: assets/docs/HackIllinois Sponsorship.pdf
   upload: assets/docs/HackIllinois Sponsorship\.pdf
 
-- url: /sponsor(s?)/startup(/?)
+- url: /sponsor(s?)/startup(s?)(/?)
   static_files: assets/docs/special_sponsorship/HackIllinois Startup.pdf
   upload: assets/docs/special_sponsorship/HackIllinois Startup\.pdf
 
 - url: /sponsor(s?)/api(/?)
   static_files: assets/docs/special_sponsorship/HackIllinois API.pdf
   upload: assets/docs/special_sponsorship/HackIllinois API\.pdf
+
+- url: /sponsor(s?)/vc(s?)(/?)
+  static_files: assets/docs/special_sponsorship/HackIllinois VC.pdf
+  upload: assets/docs/special_sponsorship/HackIllinois VC\.pdf
 
 - url: .*
   script: main.app
