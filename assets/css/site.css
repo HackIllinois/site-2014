@@ -283,6 +283,15 @@ p {
 	max-width: 180px;
 }
 
+.venmo {
+	width: 20%;
+}
+
+.spot-trading {
+	height: 40px;
+	width: auto;
+}
+
 .intel {
 	width: auto;
 	max-height: 50px;
