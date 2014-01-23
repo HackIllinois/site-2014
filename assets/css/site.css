@@ -208,6 +208,17 @@ p {
 	-moz-appearance: none;
 }
 
+input:focus,
+select:focus,
+textarea:focus,
+button:focus {
+    outline: none;
+}
+
+.email-error {
+	border: 1px solid #ef3e36;
+}
+
 .content-container {
 	margin: 0 auto;
 	z-index: 1000;
