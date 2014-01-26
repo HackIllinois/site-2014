@@ -1,5 +1,5 @@
 Development Setup Guide
-----
+============
 
 This isn't meant to be an extensive guide, just a quick help for getting setup. If you don't understand something on the list, please ask for help. (Also, if someone wants to edit this and make it better, feel free!)
 
