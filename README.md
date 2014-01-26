@@ -5,7 +5,7 @@ This isn't meant to be an extensive guide, just a quick help for getting setup. 
 
 **Prereqs: ** Make sure Python is installed on your computer. Then install the [Google App Engine SDK for Python](https://developers.google.com/appengine/downloads#Google_App_Engine_SDK_for_Python).
 
-***Setup*** (note that this is only tested on OS X, and other platforms may differ slightly. Feel free to edit this with changes.)
+**Setup: ** (note that this is only tested on OS X, and other platforms may differ slightly. Feel free to edit this with changes.)
 
 * Make sure you've satisfied the prereqs above.
 * Clone this repository to your computer.
