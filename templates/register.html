@@ -1,300 +1,273 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta name="author" content="HackIllinois Staff">
-	<meta name="description" content="A large student-run hackathon at Illinois, coming Spring 2014.">
-	<title>HackIllinois</title>
+{% extends "base/subpage.html" %}
 
-	<link rel="stylesheet" type="text/css" href="css/reset.css">
-	<link rel="stylesheet" type="text/css" href="css/bootstrap/css/bootstrap.min.css">
-	<link rel="stylesheet" type="text/css" href="css/shared.css">
-	<link rel="stylesheet" type="text/css" href="css/register.css">
-	<link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Open+Sans:400,700">
-	<link rel="icon" type="image/ico" href="favicon.ico"/>
+{% block subpage_body %}
 
-	<meta property="og:title" content="HackIllinois"/>
-	<meta property="og:url" content="http://www.hackillinois.org"/>
-	<meta property="og:type" content="website" />
-	<meta property="og:site_name" content="HackIllinois"/>
-	<meta property="og:description" content="36-hour Hackathon at the University of Illinois at Urbana-Champaign. April 11-13, 2014." />
-	<meta property="og:image" content="http://www.hackillinois.org/img/og_logo.jpg"/>
+<style>
+/*!
+Pure v0.3.0
+Copyright 2013 Yahoo! Inc. All rights reserved.
+Licensed under the BSD License.
+https://github.com/yui/pure/blob/master/LICENSE.md
+*/
+.pure-form input[type=text],.pure-form input[type=password],.pure-form input[type=email],.pure-form input[type=url],.pure-form input[type=date],.pure-form input[type=month],.pure-form input[type=time],.pure-form input[type=datetime],.pure-form input[type=datetime-local],.pure-form input[type=week],.pure-form input[type=number],.pure-form input[type=search],.pure-form input[type=tel],.pure-form input[type=color],.pure-form select,.pure-form textarea{padding:.5em .6em;display:inline-block;border:1px solid #ccc;font-size:.8em;box-shadow:inset 0 1px 3px #ddd;border-radius:4px;-webkit-transition:.3s linear border;-moz-transition:.3s linear border;-ms-transition:.3s linear border;-o-transition:.3s linear border;transition:.3s linear border;-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box}.pure-form input[type=text]:focus,.pure-form input[type=password]:focus,.pure-form input[type=email]:focus,.pure-form input[type=url]:focus,.pure-form input[type=date]:focus,.pure-form input[type=month]:focus,.pure-form input[type=time]:focus,.pure-form input[type=datetime]:focus,.pure-form input[type=datetime-local]:focus,.pure-form input[type=week]:focus,.pure-form input[type=number]:focus,.pure-form input[type=search]:focus,.pure-form input[type=tel]:focus,.pure-form input[type=color]:focus,.pure-form select:focus,.pure-form textarea:focus{outline:0;outline:thin dotted \9;border-color:#129FEA}.pure-form input[type=file]:focus,.pure-form input[type=radio]:focus,.pure-form input[type=checkbox]:focus{outline:thin dotted #333;outline:1px auto #129FEA}.pure-form .pure-checkbox,.pure-form .pure-radio{margin:.5em 0;display:block}.pure-form input[type=text][disabled],.pure-form input[type=password][disabled],.pure-form input[type=email][disabled],.pure-form input[type=url][disabled],.pure-form input[type=date][disabled],.pure-form input[type=month][disabled],.pure-form input[type=time][disabled],.pure-form input[type=datetime][disabled],.pure-form input[type=datetime-local][disabled],.pure-form input[type=week][disabled],.pure-form input[type=number][disabled],.pure-form input[type=search][disabled],.pure-form input[type=tel][disabled],.pure-form input[type=color][disabled],.pure-form select[disabled],.pure-form textarea[disabled]{cursor:not-allowed;background-color:#eaeded;color:#cad2d3}.pure-form input[readonly],.pure-form select[readonly],.pure-form textarea[readonly]{background:#eee;color:#777;border-color:#ccc}.pure-form input:focus:invalid,.pure-form textarea:focus:invalid,.pure-form select:focus:invalid{color:#b94a48;border:1px solid #ee5f5b}.pure-form input:focus:invalid:focus,.pure-form textarea:focus:invalid:focus,.pure-form select:focus:invalid:focus{border-color:#e9322d}.pure-form input[type=file]:focus:invalid:focus,.pure-form input[type=radio]:focus:invalid:focus,.pure-form input[type=checkbox]:focus:invalid:focus{outline-color:#e9322d}.pure-form select{border:1px solid #ccc;background-color:#fff}.pure-form select[multiple]{height:auto}.pure-form label{margin:.5em 0 .2em;font-size:90%}.pure-form fieldset{margin:0;padding:.35em 0 .75em;border:0}.pure-form legend{display:block;width:100%;padding:.3em 0;margin-bottom:.3em;font-size:125%;color:#333;border-bottom:1px solid #e5e5e5}.pure-form-stacked input[type=text],.pure-form-stacked input[type=password],.pure-form-stacked input[type=email],.pure-form-stacked input[type=url],.pure-form-stacked input[type=date],.pure-form-stacked input[type=month],.pure-form-stacked input[type=time],.pure-form-stacked input[type=datetime],.pure-form-stacked input[type=datetime-local],.pure-form-stacked input[type=week],.pure-form-stacked input[type=number],.pure-form-stacked input[type=search],.pure-form-stacked input[type=tel],.pure-form-stacked input[type=color],.pure-form-stacked select,.pure-form-stacked label,.pure-form-stacked textarea{display:block;margin:.25em 0}.pure-form-aligned input,.pure-form-aligned textarea,.pure-form-aligned select,.pure-form-aligned .pure-help-inline,.pure-form-message-inline{display:inline-block;*display:inline;*zoom:1;vertical-align:middle}.pure-form-aligned .pure-control-group{margin-bottom:.5em}.pure-form-aligned .pure-control-group label{text-align:right;display:inline-block;vertical-align:middle;width:10em;margin:0 1em 0 0}.pure-form-aligned .pure-controls{margin:1.5em 0 0 10em}.pure-form input.pure-input-rounded,.pure-form .pure-input-rounded{border-radius:2em;padding:.5em 1em}.pure-form .pure-group fieldset{margin-bottom:10px}.pure-form .pure-group input{display:block;padding:10px;margin:0;border-radius:0;position:relative;top:-1px}.pure-form .pure-group input:focus{z-index:2}.pure-form .pure-group input:first-child{top:1px;border-radius:4px 4px 0 0}.pure-form .pure-group input:last-child{top:-2px;border-radius:0 0 4px 4px}.pure-form .pure-group button{margin:.35em 0}.pure-form .pure-input-1{width:100%}.pure-form .pure-input-2-3{width:66%}.pure-form .pure-input-1-2{width:50%}.pure-form .pure-input-1-3{width:33%}.pure-form .pure-input-1-4{width:25%}.pure-form .pure-help-inline,.pure-form-message-inline{display:inline-block;padding-left:.3em;color:#666;vertical-align:middle;font-size:90%}.pure-form-message{display:block;color:#666;font-size:90%}@media only screen and (max-width :480px){.pure-form button[type=submit]{margin:.7em 0 0}.pure-form input[type=text],.pure-form input[type=password],.pure-form input[type=email],.pure-form input[type=url],.pure-form input[type=date],.pure-form input[type=month],.pure-form input[type=time],.pure-form input[type=datetime],.pure-form input[type=datetime-local],.pure-form input[type=week],.pure-form input[type=number],.pure-form input[type=search],.pure-form input[type=tel],.pure-form input[type=color],.pure-form label{margin-bottom:.3em;display:block}.pure-group input[type=text],.pure-group input[type=password],.pure-group input[type=email],.pure-group input[type=url],.pure-group input[type=date],.pure-group input[type=month],.pure-group input[type=time],.pure-group input[type=datetime],.pure-group input[type=datetime-local],.pure-group input[type=week],.pure-group input[type=number],.pure-group input[type=search],.pure-group input[type=tel],.pure-group input[type=color]{margin-bottom:0}.pure-form-aligned .pure-control-group label{margin-bottom:.3em;text-align:left;display:block;width:100%}.pure-form-aligned .pure-controls{margin:1.5em 0 0}.pure-form .pure-help-inline,.pure-form-message-inline,.pure-form-message{display:block;font-size:80%;padding:.2em 0 .8em}}
+	.new-form-field {margin-top: 20px;} .label-checkbox {display: inline; padding-left: 10px; letter-spacing: 0;} .label-checkbox:first-child { padding-left: 0;} 
+	.textarea-experience, .textarea-team {width:70%;}
+	input.link-input {width:40%;}
+</style>
 
-	<!-- Google Analytics Tracking -->
-	<script>
-	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-	})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+<div class="wrapper-content sticky-footer-wrapper-fix">
+    <div class="grid-scaffold">
+        <div class="pure-g-r">
+            <div class="pure-u-1 section-divide">
+                <header class="section-title section-text">
+                    <span>Register</span>
+                </header>
+            </div>
+        </div>
+	            <form class="pure-form pure-g-r" style="width:100%;">
+	            	<div class="pure-u-1-5">
+	            		<label class="form-label" for="name">Name</label>
+	            	</div>
+	            	<div class="pure-u-4-5">
+	            		<!--Empty Grid Column for alignment-->
+	            	</div>
+					<div class="pure-u-1-2">
+						<input id="nameFirst" class="pure-input-2-3" name="nameFirst" type="text" placeholder="First Name" required="required">
+	        		</div>
+	        		<div class="pure-u-1-2">
+						<input id="nameLast" class="pure-input-2-3" name="nameLast" type="text" placeholder="Last Name" required="required">
+	        		</div>
 
-	ga('create', 'UA-46010489-1', 'hackillinois.org');
-	ga('send', 'pageview');
-	</script>
-</head>
+	        		<div class="pure-u-1-5 new-form-field">
+	            		<label class="form-label" for="name">E-mail</label>
+	            	</div>
+	            	<div class="pure-u-4-5">
+	            		<!--Empty Grid Column for alignment-->
+	            	</div>
+					<div class="pure-u-1-2">
+						<input id="email" class="pure-input-2-3" name="email" type="text" placeholder="E-mail" required="required">
+	        		</div>
+	        		<div class="pure-u-1-2">
+	        			<!--Empty Grid Column for alignment-->
+	        		</div>
 
-<body>
-	<img class="constellations" src="img/constellations.png">
+	        		<div class="pure-u-1-5 new-form-field">
+	            		<label class="form-label" for="name">Gender</label>
+	            	</div>
+	            	<div class="pure-u-4-5">
+	            		<!--Empty Grid Column for alignment-->
+	            	</div>
+					<div class="pure-u-1">
+						<label class="label-checkbox" for="option-one" class="pure-checkbox">
+					        <input id="gender-0" type="radio" name="gender" value="Male" checked>
+					        Male
+					    </label>
 
-	<img class="logo-main-svg header img-responsive center-block" src="img/hackillinois_logo.svg">
-	<h2 class="info-text t-centered">April 2014</h2>
+					    <label class="label-checkbox" for="option-two" class="pure-radio">
+					        <input id="gender-1" type="radio" name="gender" value="Female">
+					        Female
+					    </label>
 
-	<div class="col-md-6 col-md-offset-3">
-		<form class="form-horizontal" role="form" method="post">
+					    <label class="label-checkbox" for="option-three" class="pure-radio">
+					        <input id="gender-3" type="radio" name="gender" value="N/A">
+					        I'd rather not disclose
+					    </label>
+	        		</div>
 
-			<!-- Text input-->
-			<div class="form-group">
-				<label class="control-label col-sm-3" for="name">Name</label>
-				<div class="controls col-sm-9">
-					<div class="row">
-						<div class="col-xs-6">
-							<input id="nameFirst" name="nameFirst" type="text" placeholder="First Name" class="form-control" required="required">
-						</div>
-						<div class="col-xs-6">
-							<input id="nameLast" name="nameLast" type="text" placeholder="Last Name" class="form-control" required="required">
-						</div>
-					</div>
-				</div>
-			</div>
+	        		<div class="pure-u-1-5 new-form-field">
+	            		<label class="form-label" for="name">School</label>
+	            	</div>
+	            	<div class="pure-u-4-5">
+	            		<!--Empty Grid Column for alignment-->
+	            	</div>
+	        		<div class="pure-u-1">
+	        			<select id="school" name="school" class="form-control" required="required" onchange="CheckOther(this.value);">
+							<option selected="">Select one...</option>
+							<option>University of Illinois at Urbana-Champaign</option>
+							<option>Massachusetts Institute of Technology</option>
+							<option>Stanford University</option>
+							<option>University of California, Berkeley</option>
+							<option>California Institute of Technology</option>
+							<option>Georgia Institute of Technology</option>
+							<option>Carnegie Mellon University</option>
+							<option>Cornell University</option>
+							<option>University of Michigan, Ann Arbor</option>
+							<option>Purdue University, West Lafayette</option>
+							<option>University of Texas at Austin</option>
+							<option>University of Wisconsin, Madison</option>
+							<option>Princeton University</option>
+							<option>University of Washington</option>
+							<option>Other</option>
+						</select>
+	        		</div>
 
-			<!-- Text input-->
-			<div class="form-group">
-				<label class="control-label col-sm-3" for="email">Email</label>
-				<div class="controls col-sm-9">
-					<input id="email" name="email" type="email" placeholder="Email" class="form-control" required="required">
-				</div>
-			</div>
+	        		<div class="pure-u-1-5 new-form-field">
+	            		<label class="form-label" for="name">Year in School</label>
+	            	</div>
+	            	<div class="pure-u-4-5">
+	            		<!--Empty Grid Column for alignment-->
+	            	</div>
+					<div class="pure-u-1">
+						<label class="label-checkbox" for="year-0" class="pure-checkbox">
+					        <input type="radio" name="year" id="year-0" value="Freshman" required="required">
+					        Freshman
+					    </label>
 
-			<!-- Multiple Radios (inline) -->
-			<div class="form-group">
-				<label class="control-label col-sm-3" for="gender">Gender</label>
-				<div class="controls col-sm-9">
-					<label class="radio-inline" for="gender-0">
-						<input type="radio" name="gender" id="gender-0" value="Male" required="required">
-						Male
-					</label>
-					<label class="radio-inline" for="gender-1">
-						<input type="radio" name="gender" id="gender-1" value="Female" required="required">
-						Female
-					</label>
-					<label class="radio-inline" for="gender-2">
-						<input type="radio" name="gender" id="gender-2" value="NA" required="required">
-						I choose not to specify
-					</label>
-				</div>
-			</div>
+					    <label class="label-checkbox" for="year-1" class="pure-radio">
+					        <input type="radio" name="year" id="year-1" value="Sophomore" required="required">
+					        Sophomore
+					    </label>
 
-			<!-- Select Basic -->
-			<div class="form-group">
-				<label class="control-label col-sm-3" for="school">School</label>
-				<div class="controls col-sm-9">
-					<select id="school" name="school" class="form-control" required="required" onchange="CheckOther(this.value);">
-						<option selected>Select one...</option>
-						<option>University of Illinois--Urbana-Champaign</option>
-						<option>Massachusetts Institute of Technology</option>
-						<option>Stanford University</option>
-						<option>University of California--Berkeley</option>
-						<option>California Institute of Technology</option>
-						<option>Georgia Institute of Technology</option>
-						<option>Carnegie Mellon University</option>
-						<option>Cornell University</option>
-						<option>University of Michigan--Ann Arbor</option>
-						<option>Purdue University--West Lafayette</option>
-						<option>University of Texas--Austin</option>
-						<option>University of Wisconsin--Madison</option>
-						<option>Princeton University</option>
-						<option>University of Washington</option>
-						<option>Other</option>
-					</select>
-				</div>
-			</div>
+					    <label class="label-checkbox" for="year-2" class="pure-radio">
+					        <input type="radio" name="year" id="year-2" value="Junior" required="required">
+					        Junior
+					    </label>
+					    <label class="label-checkbox" for="year-3" class="pure-radio">
+					        <input type="radio" name="year" id="year-3" value="Senior" required="required">
+					        Senior
+					    </label>
+	        		</div>
 
-			<!-- Text input-->
-			<div id="schoolOtherDiv" class="form-group hidden">
-				<label class="control-label col-sm-3" for="schoolOther">School</label>
-				<div class="controls col-sm-9">
-					<input id="schoolOther" name="schoolOther" type="text" placeholder="Your School" class="form-control">
-				</div>
-			</div>
-
-			<!-- Multiple Radios -->
-			<div class="form-group">
-				<label class="control-label col-sm-3" for="year">Year in School</label>
-				<div class="controls col-sm-9">
-					<label class="radio-inline" for="year-0">
-						<input type="radio" name="year" id="year-0" value="Freshman" required="required">
-						Freshman
-					</label>
-					<label class="radio-inline" for="year-1">
-						<input type="radio" name="year" id="year-1" value="Sophomore" required="required">
-						Sophomore
-					</label>
-					<label class="radio-inline" for="year-2">
-						<input type="radio" name="year" id="year-2" value="Junior" required="required">
-						Junior
-					</label>
-					<label class="radio-inline" for="year-3">
-						<input type="radio" name="year" id="year-3" value="Senior" required="required">
-						Senior
-					</label>
-					<label class="radio-inline" for="year-4">
-						<input type="radio" name="year" id="year-4" value="Grad" required="required">
-						Grad
-					</label>
-					<label class="radio-inline" for="year-5">
-						<input type="radio" name="year" id="year-5" value="Other" required="required">
-						Other
-					</label>
-				</div>
-			</div>
-
-			<!-- Textarea -->
-			<div class="form-group">
-				<label class="control-label col-sm-3" for="experience">Previous Hackathon Experience</label>
-				<div class="controls col-sm-9">
-					<textarea id="experience" name="experience" class="form-control" rows="5"></textarea>
-					<span class="help-block">Have you participated in other hackathons?<br>Won any awards?<br>Done any cool projects?<br>(If not, that’s okay! We’re just curious.)</span>
-				</div>
-			</div>
-
-			<!-- File Button -->
-			<div class="form-group">
-				<label class="control-label col-sm-3" for="resume">Resume</label>
-				<div class="controls col-sm-9">
-					<input id="resume" name="resume" type="file" required="required">
-					<span class="help-block">Please upload your resume.</span>
-				</div>
-			</div>
-
-			<!-- Text input-->
-			<div class="form-group">
-				<label class="control-label col-sm-3" for="linkedin">LinkedIn</label>
-				<div class="controls col-sm-9">
-					<input id="linkedin" name="linkedin" type="url" placeholder="URL of LinkedIn profile" class="form-control">
-				</div>
-			</div>
-
-			<!-- Prepended text-->
-			<div class="form-group">
-				<label class="control-label col-sm-3" for="github">Github Username</label>
-				<div class="controls col-sm-9">
-					<div class="input-group">
-						<span class="input-group-addon">https://github.com/</span>
-						<input id="github" name="github" class="form-control" placeholder="Username" type="text">
+	        		<div class="pure-u-1-5 new-form-field">
+	            		<label class="form-label" for="name">Previous Experience</label>
+	            	</div>
+	            	<div class="pure-u-4-5">
+	            		<!--Empty Grid Column for alignment-->
+	            	</div>
+					<div class="pure-u-1">
+						<textarea id="experience" name="experience" class="form-control textarea-experience" rows="5" placeholder="Other hackathons, any awards, cool projects? Let us know!"></textarea>
 					</div>
 
-				</div>
-			</div>
+					<div class="pure-u-1-5 new-form-field">
+	            		<label class="form-label" for="name">Resume</label>
+	            	</div>
+	            	<div class="pure-u-4-5">
+	            		<!--Empty Grid Column for alignment-->
+	            	</div>
+					<div class="pure-u-1">
+						<input id="resume" name="resume" type="file" required="required">
+					</div>
 
-			<hr>
+					<div class="pure-u-1-5 new-form-field">
+	            		<label class="form-label" for="name">Links</label>
+	            	</div>
+	            	<div class="pure-u-4-5">
+	            		<!--Empty Grid Column for alignment-->
+	            	</div>
+					<div class="pure-u-1">
+						<input id="linkedin" name="linkedin" type="url" placeholder="URL of LinkedIn profile" class="form-control link-input">
+					</div>
+					<div class="pure-u-1">
+						<input id="github" name="github" class="form-control link-input" placeholder="GitHub Username" type="text">
+					</div>
 
-			<!-- Multiple Radios (inline) -->
-			<div class="form-group">
-				<label class="control-label col-sm-3" for="shirt">Shirt Size</label>
-				<div class="controls col-sm-9">
-					<label class="radio-inline" for="shirt-0">
-						<input type="radio" name="shirt" id="shirt-0" value="XS" required="required">
-						XS
-					</label>
-					<label class="radio-inline" for="shirt-1">
-						<input type="radio" name="shirt" id="shirt-1" value="S" required="required">
-						S
-					</label>
-					<label class="radio-inline" for="shirt-2">
-						<input type="radio" name="shirt" id="shirt-2" value="M" required="required">
-						M
-					</label>
-					<label class="radio-inline" for="shirt-3">
-						<input type="radio" name="shirt" id="shirt-3" value="L" required="required">
-						L
-					</label>
-					<label class="radio-inline" for="shirt-4">
-						<input type="radio" name="shirt" id="shirt-4" value="XL" required="required">
-						XL
-					</label>
-					<label class="radio-inline" for="shirt-5">
-						<input type="radio" name="shirt" id="shirt-5" value="XXL" required="required">
-						XXL
-					</label>
-				</div>
-			</div>
+					<div class="pure-u-1-5 new-form-field">
+	            		<label class="form-label" for="name"></label>
+	            	</div>
+	            	<div class="pure-u-4-5">
+	            		<!--Empty Grid Column for alignment-->
+	            	</div>
+	            		<div class="pure-u-1">
+	            			<label class="form-label" for="name">T-Shirt Size</label>
+	            		</div>
+						<div class="pure-u-1">
+							<label class="radio-inline" for="shirt-0">
+								<input type="radio" name="shirt" id="shirt-0" class="label-checkbox" value="XS" required="required">
+								XS
+							</label>
+							<label class="radio-inline" for="shirt-1">
+								<input type="radio" name="shirt" id="shirt-1" class="label-checkbox" value="S" required="required">
+								S
+							</label>
+							<label class="radio-inline" for="shirt-2">
+								<input type="radio" name="shirt" id="shirt-2" class="label-checkbox" value="M" required="required">
+								M
+							</label>
+							<label class="radio-inline" for="shirt-3">
+								<input type="radio" name="shirt" id="shirt-3" class="label-checkbox" value="L" required="required">
+								L
+							</label>
+							<label class="radio-inline" for="shirt-4">
+								<input type="radio" name="shirt" id="shirt-4" class="label-checkbox" value="XL" required="required">
+								XL
+							</label>
+							<label class="radio-inline" for="shirt-5">
+								<input type="radio" name="shirt" id="shirt-5" class="label-checkbox" value="XXL" required="required">
+								XXL
+							</label>
+						</div>
 
-			<!-- Multiple Radios (inline) -->
-			<div class="form-group">
-				<label class="control-label col-sm-3" for="food">Dietary Restrictions</label>
-				<div class="controls col-sm-9">
-					<label class="radio-inline" for="food-0">
-						<input type="radio" name="food" id="food-0" value="None" required="required">
-						None
-					</label>
-					<label class="radio-inline" for="food-1">
-						<input type="radio" name="food" id="food-1" value="Vegetarian" required="required">
-						Vegetarian
-					</label>
-					<label class="radio-inline" for="food-2">
-						<input type="radio" name="food" id="food-2" value="Vegan" required="required">
-						Vegan
-					</label>
-					<label class="radio-inline" for="food-3">
-						<input type="radio" name="food" id="food-3" value="Gluten Free" required="required">
-						Gluten Free
-					</label>
-				</div>
-			</div>
+						<div class="pure-u-1">
+	            			<label class="form-label" for="name">Dietary Restrictions</label>
+	            		</div>
+						<div class="pure-u-1">
+							<label class="radio-inline" for="food-0">
+								<input type="radio" name="food" id="food-0" class="label-checkbox" value="None" required="required">
+								None
+							</label>
+							<label class="radio-inline" for="food-1">
+								<input type="radio" name="food" id="food-1" class="label-checkbox" value="Vegetarian" required="required">
+								Vegetarian
+							</label>
+							<label class="radio-inline" for="food-2">
+								<input type="radio" name="food" id="food-2" class="label-checkbox" value="Vegan" required="required">
+								Vegan
+							</label>
+							<label class="radio-inline" for="food-3">
+								<input type="radio" name="food" id="food-3" class="label-checkbox" value="Gluten Free" required="required">
+								Gluten Free
+							</label>
+						</div>
+						<div class="pure-u-1">
+	            			<label class="form-label" for="name">Dietary Restrictions</label>
+	            		</div>
+						<div class="pure-u-1">
+							<textarea id="team" name="team" class="form-control textarea-team" rows="3" placeholder="Team members' email addresses (optional)"></textarea>
+						</div>
 
-			<hr>
+						<div class="pure-u-1-5 new-form-field">
+	            			<label class="form-label" for="name"></label>
+	            		</div>
+	            		<div class="pure-u-4-5">
+	            			<!--Empty Grid Column for alignment-->
+	            		</div>
+	            		<div class="pure-u-1">
+							<label class="checkbox" for="recruiters-0">
+								<input type="checkbox" name="recruiters" id="recruiters-0" value="True">
+								Let us share this information with recruiters. (Optional)
+							</label>
+						</div>
 
-			<!-- Textarea -->
-			<div class="form-group">
-				<label class="control-label col-sm-3" for="team">Team</label>
-				<div class="controls col-sm-9">
-					<textarea id="team" name="team" class="form-control" rows="3"></textarea>
-					<span class="help-block">Please put down the emails of your potential team members (excluding yourself).</span>
-				</div>
-			</div>
+						<div class="pure-u-1-5 new-form-field">
+	            			<label class="form-label" for="name"></label>
+	            		</div>
+	            		<div class="pure-u-4-5">
+	            			<!--Empty Grid Column for alignment-->
+	            		</div>
+	            		<div class="pure-u-1">
+							<label class="checkbox" for="picture-0">
+								<input type="checkbox" name="picture" id="picture-0" value="True" required="required">
+								I agree that my picture will be taken.
+							</label>
+						</div>
 
-			<hr>
+						<div class="pure-u-1-5 new-form-field">
+	            			<label class="form-label" for="name"></label>
+	            		</div>
+	            		<div class="pure-u-4-5">
+	            			<!--Empty Grid Column for alignment-->
+	            		</div>
+	            		<div class="pure-u-1">
+							<label class="checkbox" for="termsOfService-0">
+								<input type="checkbox" name="termsOfService" id="termsOfService-0" value="True" required="required">
+								By signing up, I accept the Terms of Service
+							</label>
+						</div>
+						
+						<button type="submit" class="pure-button pure-button-primary">Submit</button>
+					</form>
 
-			<!-- Multiple Checkboxes (inline) -->
-			<div class="form-group">
-				<label class="control-label col-sm-3 sr-only" for="recruiters">Share with recruiters</label>
-				<div class="controls col-sm-9">
-					<label class="checkbox" for="recruiters-0">
-						<input type="checkbox" name="recruiters" id="recruiters-0" value="True">
-						Let us share this information with recruiters. (Optional)
-					</label>
-				</div>
-			</div>
+    </div>
+</div>
 
-			<!-- Multiple Checkboxes (inline) -->
-			<div class="form-group">
-				<label class="control-label col-sm-3 sr-only" for="picture">Allow picture to be taken</label>
-				<div class="controls col-sm-9">
-					<label class="checkbox" for="picture-0">
-						<input type="checkbox" name="picture" id="picture-0" value="True" required="required">
-						I agree that my picture will be taken.
-					</label>
-				</div>
-			</div>
-
-			<!-- Multiple Checkboxes (inline) -->
-			<div class="form-group">
-				<label class="control-label col-sm-3 sr-only" for="termsOfService">Agree to terms of service</label>
-				<div class="controls col-sm-9">
-					<label class="checkbox" for="termsOfService-0">
-						<input type="checkbox" name="termsOfService" id="termsOfService-0" value="True" required="required">
-						By signing up, I accept the Terms of Service
-					</label>
-				</div>
-			</div>
-
-			<button type="submit" class="btn btn-primary btn-lg pull-left footer">Submit</button>
-			<!-- <button type="submit" class="btn btn-primary btn-lg btn-block">Submit</button> -->
-		</form>
-	</div>
-
-	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-	<script src="js/bootstrap.min.js"></script>
-	<script src="js/register.js"></script>
-</body>
-</html>
+{% endblock subpage_body %}
