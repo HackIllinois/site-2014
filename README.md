@@ -27,4 +27,4 @@ Google has a process called [Push-to-Deploy](https://developers.google.com/appen
 * Copy the Git repo URL, and run `git remote add REMOTE_NAME PASTE_THE_URL_HERE` in the root directory of the Git repository. Replace `REMOTE_NAME` with either `prod` or `dev` depending on which one you're pushing.
 * Running `git push prod master` pushes the master branch to prod. By the same token, running `git push dev master` pushes the master branch to dev. Running `git push` with no arguments still pushes to our Bitbucket, which is desired.
 
-*When you push something, **especially prod**, make sure to commit it to the Bitbucket repo too so other people can push without reverting your changes.*
+**When you push something, *especially prod*, make sure to commit it to the Bitbucket repo too so other people can push without reverting your changes.**
