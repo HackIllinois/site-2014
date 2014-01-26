@@ -13,3 +13,18 @@ This isn't meant to be an extensive guide, just a quick help for getting setup. 
     * Possibly only relevant to OS X: If this is your first time opening the launcher, go ahead and create the symlinks.
 * Click and drag the website folder to the App Engine Launcher. It should autodetect the app and put it in the list with the name ``hackillinois``.
 * Select the app and click Run. Once the web server has spun up (~10 seconds), you should have the website running on localhost, probably on port 8080 (http://localhost:8080). You can find the administrative console on port 8000.
+
+Git Deploy Setup Guide
+============
+**(Note: You obviously must have push permissions to do this.)**
+
+Google has a process called [Push-to-Deploy](https://developers.google.com/appengine/docs/push-to-deploy) that allows you to add App Engine as a remote branch of the repo. It's a little buggy but makes managing dev/prod easy.
+
+***Setup***:
+
+* Follow the instructions [here](https://developers.google.com/appengine/docs/push-to-deploy) until you have the Git repo URL. There should already be a repository for both prod and dev.
+* Following the above instructions, put the given authentication line in your ~/.netrc file. (Instructions for Windows are on the page.)
+* Copy the Git repo URL, and run `git remote add REMOTE_NAME PASTE_THE_URL_HERE` in the root directory of the Git repository. Replace `REMOTE_NAME` with either `prod` or `dev`depending on which one you're pushing. The rest of this setup assumes you're pushing `prod`.
+* Running `git push prod master` pushes the master branch to prod. Running `git push` will still push to our Bitbucket, which is desired.
+
+***When you push something, **especially prod**, make sure to commit it to the Bitbucket repo too so other people can push without reverting your changes.***
