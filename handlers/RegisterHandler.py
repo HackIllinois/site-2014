@@ -22,7 +22,7 @@ class RegisterHandler(MainHandler.Handler):
         x['standing'] = cgi.escape(self.request.get('year'))
 
         x['experience'] = cgi.escape(self.request.get('experience'))
-        # x['resume'] = self.request.get('resume')
+        x['resume'] = str(self.request.get('resume'))
         x['linkedin'] = cgi.escape(self.request.get('linkedin'))
         x['github'] = cgi.escape(self.request.get('github'))
 
