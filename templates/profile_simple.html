@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+    <p>Hello {{ data.username }}! <a href="{{ data.logoutUrl }}">sign out</a></p>
+
+    <form method="post">
+        First name: <input type="text" name="firstname" value="{{ data.nameFirst }}" onclick="this.select();"><br>
+        Last name: <input type="text" name="lastname" value="{{ data.nameLast }}" onclick="this.select();"><br>
+        Email: <input type="email" name="email" value="{{ data.email }}" onclick="this.select();"><br>
+
+        Gender:
+        {% for g in data.genders %}
+        <input type="radio" name="gender" value="{{ g.name }}" {% if g.checked %}checked{% endif %}>{{ g.name }}
+        {% endfor %}
+        <br>
+
+        School:
+        <select name="school">
+            <option>Select one...</option>
+            {% for s in data.schools %}
+            <option {% if s.selected %}selected=""{% endif %}>{{ s.name }}</option>
+            {% endfor %}
+        </select><br>
+
+        Year in School:
+        {% for y in data.years %}
+        <input type="radio" name="year" value="{{ y.name }}" {% if y.checked %}checked{% endif %}>{{ y.name }}
+        {% endfor %}
+        <br>
+
+        Previous Experience:<br>
+        <textarea name="experience" rows="5">{{ data.experience }}</textarea><br>
+
+        Resume: <input type="file" name="resume"><br>
+
+        Links:<br>
+        <input type="url" name="linkedin" value="{{ data.linkedin }}" onclick="this.select();"><br>
+        <input type="text" name="github" value="{{ data.github }}" onclick="this.select();"><br>
+
+        Shirt Size:
+        {% for s in data.shirts %}
+        <input type="radio" name="shirt" value="{{ s.name }}" {% if s.checked %}checked{% endif %}>{{ s.name }}
+        {% endfor %}
+        <br>
+
+        Dietary Restrictions:
+        {% for f in data.foods %}
+        <input type="radio" name="food" value="{{ f.name }}" {% if f.checked %}checked{% endif %}>{{ f.name }}
+        {% endfor %}
+        <br>
+
+        Team:<br>
+        <textarea name="team" rows="3">{{ data.team }}</textarea><br>
+
+        <input type="checkbox" name="recruiters" value="True" {% if data.recruiters %}checked{% endif %}>Let us share this information with recruiters. (Optional)<br>
+        <input type="checkbox" name="picture" value="True" {% if data.picture %}checked{% endif %}>I agree that my picture will be taken.<br>
+        <input type="checkbox" name="termsOfService" value="True" {% if data.termsOfService %}checked{% endif %}>By signing up, I accept the Terms of Service<br>
+    </form>
+</body>
+</html>
