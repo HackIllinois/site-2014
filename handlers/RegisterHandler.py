@@ -16,8 +16,13 @@ class RegisterHandler(MainHandler.Handler):
             if db_user is not None:
                 return self.redirect('/profile')
             else:
-                self.render("register.html", data={'email':user.email()})
+                data = {}
+                data['username'] = user.nickname()
+                data['logoutUrl'] = users.create_logout_url('/register')
+                data['email'] = user.email()
+                self.render("register.html", data=data)
         else:
+            # This should never happen
             self.render("register.html", data={'email':None})
 
     def post(self):
