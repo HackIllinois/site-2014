@@ -138,14 +138,14 @@ https://github.com/yui/pure/blob/master/LICENSE.md
 						<textarea id="experience" name="experience" class="form-control textarea-experience" rows="5" placeholder="Other hackathons, any awards, cool projects? Let us know!"></textarea>
 					</div>
 
-					<div class="pure-u-1-5 new-form-field">
-	            		<label class="form-label" for="name">Resume</label>
+					<div class="pure-u-2-5 new-form-field">
+	            		<label class="form-label" for="name" id="resume_message">Resume</label>
 	            	</div>
 	            	<div class="pure-u-4-5">
 	            		<!--Empty Grid Column for alignment-->
 	            	</div>
 					<div class="pure-u-1">
-						<input id="resume" name="resume" type="file" required="required">
+						<input id="resume" name="resume" type="file" accept=".pdf" onchange="CheckFile(this);" required="required">
 					</div>
 
 					<div class="pure-u-1-5 new-form-field">
@@ -267,5 +267,6 @@ https://github.com/yui/pure/blob/master/LICENSE.md
 
     </div>
 </div>
+<script src="js/register.js"></script>
 
 {% endblock subpage_body %}
