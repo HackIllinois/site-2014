@@ -9,4 +9,4 @@ class AdminHandler(MainHandler.Handler):
             name = user.nickname()
         else:
             name = 'ERROR'
-        self.render('admin.html', name=name)
+        self.render('admin.html', name=name, logout=users.create_logout_url('/'))

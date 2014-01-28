@@ -44,6 +44,10 @@ handlers:
   static_files: assets/docs/special_sponsorship/HackIllinois VC.pdf
   upload: assets/docs/special_sponsorship/HackIllinois VC\.pdf
 
+- url: /register*
+  script: main.app
+  login: required
+
 - url: /profile*
   script: main.app
   login: required

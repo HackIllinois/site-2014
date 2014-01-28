@@ -2,46 +2,64 @@ import MainHandler
 import cgi
 import db.models as models
 import logging
+from google.appengine.api import users
 
 class RegisterHandler(MainHandler.Handler):
     """ Handler for registration page.
     This does not include the email registration we have up now."""
     def get(self):
-        self.render("register.html")
+        # TODO: Check if user is already registered and redirect to /profile
+
+        user = users.get_current_user()
+        if user:
+            db_user = models.search_database(models.Attendee, {'userId':user.user_id()}).get()
+            if db_user is not None:
+                return self.redirect('/profile')
+            else:
+                self.render("register.html", data={'email':user.email()})
+        else:
+            self.render("register.html", data={'email':None})
 
     def post(self):
-        x = {}
+        user = users.get_current_user()
+        if user:
+            x = {}
 
-        x['nameFirst'] = cgi.escape(self.request.get('nameFirst'))
-        x['nameLast'] = cgi.escape(self.request.get('nameLast'))
-        x['email'] = cgi.escape(self.request.get('email'))
-        x['gender'] = cgi.escape(self.request.get('gender'))
-        x['school'] = cgi.escape(self.request.get('school'))
-        if x['school'] == 'Other':
-            x['school'] = cgi.escape(self.request.get('schoolOther'))
-        x['standing'] = cgi.escape(self.request.get('year'))
+            # https://developers.google.com/appengine/docs/python/users/userclass
+            x['userNickname'] = user.nickname()
+            x['userEmail'] = user.email()
+            x['userId'] = user.user_id()
+            x['userFederatedIdentity'] = user.federated_identity()
+            x['userFederatedProvider'] = user.federated_provider()
 
-        x['experience'] = cgi.escape(self.request.get('experience'))
-        x['resume'] = str(self.request.get('resume'))
-        x['linkedin'] = cgi.escape(self.request.get('linkedin'))
-        x['github'] = cgi.escape(self.request.get('github'))
+            x['nameFirst'] = self.request.get('nameFirst')
+            x['nameLast'] = self.request.get('nameLast')
+            x['email'] = self.request.get('email')
+            x['gender'] = self.request.get('gender')
+            x['school'] = self.request.get('school')
+            if x['school'] == 'Other':
+                x['school'] = self.request.get('schoolOther')
+            x['standing'] = self.request.get('year')
 
-        x['shirt'] = cgi.escape(self.request.get('shirt'))
-        x['food'] = cgi.escape(self.request.get('food'))
+            x['experience'] = self.request.get('experience')
+            x['resume'] = str(self.request.get('resume'))
+            x['linkedin'] = self.request.get('linkedin')
+            x['github'] = self.request.get('github')
 
-        x['teamMembers'] = cgi.escape(self.request.get('team'))
+            x['shirt'] = self.request.get('shirt')
+            x['food'] = self.request.get('food')
 
-        r = cgi.escape(self.request.get('recruiters'))
-        if r == 'True':
-            x['recruiters'] = True
-        p = cgi.escape(self.request.get('picture'))
-        if p == 'True':
-            x['picture'] = True
-        t = cgi.escape(self.request.get('termsOfService'))
-        if t == 'True':
-            x['termsOfService'] = True
+            x['teamMembers'] = self.request.get('team')
 
-        models.add(models.Attendee, x)
-        logging.info('Signup with email %s', x['email'])
+            x['recruiters'] = (self.request.get('recruiters') == 'True')
+            x['picture'] = (self.request.get('picture') == 'True')
+            x['termsOfService'] = (self.request.get('termsOfService') == 'True')
 
-        self.render("registration_complete.html")
+            models.add(models.Attendee, x)
+            logging.info('Signup with email %s', x['email'])
+
+            self.render("registration_complete.html")
+        else:
+            # User not logged in (shouldn't happen)
+            # TODO: redirect to error handler
+            self.write('ERROR')

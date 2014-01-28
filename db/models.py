@@ -213,6 +213,13 @@ def search_database(cls, search, perfect_match=True):
     return cls.gql(q[:-len(ao)])
 
 class Attendee(ndb.Model):
+    # For user object look at https://developers.google.com/appengine/docs/python/users/userclass
+    userNickname = ndb.StringProperty()
+    userEmail = ndb.StringProperty()
+    userId = ndb.StringProperty()
+    userFederatedIdentity = ndb.StringProperty()
+    userFederatedProvider = ndb.StringProperty()
+
     nameFirst = ndb.StringProperty(required=True)
     nameLast = ndb.StringProperty(required=True)
     email = ndb.StringProperty(required=True)
