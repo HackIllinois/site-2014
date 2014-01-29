@@ -3,12 +3,17 @@ import cgi
 import db.models as models
 import logging
 from google.appengine.api import users
+from google.appengine.ext import blobstore
+from google.appengine.ext.webapp import blobstore_handlers
 
-class RegisterHandler(MainHandler.Handler):
+
+class RegisterHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandler):
     """ Handler for registration page.
     This does not include the email registration we have up now."""
     def get(self):
-        # TODO: Check if user is already registered and redirect to /profile
+        data = {}
+
+        upload_url_rpc = blobstore.create_upload_url_async('/register', gs_bucket_name='hackillinois')
 
         user = users.get_current_user()
         if user:
@@ -16,14 +21,16 @@ class RegisterHandler(MainHandler.Handler):
             if db_user is not None:
                 return self.redirect('/profile')
             else:
-                data = {}
                 data['username'] = user.nickname()
                 data['logoutUrl'] = users.create_logout_url('/register')
                 data['email'] = user.email()
-                self.render("register.html", data=data)
+
         else:
             # This should never happen
-            self.render("register.html", data={'email':None})
+            data['email'] = None
+
+        data['upload_url'] = upload_url_rpc.get_result()
+        self.render("register.html", data=data)
 
     def post(self):
         user = users.get_current_user()
@@ -47,9 +54,11 @@ class RegisterHandler(MainHandler.Handler):
             x['standing'] = self.request.get('year')
 
             x['experience'] = self.request.get('experience')
-            x['resume'] = str(self.request.get('resume'))
             x['linkedin'] = self.request.get('linkedin')
             x['github'] = self.request.get('github')
+
+            file_info = self.get_file_infos(field_name='resume')[0]
+            x['resumePath'] = file_info.gs_object_name
 
             x['shirt'] = self.request.get('shirt')
             x['food'] = self.request.get('food')
@@ -63,8 +72,13 @@ class RegisterHandler(MainHandler.Handler):
             models.add(models.Attendee, x)
             logging.info('Signup with email %s', x['email'])
 
-            self.render("registration_complete.html")
+            return self.redirect('/register/complete')
         else:
             # User not logged in (shouldn't happen)
             # TODO: redirect to error handler
             self.write('ERROR')
+
+
+class RegisterCompleteHandler(MainHandler.Handler):
+    def get(self):
+        self.render("registration_complete.html")

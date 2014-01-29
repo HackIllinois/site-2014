@@ -120,12 +120,10 @@ https://github.com/yui/pure/blob/master/LICENSE.md
                 </header>
             </div>
         </div>
-     
-	            <form class="pure-form pure-g-r" style="width:100%;">
-	            	<div class="pure-u-1-5">
-                    	<p id="personal">Personal Information</p>
-                	</div>
-                	<br>
+
+        <p>You are logged in as {{ data.username }}. Click <a href="{{ data.logoutUrl }}">here</a> to register with a different account.</p><br>
+
+	            <form class="pure-form pure-g-r" style="width:100%;" method="post" action="{{ data.upload_url }}" enctype="multipart/form-data">
 	            	<div class="pure-u-1-5">
 	            		<label class="form-label" for="name">Name</label>
 	            	</div>
@@ -146,7 +144,7 @@ https://github.com/yui/pure/blob/master/LICENSE.md
 	            		<!--Empty Grid Column for alignment-->
 	            	</div>
 					<div class="pure-u-1-2">
-						<input id="email" class="pure-input-2-3" name="email" type="text" placeholder="E-mail" required="required">
+						<input id="email" class="pure-input-2-3" name="email" type="text" placeholder="E-mail" required="required" {% if data.email %}value="{{ data.email }}" onclick="this.select();"{% endif %}>
 	        		</div>
 	        		<div class="pure-u-1-2">
 	        			<!--Empty Grid Column for alignment-->
@@ -239,14 +237,14 @@ https://github.com/yui/pure/blob/master/LICENSE.md
 						<textarea id="experience" name="experience" class="form-control textarea-experience" rows="5" placeholder="Other hackathons, any awards, cool projects? Let us know!"></textarea>
 					</div>
 
-					<div class="pure-u-1-5 new-form-field">
-	            		<label class="form-label" for="name">Resume</label>
+					<div class="pure-u-2-5 new-form-field">
+	            		<label class="form-label" for="name" id="resume_message">Resume</label>
 	            	</div>
 	            	<div class="pure-u-4-5">
 	            		<!--Empty Grid Column for alignment-->
 	            	</div>
 					<div class="pure-u-1">
-						<input id="resume" name="resume" type="file" required="required">
+						<input id="resume" name="resume" type="file" accept=".pdf" onchange="CheckFile(this);" required="required">
 					</div>
 
 					<div class="pure-u-1-5 new-form-field">
@@ -298,7 +296,7 @@ https://github.com/yui/pure/blob/master/LICENSE.md
 							</label>
 						</div>
 
-						<div class="pure-u-1">
+						<div class="pure-u-1 new-form-field">
 	            			<label class="form-label" for="name">Dietary Restrictions</label>
 	            		</div>
 						<div class="pure-u-1">
@@ -319,10 +317,8 @@ https://github.com/yui/pure/blob/master/LICENSE.md
 								Gluten Free
 							</label>
 						</div>
-						<div class="pure-u-1">
-	            			<label class="form-label" for="name">Dietary Restrictions</label>
-	            		</div>
-						<div class="pure-u-1">
+
+						<div class="pure-u-1 new-form-field">
 							<textarea id="team" name="team" class="form-control textarea-team" rows="3" placeholder="Team members' email addresses (optional)"></textarea>
 						</div>
 
@@ -364,11 +360,12 @@ https://github.com/yui/pure/blob/master/LICENSE.md
 								By signing up, I accept the Terms of Service
 							</label>
 						</div>
-						
+
 						<button type="submit" class="pure-button pure-button-primary">Submit</button>
 					</form>
 
     </div>
 </div>
+<script src="js/register.js"></script>
 
 {% endblock subpage_body %}
