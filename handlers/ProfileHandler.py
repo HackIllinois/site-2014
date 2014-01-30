@@ -1,6 +1,10 @@
+
 import MainHandler
 import db.models as models
+import urllib
 from google.appengine.api import users
+from google.appengine.ext import blobstore
+from google.appengine.ext.webapp import blobstore_handlers
 
 class ProfileHandler(MainHandler.Handler):
 
@@ -116,6 +120,24 @@ class ProfileHandler(MainHandler.Handler):
             models.update_search(models.Attendee, x, {'userId':user.user_id()})
 
             self.render("update_successful.html")
+        else:
+            # User not logged in (shouldn't happen)
+            # TODO: redirect to error handler
+            self.write('ERROR')
+
+
+class MyResumeHandler(MainHandler.Handler, blobstore_handlers.BlobstoreDownloadHandler):
+    def get(self):
+        user = users.get_current_user()
+        if user:
+            db_user = models.search_database(models.Attendee, {'userId':user.user_id()}).get()
+            if not db_user:
+                return self.redirect('/register')
+
+            # https://developers.google.com/appengine/docs/python/blobstore/#Python_Using_the_Blobstore_API_with_Google_Cloud_Storage
+            resource = str(urllib.unquote(db_user.resumePath))
+            blob_key = blobstore.create_gs_key(resource)
+            self.send_blob(blob_key)
         else:
             # User not logged in (shouldn't happen)
             # TODO: redirect to error handler
