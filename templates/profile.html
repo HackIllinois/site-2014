@@ -1,6 +1,10 @@
-{% extends "base/subpage.html" %}
+{% extends "base/base.html" %}
 
-{% block subpage_body %}
+{% block head %}
+{% include 'base/default_css_and_fonts.html' %}
+{% endblock head %}
+
+{% block body %}
 
 <style>
 /*!
@@ -211,4 +215,4 @@ https://github.com/yui/pure/blob/master/LICENSE.md
     </div>
 </div>
 
-{% endblock subpage_body %}
+{% endblock body %}
