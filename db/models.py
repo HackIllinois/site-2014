@@ -202,7 +202,7 @@ def search_database(cls, search, perfect_match=True):
     ex: search_database(Attendee, {'email':'doe1@illinois.edu'})
     '''
     if search == {}:
-        return cls.gql()
+        return cls.query()
     q = "WHERE "
     if perfect_match:
         ao = " AND "
