@@ -228,7 +228,7 @@ class Attendee(ndb.Model):
     standing = ndb.StringProperty(choices=['Freshman','Sophomore','Junior','Senior','Grad','Other'])
 
     experience = ndb.TextProperty() # unlimited length, not indexed
-    resume = ndb.BlobProperty(compressed=True)
+    resumePath = ndb.StringProperty()
     linkedin = ndb.StringProperty()
     github = ndb.StringProperty()
 
@@ -244,6 +244,7 @@ class Attendee(ndb.Model):
     registrationTime = ndb.DateTimeProperty(auto_now_add=True)
 
     teamMembers = ndb.TextProperty()
+    approved = ndb.StringProperty()
 
     team = ndb.KeyProperty()
 
