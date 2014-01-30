@@ -41,7 +41,7 @@ class RegisterHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHan
             # https://developers.google.com/appengine/docs/python/users/userclass
             x['userNickname'] = user.nickname()
             x['userEmail'] = user.email()
-            x['userId'] = user.user_id()
+            x['userId'] = user.user_id() #use this for identificaiton
             x['userFederatedIdentity'] = user.federated_identity()
             x['userFederatedProvider'] = user.federated_provider()
 
@@ -59,12 +59,18 @@ class RegisterHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHan
             x['github'] = self.request.get('github')
 
             file_info = self.get_file_infos(field_name='resume')[0]
+
             # print "content_type: " + str(file_info.content_type)
             # print "creation: " + str(file_info.creation)
             # print "filename: " + str(file_info.filename)
             # print "size: " + str(file_info.size)
-            print "gs_object_name: " + str(file_info.gs_object_name)
-            x['resumePath'] = file_info.gs_object_name
+            # print "gs_object_name: " + str(file_info.gs_object_name)
+            # x['resumePath'] = file_info.gs_object_name
+            x['resume'] = models.Resume(contentType=file_info.content_type,
+                                        creationTime=file_info.creation,
+                                        fileName=file_info.filename,
+                                        size=str(file_info.size),
+                                        gsObjectName=file_info.gs_object_name)
 
             x['shirt'] = self.request.get('shirt')
             x['food'] = self.request.get('food')

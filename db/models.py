@@ -212,6 +212,27 @@ def search_database(cls, search, perfect_match=True):
         q += param + " = '" + search[param] + "'" + ao
     return cls.gql(q[:-len(ao)])
 
+
+class Resume(ndb.Model):
+    # https://developers.google.com/appengine/docs/python/blobstore/fileinfoclass
+    contentType = ndb.StringProperty()
+    creationTime = ndb.DateTimeProperty()
+    fileName = ndb.StringProperty()
+    size = ndb.StringProperty()
+    gsObjectName = ndb.StringProperty()
+
+    @classmethod
+    def new(cls, data):
+        resume = cls()
+        for k in data:
+            setattr(resume, k, data[k])
+        return resume
+
+    @classmethod
+    def unique_properties(cls):
+        return ['gsObjectName']
+
+
 class Attendee(ndb.Model):
     # For user object look at https://developers.google.com/appengine/docs/python/users/userclass
     userNickname = ndb.StringProperty()
@@ -228,7 +249,8 @@ class Attendee(ndb.Model):
     standing = ndb.StringProperty(choices=['Freshman','Sophomore','Junior','Senior','Grad','Other'])
 
     experience = ndb.TextProperty() # unlimited length, not indexed
-    resumePath = ndb.StringProperty()
+    resume = ndb.StructuredProperty(Resume)
+    # resumePath = ndb.StringProperty()
     linkedin = ndb.StringProperty()
     github = ndb.StringProperty()
 
