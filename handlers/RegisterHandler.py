@@ -68,7 +68,7 @@ class RegisterHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHan
             x['recruiters'] = (self.request.get('recruiters') == 'True')
             x['picture'] = (self.request.get('picture') == 'True')
             x['termsOfService'] = (self.request.get('termsOfService') == 'True')
-
+            x['approved'] = 'NA'
             models.add(models.Attendee, x)
             logging.info('Signup with email %s', x['email'])
 
