@@ -1,11 +1,12 @@
 import MainHandler
-import cgi
+import cgi, urllib, logging
 import db.models as models
-import logging
 from google.appengine.api import users
 from google.appengine.ext import blobstore
 from google.appengine.ext.webapp import blobstore_handlers
 
+# TODO: move to a constants file
+BUCKET = 'hackillinois'
 
 class RegisterHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandler):
     """ Handler for registration page.
@@ -13,7 +14,7 @@ class RegisterHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHan
     def get(self):
         data = {}
 
-        upload_url_rpc = blobstore.create_upload_url_async('/register', gs_bucket_name='hackillinois')
+        upload_url_rpc = blobstore.create_upload_url_async('/register', gs_bucket_name=BUCKET)
 
         user = users.get_current_user()
         if user:
@@ -58,6 +59,11 @@ class RegisterHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHan
             x['github'] = self.request.get('github')
 
             file_info = self.get_file_infos(field_name='resume')[0]
+            # print "content_type: " + str(file_info.content_type)
+            # print "creation: " + str(file_info.creation)
+            # print "filename: " + str(file_info.filename)
+            # print "size: " + str(file_info.size)
+            print "gs_object_name: " + str(file_info.gs_object_name)
             x['resumePath'] = file_info.gs_object_name
 
             x['shirt'] = self.request.get('shirt')
@@ -73,6 +79,7 @@ class RegisterHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHan
             logging.info('Signup with email %s', x['email'])
 
             return self.redirect('/register/complete')
+
         else:
             # User not logged in (shouldn't happen)
             # TODO: redirect to error handler
@@ -81,4 +88,4 @@ class RegisterHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHan
 
 class RegisterCompleteHandler(MainHandler.Handler):
     def get(self):
-        self.render("registration_complete.html")
+        return self.render("registration_complete.html")

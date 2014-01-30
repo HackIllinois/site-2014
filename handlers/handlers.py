@@ -3,9 +3,9 @@ from ErrorHandler import ErrorHandler
 from IndexHandler import IndexHandler
 from RegisterHandler import RegisterHandler, RegisterCompleteHandler
 from SignupCountHandler import SignupCountHandler
-from SubpageHandlers import RulesHandler, ScheduleHandler, TravelHandler
+from SubpageHandlers import RulesHandler, ScheduleHandler, TravelHandler, CoCHandler
 from TropoHandler import TropoHandler
-import ProfileHandler
+from ProfileHandler import ProfileHandler, MyResumeHandler
 # import AdminHandler
 # from LoginRequiredHandler import LoginRequiredHandler
 
@@ -20,7 +20,9 @@ handlers = [
     ('/signupcount', SignupCountHandler),
     ('/travel', TravelHandler),
     ('/tropo', TropoHandler),
-    ('/profile', ProfileHandler.ProfileHandler),
+    ('/profile', ProfileHandler),
+    ('/profile/myresume', MyResumeHandler),
+    ('/code-of-conduct', CoCHandler),
     # ('/admin', AdminHandler.AdminHandler),
     # ('/_ah/login_required', LoginRequiredHandler),
     ('.*', ErrorHandler)
