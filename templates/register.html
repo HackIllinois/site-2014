@@ -26,14 +26,14 @@
 	<div class="pure-g main-content">
 		<div class="pure-u-1 content-container">
 			<div class="content">
-			    
+
 				<header class="section-title section-text">
                     <span>Registration</span>
         		</header>
 
 				<!--p class="login-status">You are logged in as {{ data.username }}. Click <a href="{{ data.logoutUrl }}">here</a> to register with a different account.</p--><br>
 
-	            <form class="pure-form pure-g-r form-body" style="width:100%;" method="post">
+	            <form class="pure-form pure-g-r" style="width:100%;" method="post" action="{{ data.upload_url }}" enctype="multipart/form-data">
 	            	<div class="pure-u-1-5">
 	            		<label class="form-label" for="name">Name</label>
 	            	</div>
@@ -282,7 +282,7 @@
 
 						<button type="submit" class="pure-button pure-button-primary">Submit</button>
 					</form>
-				
+
 			</div>
 		</div>
 		<div class="pure-u-1 footer">
@@ -309,194 +309,3 @@
 <script src="js/index.js"></script>
 
 {% endblock body %}
-
-
-{% block spaceship %}
-{% include "misc/spaceship.html" %}
-{% endblock spaceship %}
-							<option>Massachusetts Institute of Technology</option>
-							<option>Stanford University</option>
-							<option>University of California, Berkeley</option>
-							<option>California Institute of Technology</option>
-							<option>Georgia Institute of Technology</option>
-							<option>Carnegie Mellon University</option>
-							<option>Cornell University</option>
-							<option>University of Michigan, Ann Arbor</option>
-							<option>Purdue University, West Lafayette</option>
-							<option>University of Texas at Austin</option>
-							<option>University of Wisconsin, Madison</option>
-							<option>Princeton University</option>
-							<option>University of Washington</option>
-							<option>Other</option>
-						</select>
-	        		</div>
-
-	        		<div class="pure-u-1-5 new-form-field">
-	            		<label class="form-label" for="name">Year in School</label>
-	            	</div>
-	            	<div class="pure-u-4-5">
-	            		<!--Empty Grid Column for alignment-->
-	            	</div>
-					<div class="pure-u-1">
-						<label class="label-checkbox" for="year-0" class="pure-checkbox">
-					        <input type="radio" name="year" id="year-0" value="Freshman" required="required">
-					        Freshman
-					    </label>
-
-					    <label class="label-checkbox" for="year-1" class="pure-radio">
-					        <input type="radio" name="year" id="year-1" value="Sophomore" required="required">
-					        Sophomore
-					    </label>
-
-					    <label class="label-checkbox" for="year-2" class="pure-radio">
-					        <input type="radio" name="year" id="year-2" value="Junior" required="required">
-					        Junior
-					    </label>
-					    <label class="label-checkbox" for="year-3" class="pure-radio">
-					        <input type="radio" name="year" id="year-3" value="Senior" required="required">
-					        Senior
-					    </label>
-	        		</div>
-
-	        		<div class="pure-u-1-5 new-form-field">
-	            		<label class="form-label" for="name">Previous Experience</label>
-	            	</div>
-	            	<div class="pure-u-4-5">
-	            		<!--Empty Grid Column for alignment-->
-	            	</div>
-					<div class="pure-u-1">
-						<textarea id="experience" name="experience" class="form-control textarea-experience" rows="5" placeholder="Other hackathons, any awards, cool projects? Let us know!"></textarea>
-					</div>
-
-					<div class="pure-u-2-5 new-form-field">
-	            		<label class="form-label" for="name" id="resume_message">Resume</label>
-	            	</div>
-	            	<div class="pure-u-4-5">
-	            		<!--Empty Grid Column for alignment-->
-	            	</div>
-					<div class="pure-u-1">
-						<input id="resume" name="resume" type="file" accept=".pdf" onchange="CheckFile(this);" required="required">
-					</div>
-
-					<div class="pure-u-1-5 new-form-field">
-	            		<label class="form-label" for="name">Links</label>
-	            	</div>
-	            	<div class="pure-u-4-5">
-	            		<!--Empty Grid Column for alignment-->
-	            	</div>
-					<div class="pure-u-1">
-						<input id="linkedin" name="linkedin" type="url" placeholder="URL of LinkedIn profile" class="form-control link-input">
-					</div>
-					<div class="pure-u-1">
-						<input id="github" name="github" class="form-control link-input" placeholder="GitHub Username" type="text">
-					</div>
-
-					<div class="pure-u-1-5 new-form-field">
-	            		<label class="form-label" for="name"></label>
-	            	</div>
-	            	<div class="pure-u-4-5">
-	            		<!--Empty Grid Column for alignment-->
-	            	</div>
-	            		<div class="pure-u-1">
-	            			<label class="form-label" for="name">T-Shirt Size</label>
-	            		</div>
-						<div class="pure-u-1">
-							<label class="radio-inline" for="shirt-0">
-								<input type="radio" name="shirt" id="shirt-0" class="label-checkbox" value="XS" required="required">
-								XS
-							</label>
-							<label class="radio-inline" for="shirt-1">
-								<input type="radio" name="shirt" id="shirt-1" class="label-checkbox" value="S" required="required">
-								S
-							</label>
-							<label class="radio-inline" for="shirt-2">
-								<input type="radio" name="shirt" id="shirt-2" class="label-checkbox" value="M" required="required">
-								M
-							</label>
-							<label class="radio-inline" for="shirt-3">
-								<input type="radio" name="shirt" id="shirt-3" class="label-checkbox" value="L" required="required">
-								L
-							</label>
-							<label class="radio-inline" for="shirt-4">
-								<input type="radio" name="shirt" id="shirt-4" class="label-checkbox" value="XL" required="required">
-								XL
-							</label>
-							<label class="radio-inline" for="shirt-5">
-								<input type="radio" name="shirt" id="shirt-5" class="label-checkbox" value="XXL" required="required">
-								XXL
-							</label>
-						</div>
-
-						<div class="pure-u-1 new-form-field">
-	            			<label class="form-label" for="name">Dietary Restrictions</label>
-	            		</div>
-						<div class="pure-u-1">
-							<label class="radio-inline" for="food-0">
-								<input type="radio" name="food" id="food-0" class="label-checkbox" value="None" required="required">
-								None
-							</label>
-							<label class="radio-inline" for="food-1">
-								<input type="radio" name="food" id="food-1" class="label-checkbox" value="Vegetarian" required="required">
-								Vegetarian
-							</label>
-							<label class="radio-inline" for="food-2">
-								<input type="radio" name="food" id="food-2" class="label-checkbox" value="Vegan" required="required">
-								Vegan
-							</label>
-							<label class="radio-inline" for="food-3">
-								<input type="radio" name="food" id="food-3" class="label-checkbox" value="Gluten Free" required="required">
-								Gluten Free
-							</label>
-						</div>
-
-						<div class="pure-u-1 new-form-field">
-							<textarea id="team" name="team" class="form-control textarea-team" rows="3" placeholder="Team members' email addresses (optional)"></textarea>
-						</div>
-
-						<div class="pure-u-1-5 new-form-field">
-	            			<label class="form-label" for="name"></label>
-	            		</div>
-	            		<div class="pure-u-4-5">
-	            			<!--Empty Grid Column for alignment-->
-	            		</div>
-	            		<div class="pure-u-1">
-							<label class="checkbox" for="recruiters-0">
-								<input type="checkbox" name="recruiters" id="recruiters-0" value="True">
-								Let us share this information with recruiters. (Optional)
-							</label>
-						</div>
-
-						<div class="pure-u-1-5 new-form-field">
-	            			<label class="form-label" for="name"></label>
-	            		</div>
-	            		<div class="pure-u-4-5">
-	            			<!--Empty Grid Column for alignment-->
-	            		</div>
-	            		<div class="pure-u-1">
-							<label class="checkbox" for="picture-0">
-								<input type="checkbox" name="picture" id="picture-0" value="True" required="required">
-								I agree that my picture will be taken.
-							</label>
-						</div>
-
-						<div class="pure-u-1-5 new-form-field">
-	            			<label class="form-label" for="name"></label>
-	            		</div>
-	            		<div class="pure-u-4-5">
-	            			<!--Empty Grid Column for alignment-->
-	            		</div>
-	            		<div class="pure-u-1">
-							<label class="checkbox" for="termsOfService-0">
-								<input type="checkbox" name="termsOfService" id="termsOfService-0" value="True" required="required">
-								By signing up, I accept the Terms of Service
-							</label>
-						</div>
-
-						<button type="submit" class="pure-button pure-button-primary">Submit</button>
-					</form>
-
-    </div>
-</div>
-<script src="js/register.js"></script>
-
-{% endblock subpage_body %}
