@@ -119,7 +119,7 @@ class ProfileHandler(MainHandler.Handler):
 
             models.update_search(models.Attendee, x, {'userId':user.user_id()})
 
-            self.render("update_successful.html")
+            return self.render("simple_message.html", message="Update Successful!")
         else:
             # User not logged in (shouldn't happen)
             # TODO: redirect to error handler
