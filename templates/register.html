@@ -4,6 +4,7 @@
 <link rel="stylesheet" type="text/css" href="css/site.css">
 <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
 <link rel="stylesheet" type="text/css" href="css/forms.css">
+<link rel="stylesheet" type="text/css" href="css/chosen.css">
 {% endblock head %}
 
 {% block body %}
@@ -95,7 +96,7 @@
 	            		<!--Empty Grid Column for alignment-->
 	            	</div>
 	        		<div class="pure-u-1">
-	        			<select id="school" name="school" class="form-control" required="required" onchange="CheckOther(this.value);">
+	        			<select id="school" name="school" class="chosen-select" required="required" onchange="CheckOther(this.value);">
 							<option selected="">Select one...</option>
 							<option>University of Illinois at Urbana-Champaign</option>
 							<option>Massachusetts Institute of Technology</option>
@@ -307,5 +308,7 @@
 </div>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 <script src="js/index.js"></script>
+<script src="js/chosen.jquery.js"></script>
+<script type="text/javascript">$('.chosen-select').chosen();</script>
 
 {% endblock body %}
