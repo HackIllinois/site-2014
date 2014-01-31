@@ -59,3 +59,17 @@ and (max-width : 768px) {
         margin-left: 5%;
     }
 }
+
+body h2 {
+    color: #fff;
+}
+
+span.help-block {
+    color: #fff;
+}
+
+.btn-hackil {
+    color: #fff;
+    background-color: #ef3e36;
+    border-color: #ef3e36;
+}
