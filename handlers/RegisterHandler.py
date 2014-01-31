@@ -1,12 +1,13 @@
 import MainHandler
 import cgi, urllib, logging
 import db.models as models
+from db import constants
 from google.appengine.api import users
 from google.appengine.ext import blobstore
 from google.appengine.ext.webapp import blobstore_handlers
 
 # TODO: move to a constants file
-BUCKET = 'hackillinois'
+constants.BUCKET = 'hackillinois'
 
 class RegisterHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandler):
     """ Handler for registration page.
@@ -14,7 +15,7 @@ class RegisterHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHan
     def get(self):
         data = {}
 
-        upload_url_rpc = blobstore.create_upload_url_async('/register', gs_bucket_name=BUCKET)
+        upload_url_rpc = blobstore.create_upload_url_async('/register', gs_bucket_name=constants.BUCKET)
 
         user = users.get_current_user()
         if user:
@@ -95,3 +96,21 @@ class RegisterHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHan
 class RegisterCompleteHandler(MainHandler.Handler):
     def get(self):
         return self.render("simple_message.html", message="Thanks for Registering!")
+
+
+class SchoolCheckHandler(MainHandler.Handler):
+    def get(self):
+        email = urllib.unquote(self.request.get('email'))
+        domain = email.split('@')[1]
+        domain = domain.split('.')
+        if domain[-1] != 'edu':
+            return self.write('-')
+        domain = domain[-2] + '.' + domain[-1]
+
+        schools = constants.SCHOOLS
+        # schools['illinois.edu'] = 'University of Illinois at Urbana-Champaign'
+
+        if domain in schools:
+            return self.write(schools[domain])
+        else:
+            return self.write('-')
