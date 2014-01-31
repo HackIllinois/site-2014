@@ -17,6 +17,9 @@
 		<h2 class="info-text t-centered">Registration</h2>
 
 		<div style="" class="regform-container">
+			<div>
+				<p>Hello {{ data.username }}! Not you? <a href="{{ data.logoutUrl }}">Sign out</a>.</p>
+			</div>
 			<form class="form-horizontal" role="form" method="post" action="{{ data.upload_url }}" enctype="multipart/form-data">
 
 				<!-- Text input-->
