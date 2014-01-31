@@ -6,6 +6,10 @@
     margin-top: 50px;
 }
 
+.container {
+    position: relative;
+}
+
 label {
     font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
     color: #fff;
