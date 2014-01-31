@@ -1,6 +1,16 @@
 BUCKET = 'hackillinois'
 
-REQUIRED_FIELDS = ['nameFirst', 'nameLast', 'email', 'gender', 'school', 'standing', 'resume', 'shirt', 'food', 'picture', 'termsOfService']
+REQUIRED_FIELDS = ['nameFirst', 'nameLast', 'email', 'gender', 'school', 'standing',
+                   'resume', 'shirt', 'food', 'picture', 'termsOfService']
+
+EMAIL_MATCH = r"^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$"
+
+GENDERS = ['Male','Female','I choose not to specify']
+STANDINGS = ['Freshman','Sophomore','Junior','Senior','Grad','HS','Other']
+SHIRTS = ['XS','S','M','L','XL','XXL']
+FOODS = ['None','Vegetarian','Vegan','Gluten Free']
+
+RESUME_MAX_SIZE = 2097152 # in Bytes = 2 mb
 
 SCHOOLS = {
     'binghamton.edu':'Binghamton University',

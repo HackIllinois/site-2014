@@ -1,5 +1,6 @@
 from google.appengine.ext import ndb
 import datetime as dt
+import constants
 
 '''
 NDB cheatsheet: https://docs.google.com/document/d/1AefylbadN456_Z7BZOpZEXDq8cR8LYu7QgI7bt5V0Iw/edit#
@@ -218,7 +219,7 @@ class Resume(ndb.Model):
     contentType = ndb.StringProperty()
     creationTime = ndb.DateTimeProperty()
     fileName = ndb.StringProperty()
-    size = ndb.StringProperty()
+    size = ndb.IntegerProperty() # in Bytes
     gsObjectName = ndb.StringProperty()
 
     @classmethod
@@ -244,18 +245,17 @@ class Attendee(ndb.Model):
     nameFirst = ndb.StringProperty(required=True)
     nameLast = ndb.StringProperty(required=True)
     email = ndb.StringProperty(required=True)
-    gender = ndb.StringProperty(choices=['Male','Female','NA'])
+    gender = ndb.StringProperty(choices=constants.GENDERS)
     school = ndb.StringProperty()
-    standing = ndb.StringProperty(choices=['Freshman','Sophomore','Junior','Senior','Grad','Other'])
+    standing = ndb.StringProperty(choices=constants.STANDINGS)
 
     experience = ndb.TextProperty() # unlimited length, not indexed
     resume = ndb.StructuredProperty(Resume)
-    # resumePath = ndb.StringProperty()
     linkedin = ndb.StringProperty()
     github = ndb.StringProperty()
 
-    shirt = ndb.StringProperty(choices=['XS','S','M','L','XL','XXL'])
-    food = ndb.StringProperty(choices=['None','Vegetarian','Vegan','Gluten Free'])
+    shirt = ndb.StringProperty(choices=constants.SHIRTS)
+    food = ndb.StringProperty(choices=constants.FOODS)
 
     recruiters = ndb.BooleanProperty(default=False)
     picture = ndb.BooleanProperty(default=False)

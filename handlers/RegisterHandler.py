@@ -64,7 +64,7 @@ class RegisterHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHan
             x['resume'] = models.Resume(contentType=file_info.content_type,
                                         creationTime=file_info.creation,
                                         fileName=file_info.filename,
-                                        size=str(file_info.size),
+                                        size=file_info.size,
                                         gsObjectName=file_info.gs_object_name)
 
             x['shirt'] = self.request.get('shirt')
@@ -77,22 +77,48 @@ class RegisterHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHan
             x['termsOfService'] = (self.request.get('termsOfService') == 'True')
             x['approved'] = 'NA'
 
-            # TODO: validate all fields and send json: {valid:<True/False>, message:<Success or Error message>}
-            # Make sure to check all fields are there
-            # validate is an email
-            # validate fileds with specific choices
-            # make sure required boxes checked
-            # verify resume size
 
             valid = True
+
+            # Check required fields filled in
             for field in constants.REQUIRED_FIELDS:
                 if x[field] is None:
                     valid = False
                 if isinstance(field, str) and x[field] == '':
                     valid = False
 
-            models.add(models.Attendee, x)
-            logging.info('Signup with email %s', x['email'])
+            # Check if email is valid (basic)
+            if valid and not re.match(constants.EMAIL_MATCH, x['email']):
+                valid = False
+
+            # Check fields with specific values
+            if valid and x['gender'] not in constants.GENDERS:
+                valid = False
+            if valid and x['standing'] not in constants.STANDINGS:
+                valid = False
+            if valid and x['shirt'] not in constants.SHIRTS:
+                valid = False
+            if valid and x['food'] not in constants.FOODS:
+                valid = False
+
+            # Make sure required boxes checked
+            if valid and not x['picture']:
+                valid = False
+            if valid and not x['termsOfService']:
+                valid = False
+
+            # Check resume size
+            if valid and x['resume'].size <= constants.RESUME_MAX_SIZE:
+                valid = False
+
+            if valid:
+                models.add(models.Attendee, x)
+                logging.info('Signup with email %s', x['email'])
+            else:
+                # delete file
+                pass
+
+            # self.write(json.dumps({'valid':valid, 'message':''}))
 
             return self.redirect('/register/complete')
 
