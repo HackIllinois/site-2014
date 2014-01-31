@@ -19,7 +19,7 @@
 				<p class="loggedin">Hello {{ data.username }}! <a class="rules-link" href="{{ data.logoutUrl }}">Not you</a>?</p>
 		</div>
 		<div style="" class="regform-container">
-			
+
 			<form class="form-horizontal" role="form" method="post" action="{{ data.upload_url }}" enctype="multipart/form-data">
 
 				<!-- Text input-->
@@ -68,7 +68,7 @@
 				<div class="form-group">
 					<label class="control-label col-sm-3" for="school">School</label>
 					<div class="controls col-sm-9">
-						<input id="school" class="form-control" required="required">
+						<input id="school" type="text" name="school" class="form-control" required="required" placeholder="Please enter an email address..." disabled>
 					</div>
 				</div>
 

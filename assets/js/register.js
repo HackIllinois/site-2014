@@ -58,7 +58,12 @@ function setupSchoolFiller() {
 
 function getSchool() {
     $.get('/register/schoolcheck?email=' + $('#email').val(), function(data) {
-        $('#school').val(data);
+        if (data == '-') {
+            // We don't have a school for the email or something went wrong
+            $('#school').attr('disabled', false).val('');
+        } else {
+            $('#school').attr('disabled', true).val(data);
+        }
     });
 }
 
