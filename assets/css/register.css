@@ -85,3 +85,16 @@ span.help-block {
     text-transform: uppercase;
     margin-top: 50px;
 }
+
+.rules-link {
+    color: #ef3e36;
+    text-decoration: underline;
+}
+
+.rules-link:hover {
+    color: #fff;
+}
+
+.rules-link:active, .rules-link:visited {
+    color: #ef3e36;
+}
