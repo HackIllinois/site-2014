@@ -1,0 +1,45 @@
+{% extends "base/base.html" %}
+
+{% block head %}
+{% include 'base/default_css_and_fonts.html' %}
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/shared.css">
+    <link rel="stylesheet" type="text/css" href="/css/register.css">
+{% endblock head %}
+
+{% block body %}
+    <img class="constellations" src="/img/constellations.png">
+
+    <div style="margin: 0 auto; text-align: center">
+        <img class="logo-main-svg header img-responsive center-block" src="/img/hackillinois_logo.svg">
+        <h2 class="info-text t-centered">Registration</h2>
+    </div>
+
+    <div style="margin: 25px auto 0 auto; color: white; font-family: Open Sans; font-size: 16px; width: 800px; text-align: center; line-height: 1.5em; position:relative">
+        Thanks for registering! To keep in touch follow us Facebook and Twitter. <br>Also don't forget to RSVP to the <a href="http://go.hackillinois.org/event" target="_blank" style="color: #ef3e36">Facebook event</a>.
+        <p class="social-follow" style="margin-top: 50px">
+            <span class="fb-like" data-href="http://facebook.com/hackillinois" data-layout="button_count" data-action="like" data-show-faces="true" data-share="false"></span>
+
+            <a href="https://twitter.com/hackillinois" class="twitter-follow-button" data-show-count="false" data-lang="en"></a>
+            <script>
+                !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
+            </script>
+        </p>
+    </div>
+
+    <br>
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="/js/libraries/bootstrap.min.js"></script>
+
+
+    <!-- Facebook SDK -->
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=198636480343619";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+{% endblock body %}

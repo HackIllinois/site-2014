@@ -74,6 +74,9 @@ function getSchool() {
     });
 }
 
+/**
+ * Show/hide a textarea based on the food choice
+ */
 function setupFoodOtherOption() {
     $('input[name="food"]:radio').change(function() {
         var val = $('input[name="food"]:radio:checked').val();
@@ -87,9 +90,17 @@ function setupFoodOtherOption() {
 }
 
 /**
+ * Select a nonexistent blank item for project-type
+ */
+function blankProjectType() {
+    $('select[name="project-type"]').prop('selectedIndex', -1);
+}
+
+/**
  * Initialize/setup
  */
 $(document).ready(function() {
     setupSchoolFiller();
     setupFoodOtherOption();
+    blankProjectType();
 });

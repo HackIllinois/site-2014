@@ -29,17 +29,23 @@ label {
     margin-bottom: 50px;
 }
 
-input[type="text"], input[type="email"], input[type="url"], .input-group-addon, #school, form div.form-group textarea.form-control {
+input[type="text"], input[type="email"], input[type="url"], .input-group-addon, #school, form div.form-group textarea.form-control, form div.form-group select {
     font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
     background: rgba(255,255,255, .1);
     border: 1px solid rgba(255,255,255, .5);
     color: #fff;
 }
 
-input[type="text"]:focus, input[type="email"]:focus, input[type="url"]:focus, #school:focus, form div.form-group textarea.form-control:focus {
+input[type="text"]:focus, input[type="email"]:focus, input[type="url"]:focus, #school:focus, form div.form-group textarea.form-control:focus, form div.form-group select {
     border: 1px solid #fff;
     outline: none;
 }
+
+
+form div.form-group select {
+    width: 100%;
+}
+
 
 .regform-container {
     width: 70%;

@@ -104,7 +104,7 @@ class RegisterHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHan
 
 class RegisterCompleteHandler(MainHandler.Handler):
     def get(self):
-        return self.render("simple_message.html", message="Thanks for Registering!")
+        return self.render("registration_complete.html")
 
 
 class SchoolCheckHandler(MainHandler.Handler):
