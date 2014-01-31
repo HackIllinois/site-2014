@@ -46,3 +46,30 @@ input[type="text"]:focus, input[type="email"]:focus, input[type="url"]:focus, #e
     background: rgba(255,255,255, .5);
     border: 1px solid rgba(255,255,255, .5);
 }
+
+.regform-container {
+    width: 70%; 
+    margin-left: 7%;
+}
+
+@media only screen 
+and (max-width : 768px) {
+    .regform-container {
+        width: 90%;
+        margin-left: 5%;
+    }
+}
+
+body h2 {
+    color: #fff;
+}
+
+span.help-block {
+    color: #fff;
+}
+
+.btn-hackil {
+    color: #fff;
+    background-color: #ef3e36;
+    border-color: #ef3e36;
+}

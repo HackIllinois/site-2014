@@ -119,7 +119,7 @@ class ProfileHandler(MainHandler.Handler):
 
             models.update_search(models.Attendee, x, {'userId':user.user_id()})
 
-            self.render("update_successful.html")
+            return self.render("simple_message.html", message="Update Successful!")
         else:
             # User not logged in (shouldn't happen)
             # TODO: redirect to error handler
@@ -135,7 +135,7 @@ class MyResumeHandler(MainHandler.Handler, blobstore_handlers.BlobstoreDownloadH
                 return self.redirect('/register')
 
             # https://developers.google.com/appengine/docs/python/blobstore/#Python_Using_the_Blobstore_API_with_Google_Cloud_Storage
-            resource = str(urllib.unquote(db_user.resumePath))
+            resource = str(urllib.unquote(db_user.resume.gsObjectName))
             blob_key = blobstore.create_gs_key(resource)
             self.send_blob(blob_key)
         else:
