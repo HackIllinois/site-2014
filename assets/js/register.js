@@ -44,8 +44,29 @@ function CheckFile(val){
 		newFile.className = oldFile.className;
 		newFile.onchange = oldFile.onchange;
 		newFile.required = oldFile.required;
-		oldFile.parentNode.replaceChild(newFile, oldFile); 
+		oldFile.parentNode.replaceChild(newFile, oldFile);
 	}
-	var oldMessage = document.getElementById("resume_message");	
+	var oldMessage = document.getElementById("resume_message");
 	oldMessage.innerHTML = error;
 }
+
+function setupSchoolFiller() {
+    $('#email').focusout(function() {
+        getSchool();
+    });
+}
+
+function getSchool() {
+    $.get('/register/schoolcheck?email=' + $('#email').val(), function(data) {
+        if (data == '-') {
+            // We don't have a school for the email or something went wrong
+            $('#school').attr('disabled', false).val('');
+        } else {
+            $('#school').attr('disabled', true).val(data);
+        }
+    });
+}
+
+$(document).ready(function() {
+    setupSchoolFiller();
+});
