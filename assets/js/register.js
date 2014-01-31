@@ -44,8 +44,63 @@ function CheckFile(val){
 		newFile.className = oldFile.className;
 		newFile.onchange = oldFile.onchange;
 		newFile.required = oldFile.required;
-		oldFile.parentNode.replaceChild(newFile, oldFile); 
+		oldFile.parentNode.replaceChild(newFile, oldFile);
 	}
-	var oldMessage = document.getElementById("resume_message");	
+	var oldMessage = document.getElementById("resume_message");
 	oldMessage.innerHTML = error;
 }
+
+/**
+ * Setup the school autofiller
+ */
+function setupSchoolFiller() {
+    $('#email').focusout(function() {
+        getSchool();
+    });
+}
+
+/**
+ * Fetch the school for the value of the email field
+ */
+function getSchool() {
+    $.get('/register/schoolcheck?email=' + $('#email').val(), function(data) {
+        if (data === '-') {
+            // We don't have a school for the email or something went wrong
+            $('#school').attr('disabled', false).val('');
+        } else {
+            // Fill in the school we received from the endpoint
+            $('#school').attr('disabled', true).val(data);
+        }
+    });
+}
+
+/**
+ * Show/hide a textarea based on the food choice
+ */
+function setupFoodOtherOption() {
+    $('input[name="food"]:radio').change(function() {
+        var val = $('input[name="food"]:radio:checked').val();
+
+        if (val === 'Other') {
+            $('#foodInfo').show().focus();
+        } else {
+            $('#foodInfo').hide();
+        }
+    });
+}
+
+/**
+ * Select a nonexistent blank item for project-type
+ */
+function blankProjectType() {
+    $('select[name="projectType"]').prop('selectedIndex', -1);
+}
+
+/**
+ * Initialize/setup
+ */
+$(document).ready(function() {
+    setupSchoolFiller();
+    setupFoodOtherOption();
+    blankProjectType();
+});

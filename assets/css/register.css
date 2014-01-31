@@ -6,6 +6,10 @@
     margin-top: 50px;
 }
 
+.container {
+    position: relative;
+}
+
 label {
     font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
     color: #fff;
@@ -25,20 +29,93 @@ label {
     margin-bottom: 50px;
 }
 
-input[type="text"], input[type="email"], input[type="url"], .input-group-addon, #experience, #team {
+input[type="text"], input[type="email"], input[type="url"], .input-group-addon, #school, form div.form-group textarea.form-control, form div.form-group select {
     font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    background: rgba(255,255,255, .3);
+    background: rgba(255,255,255, .1);
     border: 1px solid rgba(255,255,255, .5);
     color: #fff;
 }
 
-input[type="text"]:focus, input[type="email"]:focus, input[type="url"]:focus, #experience:focus, #team:focus, #school:focus {
+input[type="text"]:focus, input[type="email"]:focus, input[type="url"]:focus, #school:focus, form div.form-group textarea.form-control:focus, form div.form-group select {
     border: 1px solid #fff;
     outline: none;
 }
 
-#school {
+
+form div.form-group select {
+    width: 100%;
+}
+
+
+.regform-container {
+    width: 70%;
+    margin-left: 7%;
+}
+
+@media only screen
+and (max-width : 768px) {
+    .regform-container {
+        width: 90%;
+        margin-left: 5%;
+    }
+}
+
+body h2 {
+    color: #fff;
+    margin-top: 50px;
+    margin-bottom: 10px;
     font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    background: rgba(255,255,255, .5);
-    border: 1px solid rgba(255,255,255, .5);
+    width: 75%;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 38px;
+    padding-bottom: 0px;
+}
+
+p.loggedin {
+    text-align: center;
+    font-size: 14px;
+    font-weight: bold;
+    color: white;
+    font-family: 'Open Sans';
+    margin-bottom: 55px;
+}
+
+span.help-block {
+    color: #fff;
+}
+
+#foodInfo {
+    display:none;
+}
+
+.btn-hackil {
+    color: #fff;
+    background-color: #ef3e36;
+    border-color: #ef3e36;
+    margin: 0 auto;
+    width: 100%;
+    font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin-top: 20px;
+}
+
+.btn-hackil:hover {
+    color: #ef3e36;
+    background-color: #fff;
+}
+
+.rules-link {
+    color: #ef3e36;
+    text-decoration: underline;
+}
+
+.rules-link:hover {
+    color: #fff;
+}
+
+.rules-link:active {
+    color: #ef3e36;
+}
 }
