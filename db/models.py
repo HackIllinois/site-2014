@@ -256,6 +256,11 @@ class Attendee(ndb.Model):
 
     shirt = ndb.StringProperty(choices=constants.SHIRTS)
     food = ndb.StringProperty(choices=constants.FOODS)
+    foodInfo = ndb.TextProperty()
+
+    teamMembers = ndb.TextProperty()
+    projectType = ndb.StringProperty(choices=constants.PROJECTS)
+    userNotes = ndb.TextProperty()
 
     recruiters = ndb.BooleanProperty(default=False)
     picture = ndb.BooleanProperty(default=False)
@@ -265,7 +270,6 @@ class Attendee(ndb.Model):
     isParticipant = ndb.BooleanProperty(default=False)
     registrationTime = ndb.DateTimeProperty(auto_now_add=True)
 
-    teamMembers = ndb.TextProperty()
     approved = ndb.StringProperty()
 
     team = ndb.KeyProperty()

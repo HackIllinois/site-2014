@@ -82,9 +82,9 @@ function setupFoodOtherOption() {
         var val = $('input[name="food"]:radio:checked').val();
 
         if (val === 'Other') {
-            $('#food-info').show().focus();
+            $('#foodInfo').show().focus();
         } else {
-            $('#food-info').hide();
+            $('#foodInfo').hide();
         }
     });
 }
@@ -93,7 +93,7 @@ function setupFoodOtherOption() {
  * Select a nonexistent blank item for project-type
  */
 function blankProjectType() {
-    $('select[name="project-type"]').prop('selectedIndex', -1);
+    $('select[name="projectType"]').prop('selectedIndex', -1);
 }
 
 /**

@@ -5,7 +5,7 @@ from RegisterHandler import RegisterHandler, RegisterCompleteHandler, SchoolChec
 from SignupCountHandler import SignupCountHandler
 from SubpageHandlers import RulesHandler, ScheduleHandler, TravelHandler, CoCHandler
 from TropoHandler import TropoHandler
-from ProfileHandler import ProfileHandler, MyResumeHandler
+from ProfileHandler import ProfileHandler, MyResumeHandler, UpdateCompleteHandler
 # import AdminHandler
 # from LoginRequiredHandler import LoginRequiredHandler
 
@@ -22,6 +22,7 @@ handlers = [
     ('/travel', TravelHandler),
     ('/tropo', TropoHandler),
     ('/profile', ProfileHandler),
+    ('/profile/updated', UpdateCompleteHandler),
     ('/profile/myresume', MyResumeHandler),
     ('/code-of-conduct', CoCHandler),
     # ('/admin', AdminHandler.AdminHandler),

@@ -1,38 +1,44 @@
 import MainHandler
-import cgi, urllib, logging
+import cgi, urllib, logging, re
 import db.models as models
 from db import constants
 from google.appengine.api import users
 from google.appengine.ext import blobstore
 from google.appengine.ext.webapp import blobstore_handlers
 
-# TODO: move to a constants file
-constants.BUCKET = 'hackillinois'
 
 class RegisterHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandler):
     """ Handler for registration page.
     This does not include the email registration we have up now."""
     def get(self):
-        data = {}
-
-        upload_url_rpc = blobstore.create_upload_url_async('/register', gs_bucket_name=constants.BUCKET)
-
         user = users.get_current_user()
         if user:
             db_user = models.search_database(models.Attendee, {'userId':user.user_id()}).get()
             if db_user is not None:
                 return self.redirect('/profile')
-            else:
-                data['username'] = user.nickname()
-                data['logoutUrl'] = users.create_logout_url('/register')
-                data['email'] = user.email()
+
+            upload_url_rpc = blobstore.create_upload_url_async('/register', gs_bucket_name=constants.BUCKET)
+
+            data = {}
+            data['title'] = 'Registration'
+            data['username'] = user.nickname()
+            data['logoutUrl'] = users.create_logout_url('/register')
+            data['email'] = user.email()
+            data['genders'] = [ {'name':g} for g in constants.GENDERS ]
+            data['years'] = [ {'name':y} for y in constants.STANDINGS ]
+            data['shirts'] = [ {'name':s} for s in constants.SHIRTS ]
+            data['foods'] = [ {'name':f} for f in constants.FOODS ]
+            data['projects'] = [ {'name':p} for p in constants.PROJECTS ]
+
+            data['resumeRequired'] = True
+
+            data['upload_url'] = upload_url_rpc.get_result()
+            self.render("register.html", data=data)
 
         else:
-            # This should never happen
-            data['email'] = None
-
-        data['upload_url'] = upload_url_rpc.get_result()
-        self.render("register.html", data=data)
+            # User not logged in (shouldn't happen)
+            # TODO: redirect to error handler
+            self.write('ERROR')
 
     def post(self):
         user = users.get_current_user()
@@ -69,8 +75,11 @@ class RegisterHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHan
 
             x['shirt'] = self.request.get('shirt')
             x['food'] = self.request.get('food')
+            x['foodInfo'] = self.request.get('foodInfo')
 
             x['teamMembers'] = self.request.get('team')
+            x['projectType'] = self.request.get('projectType')
+            x['userNotes'] = self.request.get('userNotes')
 
             x['recruiters'] = (self.request.get('recruiters') == 'True')
             x['picture'] = (self.request.get('picture') == 'True')
@@ -100,6 +109,8 @@ class RegisterHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHan
                 valid = False
             if valid and x['food'] not in constants.FOODS:
                 valid = False
+            if valid and x['projectType'] not in constants.PROJECTS:
+                valid = False
 
             # Make sure required boxes checked
             if valid and not x['picture']:
@@ -111,15 +122,16 @@ class RegisterHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHan
             if valid and x['resume'].size <= constants.RESUME_MAX_SIZE:
                 valid = False
 
-            if valid:
-                models.add(models.Attendee, x)
-                logging.info('Signup with email %s', x['email'])
-            else:
-                # delete file
-                pass
-
+            # if valid:
+            #     models.add(models.Attendee, x)
+            #     logging.info('Signup with email %s', x['email'])
+            # else:
+            #     # delete file
+            #     pass
             # self.write(json.dumps({'valid':valid, 'message':''}))
 
+            models.add(models.Attendee, x)
+            logging.info('Signup with email %s', x['email'])
             return self.redirect('/register/complete')
 
         else:
