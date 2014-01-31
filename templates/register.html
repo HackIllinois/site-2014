@@ -8,263 +8,267 @@
 
 {% block body %}
 <div class="wrapper bg-stars">
-	<img class="constellations" src="/img/constellations.png">
+	<div class="const">
+		<img class="constellations" src="/img/constellations.png">
+	</div>
 
-	<img class="logo-main-svg header img-responsive center-block" src="/img/hackillinois_logo.svg">
-	<h2 class="info-text t-centered">Registration</h2>
+	<div class="container">
+		<img class="logo-main-svg header img-responsive center-block" src="/img/hackillinois_logo.svg">
+		<h2 class="info-text t-centered">Registration</h2>
 
-	<div class="col-md-6 col-md-offset-3">
-		<form class="form-horizontal" role="form" method="post" action="{{ data.upload_url }}" enctype="multipart/form-data">
+		<div class="col-md-6 col-md-offset-3">
+			<form class="form-horizontal" role="form" method="post" action="{{ data.upload_url }}" enctype="multipart/form-data">
 
-			<!-- Text input-->
-			<div class="form-group">
-				<label class="control-label col-sm-3" for="name">Name</label>
-				<div class="controls col-sm-9">
-					<div class="row">
-						<div class="col-xs-6">
-							<input id="nameFirst" name="nameFirst" type="text" placeholder="First Name" class="form-control" required="required">
-						</div>
-						<div class="col-xs-6">
-							<input id="nameLast" name="nameLast" type="text" placeholder="Last Name" class="form-control" required="required">
+				<!-- Text input-->
+				<div class="form-group">
+					<label class="control-label col-sm-3" for="name">Name</label>
+					<div class="controls col-sm-9">
+						<div class="row">
+							<div class="col-xs-6">
+								<input id="nameFirst" name="nameFirst" type="text" placeholder="First Name" class="form-control" required="required">
+							</div>
+							<div class="col-xs-6">
+								<input id="nameLast" name="nameLast" type="text" placeholder="Last Name" class="form-control" required="required">
+							</div>
 						</div>
 					</div>
 				</div>
-			</div>
 
-			<!-- Text input-->
-			<div class="form-group">
-				<label class="control-label col-sm-3" for="email">Email</label>
-				<div class="controls col-sm-9">
-					<input id="email" name="email" type="email" placeholder="Email" class="form-control" required="required">
-				</div>
-			</div>
-
-			<!-- Multiple Radios (inline) -->
-			<div class="form-group">
-				<label class="control-label col-sm-3" for="gender">Gender</label>
-				<div class="controls col-sm-9">
-					<label class="radio-inline" for="gender-0">
-						<input type="radio" name="gender" id="gender-0" value="Male" required="required">
-						Male
-					</label>
-					<label class="radio-inline" for="gender-1">
-						<input type="radio" name="gender" id="gender-1" value="Female" required="required">
-						Female
-					</label>
-					<label class="radio-inline" for="gender-2">
-						<input type="radio" name="gender" id="gender-2" value="NA" required="required">
-						I choose not to specify
-					</label>
-				</div>
-			</div>
-
-			<!-- Select Basic -->
-			<div class="form-group">
-				<label class="control-label col-sm-3" for="school">School</label>
-				<div class="controls col-sm-9">
-					<select id="school" name="school" class="form-control" required="required" onchange="CheckOther(this.value);">
-						<option selected>Select one...</option>
-						<option>University of Illinois--Urbana-Champaign</option>
-						<option>Massachusetts Institute of Technology</option>
-						<option>Stanford University</option>
-						<option>University of California--Berkeley</option>
-						<option>California Institute of Technology</option>
-						<option>Georgia Institute of Technology</option>
-						<option>Carnegie Mellon University</option>
-						<option>Cornell University</option>
-						<option>University of Michigan--Ann Arbor</option>
-						<option>Purdue University--West Lafayette</option>
-						<option>University of Texas--Austin</option>
-						<option>University of Wisconsin--Madison</option>
-						<option>Princeton University</option>
-						<option>University of Washington</option>
-						<option>Other</option>
-					</select>
-				</div>
-			</div>
-
-			<!-- Text input-->
-			<div id="schoolOtherDiv" class="form-group hidden">
-				<label class="control-label col-sm-3" for="schoolOther">School</label>
-				<div class="controls col-sm-9">
-					<input id="schoolOther" name="schoolOther" type="text" placeholder="Your School" class="form-control">
-				</div>
-			</div>
-
-			<!-- Multiple Radios -->
-			<div class="form-group">
-				<label class="control-label col-sm-3" for="year">Year in School</label>
-				<div class="controls col-sm-9">
-					<label class="radio-inline" for="year-0">
-						<input type="radio" name="year" id="year-0" value="Freshman" required="required">
-						Freshman
-					</label>
-					<label class="radio-inline" for="year-1">
-						<input type="radio" name="year" id="year-1" value="Sophomore" required="required">
-						Sophomore
-					</label>
-					<label class="radio-inline" for="year-2">
-						<input type="radio" name="year" id="year-2" value="Junior" required="required">
-						Junior
-					</label>
-					<label class="radio-inline" for="year-3">
-						<input type="radio" name="year" id="year-3" value="Senior" required="required">
-						Senior
-					</label>
-					<label class="radio-inline" for="year-4">
-						<input type="radio" name="year" id="year-4" value="Grad" required="required">
-						Grad
-					</label>
-					<label class="radio-inline" for="year-5">
-						<input type="radio" name="year" id="year-5" value="Other" required="required">
-						Other
-					</label>
-				</div>
-			</div>
-
-			<!-- Textarea -->
-			<div class="form-group">
-				<label class="control-label col-sm-3" for="experience">Previous Hackathon Experience</label>
-				<div class="controls col-sm-9">
-					<textarea id="experience" name="experience" class="form-control" rows="5"></textarea>
-					<span class="help-block">Have you participated in other hackathons?<br>Won any awards?<br>Done any cool projects?<br>(If not, thatâ€™s okay! Weâ€™re just curious.)</span>
-				</div>
-			</div>
-
-			<!-- File Button -->
-			<div class="form-group">
-				<label class="control-label col-sm-3" for="resume">Resume</label>
-				<div class="controls col-sm-9">
-					<input id="resume" name="resume" type="file" required="required">
-					<span class="help-block">Please upload your resume.</span>
-				</div>
-			</div>
-
-			<!-- Text input-->
-			<div class="form-group">
-				<label class="control-label col-sm-3" for="linkedin">LinkedIn</label>
-				<div class="controls col-sm-9">
-					<input id="linkedin" name="linkedin" type="url" placeholder="URL of LinkedIn profile" class="form-control">
-				</div>
-			</div>
-
-			<!-- Prepended text-->
-			<div class="form-group">
-				<label class="control-label col-sm-3" for="github">Github Username</label>
-				<div class="controls col-sm-9">
-					<div class="input-group">
-						<span class="input-group-addon">https://github.com/</span>
-						<input id="github" name="github" class="form-control" placeholder="Username" type="text">
+				<!-- Text input-->
+				<div class="form-group">
+					<label class="control-label col-sm-3" for="email">Email</label>
+					<div class="controls col-sm-9">
+						<input id="email" name="email" type="email" placeholder="Email" class="form-control" required="required">
 					</div>
-
 				</div>
-			</div>
 
-			<hr>
-
-			<!-- Multiple Radios (inline) -->
-			<div class="form-group">
-				<label class="control-label col-sm-3" for="shirt">Shirt Size</label>
-				<div class="controls col-sm-9">
-					<label class="radio-inline" for="shirt-0">
-						<input type="radio" name="shirt" id="shirt-0" value="XS" required="required">
-						XS
-					</label>
-					<label class="radio-inline" for="shirt-1">
-						<input type="radio" name="shirt" id="shirt-1" value="S" required="required">
-						S
-					</label>
-					<label class="radio-inline" for="shirt-2">
-						<input type="radio" name="shirt" id="shirt-2" value="M" required="required">
-						M
-					</label>
-					<label class="radio-inline" for="shirt-3">
-						<input type="radio" name="shirt" id="shirt-3" value="L" required="required">
-						L
-					</label>
-					<label class="radio-inline" for="shirt-4">
-						<input type="radio" name="shirt" id="shirt-4" value="XL" required="required">
-						XL
-					</label>
-					<label class="radio-inline" for="shirt-5">
-						<input type="radio" name="shirt" id="shirt-5" value="XXL" required="required">
-						XXL
-					</label>
+				<!-- Multiple Radios (inline) -->
+				<div class="form-group">
+					<label class="control-label col-sm-3" for="gender">Gender</label>
+					<div class="controls col-sm-9">
+						<label class="radio-inline" for="gender-0">
+							<input type="radio" name="gender" id="gender-0" value="Male" required="required">
+							Male
+						</label>
+						<label class="radio-inline" for="gender-1">
+							<input type="radio" name="gender" id="gender-1" value="Female" required="required">
+							Female
+						</label>
+						<label class="radio-inline" for="gender-2">
+							<input type="radio" name="gender" id="gender-2" value="NA" required="required">
+							I choose not to specify
+						</label>
+					</div>
 				</div>
-			</div>
 
-			<!-- Multiple Radios (inline) -->
-			<div class="form-group">
-				<label class="control-label col-sm-3" for="food">Dietary Restrictions</label>
-				<div class="controls col-sm-9">
-					<label class="radio-inline" for="food-0">
-						<input type="radio" name="food" id="food-0" value="None" required="required">
-						None
-					</label>
-					<label class="radio-inline" for="food-1">
-						<input type="radio" name="food" id="food-1" value="Vegetarian" required="required">
-						Vegetarian
-					</label>
-					<label class="radio-inline" for="food-2">
-						<input type="radio" name="food" id="food-2" value="Vegan" required="required">
-						Vegan
-					</label>
-					<label class="radio-inline" for="food-3">
-						<input type="radio" name="food" id="food-3" value="Gluten Free" required="required">
-						Gluten Free
-					</label>
+				<!-- Select Basic -->
+				<div class="form-group">
+					<label class="control-label col-sm-3" for="school">School</label>
+					<div class="controls col-sm-9">
+						<select id="school" name="school" class="form-control" required="required" onchange="CheckOther(this.value);">
+							<option selected>Select one...</option>
+							<option>University of Illinois--Urbana-Champaign</option>
+							<option>Massachusetts Institute of Technology</option>
+							<option>Stanford University</option>
+							<option>University of California--Berkeley</option>
+							<option>California Institute of Technology</option>
+							<option>Georgia Institute of Technology</option>
+							<option>Carnegie Mellon University</option>
+							<option>Cornell University</option>
+							<option>University of Michigan--Ann Arbor</option>
+							<option>Purdue University--West Lafayette</option>
+							<option>University of Texas--Austin</option>
+							<option>University of Wisconsin--Madison</option>
+							<option>Princeton University</option>
+							<option>University of Washington</option>
+							<option>Other</option>
+						</select>
+					</div>
 				</div>
-			</div>
 
-			<hr>
-
-			<!-- Textarea -->
-			<div class="form-group">
-				<label class="control-label col-sm-3" for="team">Team</label>
-				<div class="controls col-sm-9">
-					<textarea id="team" name="team" class="form-control" rows="3"></textarea>
-					<span class="help-block">Please put down the emails of your potential team members (excluding yourself).</span>
+				<!-- Text input-->
+				<div id="schoolOtherDiv" class="form-group hidden">
+					<label class="control-label col-sm-3" for="schoolOther">School</label>
+					<div class="controls col-sm-9">
+						<input id="schoolOther" name="schoolOther" type="text" placeholder="Your School" class="form-control">
+					</div>
 				</div>
-			</div>
 
-			<hr>
-
-			<!-- Multiple Checkboxes (inline) -->
-			<div class="form-group">
-				<label class="control-label col-sm-3 sr-only" for="recruiters">Share with recruiters</label>
-				<div class="controls col-sm-9">
-					<label class="checkbox" for="recruiters-0">
-						<input type="checkbox" name="recruiters" id="recruiters-0" value="True">
-						Let us share this information with recruiters. (Optional)
-					</label>
+				<!-- Multiple Radios -->
+				<div class="form-group">
+					<label class="control-label col-sm-3" for="year">Year in School</label>
+					<div class="controls col-sm-9">
+						<label class="radio-inline" for="year-0">
+							<input type="radio" name="year" id="year-0" value="Freshman" required="required">
+							Freshman
+						</label>
+						<label class="radio-inline" for="year-1">
+							<input type="radio" name="year" id="year-1" value="Sophomore" required="required">
+							Sophomore
+						</label>
+						<label class="radio-inline" for="year-2">
+							<input type="radio" name="year" id="year-2" value="Junior" required="required">
+							Junior
+						</label>
+						<label class="radio-inline" for="year-3">
+							<input type="radio" name="year" id="year-3" value="Senior" required="required">
+							Senior
+						</label>
+						<label class="radio-inline" for="year-4">
+							<input type="radio" name="year" id="year-4" value="Grad" required="required">
+							Grad
+						</label>
+						<label class="radio-inline" for="year-5">
+							<input type="radio" name="year" id="year-5" value="Other" required="required">
+							Other
+						</label>
+					</div>
 				</div>
-			</div>
 
-			<!-- Multiple Checkboxes (inline) -->
-			<div class="form-group">
-				<label class="control-label col-sm-3 sr-only" for="picture">Allow picture to be taken</label>
-				<div class="controls col-sm-9">
-					<label class="checkbox" for="picture-0">
-						<input type="checkbox" name="picture" id="picture-0" value="True" required="required">
-						I agree that my picture will be taken.
-					</label>
+				<!-- Textarea -->
+				<div class="form-group">
+					<label class="control-label col-sm-3" for="experience">Previous Hackathon Experience</label>
+					<div class="controls col-sm-9">
+						<textarea id="experience" name="experience" class="form-control" rows="5"></textarea>
+						<span class="help-block">Have you participated in other hackathons?<br>Won any awards?<br>Done any cool projects?<br>(If not, thatâ€™s okay! Weâ€™re just curious.)</span>
+					</div>
 				</div>
-			</div>
 
-			<!-- Multiple Checkboxes (inline) -->
-			<div class="form-group">
-				<label class="control-label col-sm-3 sr-only" for="termsOfService">Agree to terms of service</label>
-				<div class="controls col-sm-9">
-					<label class="checkbox" for="termsOfService-0">
-						<input type="checkbox" name="termsOfService" id="termsOfService-0" value="True" required="required">
-						By signing up, I accept the Terms of Service
-					</label>
+				<!-- File Button -->
+				<div class="form-group">
+					<label class="control-label col-sm-3" for="resume">Resume</label>
+					<div class="controls col-sm-9">
+						<input id="resume" name="resume" type="file" required="required">
+						<span class="help-block">Please upload your resume.</span>
+					</div>
 				</div>
-			</div>
 
-			<button type="submit" class="btn btn-primary btn-lg pull-left footer">Submit</button>
-			<!-- <button type="submit" class="btn btn-primary btn-lg btn-block">Submit</button> -->
-		</form>
+				<!-- Text input-->
+				<div class="form-group">
+					<label class="control-label col-sm-3" for="linkedin">LinkedIn</label>
+					<div class="controls col-sm-9">
+						<input id="linkedin" name="linkedin" type="url" placeholder="URL of LinkedIn profile" class="form-control">
+					</div>
+				</div>
+
+				<!-- Prepended text-->
+				<div class="form-group">
+					<label class="control-label col-sm-3" for="github">Github Username</label>
+					<div class="controls col-sm-9">
+						<div class="input-group">
+							<span class="input-group-addon">https://github.com/</span>
+							<input id="github" name="github" class="form-control" placeholder="Username" type="text">
+						</div>
+
+					</div>
+				</div>
+
+				<hr>
+
+				<!-- Multiple Radios (inline) -->
+				<div class="form-group">
+					<label class="control-label col-sm-3" for="shirt">Shirt Size</label>
+					<div class="controls col-sm-9">
+						<label class="radio-inline" for="shirt-0">
+							<input type="radio" name="shirt" id="shirt-0" value="XS" required="required">
+							XS
+						</label>
+						<label class="radio-inline" for="shirt-1">
+							<input type="radio" name="shirt" id="shirt-1" value="S" required="required">
+							S
+						</label>
+						<label class="radio-inline" for="shirt-2">
+							<input type="radio" name="shirt" id="shirt-2" value="M" required="required">
+							M
+						</label>
+						<label class="radio-inline" for="shirt-3">
+							<input type="radio" name="shirt" id="shirt-3" value="L" required="required">
+							L
+						</label>
+						<label class="radio-inline" for="shirt-4">
+							<input type="radio" name="shirt" id="shirt-4" value="XL" required="required">
+							XL
+						</label>
+						<label class="radio-inline" for="shirt-5">
+							<input type="radio" name="shirt" id="shirt-5" value="XXL" required="required">
+							XXL
+						</label>
+					</div>
+				</div>
+
+				<!-- Multiple Radios (inline) -->
+				<div class="form-group">
+					<label class="control-label col-sm-3" for="food">Dietary Restrictions</label>
+					<div class="controls col-sm-9">
+						<label class="radio-inline" for="food-0">
+							<input type="radio" name="food" id="food-0" value="None" required="required">
+							None
+						</label>
+						<label class="radio-inline" for="food-1">
+							<input type="radio" name="food" id="food-1" value="Vegetarian" required="required">
+							Vegetarian
+						</label>
+						<label class="radio-inline" for="food-2">
+							<input type="radio" name="food" id="food-2" value="Vegan" required="required">
+							Vegan
+						</label>
+						<label class="radio-inline" for="food-3">
+							<input type="radio" name="food" id="food-3" value="Gluten Free" required="required">
+							Gluten Free
+						</label>
+					</div>
+				</div>
+
+				<hr>
+
+				<!-- Textarea -->
+				<div class="form-group">
+					<label class="control-label col-sm-3" for="team">Team</label>
+					<div class="controls col-sm-9">
+						<textarea id="team" name="team" class="form-control" rows="3"></textarea>
+						<span class="help-block">Please put down the emails of your potential team members (excluding yourself).</span>
+					</div>
+				</div>
+
+				<hr>
+
+				<!-- Multiple Checkboxes (inline) -->
+				<div class="form-group">
+					<label class="control-label col-sm-3 sr-only" for="recruiters">Share with recruiters</label>
+					<div class="controls col-sm-9">
+						<label class="checkbox" for="recruiters-0">
+							<input type="checkbox" name="recruiters" id="recruiters-0" value="True">
+							Let us share this information with recruiters. (Optional)
+						</label>
+					</div>
+				</div>
+
+				<!-- Multiple Checkboxes (inline) -->
+				<div class="form-group">
+					<label class="control-label col-sm-3 sr-only" for="picture">Allow picture to be taken</label>
+					<div class="controls col-sm-9">
+						<label class="checkbox" for="picture-0">
+							<input type="checkbox" name="picture" id="picture-0" value="True" required="required">
+							I agree that my picture will be taken.
+						</label>
+					</div>
+				</div>
+
+				<!-- Multiple Checkboxes (inline) -->
+				<div class="form-group">
+					<label class="control-label col-sm-3 sr-only" for="termsOfService">Agree to terms of service</label>
+					<div class="controls col-sm-9">
+						<label class="checkbox" for="termsOfService-0">
+							<input type="checkbox" name="termsOfService" id="termsOfService-0" value="True" required="required">
+							By signing up, I accept the Terms of Service
+						</label>
+					</div>
+				</div>
+
+				<button type="submit" class="btn btn-primary btn-lg pull-left footer">Submit</button>
+				<!-- <button type="submit" class="btn btn-primary btn-lg btn-block">Submit</button> -->
+			</form>
+		</div>
 	</div>
 </div>
 
