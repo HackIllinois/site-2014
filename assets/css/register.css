@@ -31,7 +31,7 @@ label {
 
 input[type="text"], input[type="email"], input[type="url"], .input-group-addon, #experience, #team {
     font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    background: rgba(255,255,255, .3);
+    background: rgba(255,255,255, .1);
     border: 1px solid rgba(255,255,255, .5);
     color: #fff;
 }
