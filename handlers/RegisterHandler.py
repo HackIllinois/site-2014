@@ -76,6 +76,21 @@ class RegisterHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHan
             x['picture'] = (self.request.get('picture') == 'True')
             x['termsOfService'] = (self.request.get('termsOfService') == 'True')
             x['approved'] = 'NA'
+
+            # TODO: validate all fields and send json: {valid:<True/False>, message:<Success or Error message>}
+            # Make sure to check all fields are there
+            # validate is an email
+            # validate fileds with specific choices
+            # make sure required boxes checked
+            # verify resume size
+
+            valid = True
+            for field in constants.REQUIRED_FIELDS:
+                if x[field] is None:
+                    valid = False
+                if isinstance(field, str) and x[field] == '':
+                    valid = False
+
             models.add(models.Attendee, x)
             logging.info('Signup with email %s', x['email'])
 

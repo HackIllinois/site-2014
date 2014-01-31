@@ -1,5 +1,7 @@
 BUCKET = 'hackillinois'
 
+REQUIRED_FIELDS = ['nameFirst', 'nameLast', 'email', 'gender', 'school', 'standing', 'resume', 'shirt', 'food', 'picture', 'termsOfService']
+
 SCHOOLS = {
     'binghamton.edu':'Binghamton University',
     'bgsu.edu':'Bowling Green State University',
