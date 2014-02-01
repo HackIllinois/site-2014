@@ -148,10 +148,15 @@ class RegisterCompleteHandler(MainHandler.Handler):
 class SchoolCheckHandler(MainHandler.Handler):
     def get(self):
         email = urllib.unquote(self.request.get('email'))
+        if(len(email.split('@')) == 1):
+            return self.write('-')
         domain = email.split('@')[1]
         domain = domain.split('.')
         if domain[-1] != 'edu':
-            return self.write('-')
+            if len(domain) > 1:
+                return self.write('--')
+            else:
+                return self.write('-')
         domain = domain[-2] + '.' + domain[-1]
 
         schools = constants.SCHOOLS
@@ -160,4 +165,4 @@ class SchoolCheckHandler(MainHandler.Handler):
         if domain in schools:
             return self.write(schools[domain])
         else:
-            return self.write('-')
+            return self.write('--')

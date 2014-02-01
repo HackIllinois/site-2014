@@ -27,10 +27,10 @@ function CheckFile(val){
         fail = true;
         error = error + "<br>Resume must be in PDF form";
     }
-    if(size >= 1048576)
+    if(size >= 2097152)
     {
         fail = true;
-        error = error + "<br>Resume must be less than 1 MB";
+        error = error + "<br>Resume must be less than 2 MB";
     }
 	error = error + "</font>"
     if(fail)
@@ -64,10 +64,15 @@ function setupSchoolFiller() {
  */
 function getSchool() {
     $.get('/register/schoolcheck?email=' + $('#email').val(), function(data) {
-        if (data === '-') {
+        if (data === '--') {
             // We don't have a school for the email or something went wrong
             $('#school').attr('disabled', false).val('');
-        } else {
+			$('#school').attr('placeholder', 'Please enter your school\'s name')
+        }else if (data === '-') {
+            // Invalid email format
+            $('#school').attr('disabled', true).val('');
+			$('#school').attr('placeholder', 'Please enter an email address...')
+        }else {
             // Fill in the school we received from the endpoint
             $('#school').attr('disabled', true).val(data);
         }
