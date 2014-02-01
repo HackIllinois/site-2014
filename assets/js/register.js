@@ -57,6 +57,10 @@ function setupSchoolFiller() {
     $('#email').focusout(function() {
         getSchool();
     });
+
+    if ($('#email').val() != '') {
+        getSchool();
+    }
 }
 
 /**
