@@ -15,7 +15,6 @@
 	<div class="container">
 		<img class="logo-main-svg header img-responsive center-block" src="/img/hackillinois_logo.svg">
 		<h2 class="info-text t-centered">Application</h2>
-		<h2 class="info-text t-centered">{{ data.title }}</h2>
 		<div>
 				<p class="loggedin">Hello {{ data.username }}! <a class="rules-link" href="{{ data.logoutUrl }}">Not you</a>?</p>
 		</div>
@@ -40,11 +39,10 @@
 
 				<!-- Text input-->
 				<div class="form-group">
-<<<<<<< HEAD
+
 					<label class="control-label col-sm-3" for="email">Email<span class="reqd"> *</span></label>
-=======
-					<label class="control-label col-sm-3" for="email">.edu Email</label>
->>>>>>> fa251e2acaef88638ba89cc0b7ae29d8869686f0
+
+
 					<div class="controls col-sm-9">
 						<input id="email" name="email" type="email" placeholder=".edu Email Address" class="form-control" required="required" value="{{ data.email }}" onclick="this.select();">
 					</div>
@@ -54,7 +52,7 @@
 				<div class="form-group">
 					<label class="control-label col-sm-3" for="gender">Gender<span class="reqd"> *</span></label>
 					<div class="controls col-sm-9">
-<<<<<<< HEAD
+
 						<label class="radio-inline" for="gender-0">
 							<input type="radio" name="gender" id="gender-0" value="Male" required="required">
 							Male
@@ -67,14 +65,13 @@
 							<input type="radio" name="gender" id="gender-2" value="NA" required="required">
 							Other
 						</label>
-=======
+
                         {% for g in data.genders %}
                         <label class="radio-inline" for="gender-{{ loop.index0 }}">
                             <input type="radio" name="gender" id="gender-{{ loop.index0 }}" value="{{ g.name }}" required="required" {% if g.checked %}checked{% endif %}>
                             {{ g.name }}
                         </label>
                         {% endfor %}
->>>>>>> fa251e2acaef88638ba89cc0b7ae29d8869686f0
 					</div>
 				</div>
 
@@ -111,13 +108,13 @@
 				<div class="form-group">
 					<label class="control-label col-sm-3" for="experience">Previous Experience<span class="reqd"> *</span></label>
 					<div class="controls col-sm-9">
-<<<<<<< HEAD
+
 						<textarea id="experience" name="experience" class="form-control" rows="5" required="required"></textarea>
 						<span class="help-block">Have you participated in other hackathons? Won any awards? Done any cool projects? (If not, that's okay! We're just curious.)</span>
-=======
+
 						<textarea id="experience" name="experience" class="form-control" rows="5">{{ data.experience }}</textarea>
 						<span class="help-block">Have you participated in other hackathons? Won any awards? Done any cool projects? <br>(If not, that's okay! We're just curious.)</span>
->>>>>>> fa251e2acaef88638ba89cc0b7ae29d8869686f0
+
 					</div>
 				</div>
 
@@ -125,14 +122,10 @@
 				<div class="form-group">
 					<label class="control-label col-sm-3" for="resume">Resume</label>
 					<div class="controls col-sm-9">
-<<<<<<< HEAD
-						<input id="resume" name="resume" type="file" accept="application/pdf">
-						<span class="help-block">Please upload your resume. (Optional)</span>
-=======
 						<input id="resume" name="resume" type="file" accept="application/pdf" {% if data.resumeRequired %}required="required"{% endif %}>
 						<!-- TODO: Add link to old resume -->
 						<span class="help-block">Please upload your resume.</span>
->>>>>>> fa251e2acaef88638ba89cc0b7ae29d8869686f0
+
 					</div>
 				</div>
 
@@ -172,31 +165,7 @@
 
 				<!-- Multiple Radios (inline) -->
 				<div class="form-group">
-<<<<<<< HEAD
-					<label class="control-label col-sm-3" for="food">Dietary Restrictions<span class="reqd"> *</span></label>
-					<div class="controls col-sm-9" id="food-choices">
-						<label class="radio-inline" for="food-0">
-							<input type="radio" name="food" id="food-0" value="None" required="required">
-							None
-						</label>
-						<label class="radio-inline" for="food-1">
-							<input type="radio" name="food" id="food-1" value="Vegetarian" required="required">
-							Vegetarian
-						</label>
-						<label class="radio-inline" for="food-2">
-							<input type="radio" name="food" id="food-2" value="Vegan" required="required">
-							Vegan
-						</label>
-						<label class="radio-inline" for="food-3">
-							<input type="radio" name="food" id="food-3" value="Gluten Free" required="required">
-							Gluten Free
-						</label>
-						<label class="radio-inline" id="other-food-click" for="food-4">
-							<input type="radio" name="food" id="food-4 other-foood" value="Other" required="required">
-							Other
-						</label>
-						<input style="margin-top:20px; display:none;" id="other-food-specify" name="other-food" type="text" placeholder="If other, please specify:" class="form-control">
-=======
+
 					<label class="control-label col-sm-3" for="food">Dietary Restrictions</label>
 					<div class="controls col-sm-9">
                         {% for f in data.foods %}
@@ -206,7 +175,7 @@
                         </label>
                         {% endfor %}
 						<textarea id="foodInfo" name="foodInfo" class="form-control" rows="3" placeholder="Need special food arrangements? Let us know!">{{ data.foodInfo }}</textarea>
->>>>>>> fa251e2acaef88638ba89cc0b7ae29d8869686f0
+
 					</div>
 				</div>
 
@@ -214,13 +183,13 @@
 				<div class="form-group">
 					<label class="control-label col-sm-3" for="team">Team</label>
 					<div class="controls col-sm-9">
-<<<<<<< HEAD
+
 						<textarea id="team" name="team" class="form-control" rows="3"></textarea>
-						<span class="help-block">If you have any teammates, or people that you'd like to work with, please enter their email addresses</span>
-=======
+						<span class="help-block">If you have any teammates, or people that you'd like to work with, please enter their email addresses.</span>
+
 						<textarea id="team" name="team" class="form-control" rows="3">{{ data.team }}</textarea>
 						<span class="help-block">Please put down the emails of your potential team members (excluding yourself).</span>
->>>>>>> fa251e2acaef88638ba89cc0b7ae29d8869686f0
+
 					</div>
 				</div>
 
@@ -236,7 +205,6 @@
 					</div>
 				</div>
 
-<<<<<<< HEAD
 
 				<!-- Multiple Checkboxes (inline) -->
 				<!--div class="form-group">
@@ -249,35 +217,35 @@
 						<div class="help-block resume-slide-down-info">
 							Some of our corporate sponsors are interested in you! Check this if you'd like to be considered for postitions in the future.
 						</div>
-=======
+
 				<!-- Textarea -->
 				<div class="form-group">
 					<label class="control-label col-sm-3" for="team">Additional Notes</label>
 					<div class="controls col-sm-9">
 						<textarea id="userNotes" name="userNotes" class="form-control" rows="3">{{ data.userNotes }}</textarea>
 						<span class="help-block">Anything else we should know?</span>
->>>>>>> fa251e2acaef88638ba89cc0b7ae29d8869686f0
+
 					</div>
 				</div>
 
 
 
 				<!-- Multiple Checkboxes (inline) -->
-<<<<<<< HEAD
+
 				<!--div class="form-group">
 					<label class="control-label col-sm-3 sr-only" for="picture">Allow picture to be taken</label>
 					<div class="controls col-sm-9">
 						<label class="checkbox" for="picture-0">
 							<input type="checkbox" name="picture" id="picture-0" value="True" required="required">
 							I acknowledge that my picture might be taken at HackIllinois, and may be used in the future.
-=======
+
 				<div class="form-group">
 					<label class="control-label col-sm-3 sr-only" for="recruiters">Share with recruiters</label>
 					<div class="controls col-sm-9">
 						<label class="checkbox" for="recruiters-0">
 							<input type="checkbox" name="recruiters" id="recruiters-0" value="True" checked>
 							Let us share your information with recruiters.
->>>>>>> fa251e2acaef88638ba89cc0b7ae29d8869686f0
+
 						</label>
 					</div>
 				</div-->
@@ -287,13 +255,12 @@
 					<label class="control-label col-sm-3 sr-only" for="termsOfService">Agree to terms of service</label>
 					<div class="controls col-sm-9">
 						<label class="checkbox" for="termsOfService-0">
-<<<<<<< HEAD
+
 							<input type="checkbox" name="termsOfService" id="termsOfService-0" value="True" required="required">
 							I will follow the HackIllinois <a class="rules-link" href="/rules">rules</a>, and comply with the <a class="rules-link" href="/code-of-conduct">code of conduct</a>.
-=======
+
 							<input type="checkbox" name="termsOfService" id="termsOfService-0" value="True" required="required" {% if data.termsOfService %}checked{% endif %}>
 							I will follow the HackIllinois <a class="rules-link" href="/rules" target="_blank">rules</a>.
->>>>>>> fa251e2acaef88638ba89cc0b7ae29d8869686f0
 						</label>
 					</div>
 				</div>
