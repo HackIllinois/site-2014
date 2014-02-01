@@ -68,6 +68,7 @@ SCHOOLS = {
     'colorado.edu':'University of Colorado - Boulder',
     'udayton.edu':'University of Dayton',
     'illinois.edu':'University of Illinois - Urbana-Champaign',
+    'uiuc.edu':'University of Illinois - Urbana-Champaign',
     'uic.edu':'University of Illinois - Chicago',
     'uis.edu':'University of Illinois - Springfield',
     'uiowa.edu':'University of Iowa',
