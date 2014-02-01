@@ -29,23 +29,23 @@ label {
     margin-bottom: 50px;
 }
 
-input[type="text"], input[type="email"], input[type="url"], .input-group-addon, #experience, #team {
+input[type="text"], input[type="email"], input[type="url"], .input-group-addon, #school, form div.form-group textarea.form-control, form div.form-group select {
     font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
     background: rgba(255,255,255, .1);
     border: 1px solid rgba(255,255,255, .5);
     color: #fff;
 }
 
-input[type="text"]:focus, input[type="email"]:focus, input[type="url"]:focus, #experience:focus, #team:focus, #school:focus {
+input[type="text"]:focus, input[type="email"]:focus, input[type="url"]:focus, #school:focus, form div.form-group textarea.form-control:focus, form div.form-group select {
     border: 1px solid #fff;
     outline: none;
 }
 
-#school {
-    font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    background: rgba(255,255,255, .5);
-    border: 1px solid rgba(255,255,255, .5);
+
+form div.form-group select {
+    width: 100%;
 }
+
 
 .regform-container {
     width: 70%;
@@ -91,6 +91,8 @@ span.help-block {
 
 .resume-toggle {
     display: inline-block;
+#foodInfo {
+    display:none;
 }
 
 .btn-hackil {
@@ -113,6 +115,8 @@ span.reqd {
     color: #fff;
     background-color: #ef4d36;
     outline: none;
+    color: #ef3e36;
+    background-color: #fff;
 }
 
 .rules-link {

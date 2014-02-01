@@ -15,11 +15,12 @@
 	<div class="container">
 		<img class="logo-main-svg header img-responsive center-block" src="/img/hackillinois_logo.svg">
 		<h2 class="info-text t-centered">Application</h2>
+		<h2 class="info-text t-centered">{{ data.title }}</h2>
 		<div>
 				<p class="loggedin">Hello {{ data.username }}! <a class="rules-link" href="{{ data.logoutUrl }}">Not you</a>?</p>
 		</div>
 		<div style="" class="regform-container">
-			
+
 			<form class="form-horizontal" role="form" method="post" action="{{ data.upload_url }}" enctype="multipart/form-data">
 
 				<!-- Text input-->
@@ -28,10 +29,10 @@
 					<div class="controls col-sm-9">
 						<div class="row">
 							<div class="col-xs-6">
-								<input id="nameFirst" name="nameFirst" type="text" placeholder="First Name" class="form-control" required="required">
+								<input id="nameFirst" name="nameFirst" type="text" placeholder="First Name" class="form-control" required="required" value="{{ data.nameFirst }}" onclick="this.select();">
 							</div>
 							<div class="col-xs-6">
-								<input id="nameLast" name="nameLast" type="text" placeholder="Last Name" class="form-control" required="required">
+								<input id="nameLast" name="nameLast" type="text" placeholder="Last Name" class="form-control" required="required" value="{{ data.nameLast }}" onclick="this.select();">
 							</div>
 						</div>
 					</div>
@@ -39,9 +40,13 @@
 
 				<!-- Text input-->
 				<div class="form-group">
+<<<<<<< HEAD
 					<label class="control-label col-sm-3" for="email">Email<span class="reqd"> *</span></label>
+=======
+					<label class="control-label col-sm-3" for="email">.edu Email</label>
+>>>>>>> fa251e2acaef88638ba89cc0b7ae29d8869686f0
 					<div class="controls col-sm-9">
-						<input id="email" name="email" type="email" placeholder="Email" class="form-control" required="required">
+						<input id="email" name="email" type="email" placeholder=".edu Email Address" class="form-control" required="required" value="{{ data.email }}" onclick="this.select();">
 					</div>
 				</div>
 
@@ -49,6 +54,7 @@
 				<div class="form-group">
 					<label class="control-label col-sm-3" for="gender">Gender<span class="reqd"> *</span></label>
 					<div class="controls col-sm-9">
+<<<<<<< HEAD
 						<label class="radio-inline" for="gender-0">
 							<input type="radio" name="gender" id="gender-0" value="Male" required="required">
 							Male
@@ -61,6 +67,14 @@
 							<input type="radio" name="gender" id="gender-2" value="NA" required="required">
 							Other
 						</label>
+=======
+                        {% for g in data.genders %}
+                        <label class="radio-inline" for="gender-{{ loop.index0 }}">
+                            <input type="radio" name="gender" id="gender-{{ loop.index0 }}" value="{{ g.name }}" required="required" {% if g.checked %}checked{% endif %}>
+                            {{ g.name }}
+                        </label>
+                        {% endfor %}
+>>>>>>> fa251e2acaef88638ba89cc0b7ae29d8869686f0
 					</div>
 				</div>
 
@@ -68,24 +82,7 @@
 				<div class="form-group">
 					<label class="control-label col-sm-3" for="school">School<span class="reqd"> *</span></label>
 					<div class="controls col-sm-9">
-						<select id="school" name="school" class="form-control" required="required" onchange="CheckOther(this.value);">
-							<option selected>Select one...</option>
-							<option>University of Illinois--Urbana-Champaign</option>
-							<option>Massachusetts Institute of Technology</option>
-							<option>Stanford University</option>
-							<option>University of California--Berkeley</option>
-							<option>California Institute of Technology</option>
-							<option>Georgia Institute of Technology</option>
-							<option>Carnegie Mellon University</option>
-							<option>Cornell University</option>
-							<option>University of Michigan--Ann Arbor</option>
-							<option>Purdue University--West Lafayette</option>
-							<option>University of Texas--Austin</option>
-							<option>University of Wisconsin--Madison</option>
-							<option>Princeton University</option>
-							<option>University of Washington</option>
-							<option>Other</option>
-						</select>
+						<input id="school" type="text" name="school" class="form-control" required="required" placeholder="Please enter your email address above." disabled  value="{{ data.school }}" onclick="this.select();">
 					</div>
 				</div>
 
@@ -93,7 +90,7 @@
 				<div id="schoolOtherDiv" class="form-group hidden">
 					<label class="control-label col-sm-3" for="schoolOther">School</label>
 					<div class="controls col-sm-9">
-						<input id="schoolOther" name="schoolOther" type="text" placeholder="Your School" class="form-control">
+						<input id="schoolOther" name="schoolOther" type="text" placeholder="Your School" class="form-control" value="{{ data.schoolOther }}" onclick="this.select();">
 					</div>
 				</div>
 
@@ -101,30 +98,12 @@
 				<div class="form-group">
 					<label class="control-label col-sm-3" for="year">Year in School<span class="reqd"> *</span></label>
 					<div class="controls col-sm-9">
-						<label class="radio-inline" for="year-0">
-							<input type="radio" name="year" id="year-0" value="Freshman" required="required">
-							Freshman
-						</label>
-						<label class="radio-inline" for="year-1">
-							<input type="radio" name="year" id="year-1" value="Sophomore" required="required">
-							Sophomore
-						</label>
-						<label class="radio-inline" for="year-2">
-							<input type="radio" name="year" id="year-2" value="Junior" required="required">
-							Junior
-						</label>
-						<label class="radio-inline" for="year-3">
-							<input type="radio" name="year" id="year-3" value="Senior" required="required">
-							Senior
-						</label>
-						<label class="radio-inline" for="year-4">
-							<input type="radio" name="year" id="year-4" value="Grad" required="required">
-							Grad
-						</label>
-						<label class="radio-inline" for="year-5">
-							<input type="radio" name="year" id="year-5" value="Other" required="required">
-							Other
-						</label>
+                        {% for y in data.years %}
+                        <label class="radio-inline" for="year-{{ loop.index0 }}">
+                            <input type="radio" name="year" id="year-{{ loop.index0 }}" value="{{ y.name }}" required="required" {% if y.checked %}checked{% endif %}>
+                            {{ y.name }}
+                        </label>
+                        {% endfor %}
 					</div>
 				</div>
 
@@ -132,8 +111,13 @@
 				<div class="form-group">
 					<label class="control-label col-sm-3" for="experience">Previous Experience<span class="reqd"> *</span></label>
 					<div class="controls col-sm-9">
+<<<<<<< HEAD
 						<textarea id="experience" name="experience" class="form-control" rows="5" required="required"></textarea>
 						<span class="help-block">Have you participated in other hackathons? Won any awards? Done any cool projects? (If not, that's okay! We're just curious.)</span>
+=======
+						<textarea id="experience" name="experience" class="form-control" rows="5">{{ data.experience }}</textarea>
+						<span class="help-block">Have you participated in other hackathons? Won any awards? Done any cool projects? <br>(If not, that's okay! We're just curious.)</span>
+>>>>>>> fa251e2acaef88638ba89cc0b7ae29d8869686f0
 					</div>
 				</div>
 
@@ -141,8 +125,14 @@
 				<div class="form-group">
 					<label class="control-label col-sm-3" for="resume">Resume</label>
 					<div class="controls col-sm-9">
+<<<<<<< HEAD
 						<input id="resume" name="resume" type="file" accept="application/pdf">
 						<span class="help-block">Please upload your resume. (Optional)</span>
+=======
+						<input id="resume" name="resume" type="file" accept="application/pdf" {% if data.resumeRequired %}required="required"{% endif %}>
+						<!-- TODO: Add link to old resume -->
+						<span class="help-block">Please upload your resume.</span>
+>>>>>>> fa251e2acaef88638ba89cc0b7ae29d8869686f0
 					</div>
 				</div>
 
@@ -150,7 +140,7 @@
 				<div class="form-group">
 					<label class="control-label col-sm-3" for="linkedin">LinkedIn</label>
 					<div class="controls col-sm-9">
-						<input id="linkedin" name="linkedin" type="url" placeholder="URL of LinkedIn profile" class="form-control">
+						<input id="linkedin" name="linkedin" type="url" placeholder="URL of LinkedIn profile" class="form-control" value="{{ data.linkedin }}" onclick="this.select();">
 					</div>
 				</div>
 
@@ -160,7 +150,7 @@
 					<div class="controls col-sm-9">
 						<div class="input-group">
 							<span class="input-group-addon">https://github.com/</span>
-							<input id="github" name="github" class="form-control" placeholder="Username" type="text">
+							<input id="github" name="github" class="form-control" placeholder="Username" type="text" value="{{ data.github }}" onclick="this.select();">
 						</div>
 
 					</div>
@@ -171,35 +161,18 @@
 				<div class="form-group">
 					<label class="control-label col-sm-3" for="shirt">Shirt Size<span class="reqd"> *</span></label>
 					<div class="controls col-sm-9">
-						<label class="radio-inline" for="shirt-0">
-							<input type="radio" name="shirt" id="shirt-0" value="XS" required="required">
-							XS
-						</label>
-						<label class="radio-inline" for="shirt-1">
-							<input type="radio" name="shirt" id="shirt-1" value="S" required="required">
-							S
-						</label>
-						<label class="radio-inline" for="shirt-2">
-							<input type="radio" name="shirt" id="shirt-2" value="M" required="required">
-							M
-						</label>
-						<label class="radio-inline" for="shirt-3">
-							<input type="radio" name="shirt" id="shirt-3" value="L" required="required">
-							L
-						</label>
-						<label class="radio-inline" for="shirt-4">
-							<input type="radio" name="shirt" id="shirt-4" value="XL" required="required">
-							XL
-						</label>
-						<label class="radio-inline" for="shirt-5">
-							<input type="radio" name="shirt" id="shirt-5" value="XXL" required="required">
-							XXL
-						</label>
+                        {% for s in data.shirts %}
+                        <label class="radio-inline" for="shirt-{{ loop.index0 }}">
+                        	<input type="radio" name="shirt" id="shirt-{{ loop.index0 }}" value="{{ s.name }}" required="required" {% if s.checked %}checked{% endif %}>
+                            {{ s.name }}
+                        </label>
+                        {% endfor %}
 					</div>
 				</div>
 
 				<!-- Multiple Radios (inline) -->
 				<div class="form-group">
+<<<<<<< HEAD
 					<label class="control-label col-sm-3" for="food">Dietary Restrictions<span class="reqd"> *</span></label>
 					<div class="controls col-sm-9" id="food-choices">
 						<label class="radio-inline" for="food-0">
@@ -223,6 +196,17 @@
 							Other
 						</label>
 						<input style="margin-top:20px; display:none;" id="other-food-specify" name="other-food" type="text" placeholder="If other, please specify:" class="form-control">
+=======
+					<label class="control-label col-sm-3" for="food">Dietary Restrictions</label>
+					<div class="controls col-sm-9">
+                        {% for f in data.foods %}
+                        <label class="radio-inline" for="food-{{ loop.index0 }}">
+                        	<input type="radio" name="food" id="food-{{ loop.index0 }}" value="{{ f.name }}" required="required" {% if f.checked %}checked{% endif %}>
+                            {{ f.name }}
+                        </label>
+                        {% endfor %}
+						<textarea id="foodInfo" name="foodInfo" class="form-control" rows="3" placeholder="Need special food arrangements? Let us know!">{{ data.foodInfo }}</textarea>
+>>>>>>> fa251e2acaef88638ba89cc0b7ae29d8869686f0
 					</div>
 				</div>
 
@@ -230,12 +214,29 @@
 				<div class="form-group">
 					<label class="control-label col-sm-3" for="team">Team</label>
 					<div class="controls col-sm-9">
+<<<<<<< HEAD
 						<textarea id="team" name="team" class="form-control" rows="3"></textarea>
 						<span class="help-block">If you have any teammates, or people that you'd like to work with, please enter their email addresses</span>
+=======
+						<textarea id="team" name="team" class="form-control" rows="3">{{ data.team }}</textarea>
+						<span class="help-block">Please put down the emails of your potential team members (excluding yourself).</span>
+>>>>>>> fa251e2acaef88638ba89cc0b7ae29d8869686f0
 					</div>
 				</div>
 
+				<div class="form-group">
+					<label class="control-label col-sm-3" for="project-type">Project Type</label>
+					<div class="controls col-sm-9">
+						<select name="projectType">
+                            {% for p in data.projects %}
+                            <option {% if p.selected %}selected=""{% endif %}>{{ p.name }}</option>
+                            {% endfor %}
+						</select>
+						<span class="help-block">It's okay if this changes!</span>
+					</div>
+				</div>
 
+<<<<<<< HEAD
 
 				<!-- Multiple Checkboxes (inline) -->
 				<!--div class="form-group">
@@ -248,16 +249,35 @@
 						<div class="help-block resume-slide-down-info">
 							Some of our corporate sponsors are interested in you! Check this if you'd like to be considered for postitions in the future.
 						</div>
+=======
+				<!-- Textarea -->
+				<div class="form-group">
+					<label class="control-label col-sm-3" for="team">Additional Notes</label>
+					<div class="controls col-sm-9">
+						<textarea id="userNotes" name="userNotes" class="form-control" rows="3">{{ data.userNotes }}</textarea>
+						<span class="help-block">Anything else we should know?</span>
+>>>>>>> fa251e2acaef88638ba89cc0b7ae29d8869686f0
 					</div>
 				</div>
 
+
+
 				<!-- Multiple Checkboxes (inline) -->
+<<<<<<< HEAD
 				<!--div class="form-group">
 					<label class="control-label col-sm-3 sr-only" for="picture">Allow picture to be taken</label>
 					<div class="controls col-sm-9">
 						<label class="checkbox" for="picture-0">
 							<input type="checkbox" name="picture" id="picture-0" value="True" required="required">
 							I acknowledge that my picture might be taken at HackIllinois, and may be used in the future.
+=======
+				<div class="form-group">
+					<label class="control-label col-sm-3 sr-only" for="recruiters">Share with recruiters</label>
+					<div class="controls col-sm-9">
+						<label class="checkbox" for="recruiters-0">
+							<input type="checkbox" name="recruiters" id="recruiters-0" value="True" checked>
+							Let us share your information with recruiters.
+>>>>>>> fa251e2acaef88638ba89cc0b7ae29d8869686f0
 						</label>
 					</div>
 				</div-->
@@ -267,8 +287,13 @@
 					<label class="control-label col-sm-3 sr-only" for="termsOfService">Agree to terms of service</label>
 					<div class="controls col-sm-9">
 						<label class="checkbox" for="termsOfService-0">
+<<<<<<< HEAD
 							<input type="checkbox" name="termsOfService" id="termsOfService-0" value="True" required="required">
 							I will follow the HackIllinois <a class="rules-link" href="/rules">rules</a>, and comply with the <a class="rules-link" href="/code-of-conduct">code of conduct</a>.
+=======
+							<input type="checkbox" name="termsOfService" id="termsOfService-0" value="True" required="required" {% if data.termsOfService %}checked{% endif %}>
+							I will follow the HackIllinois <a class="rules-link" href="/rules" target="_blank">rules</a>.
+>>>>>>> fa251e2acaef88638ba89cc0b7ae29d8869686f0
 						</label>
 					</div>
 				</div>

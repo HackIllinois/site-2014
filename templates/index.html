@@ -1,6 +1,8 @@
 {% extends "base/base.html" %}
 
 {% block head %}
+{% include 'base/default_css_and_fonts.html' %}
+<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/pure/0.3.0/grids-min.css">
 <link rel="stylesheet" type="text/css" href="css/site.css">
 {% endblock head %}
 
@@ -27,14 +29,13 @@
 		        	<img class="logo-main-svg" src="/img/hackillinois_logo.svg">
 		        	<h5>Imagine. Learn. Launch.</h5>
 
-		        	<h1>April 11-13, 2014</h1>
+		        	<div>
+		        		<h1>April 11-13, 2014</h1>
+		        	</div>
 
 		        	<div class="reg-form">
-						<!--form action="#" method="post">
-				    		<input type="email" name="register-email" class="reg-email" value="" placeholder="E-mail">
-				    		<input type="submit" value="SIGN UP" class="send" name="reg-send">
-						</form-->
 						<a href="/register" class="apply-btn">Apply</a>
+				    		<a href="/register"><button type="submit" value="Register Now" id="register-button">Register Now</button></a>
 						<p class="social-follow">
 									<span class="fb-like" data-href="http://facebook.com/hackillinois" data-layout="button_count" data-action="like" data-show-faces="true" data-share="false"></span>
 
@@ -103,6 +104,7 @@
 					    <a href="http://facebook.com" target="_blank"><img alt="facebook" class="sponsor littler" src="/img/logos/resized/facebook.png" /></a>
 					    <a href="http://intel.com" target="_blank"><img alt="intel" class="sponsor littler intel" src="/img/logos/resized/intel.png" /></a>
 					    <a href="http://dwolla.com" target="_blank"><img alt="dwolla" class="sponsor littler" src="/img/logos/dwolla.png" /></a>
+					    <a href="http://stickermule.com" target="_blank"><img alt="stickermule" class="sponsor littler" src="/img/logos/stickermule.png" /></a>
 
 					    <p class="sponsor-shoutout-CTA">If you're interested in sponsoring HackIllinois, <a href="/sponsor">view the options</a> and <a href="mailto:sponsor@hackillinois.org">drop us a line</a>!</p>
 
