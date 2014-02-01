@@ -77,12 +77,20 @@ p.loggedin {
     font-size: 14px;
     font-weight: bold;
     color: white;
-    font-family: 'Open Sans';
+    font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
     margin-bottom: 55px;
 }
 
 span.help-block {
     color: #fff;
+}
+
+.resume-slide-down-info {
+    padding-left: 20px;
+}
+
+.resume-toggle {
+    display: inline-block;
 }
 
 .btn-hackil {
@@ -97,14 +105,20 @@ span.help-block {
     margin-top: 20px;
 }
 
+span.reqd {
+    color: #fff;
+}
+
 .btn-hackil:hover {
-    color: #ef3e36;
-    background-color: #fff;    
+    color: #fff;
+    background-color: #ef4d36;
+    outline: none;
 }
 
 .rules-link {
     color: #ef3e36;
     text-decoration: underline;
+    cursor: pointer;
 }
 
 .rules-link:hover {

@@ -49,3 +49,7 @@ function CheckFile(val){
 	var oldMessage = document.getElementById("resume_message");	
 	oldMessage.innerHTML = error;
 }
+
+
+
+

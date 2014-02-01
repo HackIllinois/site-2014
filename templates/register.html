@@ -14,7 +14,7 @@
 
 	<div class="container">
 		<img class="logo-main-svg header img-responsive center-block" src="/img/hackillinois_logo.svg">
-		<h2 class="info-text t-centered">Registration</h2>
+		<h2 class="info-text t-centered">Application</h2>
 		<div>
 				<p class="loggedin">Hello {{ data.username }}! <a class="rules-link" href="{{ data.logoutUrl }}">Not you</a>?</p>
 		</div>
@@ -24,7 +24,7 @@
 
 				<!-- Text input-->
 				<div class="form-group">
-					<label class="control-label col-sm-3" for="name">Name</label>
+					<label class="control-label col-sm-3" for="name">Name<span class="reqd"> *</span></label>
 					<div class="controls col-sm-9">
 						<div class="row">
 							<div class="col-xs-6">
@@ -39,7 +39,7 @@
 
 				<!-- Text input-->
 				<div class="form-group">
-					<label class="control-label col-sm-3" for="email">Email</label>
+					<label class="control-label col-sm-3" for="email">Email<span class="reqd"> *</span></label>
 					<div class="controls col-sm-9">
 						<input id="email" name="email" type="email" placeholder="Email" class="form-control" required="required">
 					</div>
@@ -47,7 +47,7 @@
 
 				<!-- Multiple Radios (inline) -->
 				<div class="form-group">
-					<label class="control-label col-sm-3" for="gender">Gender</label>
+					<label class="control-label col-sm-3" for="gender">Gender<span class="reqd"> *</span></label>
 					<div class="controls col-sm-9">
 						<label class="radio-inline" for="gender-0">
 							<input type="radio" name="gender" id="gender-0" value="Male" required="required">
@@ -59,14 +59,14 @@
 						</label>
 						<label class="radio-inline" for="gender-2">
 							<input type="radio" name="gender" id="gender-2" value="NA" required="required">
-							I choose not to specify
+							Other
 						</label>
 					</div>
 				</div>
 
 				<!-- Select Basic -->
 				<div class="form-group">
-					<label class="control-label col-sm-3" for="school">School</label>
+					<label class="control-label col-sm-3" for="school">School<span class="reqd"> *</span></label>
 					<div class="controls col-sm-9">
 						<select id="school" name="school" class="form-control" required="required" onchange="CheckOther(this.value);">
 							<option selected>Select one...</option>
@@ -99,7 +99,7 @@
 
 				<!-- Multiple Radios -->
 				<div class="form-group">
-					<label class="control-label col-sm-3" for="year">Year in School</label>
+					<label class="control-label col-sm-3" for="year">Year in School<span class="reqd"> *</span></label>
 					<div class="controls col-sm-9">
 						<label class="radio-inline" for="year-0">
 							<input type="radio" name="year" id="year-0" value="Freshman" required="required">
@@ -130,9 +130,9 @@
 
 				<!-- Textarea -->
 				<div class="form-group">
-					<label class="control-label col-sm-3" for="experience">Previous Experience</label>
+					<label class="control-label col-sm-3" for="experience">Previous Experience<span class="reqd"> *</span></label>
 					<div class="controls col-sm-9">
-						<textarea id="experience" name="experience" class="form-control" rows="5"></textarea>
+						<textarea id="experience" name="experience" class="form-control" rows="5" required="required"></textarea>
 						<span class="help-block">Have you participated in other hackathons? Won any awards? Done any cool projects? (If not, that's okay! We're just curious.)</span>
 					</div>
 				</div>
@@ -141,8 +141,8 @@
 				<div class="form-group">
 					<label class="control-label col-sm-3" for="resume">Resume</label>
 					<div class="controls col-sm-9">
-						<input id="resume" name="resume" type="file" required="required" accept="application/pdf">
-						<span class="help-block">Please upload your resume.</span>
+						<input id="resume" name="resume" type="file" accept="application/pdf">
+						<span class="help-block">Please upload your resume. (Optional)</span>
 					</div>
 				</div>
 
@@ -169,7 +169,7 @@
 
 				<!-- Multiple Radios (inline) -->
 				<div class="form-group">
-					<label class="control-label col-sm-3" for="shirt">Shirt Size</label>
+					<label class="control-label col-sm-3" for="shirt">Shirt Size<span class="reqd"> *</span></label>
 					<div class="controls col-sm-9">
 						<label class="radio-inline" for="shirt-0">
 							<input type="radio" name="shirt" id="shirt-0" value="XS" required="required">
@@ -200,8 +200,8 @@
 
 				<!-- Multiple Radios (inline) -->
 				<div class="form-group">
-					<label class="control-label col-sm-3" for="food">Dietary Restrictions</label>
-					<div class="controls col-sm-9">
+					<label class="control-label col-sm-3" for="food">Dietary Restrictions<span class="reqd"> *</span></label>
+					<div class="controls col-sm-9" id="food-choices">
 						<label class="radio-inline" for="food-0">
 							<input type="radio" name="food" id="food-0" value="None" required="required">
 							None
@@ -218,43 +218,49 @@
 							<input type="radio" name="food" id="food-3" value="Gluten Free" required="required">
 							Gluten Free
 						</label>
+						<label class="radio-inline" id="other-food-click" for="food-4">
+							<input type="radio" name="food" id="food-4 other-foood" value="Other" required="required">
+							Other
+						</label>
+						<input style="margin-top:20px; display:none;" id="other-food-specify" name="other-food" type="text" placeholder="If other, please specify:" class="form-control">
 					</div>
 				</div>
-
-
 
 				<!-- Textarea -->
 				<div class="form-group">
 					<label class="control-label col-sm-3" for="team">Team</label>
 					<div class="controls col-sm-9">
 						<textarea id="team" name="team" class="form-control" rows="3"></textarea>
-						<span class="help-block">Please put down the emails of your potential team members (excluding yourself).</span>
+						<span class="help-block">If you have any teammates, or people that you'd like to work with, please enter their email addresses</span>
 					</div>
 				</div>
 
 
 
 				<!-- Multiple Checkboxes (inline) -->
-				<div class="form-group">
+				<!--div class="form-group">
 					<label class="control-label col-sm-3 sr-only" for="recruiters">Share with recruiters</label>
 					<div class="controls col-sm-9">
 						<label class="checkbox" for="recruiters-0">
 							<input type="checkbox" name="recruiters" id="recruiters-0" value="True" checked>
 							Let us share this information with recruiters.
 						</label>
+						<div class="help-block resume-slide-down-info">
+							Some of our corporate sponsors are interested in you! Check this if you'd like to be considered for postitions in the future.
+						</div>
 					</div>
 				</div>
 
 				<!-- Multiple Checkboxes (inline) -->
-				<div class="form-group">
+				<!--div class="form-group">
 					<label class="control-label col-sm-3 sr-only" for="picture">Allow picture to be taken</label>
 					<div class="controls col-sm-9">
 						<label class="checkbox" for="picture-0">
 							<input type="checkbox" name="picture" id="picture-0" value="True" required="required">
-							I agree that my picture may be taken at the event.
+							I acknowledge that my picture might be taken at HackIllinois, and may be used in the future.
 						</label>
 					</div>
-				</div>
+				</div-->
 
 				<!-- Multiple Checkboxes (inline) -->
 				<div class="form-group">
@@ -262,7 +268,7 @@
 					<div class="controls col-sm-9">
 						<label class="checkbox" for="termsOfService-0">
 							<input type="checkbox" name="termsOfService" id="termsOfService-0" value="True" required="required">
-							I will follow the HackIllinois <a class="rules-link" href="/rules">rules</a>.
+							I will follow the HackIllinois <a class="rules-link" href="/rules">rules</a>, and comply with the <a class="rules-link" href="/code-of-conduct">code of conduct</a>.
 						</label>
 					</div>
 				</div>
@@ -273,7 +279,6 @@
 						<button type="submit" class="btn btn-primary btn-lg pull-left footer btn-hackil" style="width: 100%">Submit Application</button>
 					</div>
 				</div>
-				<!-- <button type="submit" class="btn btn-primary btn-lg btn-block">Submit</button> -->
 			</form>
 		</div>
 	</div>
@@ -281,5 +286,6 @@
 
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 <script src="/lib/bootstrap/js/bootstrap.min.js"></script>
+<script src="/js/registration-ui.js"></script>
 <script src="/js/register.js"></script>
 {% endblock body %}
