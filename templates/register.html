@@ -62,7 +62,7 @@
 				<div class="form-group">
 					<label class="control-label col-sm-3" for="school">School</label>
 					<div class="controls col-sm-9">
-						<input id="school" type="text" name="school" class="form-control" required="required" placeholder="Please enter an email address..." disabled  value="{{ data.school }}" onclick="this.select();">
+						<input id="school" type="text" name="school" class="form-control" required="required" placeholder="Please enter your email address above." disabled  value="{{ data.school }}" onclick="this.select();">
 					</div>
 				</div>
 
@@ -195,17 +195,6 @@
 						<label class="checkbox" for="recruiters-0">
 							<input type="checkbox" name="recruiters" id="recruiters-0" value="True" checked>
 							Let us share your information with recruiters.
-						</label>
-					</div>
-				</div>
-
-				<!-- Multiple Checkboxes (inline) -->
-				<div class="form-group">
-					<label class="control-label col-sm-3 sr-only" for="picture">Allow picture to be taken</label>
-					<div class="controls col-sm-9">
-						<label class="checkbox" for="picture-0">
-							<input type="checkbox" name="picture" id="picture-0" value="True" required="required" {% if data.picture %}checked{% endif %}>
-							I agree that my picture may be taken at the event.
 						</label>
 					</div>
 				</div>

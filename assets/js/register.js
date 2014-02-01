@@ -67,11 +67,11 @@ function getSchool() {
         if (data === '--') {
             // We don't have a school for the email or something went wrong
             $('#school').attr('disabled', false).val('');
-			$('#school').attr('placeholder', 'Please enter your school\'s name')
+			$('#school').attr('placeholder', "Please enter your school's name");
         }else if (data === '-') {
             // Invalid email format
             $('#school').attr('disabled', true).val('');
-			$('#school').attr('placeholder', 'Please enter an email address...')
+			$('#school').attr('placeholder', 'Please enter your email address above.');
         }else {
             // Fill in the school we received from the endpoint
             $('#school').attr('disabled', true).val(data);
