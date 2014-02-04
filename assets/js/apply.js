@@ -63,18 +63,10 @@ function setupFoodOtherOption() {
 }
 
 /**
- * Select a nonexistent blank item for project-type
- */
-function blankProjectType() {
-    $('select[name="projectType"]').prop('selectedIndex', -1);
-}
-
-/**
  * Initialize/setup
  */
 $(document).ready(function() {
     setupFoodOtherOption();
-    blankProjectType();
 });
 
 })();

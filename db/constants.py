@@ -9,7 +9,7 @@ GENDERS = ['Male','Female','Other', 'I choose not to specify']
 STANDINGS = ['Freshman','Sophomore','Junior','Senior','Grad','HS']
 SHIRTS = ['XS','S','M','L','XL','XXL']
 FOODS = ['Vegetarian','Vegan','Gluten Free','Lactose Free']
-PROJECTS = ['','Software Hack','Hardware Hack','Unsure']
+PROJECTS = ['Software Hack','Hardware Hack','Unsure']
 
 RESUME_MAX_SIZE = 2097152 # in Bytes = 2 mb
 
