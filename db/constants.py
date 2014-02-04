@@ -8,7 +8,7 @@ EMAIL_MATCH = r"^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$"
 GENDERS = ['Male','Female','Other', 'I choose not to specify']
 STANDINGS = ['Freshman','Sophomore','Junior','Senior','Grad','HS']
 SHIRTS = ['XS','S','M','L','XL','XXL']
-FOODS = ['Vegetarian','Vegan','Gluten Free','Lactose Free']
+FOODS = ['Vegetarian','Vegan','Gluten Free','Lactose Free', 'Other']
 PROJECTS = ['Software Hack','Hardware Hack','Unsure']
 
 RESUME_MAX_SIZE = 2097152 # in Bytes = 2 mb
