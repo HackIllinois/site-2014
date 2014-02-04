@@ -1,3 +1,5 @@
+(function(){
+
 function CheckOther(val){
     var d = document.getElementById('schoolOtherDiv');
     if(val == 'Other')
@@ -75,3 +77,4 @@ $(document).ready(function() {
     blankProjectType();
 });
 
+})();
