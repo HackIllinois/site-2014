@@ -7,9 +7,9 @@ function CheckOther(val){
 }
 
 function CheckFile(val){
-    type = val.files[0].type;
-    size = val.files[0].size;
-    length = val.files.length;
+    var type = val.files[0].type;
+    var size = val.files[0].size;
+    var length = val.files.length;
     var fail = false;
 	var error = "Resume <font color=\"red\">";
 	if(length < 1)
@@ -32,7 +32,7 @@ function CheckFile(val){
         fail = true;
         error = error + "<br>Resume must be less than 2 MB";
     }
-	error = error + "</font>"
+	error = error + "</font>";
     if(fail)
 	{
 		var oldFile = document.getElementById("resume");
@@ -58,7 +58,7 @@ function setupSchoolFiller() {
         getSchool();
     });
 
-    if ($('#email').val() != '') {
+    if ($('#email').val() !== '') {
         getSchool();
     }
 }
