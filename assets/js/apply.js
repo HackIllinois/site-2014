@@ -12,11 +12,6 @@ function CheckFile(val){
     var length = val.files.length;
     var fail = false;
 	var error = "Resume <font color=\"red\">";
-	if(length < 1)
-    {
-		fail = true;
-        error = error + "<br>Please upload a file";
-	}
     if(length > 1)
     {
         fail = true;

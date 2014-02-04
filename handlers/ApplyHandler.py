@@ -30,7 +30,7 @@ class ApplyHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandle
             data['foods'] = [ {'name':f} for f in constants.FOODS ]
             data['projects'] = [ {'name':p} for p in constants.PROJECTS ]
 
-            data['resumeRequired'] = True
+            data['resumeRequired'] = False
 
             data['upload_url'] = upload_url_rpc.get_result()
             self.render("apply.html", data=data)
@@ -66,13 +66,19 @@ class ApplyHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandle
             x['linkedin'] = self.request.get('linkedin')
             x['github'] = self.request.get('github')
 
-            file_info = self.get_file_infos(field_name='resume')[0]
-
-            x['resume'] = models.Resume(contentType=file_info.content_type,
+            file_info = self.get_file_infos(field_name='resume')
+            valid = True # A resume was uploaded, but it wasn't what we want
+            x['resume'] = None
+            if file_info:
+               if len(file_info) == 1 and file_info[0].file_name.endswith(".pdf"):
+                   file_info = file_info[0]
+                   x['resume'] = models.Resume(contentType=file_info.content_type,
                                         creationTime=file_info.creation,
                                         fileName=file_info.filename,
                                         size=file_info.size,
                                         gsObjectName=file_info.gs_object_name)
+               else:
+                   valid = False
 
             x['shirt'] = self.request.get('shirt')
             x['food'] = self.request.get('food')
@@ -85,10 +91,7 @@ class ApplyHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandle
             x['recruiters'] = (self.request.get('recruiters') == 'True')
             x['picture'] = (self.request.get('picture') == 'True')
             x['termsOfService'] = (self.request.get('termsOfService') == 'True')
-            x['approved'] = 'NA'
-
-
-            valid = True
+            x['approved'] = 'NA'            
 
             # Check required fields filled in
             for field in constants.REQUIRED_FIELDS:

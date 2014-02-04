@@ -95,13 +95,17 @@ class ProfileHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHand
             x['github'] = self.request.get('github')
 
             file_info = self.get_file_infos(field_name='resume')
+            valid = True
             if file_info:
-                file_info = file_info[0]
-                x['resume'] = models.Resume(contentType=file_info.content_type,
+                if len(file_info) == 1 and file_info[0].file_name.endswith(".pdf"):
+                    file_info = file_info[0]
+                    x['resume'] = models.Resume(contentType=file_info.content_type,
                                             creationTime=file_info.creation,
                                             fileName=file_info.filename,
                                             size=file_info.size,
                                             gsObjectName=file_info.gs_object_name)
+                else:
+                    valid = False # A resume was uploaded, but it wasn't what we want
 
             x['shirt'] = self.request.get('shirt')
             x['food'] = self.request.get('food')
@@ -115,9 +119,6 @@ class ProfileHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHand
             x['picture'] = (self.request.get('picture') == 'True')
             x['termsOfService'] = (self.request.get('termsOfService') == 'True')
             x['approved'] = 'NA'
-
-
-            valid = True
 
             # Check if email is valid (basic)
             if valid and not re.match(constants.EMAIL_MATCH, x['email']):
@@ -142,7 +143,7 @@ class ProfileHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHand
                 valid = False
 
             # Check resume size
-            if valid and x['resume'] and x['resume'].size <= constants.RESUME_MAX_SIZE:
+            if valid and x['resume'] and x['resume'].size <= constants.RESUME_MAX_SIZE and x['resume']:
                 valid = False
 
             # Remove any keys that are not updated
