@@ -13,7 +13,7 @@ class ProfileHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHand
         if user:
             db_user = models.search_database(models.Attendee, {'userId':user.user_id()}).get()
             if db_user is None:
-                return self.redirect('/register')
+                return self.redirect('/apply')
 
             upload_url_rpc = blobstore.create_upload_url_async('/profile', gs_bucket_name=constants.BUCKET)
 
@@ -62,7 +62,7 @@ class ProfileHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHand
             data['resumeRequired'] = False
 
             data['upload_url'] = upload_url_rpc.get_result()
-            self.render("register.html", data=data)
+            self.render("apply.html", data=data)
 
         else:
             # User not logged in (shouldn't happen)
@@ -165,7 +165,7 @@ class ProfileHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHand
         else:
             # User not logged in (shouldn't happen)
             # TODO: redirect to error handler
-            self.write('ERROR')
+            self.write('ERROR - Unexpected profile login')
 
 
 class UpdateCompleteHandler(MainHandler.Handler):
@@ -179,7 +179,7 @@ class MyResumeHandler(MainHandler.Handler, blobstore_handlers.BlobstoreDownloadH
         if user:
             db_user = models.search_database(models.Attendee, {'userId':user.user_id()}).get()
             if not db_user:
-                return self.redirect('/register')
+                return self.redirect('/apply')
 
             # https://developers.google.com/appengine/docs/python/blobstore/#Python_Using_the_Blobstore_API_with_Google_Cloud_Storage
             resource = str(urllib.unquote(db_user.resume.gsObjectName))
@@ -188,4 +188,4 @@ class MyResumeHandler(MainHandler.Handler, blobstore_handlers.BlobstoreDownloadH
         else:
             # User not logged in (shouldn't happen)
             # TODO: redirect to error handler
-            self.write('ERROR')
+            self.write('ERROR - Unexpected resume login')

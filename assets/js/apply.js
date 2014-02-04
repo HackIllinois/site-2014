@@ -51,39 +51,6 @@ function CheckFile(val){
 }
 
 /**
- * Setup the school autofiller
- */
-function setupSchoolFiller() {
-    $('#email').focusout(function() {
-        getSchool();
-    });
-
-    if ($('#email').val() !== '') {
-        getSchool();
-    }
-}
-
-/**
- * Fetch the school for the value of the email field
- */
-function getSchool() {
-    $.get('/register/schoolcheck?email=' + $('#email').val(), function(data) {
-        if (data === '--') {
-            // We don't have a school for the email or something went wrong
-            $('#school').attr('disabled', false).val('');
-			$('#school').attr('placeholder', "Please enter your school's name");
-        }else if (data === '-') {
-            // Invalid email format
-            $('#school').attr('disabled', true).val('');
-			$('#school').attr('placeholder', 'Please enter your email address above.');
-        }else {
-            // Fill in the school we received from the endpoint
-            $('#school').attr('disabled', true).val(data);
-        }
-    });
-}
-
-/**
  * Show/hide a textarea based on the food choice
  */
 function setupFoodOtherOption() {
@@ -109,7 +76,6 @@ function blankProjectType() {
  * Initialize/setup
  */
 $(document).ready(function() {
-    setupSchoolFiller();
     setupFoodOtherOption();
     blankProjectType();
 });
