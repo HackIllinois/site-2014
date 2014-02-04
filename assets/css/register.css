@@ -60,6 +60,18 @@ and (max-width : 768px) {
     }
 }
 
+@media only screen
+and (max-width : 500px) {
+    h2:before,
+    h2:after {
+        display: none;
+    }
+    .bg-stars {
+        background-color: #113344;
+        background-image: none;
+    }
+}
+
 body h2 {
     color: #fff;
     margin-top: 50px;
