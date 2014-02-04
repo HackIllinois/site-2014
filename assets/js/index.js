@@ -1,24 +1,10 @@
 $( document ).ready(function() {
-    $(".reg-form").submit(function () {
-        var email = $("input.reg-email").val();
-        var email_check = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,6}$/i;
-        if (!email_check.test(email)) {
-            $('.reg-email').addClass("email-error");
-            return false;
-        }
-        else {
-            $.ajax({
-                type: "POST",
-                url: "",
-                data: email,
-                success: function () {
-                    $(".reg-form").fadeOut("slow", function () {
-                        $(".reg-success").fadeIn("slow");
-                    });
-                }
-            });
-            return false;
-        }
+    $("#apply-btn-slide").on('click', function(){
+        $("p.apply-info").slideDown(function(){
+            $("a.apply-btn").attr("href","/register");    
+        });
+        $("#apply-btn-slide").text("continue");
+        $("#apply-btn-slide").css('padding-left','96px');
+        $("#apply-btn-slide").css('padding-right','96px');        
     });
 });
-

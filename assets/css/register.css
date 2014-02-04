@@ -94,6 +94,7 @@ span.help-block {
 }
 #foodInfo {
     display:none;
+    margin-top: 20px;
 }
 
 .btn-hackil {

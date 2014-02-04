@@ -171,8 +171,37 @@ a.apply-btn {
 	-webkit-appearance: none;
 	-moz-appearance: none;
 	text-decoration: none;
+	border: 1px solid #ef3e36;
 	text-transform: uppercase;
 
+}
+
+p.apply-info {
+	font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+	font-size: 12px;
+	background: rgba(255,255,255,0.8);
+	color: #333;
+	max-width: 245px;
+	width: 100%;
+	margin: 0 auto;
+
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	border: 1px solid #ef3e36;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	text-decoration: none;
+	padding: 0;
+	padding-left: 10px;
+	padding-right: 10px;
+	padding-top: 10px;
+	margin-bottom: 22px;
+	display: none;
+	padding-bottom: 10px;
+}
+
+.squish {
+	width: 90%;
 }
 
 a.apply-btn:visited, a.apply-btn:active, a.apply-btn:hover {
