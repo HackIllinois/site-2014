@@ -36,16 +36,18 @@ input[type="text"], input[type="email"], input[type="url"], .input-group-addon, 
     color: #fff;
 }
 
-input[type="text"]:focus, input[type="email"]:focus, input[type="url"]:focus, #school:focus, form div.form-group textarea.form-control:focus, form div.form-group select {
+input[type="text"]:focus, input[type="email"]:focus, input[type="url"]:focus, #school:focus, form div.form-group textarea.form-control:focus, form div.form-group select:focus {
     border: 1px solid #fff;
     outline: none;
 }
-
 
 form div.form-group select {
     width: 100%;
 }
 
+form div.form-group option {
+    color: #000;
+}
 
 .regform-container {
     width: 70%;

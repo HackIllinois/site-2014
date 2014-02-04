@@ -131,7 +131,7 @@
 				<!-- Multiple Radios (inline) -->
 				<div class="form-group">
 
-					<label class="control-label col-sm-3" for="food">Dietary Restrictions</label>
+					<label class="control-label col-sm-3" for="food">Dietary Restrictions<span class="reqd"> *</span></label>
 					<div class="controls col-sm-9">
                         {% for f in data.foods %}
                         <label class="radio-inline" for="food-{{ loop.index0 }}">
