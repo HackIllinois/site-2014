@@ -23,7 +23,7 @@ class ApplyHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandle
             data['title'] = 'Registration'
             data['username'] = user.nickname()
             data['logoutUrl'] = users.create_logout_url('/apply')
-            data['email'] = user.email()
+            # data['email'] = user.email() # Uncomment to autofill email
             data['genders'] = [ {'name':g} for g in constants.GENDERS ]
             data['years'] = [ {'name':y} for y in constants.STANDINGS ]
             data['shirts'] = [ {'name':s} for s in constants.SHIRTS ]
@@ -89,8 +89,8 @@ class ApplyHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandle
             x['projectType'] = self.request.get('projectType')
             x['userNotes'] = self.request.get('userNotes')
 
-            x['recruiters'] = (self.request.get('recruiters') == 'True')
-            x['picture'] = (self.request.get('picture') == 'True')
+            # x['recruiters'] = (self.request.get('recruiters') == 'True')
+            # x['picture'] = (self.request.get('picture') == 'True')
             x['termsOfService'] = (self.request.get('termsOfService') == 'True')
             x['approved'] = 'NA'
 
@@ -118,8 +118,8 @@ class ApplyHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandle
                 valid = False
 
             # Make sure required boxes checked
-            if valid and not x['picture']:
-                valid = False
+            # if valid and not x['picture']:
+            #     valid = False
             if valid and not x['termsOfService']:
                 valid = False
 
@@ -165,7 +165,6 @@ class SchoolCheckHandler(MainHandler.Handler):
         domain = domain[-2] + '.' + domain[-1]
 
         schools = constants.SCHOOLS
-        # schools['illinois.edu'] = 'University of Illinois at Urbana-Champaign'
 
         if domain in schools:
             return self.write(schools[domain])
