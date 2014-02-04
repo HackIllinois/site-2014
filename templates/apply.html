@@ -135,7 +135,7 @@
 					<div class="controls col-sm-9">
                         {% for f in data.foods %}
                         <label class="radio-inline" for="food-{{ loop.index0 }}">
-                        	<input type="radio" name="food" id="food-{{ loop.index0 }}" value="{{ f.name }}" required="required" {% if f.checked %}checked{% endif %}>
+                        	<input type="checkbox" name="food" id="food-{{ loop.index0 }}" value="{{ f.name }}" required="required" {% if f.checked %}checked{% endif %}>
                             {{ f.name }}
                         </label>
                         {% endfor %}
