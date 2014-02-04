@@ -91,9 +91,9 @@ function setupFoodOtherOption() {
         var val = $('input[name="food"]:radio:checked').val();
 
         if (val === 'Other') {
-            $('#foodInfo').show().focus();
+            $('#foodInfo').slideDown("fast").focus();
         } else {
-            $('#foodInfo').hide();
+            $('#foodInfo').slideUp("fast");
         }
     });
 }

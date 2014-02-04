@@ -82,17 +82,6 @@
 					</div>
 				</div>
 
-				<!-- Textarea -->
-				<div class="form-group">
-					<label class="control-label col-sm-3" for="experience">Previous Experience<span class="reqd"> *</span></label>
-					<div class="controls col-sm-9">
-
-						<textarea id="experience" name="experience" class="form-control" rows="5" required="required"></textarea>
-						<span class="help-block">Have you participated in other hackathons? Won any awards? Done any cool projects?
-						<br>
-						(If not, that's okay! We're just curious.)</span>
-					</div>
-				</div>
 
 				<!-- File Button -->
 				<div class="form-group">
@@ -156,7 +145,7 @@
 				</div>
 
 				<!-- Textarea -->
-				<div class="form-group">
+				<!--div class="form-group">
 					<label class="control-label col-sm-3" for="team">Team</label>
 					<div class="controls col-sm-9">
 
@@ -164,7 +153,7 @@
 						<span class="help-block">If you have any teammates, or people that you'd like to work with, please enter their email addresses.</span>
 
 					</div>
-				</div>
+				</div-->
 
 				<div class="form-group">
 					<label class="control-label col-sm-3" for="project-type">Project Type</label>
@@ -180,13 +169,25 @@
 
 				<!-- Textarea -->
 				<div class="form-group">
+					<label class="control-label col-sm-3" for="experience">Previous Experience<span class="reqd"> *</span></label>
+					<div class="controls col-sm-9">
+
+						<textarea id="experience" name="experience" class="form-control" rows="5" required="required"></textarea>
+						<span class="help-block">Have you participated in other hackathons? Won any awards? Done any cool projects?
+						<br>
+						(If not, that's okay! We're just curious)</span>
+					</div>
+				</div>
+
+				<!-- Textarea -->
+				<!--div class="form-group">
 					<label class="control-label col-sm-3" for="team">Additional Notes</label>
 					<div class="controls col-sm-9">
 						<textarea id="userNotes" name="userNotes" class="form-control" rows="3">{{ data.userNotes }}</textarea>
 						<span class="help-block">Anything else we should know?</span>
 
 					</div>
-				</div>
+				</div-->
 
 
 				<!-- Multiple Checkboxes (inline) -->
@@ -195,11 +196,8 @@
 					<div class="controls col-sm-9">
 						<label class="checkbox" for="termsOfService-0">
 
-							<input type="checkbox" name="termsOfService" id="termsOfService-0" value="True" required="required">
-							I will follow the HackIllinois <a class="rules-link" href="/rules">rules</a>, and comply with the <a class="rules-link" href="/code-of-conduct">code of conduct</a>.
-
 							<input type="checkbox" name="termsOfService" id="termsOfService-0" value="True" required="required" {% if data.termsOfService %}checked{% endif %}>
-							I will follow the HackIllinois <a class="rules-link" href="/rules" target="_blank">rules</a>.
+							I will follow the HackIllinois <a class="rules-link" href="/rules">rules</a>, and comply with the <a class="rules-link" href="/code-of-conduct">code of conduct</a>.
 						</label>
 					</div>
 				</div>
@@ -217,6 +215,7 @@
 
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 <script src="/lib/bootstrap/js/bootstrap.min.js"></script>
+<script src="/js/jquery.min.js"></script>
 <script src="/js/registration-ui.js"></script>
 <script src="/js/register.js"></script>
 {% endblock body %}
