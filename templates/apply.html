@@ -134,7 +134,7 @@
 					<label class="control-label col-sm-3" for="food">Dietary Restrictions</label>
 					<div class="controls col-sm-9">
                         {% for f in data.foods %}
-                        <label class="radio-inline" for="food-{{ loop.index0 }}">
+                        <label class="food-options" for="food-{{ loop.index0 }}">
                         	<input type="checkbox" name="food" id="food-{{ loop.index0 }}" value="{{ f.name }}" required="required" {% if f.checked %}checked{% endif %}>
                             {{ f.name }}
                         </label>

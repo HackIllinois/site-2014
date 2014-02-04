@@ -146,4 +146,14 @@ span.reqd {
 .rules-link:active {
     color: #ef3e36;
 }
+
+
+
+input[name="food"]{
+    margin: 0 5px;
+}
+
+
+.controls label[for="food-0"] > *{
+    margin-left: 0;
 }
