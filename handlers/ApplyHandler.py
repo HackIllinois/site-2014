@@ -39,8 +39,7 @@ class ApplyHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandle
             # User not logged in (shouldn't happen)
             # TODO: redirect to error handler
 
-            # self.write('ERROR - Apply logged in problem')
-            return self.redirect('/')
+            self.write('ERROR - Apply logged in problem')
 
     def post(self):
         user = users.get_current_user()
