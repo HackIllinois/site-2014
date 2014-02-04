@@ -13,7 +13,7 @@ from ProfileHandler import ProfileHandler, MyResumeHandler, UpdateCompleteHandle
 handlers = [
     ('/', IndexHandler),
     ('/emailbackup', EmailBackupHandler),
-    ('/apply', ApplyHandler),
+    ('/apply/?', ApplyHandler),
     ('/apply/complete', ApplyCompleteHandler),
     ('/apply/schoolcheck', SchoolCheckHandler),
     ('/rules', RulesHandler),
@@ -21,7 +21,7 @@ handlers = [
     ('/signupcount', SignupCountHandler),
     ('/travel', TravelHandler),
     ('/tropo', TropoHandler),
-    ('/profile', ProfileHandler),
+    ('/profile/?', ProfileHandler),
     ('/profile/updated', UpdateCompleteHandler),
     ('/profile/myresume', MyResumeHandler),
     ('/code-of-conduct', CoCHandler),

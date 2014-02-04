@@ -97,7 +97,7 @@ class ProfileHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHand
             file_info = self.get_file_infos(field_name='resume')
             valid = True
             if file_info:
-                if len(file_info) == 1 and file_info[0].file_name.endswith(".pdf"):
+                if len(file_info) == 1 and file_info[0].filename.endswith(".pdf"):
                     file_info = file_info[0]
                     x['resume'] = models.Resume(contentType=file_info.content_type,
                                             creationTime=file_info.creation,

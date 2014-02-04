@@ -70,7 +70,7 @@ class ApplyHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandle
             valid = True # A resume was uploaded, but it wasn't what we want
             x['resume'] = None
             if file_info:
-               if len(file_info) == 1 and file_info[0].file_name.endswith(".pdf"):
+               if len(file_info) == 1 and file_info[0].filename.endswith(".pdf"):
                    file_info = file_info[0]
                    x['resume'] = models.Resume(contentType=file_info.content_type,
                                         creationTime=file_info.creation,
@@ -91,7 +91,7 @@ class ApplyHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandle
             x['recruiters'] = (self.request.get('recruiters') == 'True')
             x['picture'] = (self.request.get('picture') == 'True')
             x['termsOfService'] = (self.request.get('termsOfService') == 'True')
-            x['approved'] = 'NA'            
+            x['approved'] = 'NA'
 
             # Check required fields filled in
             for field in constants.REQUIRED_FIELDS:
