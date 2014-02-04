@@ -98,8 +98,11 @@
 				<div class="form-group">
 					<label class="control-label col-sm-3" for="linkedin">LinkedIn</label>
 					<div class="controls col-sm-9">
-						<input id="linkedin" name="linkedin" type="url" placeholder="URL of LinkedIn profile" class="form-control" value="{{ data.linkedin }}" onclick="this.select();">
-					</div>
+                        <div class="input-group">
+                        <span class="input-group-addon">https://linkedin.com/</span>
+						<input id="linkedin" name="linkedin" type="url" placeholder="LinkedIn profile URL" class="form-control" value="{{ data.linkedin }}" onclick="this.select();">
+					    </div>
+                    </div>
 				</div>
 
 				<!-- Prepended text-->
@@ -133,12 +136,15 @@
 
 					<label class="control-label col-sm-3" for="food">Dietary Restrictions</label>
 					<div class="controls col-sm-9">
+
                         {% for f in data.foods %}
                         <label class="food-options" for="food-{{ loop.index0 }}">
-                        	<input type="checkbox" name="food" id="food-{{ loop.index0 }}" value="{{ f.name }}" required="required" {% if f.checked %}checked{% endif %}>
+                        	<input type="checkbox" name="food" id="food-{{ loop.index0 }}" value="{{ f.name }} {% if f.checked %}checked{% endif %}"/>
                             {{ f.name }}
+
                         </label>
                         {% endfor %}
+
 						<textarea id="foodInfo" name="foodInfo" class="form-control" rows="3" placeholder="Need special food arrangements? Let us know!">{{ data.foodInfo }}</textarea>
 
 					</div>
