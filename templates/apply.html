@@ -87,6 +87,7 @@
 				<div class="form-group">
 					<label class="control-label col-sm-3" for="resume">Resume</label>
 					<div class="controls col-sm-9">
+						{% if data.hasResume %}<a href="/profile/myresume" target="_blank">View Uploaded Resume</a><br> {% endif %}
 						<input id="resume" name="resume" type="file" accept="application/pdf" {% if data.resumeRequired %}required="required"{% endif %}>
 						<!-- TODO: Add link to old resume -->
 						<span class="help-block">Please upload your resume.</span>

@@ -31,6 +31,7 @@ class ApplyHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandle
             data['projects'] = [ {'name':p} for p in constants.PROJECTS ]
 
             data['resumeRequired'] = False
+            data['hasResume'] = False
 
             data['upload_url'] = upload_url_rpc.get_result()
             self.render("apply.html", data=data)
