@@ -1,11 +1,11 @@
 import MainHandler
-import cgi, urllib, logging, re
+import urllib, logging, re
 import db.models as models
 from db import constants
 from google.appengine.api import users
 from google.appengine.ext import blobstore
 from google.appengine.ext.webapp import blobstore_handlers
-
+import json
 
 class ApplyHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandler):
     """ Handler for application page.
@@ -173,3 +173,10 @@ class SchoolCheckHandler(MainHandler.Handler):
             return self.write(schools[domain])
         else:
             return self.write('--')
+
+class SchoolListHandler(MainHandler.Handler):
+    def get(self):
+        schools = constants.SCHOOLS
+        school_list = list(set([schools[i] for i in schools]))
+        out_list = [{'name':school} for school in school_list]
+        self.write(json.dumps({'schools': out_list}))

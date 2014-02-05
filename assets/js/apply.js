@@ -63,7 +63,7 @@ function setupResumePrompt(){
  * @param  {boolean} shouldFocus Should the field be focused if it's shown
  */
 function updateFoodOtherTextarea(shouldFocus) {
-    if ($('input[value="Other"][name="food"]').attr('checked')) {
+    if ($('input[value="Other"][name="food"]').prop('checked')) {
         $('#foodInfo').slideDown("fast");
         if (shouldFocus) {
             $('#foodInfo').focus();
@@ -91,6 +91,40 @@ function possiblySelectFirstField() {
     }
 }
 
+function setupSchoolInputField() {
+    var school_data = null;
+    $('#school').selectize({
+        create: true,
+        openOnFocus: true,
+        maxItems: 1,
+        preload: true,
+        'valueField': 'name',
+        'labelField': 'name',
+        'searchField': ['name'],
+        load: function(query, callback) {
+            if (school_data !== null) {
+                callback(school_data);
+                return;
+            }
+
+            $.ajax({
+                dataType: 'json',
+                url: '/apply/schoollist',
+                type: 'GET',
+                error: function() {
+                    console.log("error");
+                    school_data = null;
+                    callback();
+                },
+                success: function(res) {
+                    school_data = res.schools;
+                    callback(res.schools);
+                }
+            });
+        }
+    });
+}
+
 /**
  * Initialize/setup
  */
@@ -98,6 +132,7 @@ $(document).ready(function() {
     setupFoodOtherOption();
     setupResumePrompt();
     possiblySelectFirstField();
+    setupSchoolInputField();
 });
 
 })();
