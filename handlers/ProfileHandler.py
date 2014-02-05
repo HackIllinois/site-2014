@@ -61,6 +61,8 @@ class ProfileHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHand
 
             data['resumeRequired'] = False
 
+            data['hasResume'] = (db_user.resume != None)
+
             data['upload_url'] = upload_url_rpc.get_result()
             self.render("apply.html", data=data)
 

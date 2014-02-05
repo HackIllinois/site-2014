@@ -51,10 +51,8 @@ function CheckFile(val){
  * Show/hide a textarea based on the food choice
  */
 function setupFoodOtherOption() {
-    $('input[name="food"]:radio').change(function() {
-        var val = $('input[name="food"]:radio:checked').val();
-
-        if (val === 'Other') {
+    $('input[value="Other"][name="food"]').change(function() {
+        if ($('input[value="Other"][name="food"]').attr('checked')) {
             $('#foodInfo').slideDown("fast").focus();
         } else {
             $('#foodInfo').slideUp("fast");
@@ -63,18 +61,10 @@ function setupFoodOtherOption() {
 }
 
 /**
- * Select a nonexistent blank item for project-type
- */
-function blankProjectType() {
-    $('select[name="projectType"]').prop('selectedIndex', -1);
-}
-
-/**
  * Initialize/setup
  */
 $(document).ready(function() {
     setupFoodOtherOption();
-    blankProjectType();
 });
 
 })();
