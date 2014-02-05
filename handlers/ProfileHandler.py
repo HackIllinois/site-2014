@@ -18,6 +18,7 @@ class ProfileHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHand
             upload_url_rpc = blobstore.create_upload_url_async('/profile', gs_bucket_name=constants.BUCKET)
 
             data = {}
+            data['isProfile'] = True
             data['title'] = 'Profile'
             data['username'] = user.nickname()
             data['logoutUrl'] = users.create_logout_url('/')

@@ -23,7 +23,7 @@ class ApplyHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandle
             data['title'] = 'Registration'
             data['username'] = user.nickname()
             data['logoutUrl'] = users.create_logout_url('/apply')
-            # data['email'] = user.email() # Uncomment to autofill email
+            data['email'] = user.email() # Uncomment to autofill email
             data['genders'] = [ {'name':g} for g in constants.GENDERS ]
             data['years'] = [ {'name':y} for y in constants.STANDINGS ]
             data['shirts'] = [ {'name':s} for s in constants.SHIRTS ]
