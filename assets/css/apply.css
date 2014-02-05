@@ -95,6 +95,11 @@ p.loggedin {
     margin-bottom: 55px;
 }
 
+.selectize-input {
+    background-color: rgba(255,255,255,0.1);
+    color: #fff;
+}
+
 a.view-resume {
     color: #ef3e36;
     text-decoration: underline;
