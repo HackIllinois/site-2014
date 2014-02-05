@@ -46,7 +46,7 @@
 					<label class="control-label col-sm-3" for="email">Email<span class="reqd"> *</span></label>
 
 					<div class="controls col-sm-9">
-						<input id="email" name="email" type="email" placeholder=".edu Email Address" class="form-control" required="required" value="{{ data.email }}" onclick="this.select();">
+						<input id="email" name="email" type="email" placeholder="Email Address" class="form-control" required="required" value="{{ data.email }}" onclick="this.select();">
 					</div>
 				</div>
 
@@ -206,7 +206,7 @@
 					<div class="controls col-sm-9">
 						<label class="checkbox" for="termsOfService-0">
 
-							<input type="checkbox" name="termsOfService" id="termsOfService-0" value="True" required="required" {% if data.termsOfService %}checked{% endif %}>
+							<input type="checkbox" name="termsOfService" id="termsOfService-0" value="True" required="required" {% if data.termsOfService %}checked{% endif %} {% if data.isProfile %} disabled {% endif %}>
 							I will follow the HackIllinois
               <a class="rules-link" href="/rules" target = "_blank">rules</a>, and comply with the
               <a class="rules-link" href="/code-of-conduct" target="_blank" >code of conduct</a>.

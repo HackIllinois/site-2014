@@ -58,14 +58,37 @@ function setupResumePrompt(){
     });
 }
 
+/**
+ * Show the more food info field if other is checked, hide if not
+ * @param  {boolean} shouldFocus Should the field be focused if it's shown
+ */
+function updateFoodOtherTextarea(shouldFocus) {
+    if ($('input[value="Other"][name="food"]').attr('checked')) {
+        $('#foodInfo').slideDown("fast");
+        if (shouldFocus) {
+            $('#foodInfo').focus();
+        }
+    } else {
+        $('#foodInfo').slideUp("fast");
+    }
+}
+
 function setupFoodOtherOption() {
     $('input[value="Other"][name="food"]').change(function() {
-        if ($('input[value="Other"][name="food"]').attr('checked')) {
-            $('#foodInfo').slideDown("fast").focus();
-        } else {
-            $('#foodInfo').slideUp("fast");
-        }
+        updateFoodOtherTextarea(true);
     });
+
+    updateFoodOtherTextarea(false);
+}
+
+/**
+ * Will autoselect the first name field if nothing is in it (basically if we're on /apply)
+ */
+function possiblySelectFirstField() {
+    var val = $('input[name="nameFirst"]').val();
+    if (val === '') {
+        $('input[name="nameFirst"]').select();
+    }
 }
 
 /**
@@ -74,6 +97,7 @@ function setupFoodOtherOption() {
 $(document).ready(function() {
     setupFoodOtherOption();
     setupResumePrompt();
+    possiblySelectFirstField();
 });
 
 })();
