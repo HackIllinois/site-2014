@@ -23,14 +23,15 @@ class ApplyHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandle
             data['title'] = 'Registration'
             data['username'] = user.nickname()
             data['logoutUrl'] = users.create_logout_url('/apply')
-            data['email'] = user.email()
+            # data['email'] = user.email() # Uncomment to autofill email
             data['genders'] = [ {'name':g} for g in constants.GENDERS ]
             data['years'] = [ {'name':y} for y in constants.STANDINGS ]
             data['shirts'] = [ {'name':s} for s in constants.SHIRTS ]
             data['foods'] = [ {'name':f} for f in constants.FOODS ]
             data['projects'] = [ {'name':p} for p in constants.PROJECTS ]
 
-            data['resumeRequired'] = True
+            data['resumeRequired'] = False
+            data['hasResume'] = False
 
             data['upload_url'] = upload_url_rpc.get_result()
             self.render("apply.html", data=data)
@@ -66,35 +67,41 @@ class ApplyHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandle
             x['linkedin'] = self.request.get('linkedin')
             x['github'] = self.request.get('github')
 
-            file_info = self.get_file_infos(field_name='resume')[0]
-
-            x['resume'] = models.Resume(contentType=file_info.content_type,
+            file_info = self.get_file_infos(field_name='resume')
+            valid = True # A resume was uploaded, but it wasn't what we want
+            x['resume'] = None
+            if file_info:
+               if len(file_info) == 1 and file_info[0].filename.endswith(".pdf"):
+                   file_info = file_info[0]
+                   x['resume'] = models.Resume(contentType=file_info.content_type,
                                         creationTime=file_info.creation,
                                         fileName=file_info.filename,
                                         size=file_info.size,
                                         gsObjectName=file_info.gs_object_name)
+               else:
+                   valid = False
 
             x['shirt'] = self.request.get('shirt')
-            x['food'] = self.request.get('food')
+            foods = self.request.get_all('food')
+            x['food'] = ','.join(foods)
             x['foodInfo'] = self.request.get('foodInfo')
 
             x['teamMembers'] = self.request.get('team')
             x['projectType'] = self.request.get('projectType')
             x['userNotes'] = self.request.get('userNotes')
 
-            x['recruiters'] = (self.request.get('recruiters') == 'True')
-            x['picture'] = (self.request.get('picture') == 'True')
+            # x['recruiters'] = (self.request.get('recruiters') == 'True')
+            # x['picture'] = (self.request.get('picture') == 'True')
             x['termsOfService'] = (self.request.get('termsOfService') == 'True')
             x['approved'] = 'NA'
 
-
-            valid = True
-
             # Check required fields filled in
             for field in constants.REQUIRED_FIELDS:
-                if x[field] is None:
+                if valid and field not in x:
                     valid = False
-                if isinstance(field, str) and x[field] == '':
+                if valid and x[field] is None:
+                    valid = False
+                if valid and isinstance(field, str) and x[field] == '':
                     valid = False
 
             # Check if email is valid (basic)
@@ -114,8 +121,8 @@ class ApplyHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandle
                 valid = False
 
             # Make sure required boxes checked
-            if valid and not x['picture']:
-                valid = False
+            # if valid and not x['picture']:
+            #     valid = False
             if valid and not x['termsOfService']:
                 valid = False
 
@@ -161,7 +168,6 @@ class SchoolCheckHandler(MainHandler.Handler):
         domain = domain[-2] + '.' + domain[-1]
 
         schools = constants.SCHOOLS
-        # schools['illinois.edu'] = 'University of Illinois at Urbana-Champaign'
 
         if domain in schools:
             return self.write(schools[domain])

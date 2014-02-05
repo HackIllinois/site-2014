@@ -13,8 +13,11 @@
 	</div>
 
 	<div class="container">
-		<img class="logo-main-svg header img-responsive center-block" src="/img/hackillinois_logo.svg">
-		<h2 class="info-text t-centered">Application</h2>
+    <a href="/">
+        <img class="logo-main-svg header img-responsive center-block" src="/img/hackillinois_logo.svg"/>
+    </a>
+
+    <h2 class="info-text t-centered">Application</h2>
 		<div>
 				<p class="loggedin">Hello {{ data.username }}! <a class="rules-link" href="{{ data.logoutUrl }}">Not you</a>?</p>
 		</div>
@@ -87,9 +90,10 @@
 				<div class="form-group">
 					<label class="control-label col-sm-3" for="resume">Resume</label>
 					<div class="controls col-sm-9">
+						{% if data.hasResume %}<a href="/profile/myresume" target="_blank">View Uploaded Resume</a><br> {% endif %}
 						<input id="resume" name="resume" type="file" accept="application/pdf" {% if data.resumeRequired %}required="required"{% endif %}>
 						<!-- TODO: Add link to old resume -->
-						<span class="help-block">Please upload your resume.</span>
+						<span id="resume-prompt" class="help-block">Please upload your resume.</span>
 
 					</div>
 				</div>
@@ -98,8 +102,11 @@
 				<div class="form-group">
 					<label class="control-label col-sm-3" for="linkedin">LinkedIn</label>
 					<div class="controls col-sm-9">
-						<input id="linkedin" name="linkedin" type="url" placeholder="URL of LinkedIn profile" class="form-control" value="{{ data.linkedin }}" onclick="this.select();">
-					</div>
+                        <div class="input-group">
+                        <span class="input-group-addon">https://linkedin.com/in/</span>
+						<input id="linkedin" name="linkedin" type="text" placeholder="LinkedIn profile URL" class="form-control" value="{{ data.linkedin }}" onclick="this.select();">
+					    </div>
+                    </div>
 				</div>
 
 				<!-- Prepended text-->
@@ -131,14 +138,17 @@
 				<!-- Multiple Radios (inline) -->
 				<div class="form-group">
 
-					<label class="control-label col-sm-3" for="food">Dietary Restrictions</label>
+					<label class="control-label col-sm-3" for="food">Dietary Restrictions<span class="reqd"> *</span></label>
 					<div class="controls col-sm-9">
+
                         {% for f in data.foods %}
-                        <label class="radio-inline" for="food-{{ loop.index0 }}">
-                        	<input type="radio" name="food" id="food-{{ loop.index0 }}" value="{{ f.name }}" required="required" {% if f.checked %}checked{% endif %}>
+                        <label class="food-options" for="food-{{ loop.index0 }}">
+                        	<input type="checkbox" name="food" id="food-{{ loop.index0 }}" value="{{ f.name }}" {% if f.checked %}checked{% endif %}/>
                             {{ f.name }}
+
                         </label>
                         {% endfor %}
+
 						<textarea id="foodInfo" name="foodInfo" class="form-control" rows="3" placeholder="Need special food arrangements? Let us know!">{{ data.foodInfo }}</textarea>
 
 					</div>
@@ -156,14 +166,14 @@
 				</div-->
 
 				<div class="form-group">
-					<label class="control-label col-sm-3" for="project-type">Project Type</label>
+					<label class="control-label col-sm-3" for="project-type">Project Type<span class="reqd"> *</span></label>
 					<div class="controls col-sm-9">
 						<select name="projectType">
                             {% for p in data.projects %}
                             <option {% if p.selected %}selected=""{% endif %}>{{ p.name }}</option>
                             {% endfor %}
 						</select>
-						<span class="help-block">It's okay if this changes!</span>
+						<span class="help-block">What might you want to work on? It's okay if this changes!</span>
 					</div>
 				</div>
 
@@ -172,7 +182,7 @@
 					<label class="control-label col-sm-3" for="experience">Previous Experience<span class="reqd"> *</span></label>
 					<div class="controls col-sm-9">
 
-						<textarea id="experience" name="experience" class="form-control" rows="5" required="required"></textarea>
+						<textarea id="experience" name="experience" class="form-control" rows="5" required="required">{{data.experience}}</textarea>
 						<span class="help-block">Have you participated in other hackathons? Won any awards? Done any cool projects?
 						<br>
 						(If not, that's okay! We're just curious)</span>
@@ -197,7 +207,9 @@
 						<label class="checkbox" for="termsOfService-0">
 
 							<input type="checkbox" name="termsOfService" id="termsOfService-0" value="True" required="required" {% if data.termsOfService %}checked{% endif %}>
-							I will follow the HackIllinois <a class="rules-link" href="/rules">rules</a>, and comply with the <a class="rules-link" href="/code-of-conduct">code of conduct</a>.
+							I will follow the HackIllinois
+              <a class="rules-link" href="/rules" target = "_blank">rules</a>, and comply with the
+              <a class="rules-link" href="/code-of-conduct" target="_blank" >code of conduct</a>.
 						</label>
 					</div>
 				</div>
