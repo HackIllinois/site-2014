@@ -7,8 +7,8 @@ from google.appengine.ext import blobstore
 from google.appengine.ext.webapp import blobstore_handlers
 
 
-class RegisterHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandler):
-    """ Handler for registration page.
+class ApplyHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandler):
+    """ Handler for application page.
     This does not include the email registration we have up now."""
     def get(self):
         user = users.get_current_user()
@@ -17,12 +17,12 @@ class RegisterHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHan
             if db_user is not None:
                 return self.redirect('/profile')
 
-            upload_url_rpc = blobstore.create_upload_url_async('/register', gs_bucket_name=constants.BUCKET)
+            upload_url_rpc = blobstore.create_upload_url_async('/apply', gs_bucket_name=constants.BUCKET)
 
             data = {}
             data['title'] = 'Registration'
             data['username'] = user.nickname()
-            data['logoutUrl'] = users.create_logout_url('/register')
+            data['logoutUrl'] = users.create_logout_url('/apply')
             data['email'] = user.email()
             data['genders'] = [ {'name':g} for g in constants.GENDERS ]
             data['years'] = [ {'name':y} for y in constants.STANDINGS ]
@@ -33,12 +33,13 @@ class RegisterHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHan
             data['resumeRequired'] = True
 
             data['upload_url'] = upload_url_rpc.get_result()
-            self.render("register.html", data=data)
+            self.render("apply.html", data=data)
 
         else:
             # User not logged in (shouldn't happen)
             # TODO: redirect to error handler
-            self.write('ERROR')
+
+            self.write('ERROR - Apply logged in problem')
 
     def post(self):
         user = users.get_current_user()
@@ -132,7 +133,7 @@ class RegisterHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHan
 
             models.add(models.Attendee, x)
             logging.info('Signup with email %s', x['email'])
-            return self.redirect('/register/complete')
+            return self.redirect('/apply/complete')
 
         else:
             # User not logged in (shouldn't happen)
@@ -140,9 +141,9 @@ class RegisterHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHan
             self.write('ERROR')
 
 
-class RegisterCompleteHandler(MainHandler.Handler):
+class ApplyCompleteHandler(MainHandler.Handler):
     def get(self):
-        return self.render("registration_complete.html")
+        return self.render("apply_complete.html")
 
 
 class SchoolCheckHandler(MainHandler.Handler):

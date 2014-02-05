@@ -7,9 +7,9 @@ function CheckOther(val){
 }
 
 function CheckFile(val){
-    type = val.files[0].type;
-    size = val.files[0].size;
-    length = val.files.length;
+    var type = val.files[0].type;
+    var size = val.files[0].size;
+    var length = val.files.length;
     var fail = false;
 	var error = "Resume <font color=\"red\">";
 	if(length < 1)
@@ -32,7 +32,7 @@ function CheckFile(val){
         fail = true;
         error = error + "<br>Resume must be less than 2 MB";
     }
-	error = error + "</font>"
+	error = error + "</font>";
     if(fail)
 	{
 		var oldFile = document.getElementById("resume");
@@ -48,39 +48,6 @@ function CheckFile(val){
 	}
 	var oldMessage = document.getElementById("resume_message");
 	oldMessage.innerHTML = error;
-}
-
-/**
- * Setup the school autofiller
- */
-function setupSchoolFiller() {
-    $('#email').focusout(function() {
-        getSchool();
-    });
-
-    if ($('#email').val() != '') {
-        getSchool();
-    }
-}
-
-/**
- * Fetch the school for the value of the email field
- */
-function getSchool() {
-    $.get('/register/schoolcheck?email=' + $('#email').val(), function(data) {
-        if (data === '--') {
-            // We don't have a school for the email or something went wrong
-            $('#school').attr('disabled', false).val('');
-			$('#school').attr('placeholder', "Please enter your school's name");
-        }else if (data === '-') {
-            // Invalid email format
-            $('#school').attr('disabled', true).val('');
-			$('#school').attr('placeholder', 'Please enter your email address above.');
-        }else {
-            // Fill in the school we received from the endpoint
-            $('#school').attr('disabled', true).val(data);
-        }
-    });
 }
 
 /**
@@ -109,7 +76,6 @@ function blankProjectType() {
  * Initialize/setup
  */
 $(document).ready(function() {
-    setupSchoolFiller();
     setupFoodOtherOption();
     blankProjectType();
 });

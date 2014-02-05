@@ -1,7 +1,7 @@
 from EmailBackupHandler import EmailBackupHandler
 from ErrorHandler import ErrorHandler
 from IndexHandler import IndexHandler
-from RegisterHandler import RegisterHandler, RegisterCompleteHandler, SchoolCheckHandler
+from ApplyHandler import ApplyHandler, ApplyCompleteHandler, SchoolCheckHandler
 from SignupCountHandler import SignupCountHandler
 from SubpageHandlers import RulesHandler, ScheduleHandler, TravelHandler, CoCHandler
 from TropoHandler import TropoHandler
@@ -13,9 +13,9 @@ from ProfileHandler import ProfileHandler, MyResumeHandler, UpdateCompleteHandle
 handlers = [
     ('/', IndexHandler),
     ('/emailbackup', EmailBackupHandler),
-    ('/register', RegisterHandler),
-    ('/register/complete', RegisterCompleteHandler),
-    ('/register/schoolcheck', SchoolCheckHandler),
+    ('/apply', ApplyHandler),
+    ('/apply/complete', ApplyCompleteHandler),
+    ('/apply/schoolcheck', SchoolCheckHandler),
     ('/rules', RulesHandler),
     ('/schedule', ScheduleHandler),
     ('/signupcount', SignupCountHandler),
