@@ -50,6 +50,14 @@ function CheckFile(val){
 /**
  * Show/hide a textarea based on the food choice
  */
+
+
+function setupResumePrompt(){
+    $('input[name="resume"]').change(function(){
+        $('#resume-prompt').toggle();
+    });
+}
+
 function setupFoodOtherOption() {
     $('input[value="Other"][name="food"]').change(function() {
         if ($('input[value="Other"][name="food"]').attr('checked')) {
@@ -65,6 +73,7 @@ function setupFoodOtherOption() {
  */
 $(document).ready(function() {
     setupFoodOtherOption();
+    setupResumePrompt();
 });
 
 })();
