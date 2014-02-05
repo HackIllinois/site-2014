@@ -95,8 +95,26 @@ p.loggedin {
     margin-bottom: 55px;
 }
 
+a.view-resume {
+    color: #ef3e36;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+a.view-resume:focus, a.view-resume:active, a.view-resume:visited {
+    color: #ef3e36;
+}
+
+a.view-resume:hover {
+    color: #fff;
+}
+
 span.help-block {
     color: #fff;
+}
+
+textarea {
+    max-width: 100%;
 }
 
 .resume-slide-down-info {
@@ -120,7 +138,11 @@ span.help-block {
     font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
     font-weight: bold;
     text-transform: uppercase;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -blink-border-radius: 3px;
     margin-top: 20px;
+    font-size: 14px;
 }
 
 span.reqd {
@@ -130,9 +152,8 @@ span.reqd {
 .btn-hackil:hover {
     color: #fff;
     background-color: #ef4d36;
+    border-color: #ef4d36;
     outline: none;
-    color: #ef3e36;
-    background-color: #fff;
 }
 
 .rules-link {
@@ -148,7 +169,6 @@ span.reqd {
 .rules-link:active {
     color: #ef3e36;
 }
-
 
 
 input[name="food"]{
