@@ -1,0 +1,28 @@
+.constellations{
+    z-index: -100;
+}
+
+header.logo{
+    margin: 50px auto;
+    text-align: center;
+}
+    header.logo a {
+        display: inline-block;
+    }
+
+.reg-message{
+    margin: 25px auto 0 auto;
+    color: white;
+    font-family: Open Sans;
+    font-size: 16px;
+    width: 800px;
+    text-align: center;
+    line-height: 1.5em;
+    position: relative;
+}
+
+.social-follow{
+    margin-top: 50px;
+}
+
+
