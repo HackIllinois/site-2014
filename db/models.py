@@ -197,7 +197,7 @@ def search_database(cls, search, perfect_match=True):
 
     @param cls: the class model to use
     @param search: the data used to search the database
-    @perfect_match:	True = every argument matches : False = one argument matches
+    @perfect_match: True = every argument matches : False = one argument matches
     @return: iterator of models
 
     ex: search_database(Attendee, {'email':'doe1@illinois.edu'})
@@ -208,7 +208,7 @@ def search_database(cls, search, perfect_match=True):
     if perfect_match:
         ao = " AND "
     else:
-	    ao = " OR "
+        ao = " OR "
     for param in search:
         q += param + " = '" + search[param] + "'" + ao
     return cls.gql(q[:-len(ao)])

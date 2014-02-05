@@ -13,12 +13,12 @@ function CheckFile(val){
     var size = val.files[0].size;
     var length = val.files.length;
     var fail = false;
-	var error = "Resume <font color=\"red\">";
+    var error = "Resume <font color=\"red\">";
     if(length > 1)
     {
         fail = true;
         error = error + "<br>Please only upload one file";
-	}
+    }
     if(type != "application/pdf")
     {
         fail = true;
@@ -29,22 +29,22 @@ function CheckFile(val){
         fail = true;
         error = error + "<br>Resume must be less than 2 MB";
     }
-	error = error + "</font>";
+    error = error + "</font>";
     if(fail)
-	{
-		var oldFile = document.getElementById("resume");
-		var newFile = document.createElement("input");
-		newFile.type = "file";
-		newFile.id = oldFile.id;
-		newFile.name = oldFile.name;
-		newFile.accept = oldFile.accept;
-		newFile.className = oldFile.className;
-		newFile.onchange = oldFile.onchange;
-		newFile.required = oldFile.required;
-		oldFile.parentNode.replaceChild(newFile, oldFile);
-	}
-	var oldMessage = document.getElementById("resume_message");
-	oldMessage.innerHTML = error;
+    {
+        var oldFile = document.getElementById("resume");
+        var newFile = document.createElement("input");
+        newFile.type = "file";
+        newFile.id = oldFile.id;
+        newFile.name = oldFile.name;
+        newFile.accept = oldFile.accept;
+        newFile.className = oldFile.className;
+        newFile.onchange = oldFile.onchange;
+        newFile.required = oldFile.required;
+        oldFile.parentNode.replaceChild(newFile, oldFile);
+    }
+    var oldMessage = document.getElementById("resume_message");
+    oldMessage.innerHTML = error;
 }
 
 /**
