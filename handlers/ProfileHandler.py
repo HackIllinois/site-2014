@@ -44,10 +44,10 @@ class ProfileHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHand
                     i['checked'] = True
                     break
             data['foods'] = [ {'name':f, 'checked':False} for f in constants.FOODS ]
-            for i in data['foods']:
-                if i['name'] == db_user.food:
-                    i['checked'] = True
-                    break
+            if db_user.food:
+                for i in data['foods']:
+                    if i['name'] in db_user.food:
+                        i['checked'] = True
             data['foodInfo'] = db_user.foodInfo
             data['team'] = db_user.teamMembers
             data['projects'] = [ {'name':p, 'selected':False} for p in constants.PROJECTS ]

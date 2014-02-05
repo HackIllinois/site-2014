@@ -255,7 +255,8 @@ class Attendee(ndb.Model):
     github = ndb.StringProperty()
 
     shirt = ndb.StringProperty(choices=constants.SHIRTS)
-    food = ndb.StringProperty(choices=constants.FOODS)
+    # food = ndb.StringProperty(choices=constants.FOODS)
+    food = ndb.StringProperty()
     foodInfo = ndb.TextProperty()
 
     teamMembers = ndb.TextProperty()

@@ -1,7 +1,7 @@
 BUCKET = 'hackillinois'
 
 REQUIRED_FIELDS = ['nameFirst', 'nameLast', 'email', 'gender', 'school', 'standing',
-                   'resume', 'shirt', 'food', 'picture', 'termsOfService']
+                   'resume', 'shirt', 'food', 'termsOfService']
 
 EMAIL_MATCH = r"^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$"
 

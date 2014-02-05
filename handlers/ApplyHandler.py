@@ -82,7 +82,8 @@ class ApplyHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandle
                    valid = False
 
             x['shirt'] = self.request.get('shirt')
-            x['food'] = self.request.get('food')
+            foods = self.request.get_all('food')
+            x['food'] = ','.join(foods)
             x['foodInfo'] = self.request.get('foodInfo')
 
             x['teamMembers'] = self.request.get('team')
@@ -96,9 +97,11 @@ class ApplyHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandle
 
             # Check required fields filled in
             for field in constants.REQUIRED_FIELDS:
-                if x[field] is None:
+                if valid and field not in x:
                     valid = False
-                if isinstance(field, str) and x[field] == '':
+                if valid and x[field] is None:
+                    valid = False
+                if valid and isinstance(field, str) and x[field] == '':
                     valid = False
 
             # Check if email is valid (basic)
