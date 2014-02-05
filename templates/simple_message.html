@@ -5,19 +5,23 @@
     <link rel="stylesheet" type="text/css" href="/css/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="/css/shared.css">
     <link rel="stylesheet" type="text/css" href="/css/register.css">
+    <link rel="stylesheet" type="text/css" href="/css/apply_complete.css">
 {% endblock head %}
 
 {% block body %}
     <img class="constellations" src="/img/constellations.png">
-
-    <img class="logo-main-svg header img-responsive center-block" src="/img/hackillinois_logo.svg">
-    <h2 class="info-text t-centered">April 2014</h2>
+    <header class="logo">
+        <a href="/">
+            <img class="logo-main-svg header img-responsive center-block" src="/img/hackillinois_logo.svg">
+        </a>
+        <h2 class="info-text t-centered">April 2014</h2>
+    </header>
 
     <br>
 
-    <div class="col-md-6 col-md-offset-3">
+    <section class="col-md-6 col-md-offset-3">
         <h1 class="info-text t-centered">{{ message }}</h1>
-    </div>
+    <section>
 
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     <script src="/js/libraries/bootstrap.min.js"></script>
