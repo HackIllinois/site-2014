@@ -1,12 +1,18 @@
 BUCKET = 'hackillinois'
 
-REQUIRED_FIELDS = ['nameFirst', 'nameLast', 'email', 'gender', 'school', 'standing',
-                   'resume', 'shirt', 'food', 'termsOfService']
+APPLY_TITLE = 'Application'
+PROFILE_TITLE = 'Profile'
+
+ERROR_MESSAGE_PREFIX = 'Please provide a valid '
+ERROR_MESSAGE_SUFFIX = '.'
+
+REQUIRED_FIELDS = ['nameFirst', 'nameLast', 'email', 'gender', 'school', 'year',
+                   'resume', 'shirt', 'experience', 'termsOfService']
 
 EMAIL_MATCH = r"^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$"
 
 GENDERS = ['Male','Female','Other', 'I choose not to specify']
-STANDINGS = ['Freshman','Sophomore','Junior','Senior','Grad','HS']
+YEARS = ['Freshman','Sophomore','Junior','Senior','Grad','HS']
 SHIRTS = ['XS','S','M','L','XL','XXL']
 FOODS = ['Vegetarian','Vegan','Gluten Free','Lactose Free', 'Other']
 PROJECTS = ['Software Hack','Hardware Hack','Unsure']

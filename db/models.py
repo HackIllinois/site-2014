@@ -27,6 +27,7 @@ def _get_required(cls):
             required.append(p)
     return required
 
+@ndb.transactional
 def f_add(cls, data, search = {}):
     '''
     Creates a model and adds it to the database
@@ -37,11 +38,11 @@ def f_add(cls, data, search = {}):
     @param search: properties to search the database
     @return: whether or not the data was added to the database
 
-    ex: add(Attendee, {'nameFirst':'John', 'nameLast':'Doe', 'email':'doe1@illinois.edu', 'standing':3})
+    ex: add(Attendee, {'nameFirst':'John', 'nameLast':'Doe', 'email':'doe1@illinois.edu', 'year':3})
     Returns True if "doe1@illinois.edu" is not already in the database and data is successfully added
     Returns False otherwise
     OR
-    add(Attendee, {'nameFirst':'John', 'nameLast':'Doe', 'email':'doe1@illinois.edu', 'standing':3}, {'email':'doe1@illinois.edu'})
+    add(Attendee, {'nameFirst':'John', 'nameLast':'Doe', 'email':'doe1@illinois.edu', 'year':3}, {'email':'doe1@illinois.edu'})
     Same result
     '''
     o = cls.new(data)
@@ -60,11 +61,11 @@ def add(cls, data, search = {}):
     @param search: properties to search the database
     @return: whether or not the data was added to the database
 
-    ex: add(Attendee, {'nameFirst':'John', 'nameLast':'Doe', 'email':'doe1@illinois.edu', 'standing':3})
+    ex: add(Attendee, {'nameFirst':'John', 'nameLast':'Doe', 'email':'doe1@illinois.edu', 'year':3})
     Returns True if "doe1@illinois.edu" is not already in the database and data is successfully added
     Returns False otherwise
     OR
-    add(Attendee, {'nameFirst':'John', 'nameLast':'Doe', 'email':'doe1@illinois.edu', 'standing':3}, {'email':'doe1@illinois.edu'})
+    add(Attendee, {'nameFirst':'John', 'nameLast':'Doe', 'email':'doe1@illinois.edu', 'year':3}, {'email':'doe1@illinois.edu'})
     Same result
     '''
     if(search == {}):
@@ -74,16 +75,12 @@ def add(cls, data, search = {}):
                 search[p] = data[p]
         except AttributeError:
             #class does not have attribute unique_properties()
-            o = cls.new(data)
-            o.put()
-            return o
+            return f_add(cls, data)
         except LookupError:
             #data does not key "p"
             return False
     if not in_database(cls, search):
-        o = cls.new(data)
-        o.put()
-        return o
+        return f_add(cls, data)
     return False
 
 def delete_search(cls, search):
@@ -94,13 +91,14 @@ def delete_search(cls, search):
     @param search: the parameters to search with
     @return: nothing
 
-    ex: update_model(Attendee, {'email':'doe1@illinois.edu', 'standing':3})
+    ex: update_model(Attendee, {'email':'doe1@illinois.edu', 'year':3})
     '''
     #These functions need to be changed to delete all references a model ex. an Attendee in a Team
     m = search_database(cls, search).get()
     if m != None:
         delete(cls, m.key)
 
+@ndb.transactional
 def delete(cls, key):
     '''
     deletes a model in the database
@@ -124,7 +122,7 @@ def update_search(cls, data, search = {}):
     @param search: the parameters to search with
     @return: whether or not the data was found in the database and updated
 
-    ex: update_model(Attendee, {'nameFirst':'John', 'nameLast':'Doe'}, {'email':'doe1@illinois.edu', 'standing':3})
+    ex: update_model(Attendee, {'nameFirst':'John', 'nameLast':'Doe'}, {'email':'doe1@illinois.edu', 'year':3})
     '''
     if(search == {}):
         try:
@@ -142,6 +140,7 @@ def update_search(cls, data, search = {}):
         return update(cls, data, m.key)
     return False
 
+@ndb.transactional
 def update(cls, data, key):
     '''
     Updates a model in the database
@@ -170,7 +169,7 @@ def add_or_update(cls, data, search = {}):
     @param search: the parameters to search with
     @return: nothing
 
-    ex: update_model(Attendee, {'nameFirst':'John', 'nameLast':'Doe'}, {'email':'doe1@illinois.edu', 'standing':3})
+    ex: update_model(Attendee, {'nameFirst':'John', 'nameLast':'Doe'}, {'email':'doe1@illinois.edu', 'year':3})
     '''
     if not add(cls, data, search):
         update(cls, data, search)
@@ -190,6 +189,7 @@ def in_database(cls, search):
     '''
     return search_database(cls,search).get() != None
 
+@ndb.transactional
 def search_database(cls, search, perfect_match=True):
     '''
     Searches the database for models matching "search"
@@ -247,7 +247,7 @@ class Attendee(ndb.Model):
     email = ndb.StringProperty(required=True)
     gender = ndb.StringProperty(choices=constants.GENDERS)
     school = ndb.StringProperty()
-    standing = ndb.StringProperty(choices=constants.STANDINGS)
+    year = ndb.StringProperty(choices=constants.YEARS)
 
     experience = ndb.TextProperty() # unlimited length, not indexed
     resume = ndb.StructuredProperty(Resume)
@@ -269,7 +269,11 @@ class Attendee(ndb.Model):
 
     isAdmin = ndb.BooleanProperty(default=False)
     isParticipant = ndb.BooleanProperty(default=False)
+
+    isRegistered = ndb.BooleanProperty(default=False)
     registrationTime = ndb.DateTimeProperty(auto_now_add=True)
+
+    errorMessages = ndb.TextProperty()
 
     approved = ndb.StringProperty()
 
@@ -293,8 +297,8 @@ class Attendee(ndb.Model):
         return ['email']
 
     @classmethod
-    def new2(cls, mNameFirst, mNameLast, mEmail, mStanding):
-        return cls(nameFirst=mNameFirst, nameLast=mNameLast, email=mEmail, standing=mStanding)
+    def new2(cls, mNameFirst, mNameLast, mEmail, mYear):
+        return cls(nameFirst=mNameFirst, nameLast=mNameLast, email=mEmail, year=mYear)
 
 
 class Team(ndb.Model):
@@ -401,7 +405,7 @@ class UnitTest(object):
 
     def test_add_attendee(self):
         passed = True
-        data = {'nameFirst':'Alex', 'nameLast':'Burck', 'email':'burck1@illinois.edu', 'standing':4}
+        data = {'nameFirst':'Alex', 'nameLast':'Burck', 'email':'burck1@illinois.edu', 'year':4}
         try:
             me = f_add(Attendee, data)
         except:
@@ -424,7 +428,7 @@ class UnitTest(object):
 
     def test_add_attendee_to_team(self):
         passed = True
-        data = {'nameFirst':'Alex', 'nameLast':'Burck', 'email':'burck1@illinois.edu', 'standing':4}
+        data = {'nameFirst':'Alex', 'nameLast':'Burck', 'email':'burck1@illinois.edu', 'year':4}
         me = f_add(Attendee, data)
         data = {'name':'Test'}
         t = f_add(Team, data)
@@ -495,7 +499,7 @@ class UnitTest2(object):
 
     def test_add_attendee(self):
         passed = True
-        data = {'nameFirst':'Alex', 'nameLast':'Burck', 'email':'burck1@illinois.edu', 'standing':4}
+        data = {'nameFirst':'Alex', 'nameLast':'Burck', 'email':'burck1@illinois.edu', 'year':4}
         try:
             me = add(Attendee, data)
         except:
@@ -506,7 +510,7 @@ class UnitTest2(object):
 
     def test_update_attendee(self):
         passed = True
-        data = {'standing':1}
+        data = {'year':1}
         search = {'email':'burck1@illinois.edu'}
         try:
             me = update_search(Attendee, data, search)
