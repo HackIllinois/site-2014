@@ -12,18 +12,28 @@
 	<div class="const">
 		<img class="constellations" src="/img/constellations.png">
 	</div>
-
 	<div class="container">
-    <a href="/">
-        <img class="logo-main-svg header img-responsive center-block" src="/img/hackillinois_logo.svg"/>
-    </a>
+	    <a href="/">
+	        <img class="logo-main-svg header img-responsive center-block" src="/img/hackillinois_logo.svg"/>
+	    </a>
 
-    <h2 class="info-text t-centered">Application</h2>
+    	<h2 class="info-text t-centered">{{ data.title }}</h2>
+
 		<div>
-				<p class="loggedin">Hello {{ data.username }}! <a class="rules-link" href="{{ data.logoutUrl }}">Not you</a>?</p>
+			<p class="loggedin">Hello {{ data.username }}! <a class="rules-link" href="{{ data.logoutUrl }}">Not you</a>?</p>
 		</div>
-		<div style="" class="regform-container">
 
+		<!-- {% if data.applyError %} -->
+		<div>
+			<p class="errormessages">
+				{% for m in data.messages %}
+				{{ m }}<br>
+				{% endfor %}
+			</p>
+		</div>
+		<!-- {% endif %} -->
+
+		<div style="" class="regform-container">
 			<form class="form-horizontal" role="form" method="post" action="{{ data.upload_url }}" enctype="multipart/form-data">
 
 				<!-- Text input-->
@@ -91,7 +101,7 @@
 				<div class="form-group">
 					<label class="control-label col-sm-3" for="resume">Resume</label>
 					<div class="controls col-sm-9">
-						{% if data.hasResume %}<a href="/profile/myresume" class="view-resume" target="_blank">View Uploaded Resume</a><br> {% endif %}
+						{% if data.hasResume %}<a href="/apply/myresume" class="view-resume" target="_blank">View Uploaded Resume</a><br> {% endif %}
 						<input id="resume" name="resume" type="file" accept="application/pdf" {% if data.resumeRequired %}required="required"{% endif %}>
 						<!-- TODO: Add link to old resume -->
 						<span id="resume-prompt" class="help-block">Please upload your resume.</span>
@@ -136,22 +146,18 @@
 					</div>
 				</div>
 
-				<!-- Multiple Radios (inline) -->
+				<!-- Multiple Checks (inline) -->
 				<div class="form-group">
-
-					<label class="control-label col-sm-3 launcher-btn" for="food">Dietary Restrictions<span class="reqd"> *</span></label>
+					<label class="control-label col-sm-3 launcher-btn" for="food">Dietary Restrictions</label>
 					<div class="controls col-sm-9">
 
                         {% for f in data.foods %}
                         <label class="food-options" for="food-{{ loop.index0 }}">
                         	<input type="checkbox" name="food" id="food-{{ loop.index0 }}" value="{{ f.name }}" {% if f.checked %}checked{% endif %}/>
                             {{ f.name }}
-
                         </label>
                         {% endfor %}
-
 						<textarea id="foodInfo" name="foodInfo" class="form-control" rows="3" placeholder="Need special food arrangements? Let us know!">{{ data.foodInfo }}</textarea>
-
 					</div>
 				</div>
 
@@ -209,8 +215,8 @@
 
 							<input type="checkbox" name="termsOfService" id="termsOfService-0" value="True" required="required" {% if data.termsOfService %}checked{% endif %} {% if data.isProfile %} disabled {% endif %}>
 							I will follow the HackIllinois
-              <a class="rules-link" href="/rules" target = "_blank">rules</a>, and comply with the
-              <a class="rules-link" href="/code-of-conduct" target="_blank" >code of conduct</a>.
+              				<a class="rules-link" href="/rules" target = "_blank">rules</a>, and comply with the
+              				<a class="rules-link" href="/code-of-conduct" target="_blank" >code of conduct</a>.
 						</label>
 					</div>
 				</div>
@@ -226,19 +232,21 @@
 	</div>
 </div>
 <div class="launch-container">
-		<div class="launch-craft">	
+	<div class="launch-setup">
+		<div class="launch-craft">
 			<img class="rocket-ship" src="/img/rocket/spaceship_nodock2x.png">
 			<img class="rocket-plume" src="/img/rocket/plume2x.png">
 		</div>
 		<img class="launch-pad" src="/img/rocket/dock2x.png">
 		<!--img class="rocket-ship rocket-small" src="img/rocket/spaceship_nodock2x.png">
 		<img class="rocket-ship rocket-small" src="img/rocket/dock2x.png"-->
+	</div>
 </div>
 
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 <script src="/lib/selectize/js/standalone/selectize.min.js"></script>
 <script src="/lib/bootstrap/js/bootstrap.min.js"></script>
 <script src="/js/easing.min.js"></script>
-<script src="/js/apply.js"></script>
 <script src="/js/apply-ui.js"></script>
+<script src="/js/apply.js"></script>
 {% endblock body %}

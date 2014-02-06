@@ -56,9 +56,9 @@ handlers:
   script: main.app
   login: required
 
-- url: /profile*
-  script: main.app
-  login: required
+# - url: /profile*
+#   script: main.app
+#   login: required
 
 - url: /admin*
   script: main.app

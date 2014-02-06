@@ -96,6 +96,15 @@ p.loggedin {
     margin-bottom: 55px;
 }
 
+p.errormessages {
+    text-align: center;
+    font-size: 14px;
+    font-weight: bold;
+    color: red;
+    font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    margin-bottom: 55px;
+}
+
 .selectize-input {
     background-color: rgba(255,255,255,0.1);
     color: #fff;

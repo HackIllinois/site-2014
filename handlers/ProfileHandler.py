@@ -33,7 +33,7 @@ class ProfileHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHand
             data['school'] = db_user.school
             data['years'] = [ {'name':y, 'checked':False} for y in constants.STANDINGS ]
             for i in data['years']:
-                if i['name'] == db_user.standing:
+                if i['name'] == db_user.year:
                     i['checked'] = True
                     break
             data['experience'] = db_user.experience
@@ -62,7 +62,7 @@ class ProfileHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHand
 
             data['resumeRequired'] = False
 
-            data['hasResume'] = (db_user.resume != None)
+            data['hasResume'] = db_user.resume != None
 
             data['upload_url'] = upload_url_rpc.get_result()
             self.render("apply.html", data=data)
@@ -91,7 +91,7 @@ class ProfileHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHand
             x['school'] = self.request.get('school')
             if x['school'] == 'Other':
                 x['school'] = self.request.get('schoolOther')
-            x['standing'] = self.request.get('year')
+            x['year'] = self.request.get('year')
 
             x['experience'] = self.request.get('experience')
             x['linkedin'] = self.request.get('linkedin')
@@ -130,7 +130,7 @@ class ProfileHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHand
             # Check fields with specific values
             if valid and x['gender'] not in constants.GENDERS:
                 valid = False
-            if valid and x['standing'] not in constants.STANDINGS:
+            if valid and x['year'] not in constants.STANDINGS:
                 valid = False
             if valid and x['shirt'] not in constants.SHIRTS:
                 valid = False

@@ -12,145 +12,208 @@ class ApplyHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandle
     This does not include the email registration we have up now."""
     def get(self):
         user = users.get_current_user()
-        if user:
-            db_user = models.search_database(models.Attendee, {'userId':user.user_id()}).get()
-            if db_user is not None:
-                return self.redirect('/profile')
 
-            upload_url_rpc = blobstore.create_upload_url_async('/apply', gs_bucket_name=constants.BUCKET)
-
-            data = {}
-            data['title'] = 'Registration'
-            data['username'] = user.nickname()
-            data['logoutUrl'] = users.create_logout_url('/apply')
-            data['email'] = user.email() # Uncomment to autofill email
-            data['genders'] = [ {'name':g} for g in constants.GENDERS ]
-            data['years'] = [ {'name':y} for y in constants.STANDINGS ]
-            data['shirts'] = [ {'name':s} for s in constants.SHIRTS ]
-            data['foods'] = [ {'name':f} for f in constants.FOODS ]
-            data['projects'] = [ {'name':p} for p in constants.PROJECTS ]
-
-            data['resumeRequired'] = False
-            data['hasResume'] = False
-
-            data['upload_url'] = upload_url_rpc.get_result()
-            self.render("apply.html", data=data)
-
-        else:
+        if not user:
             # User not logged in (shouldn't happen)
             # TODO: redirect to error handler
+            return self.write('ERROR - Apply logged in problem')
 
-            self.write('ERROR - Apply logged in problem')
+        upload_url_rpc = blobstore.create_upload_url_async('/apply', gs_bucket_name=constants.BUCKET)
+
+        data = {}
+        data['username'] = user.nickname()
+        data['logoutUrl'] = users.create_logout_url('/apply')
+        data['email'] = user.email()
+        data['genders'] = [ {'name':g, 'checked':False} for g in constants.GENDERS ]
+        data['years'] = [ {'name':y, 'checked':False} for y in constants.YEARS ]
+        data['shirts'] = [ {'name':s, 'checked':False} for s in constants.SHIRTS ]
+        data['foods'] = [ {'name':f, 'checked':False} for f in constants.FOODS ]
+        data['projects'] = [ {'name':p, 'selected':False} for p in constants.PROJECTS ]
+
+        data['title'] = constants.APPLY_TITLE
+        data['resumeRequired'] = True
+        data['hasResume'] = False
+        data['applyError'] = False
+
+        # Check if user is in our database
+        db_user = models.search_database(models.Attendee, {'userId':user.user_id()}).get()
+        if db_user is not None:
+            if db_user.isRegistered:
+                data['isProfile'] = True
+                data['title'] = constants.PROFILE_TITLE
+                data['resumeRequired'] = False
+            else:
+                data['applyError'] = True
+
+            data['nameFirst'] = db_user.nameFirst
+            data['nameLast'] = db_user.nameLast
+            data['email'] = db_user.email
+            data['school'] = db_user.school
+            data['experience'] = db_user.experience
+            data['linkedin'] = db_user.linkedin
+            data['github'] = db_user.github
+            data['foodInfo'] = db_user.foodInfo
+            data['termsOfService'] = db_user.termsOfService
+
+            for i in data['genders']:
+                if i['name'] == db_user.gender:
+                    i['checked'] = True
+                    break
+
+            for i in data['years']:
+                if i['name'] == db_user.year:
+                    i['checked'] = True
+                    break
+
+            for i in data['shirts']:
+                if i['name'] == db_user.shirt:
+                    i['checked'] = True
+                    break
+
+            for i in data['foods']:
+                if i['name'] in db_user.food:
+                    i['checked'] = True
+
+            for i in data['projects']:
+                if i['name'] == db_user.projectType:
+                    i['selected'] = True
+                    break
+
+            if db_user.resume:
+                data['hasResume'] = True
+                data['resumeRequired'] = False
+
+            if db_user.errorMessages and db_user.errorMessages != '':
+                data['messages'] = db_user.errorMessages.split('$$$')
+            # Clear Error Messages
+            models.update_search(models.Attendee, {'errorMessages':''}, {'userId':user.user_id()})
+
+        data['upload_url'] = upload_url_rpc.get_result()
+        self.render("apply.html", data=data)
+
 
     def post(self):
         user = users.get_current_user()
-        if user:
-            x = {}
-
-            # https://developers.google.com/appengine/docs/python/users/userclass
-            x['userNickname'] = user.nickname()
-            x['userEmail'] = user.email()
-            x['userId'] = user.user_id() #use this for identificaiton
-            x['userFederatedIdentity'] = user.federated_identity()
-            x['userFederatedProvider'] = user.federated_provider()
-
-            x['nameFirst'] = self.request.get('nameFirst')
-            x['nameLast'] = self.request.get('nameLast')
-            x['email'] = self.request.get('email')
-            x['gender'] = self.request.get('gender')
-            x['school'] = self.request.get('school')
-            if x['school'] == 'Other':
-                x['school'] = self.request.get('schoolOther')
-            x['standing'] = self.request.get('year')
-
-            x['experience'] = self.request.get('experience')
-            x['linkedin'] = self.request.get('linkedin')
-            x['github'] = self.request.get('github')
-
-            file_info = self.get_file_infos(field_name='resume')
-            valid = True # A resume was uploaded, but it wasn't what we want
-            x['resume'] = None
-            if file_info:
-               if len(file_info) == 1 and file_info[0].filename.endswith(".pdf"):
-                   file_info = file_info[0]
-                   x['resume'] = models.Resume(contentType=file_info.content_type,
-                                        creationTime=file_info.creation,
-                                        fileName=file_info.filename,
-                                        size=file_info.size,
-                                        gsObjectName=file_info.gs_object_name)
-               else:
-                   valid = False
-
-            x['shirt'] = self.request.get('shirt')
-            foods = self.request.get_all('food')
-            x['food'] = ','.join(foods)
-            x['foodInfo'] = self.request.get('foodInfo')
-
-            x['teamMembers'] = self.request.get('team')
-            x['projectType'] = self.request.get('projectType')
-            x['userNotes'] = self.request.get('userNotes')
-
-            # x['recruiters'] = (self.request.get('recruiters') == 'True')
-            # x['picture'] = (self.request.get('picture') == 'True')
-            x['termsOfService'] = (self.request.get('termsOfService') == 'True')
-            x['approved'] = 'NA'
-
-            # Check required fields filled in
-            for field in constants.REQUIRED_FIELDS:
-                if valid and field not in x:
-                    valid = False
-                if valid and x[field] is None:
-                    valid = False
-                if valid and isinstance(field, str) and x[field] == '':
-                    valid = False
-
-            # Check if email is valid (basic)
-            if valid and not re.match(constants.EMAIL_MATCH, x['email']):
-                valid = False
-
-            # Check fields with specific values
-            if valid and x['gender'] not in constants.GENDERS:
-                valid = False
-            if valid and x['standing'] not in constants.STANDINGS:
-                valid = False
-            if valid and x['shirt'] not in constants.SHIRTS:
-                valid = False
-            if valid and x['food'] not in constants.FOODS:
-                valid = False
-            if valid and x['projectType'] not in constants.PROJECTS:
-                valid = False
-
-            # Make sure required boxes checked
-            # if valid and not x['picture']:
-            #     valid = False
-            if valid and not x['termsOfService']:
-                valid = False
-
-            # Check resume size
-            if valid and x['resume'].size <= constants.RESUME_MAX_SIZE:
-                valid = False
-
-            # if valid:
-            #     models.add(models.Attendee, x)
-            #     logging.info('Signup with email %s', x['email'])
-            # else:
-            #     # delete file
-            #     pass
-            # self.write(json.dumps({'valid':valid, 'message':''}))
-
-            models.add(models.Attendee, x)
-            logging.info('Signup with email %s', x['email'])
-            return self.redirect('/apply/complete')
-
-        else:
+        if not user:
             # User not logged in (shouldn't happen)
             # TODO: redirect to error handler
-            self.write('ERROR')
+            return self.write('ERROR')
+
+        x = {}
+        valid = True
+        errorMessages = []
+
+        # https://developers.google.com/appengine/docs/python/users/userclass
+        x['userNickname'] = user.nickname()
+        x['userEmail'] = user.email()
+        x['userId'] = user.user_id() #use this for identificaiton
+        x['userFederatedIdentity'] = user.federated_identity()
+        x['userFederatedProvider'] = user.federated_provider()
+
+        x['nameFirst'] = self.request.get('nameFirst')
+        x['nameLast'] = self.request.get('nameLast')
+        x['email'] = self.request.get('email')
+        x['gender'] = self.request.get('gender')
+        x['school'] = self.request.get('school')
+        x['year'] = self.request.get('year')
+        x['experience'] = self.request.get('experience')
+        x['linkedin'] = self.request.get('linkedin')
+        x['github'] = self.request.get('github')
+
+        x['shirt'] = self.request.get('shirt')
+        x['projectType'] = self.request.get('projectType')
+        # x['teamMembers'] = self.request.get('team')
+
+        file_info = self.get_file_infos(field_name='resume')
+        if file_info and len(file_info) == 1:
+            # TODO: delete file if not valid
+            file_info = file_info[0]
+            if not file_info.filename.endswith(".pdf"):
+                errorMessages.append('Uploaded resume file is not a pdf.')
+                valid = False
+            elif file_info.size > constants.RESUME_MAX_SIZE:
+                errorMessages.append('Uploaded resume file is too big.')
+                valid = False
+            else:
+               x['resume'] = models.Resume(contentType=file_info.content_type,
+                                           creationTime=file_info.creation,
+                                           fileName=file_info.filename,
+                                           size=file_info.size,
+                                           gsObjectName=file_info.gs_object_name)
+
+        foods = self.request.get_all('food')
+        x['food'] = ','.join(foods)
+        x['foodInfo'] = self.request.get('foodInfo')
+
+        x['termsOfService'] = (self.request.get('termsOfService') == 'True')
+
+        # Check required fields filled in
+        for field in constants.REQUIRED_FIELDS:
+            if field not in x or x[field] is None or (isinstance(x[field], str) and x[field] == ''):
+                errorMessages.append(constants.ERROR_MESSAGE_PREFIX + field + constants.ERROR_MESSAGE_SUFFIX)
+                valid = False
+
+        # Check if email is valid (basic)
+        if not re.match(constants.EMAIL_MATCH, x['email']):
+            errorMessages.append('Uploaded file is too big.')
+            valid = False
+
+        # Check fields with specific values
+        if 'gender' in x and x['gender'] not in constants.GENDERS:
+            errorMessages.append(constants.ERROR_MESSAGE_PREFIX + 'gender' + constants.ERROR_MESSAGE_SUFFIX)
+            valid = False
+        if 'year' in x and x['year'] not in constants.YEARS:
+            errorMessages.append(constants.ERROR_MESSAGE_PREFIX + 'school year' + constants.ERROR_MESSAGE_SUFFIX)
+            valid = False
+        if 'shirt' in x and x['shirt'] not in constants.SHIRTS:
+            errorMessages.append(constants.ERROR_MESSAGE_PREFIX + 'shirt size' + constants.ERROR_MESSAGE_SUFFIX)
+            valid = False
+        if 'food' in x:
+            for f in x['food'].split(','):
+                if f not in constants.FOODS:
+                    errorMessages.append(constants.ERROR_MESSAGE_PREFIX + 'dietary restriction' + constants.ERROR_MESSAGE_SUFFIX)
+                    valid = False
+                    break
+        if 'projectType' in x and x['projectType'] not in constants.PROJECTS:
+            errorMessages.append(constants.ERROR_MESSAGE_PREFIX + 'project type' + constants.ERROR_MESSAGE_SUFFIX)
+            valid = False
+
+        # Make sure required boxes checked
+        if not x['termsOfService']:
+            errorMessages.append('Please read and agree to the rules and code of conduct.')
+            valid = False
+
+        x['errorMessages'] = '$$$'.join(errorMessages)
+
+        if valid:
+            x['isRegistered'] = True
+            redir = '/apply/complete'
+        else:
+            redir = '/apply'
+
+        db_user = models.search_database(models.Attendee, {'userId':user.user_id()}).get()
+        if db_user is not None:
+            logging.info('Updated profile of %s', x['email'])
+            redir = '/apply/updated'
+            models.update_search(models.Attendee, x, {'userId':user.user_id()})
+        else:
+            if valid:
+                logging.info('Signup with email %s', x['email'])
+            else:
+                logging.info('User %s submitted an invalid form', x['userId'])
+            models.add(models.Attendee, x)
+
+        return self.redirect(redir)
 
 
 class ApplyCompleteHandler(MainHandler.Handler):
     def get(self):
         return self.render("apply_complete.html")
+
+
+class UpdateCompleteHandler(MainHandler.Handler):
+    def get(self):
+        return self.render("simple_message.html", message="Update Successful!")
 
 
 class SchoolCheckHandler(MainHandler.Handler):
@@ -180,3 +243,21 @@ class SchoolListHandler(MainHandler.Handler):
         school_list = list(set([schools[i] for i in schools]))
         out_list = [{'name':school} for school in school_list]
         self.write(json.dumps({'schools': out_list}))
+
+
+class MyResumeHandler(MainHandler.Handler, blobstore_handlers.BlobstoreDownloadHandler):
+    def get(self):
+        user = users.get_current_user()
+        if user:
+            db_user = models.search_database(models.Attendee, {'userId':user.user_id()}).get()
+            if not db_user:
+                return self.redirect('/apply')
+
+            # https://developers.google.com/appengine/docs/python/blobstore/#Python_Using_the_Blobstore_API_with_Google_Cloud_Storage
+            resource = str(urllib.unquote(db_user.resume.gsObjectName))
+            blob_key = blobstore.create_gs_key(resource)
+            self.send_blob(blob_key)
+        else:
+            # User not logged in (shouldn't happen)
+            # TODO: redirect to error handler
+            self.write('ERROR - Unexpected resume login')
