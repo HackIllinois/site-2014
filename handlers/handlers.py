@@ -23,7 +23,6 @@ handlers = [
     ('/signupcount', SignupCountHandler),
     ('/travel', TravelHandler),
     ('/tropo', TropoHandler),
-    ('/profile', ProfileHandler.ProfileHandler),
     ('/admin', AdminHandler),
     ('/admin/approve', ApproveHandler),
     ('/profile', ProfileHandler),
