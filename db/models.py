@@ -273,6 +273,7 @@ class Attendee(ndb.Model):
     isRegistered = ndb.BooleanProperty(default=False)
     registrationTime = ndb.DateTimeProperty(auto_now_add=True)
 
+    applyError = ndb.BooleanProperty()
     errorMessages = ndb.TextProperty()
 
     approved = ndb.StringProperty()

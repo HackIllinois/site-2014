@@ -23,7 +23,7 @@
 			<p class="loggedin">Hello {{ data.username }}! <a class="rules-link" href="{{ data.logoutUrl }}">Not you</a>?</p>
 		</div>
 
-		<!-- {% if data.applyError %} -->
+		{% if data.applyError %}
 		<div>
 			<p class="errormessages">
 				{% for m in data.messages %}
@@ -31,7 +31,7 @@
 				{% endfor %}
 			</p>
 		</div>
-		<!-- {% endif %} -->
+		{% endif %}
 
 		<div style="" class="regform-container">
 			<form id="application" class="form-horizontal" role="form" method="post" action="{{ data.upload_url }}" enctype="multipart/form-data">

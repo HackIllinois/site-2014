@@ -42,7 +42,8 @@ class ApplyHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandle
                 data['isUpdatingApplication'] = True
                 data['title'] = constants.PROFILE_TITLE
                 data['resumeRequired'] = False
-            else:
+
+            if db_user.applyError:
                 data['applyError'] = True
 
             data['nameFirst'] = db_user.nameFirst
@@ -86,7 +87,7 @@ class ApplyHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandle
             if db_user.errorMessages and db_user.errorMessages != '':
                 data['messages'] = db_user.errorMessages.split('$$$')
             # Clear Error Messages
-            models.update_search(models.Attendee, {'errorMessages':''}, {'userId':user.user_id()})
+            # models.update_search(models.Attendee, {'errorMessages':''}, {'userId':user.user_id()})
 
         data['upload_url'] = upload_url_rpc.get_result()
         self.render("apply.html", data=data)
@@ -102,6 +103,7 @@ class ApplyHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandle
         x = {}
         valid = True
         errorMessages = []
+        db_user = models.search_database(models.Attendee, {'userId':user.user_id()}).get()
 
         # https://developers.google.com/appengine/docs/python/users/userclass
         x['userNickname'] = user.nickname()
@@ -146,6 +148,9 @@ class ApplyHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandle
         x['foodInfo'] = self.request.get('foodInfo')
 
         x['termsOfService'] = (self.request.get('termsOfService') == 'True')
+        if not x['termsOfService']:
+            if db_user is not None:
+                x['termsOfService'] = db_user.termsOfService
 
         # Check required fields filled in
         for field in constants.REQUIRED_FIELDS:
@@ -187,14 +192,16 @@ class ApplyHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandle
 
         if valid:
             x['isRegistered'] = True
+            x['applyError'] = False
             redir = '/apply/complete'
         else:
+            x['applyError'] = True
             redir = '/apply'
 
-        db_user = models.search_database(models.Attendee, {'userId':user.user_id()}).get()
         if db_user is not None:
             logging.info('Updated profile of %s', x['email'])
-            redir = '/apply/updated'
+            if valid:
+                redir = '/apply/updated'
             models.update_search(models.Attendee, x, {'userId':user.user_id()})
         else:
             if valid:
