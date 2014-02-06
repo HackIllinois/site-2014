@@ -15,19 +15,28 @@ $(document).ready(function() {
     stratosphere+=500;
     stratosphere+='px';
 
-    $(".launcher-btn").on('click', function(){
-        $(".rocket-plume").animate({
-            opacity: 1,
-            marginBottom: stratosphere
-        }, {
-            duration: 2050,
-            easing: "easeInCirc"
-        });
-        $(".rocket-ship").animate({
-            marginBottom: stratosphere
-        }, {
-            duration: 2000,
-            easing: "easeInCirc"
-        });
+    var form = $('#application');
+    form.on('submit', function(event){
+        event.preventDefault();
+        $.post(form.attr('action'), form.serialize())
+            .done(function(data, status, req) {
+                $(".rocket-plume").animate({
+                    opacity: 1,
+                    marginBottom: stratosphere
+                }, {
+                    duration: 2050,
+                    easing: "easeInCirc",
+                    complete: function(){
+                        window.location = '/apply/complete';
+                    }
+                });
+                $(".rocket-ship").animate({
+                    marginBottom: stratosphere
+                }, {
+                    duration: 2000,
+                    easing: "easeInCirc"
+                });
+            }
+        );
     });
 });
