@@ -1,5 +1,8 @@
 import MainHandler
 import db.models as models
+from google.appengine.ext import blobstore
+import cloudstorage as gcs
+from google.appengine.api import files
 
 class ApproveHandler(MainHandler.Handler):
 
@@ -7,14 +10,19 @@ class ApproveHandler(MainHandler.Handler):
         ## @TODO: login implementation
 
         db_all_users = models.search_database(models.Attendee, {})
+
         if db_all_users is None:
-            return self.response.out.write('ERROR') # @TODO: implement error handling here
+            self.response.out.write('ERROR') # @TODO: implement error handling here
+        else:
+            all_users = db_all_users.fetch(10)
+            
+            for user in all_users:
+                resume_url = "/blobstore/hackillinois/" + user.resumePath
+                
+                blob_key = files.blobstore.get_blob_key(resume_url)
+                blob_reader = blobstore.BlobReader(blob_key)
+                print blob_reader.read()
 
-        results = db_all_users.fetch(10)
-        print len(results)
-        
-        for d in results:
-            print 'hi'
-            print d.nameFirst
+                #print blobstore.BlobInfo.get(blob_key)
 
-        self.render('approve.html')
+            self.render('approve.html', all_users=all_users)
