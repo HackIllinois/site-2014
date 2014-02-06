@@ -1,5 +1,6 @@
 # There's no need to change this app ID anymore to push to dev! See the "Git Deploy Setup Guide" in README.md
-application: hackillinois-dev
+# Again: DO NOT CHANGE THIS APP ID FROM "hackillinois"
+application: hackillinois
 version: 1
 runtime: python27
 api_version: 1
@@ -21,6 +22,10 @@ handlers:
 
 - url: /img/logos
   static_dir: assets/logos
+
+- url: /img/og_logo.png
+  static_files: assets/img/opengraph_logo.png
+  upload: assets/img/opengraph_logo\.jpg
 
 - url: /img
   static_dir: assets/img
