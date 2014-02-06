@@ -1,27 +1,17 @@
+heagerahj
 {% extends "base/subpage.html" %}
-
-
 {% block subpage_body %}
-
-<div class="wrapper-content sticky-footer-wrapper-fix">
-    <div class="grid-scaffold">
-        <div class="pure-g-r">
-            <div class="pure-u-1 section-divide">
-                <header class="section-title section-text">
-                    <span>Applicant Approval</span>
-                </header>
-            </div>
-            <div class="pure-u-1">
-                <div class="about-text first-text">
-                    <h3>Name</h3>
-                    <p>School<br>
-                    Information<br>
-                    Resume Link
-                    Other Info... to be completed soon!</p>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
+<form method="post">
+<table border="1"
+    {% for user in all_users %}
+        <tr>
+            <td>{{user.nameFirst}}</td>
+			<td>{{user.anameLast}}</td>
+			<td><a href="approve/resume/{{user.userId}}" target="_blank">Resume</a></td>
+			<td><input type="checkbox" name="Approved" id="Approved"></td>
+        </tr>
+    {% endfor %}
+</table>
+<button type="submit">Approve</button>
+</form>
 {% endblock subpage_body %}
