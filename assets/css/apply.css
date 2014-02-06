@@ -83,7 +83,7 @@ body h2 {
     margin-left: auto;
     margin-right: auto;
     font-size: 38px;
-    padding-bottom: 0px;
+    padding-bottom: 10px;
 }
 
 p.loggedin {
@@ -183,4 +183,66 @@ input[name="food"]{
 
 .controls label[for="food-0"] > *{
     margin-left: 0;
+}
+
+/*ROCKET*/
+
+.launch-container {
+    position: absolute;
+    width: 15%;
+    right: left;
+    bottom: 0;
+    height: 100%;
+    position: fixed;
+}
+
+.launch-container {
+    margin-left: -100px;
+}
+
+.rocket-ship {
+    position: absolute;
+    width: 100px;
+    bottom: 0px;
+    left: 0px;
+    z-index: 3;
+
+}
+
+.launch-craft {
+    display: block;
+}
+
+.rocket-plume {
+    position: absolute;
+    width: 100px;
+    bottom: -43px;
+    left: 1px;
+    z-index: 2;
+    opacity: 0;
+}
+
+.launch-pad {
+    position: absolute;
+    width: 100px;
+    left: 0;
+    bottom: 0;
+    z-index: 1;
+}
+
+@media only screen
+and (max-width : 768px) {
+    .launch-container {
+        display: none;
+    }
+}
+
+@media only screen
+and (max-width : 830px) {
+    .rocket-ship {
+        width: 80px;
+    }
+    .launch-pad {
+        width: 80px;
+    }
 }
