@@ -216,11 +216,11 @@ input[name="food"]{
 
 .rocket-plume {
     position: absolute;
-    width: 100px;
-    bottom: -43px;
-    left: 1px;
-    z-index: 2;
-    opacity: 0;
+width: 100px;
+bottom: 0px;
+left: 1px;
+z-index: 2;
+opacity: 0.4;
 }
 
 .launch-pad {

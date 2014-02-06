@@ -12,27 +12,22 @@ $(document).ready(function() {
     });
 
     var stratosphere = $(window).height();
-    stratosphere+=100;
+    stratosphere+=500;
     stratosphere+='px';
 
     $(".launcher-btn").on('click', function(){
         $(".rocket-plume").animate({
-            opacity: 1
-        }, {
-            duration: 1500,
-            easing: "easeOutSine"
-        });
-        $(".rocket-plume").animate({
+            opacity: 1,
             marginBottom: stratosphere
         }, {
-            duration: 10000,
-            easing: "easeInBounce"
+            duration: 2050,
+            easing: "easeInCirc"
         });
         $(".rocket-ship").animate({
             marginBottom: stratosphere
         }, {
-            duration: 10000,
-            easing: "easeInBounce"
+            duration: 2000,
+            easing: "easeInCirc"
         });
     });
 });
