@@ -213,7 +213,7 @@
 					<div class="controls col-sm-9">
 						<label class="checkbox" for="termsOfService-0">
 
-							<input type="checkbox" name="termsOfService" id="termsOfService-0" value="True" required="required" {% if data.termsOfService %}checked{% endif %} {% if data.isProfile %} disabled {% endif %}>
+							<input type="checkbox" name="termsOfService" id="termsOfService-0" value="True" required="required" {% if data.termsOfService %}checked{% endif %} {% if data.isUpdatingApplication %} disabled {% endif %}>
 							I will follow the HackIllinois
               				<a class="rules-link" href="/rules" target = "_blank">rules</a>, and comply with the
               				<a class="rules-link" href="/code-of-conduct" target="_blank" >code of conduct</a>.
@@ -224,7 +224,7 @@
 				<div class="form-group" style="">
 					<label class="control-label col-sm-3 sr-only"></label>
 					<div class="controls col-sm-9">
-						<button type="submit" class="btn btn-primary btn-lg pull-left footer btn-hackil" style="width: 100%">{% if data.isProfile %}Update{% else %}Submit{% endif %} Application</button>
+						<button type="submit" class="btn btn-primary btn-lg pull-left footer btn-hackil" style="width: 100%">{% if data.isUpdatingApplication %}Update{% else %}Submit{% endif %} Application</button>
 					</div>
 				</div>
 			</form>

@@ -39,7 +39,7 @@ class ApplyHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandle
         db_user = models.search_database(models.Attendee, {'userId':user.user_id()}).get()
         if db_user is not None:
             if db_user.isRegistered:
-                data['isProfile'] = True
+                data['isUpdatingApplication'] = True
                 data['title'] = constants.PROFILE_TITLE
                 data['resumeRequired'] = False
             else:
