@@ -1,5 +1,6 @@
 from google.appengine.ext import ndb
 from Event import Event
+# import logging
 
 class Model(ndb.Model):
     _automaticallyAddEventAsAncestor = False
@@ -40,10 +41,12 @@ class Model(ndb.Model):
         '''
 
         o = cls(parent=parent)
+        # logging.info("Model: f_add object is none: " + str(o == None))
         for prop in data:
             setattr(o, prop, data[prop])
 
-        o.put()
+        ret = o.put()
+        # logging.info("Model: f_add put returned " + str(ret))
 
         return o
 
@@ -57,7 +60,7 @@ class Model(ndb.Model):
             return q.fetch()[0].key
 
     @classmethod
-    def add(cls, data, search = {}, parent=None):
+    def add(cls, data, search={}, parent=None):
         '''
         Creates a model and adds it to the database
         WILL NOT override data if already there
@@ -75,9 +78,16 @@ class Model(ndb.Model):
         add(Attendee, {'nameFirst':'John', 'nameLast':'Doe', 'email':'doe1@illinois.edu', 'year':3}, {'email':'doe1@illinois.edu'})
         Same result
         '''
+        # logging.info("Model: Begining")
+        # logging.info("Model: cls=" + str(cls))
+        # logging.info("Model: data=" + str(data))
+        # logging.info("Model: search=" + str(search))
+        # logging.info("Model: parent=" + str(parent))
 
         if cls._automaticallyAddEventAsAncestor:
             parent = cls.get_default_event_parent_key()
+
+        # logging.info("Model: before search")
 
         if(search == {}):
             try:
@@ -85,12 +95,16 @@ class Model(ndb.Model):
                 for p in properties:
                     search[p] = data[p]
             except AttributeError:
+                # logging.info("Model: AttributeError")
                 #class does not have attribute unique_properties()
                 return cls.f_add(data, parent=parent)
             except LookupError:
                 #data does not key "p"
+                # logging.info("Model: LookupError")
                 return False
+        # logging.info("Model: before in database")
         if not cls.in_database(search):
+            # logging.info("Model: not in database")
             return cls.f_add(data, parent=parent)
         return False
 
@@ -204,7 +218,10 @@ class Model(ndb.Model):
         Returns True if "doe1@illinois.edu" is already in the database
         Returns False otherwise
         '''
-        return cls.search_database(search).get() != None
+        s = cls.search_database(search).get()
+        if s != None and (isinstance(s, list) and len(s) > 0) and s[0] != None:
+            return True
+        return False
 
     @classmethod
     def search_database(cls, search, perfect_match=True):

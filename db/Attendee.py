@@ -54,12 +54,6 @@ class Attendee(Model):
 
     @classmethod
     def new(cls, data):
-        required = cls._get_required()
-        for r in required:
-            if r not in data:
-                raise BadValueError('Property %s is required' % r)
-
-        # TODO: use required as params instead of hardcoding
         attendee = cls()
         for k in data:
             setattr(attendee, k, data[k])

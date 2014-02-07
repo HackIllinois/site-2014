@@ -116,7 +116,6 @@ class ApplyHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandle
         x = {}
         valid = True
         errorMessages = []
-        db_user = Attendee.search_database({'userId':user.user_id()}).get()
 
         # https://developers.google.com/appengine/docs/python/users/userclass
         x['userNickname'] = user.nickname()
@@ -160,6 +159,8 @@ class ApplyHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandle
         x['food'] = ','.join(foods)
         x['foodInfo'] = self.request.get('foodInfo')
 
+        db_user = Attendee.search_database({'userId':user.user_id()}).get()
+
         x['termsOfService'] = (self.request.get('termsOfService') == 'True')
         if not x['termsOfService']:
             if db_user is not None:
@@ -176,6 +177,14 @@ class ApplyHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandle
             if field not in x:
                 errorMessages.append(constants.ERROR_MESSAGE_PREFIX + field + constants.ERROR_MESSAGE_SUFFIX)
                 valid = False
+
+        # Check if hame has a number in it
+        # if 'nameFirst' in x and any(char.isdigit() for char in x['nameFirst']):
+        #     errorMessages.append('Your first name cannot have an Arabic numeral in it.')
+        #     valid = False
+        # if 'nameLast' in x and any(char.isdigit() for char in x['nameLast']):
+        #     errorMessages.append('Your last name cannot have an Arabic numeral in it.')
+        #     valid = False
 
         # Check if email is valid (basic)
         if 'email' in x and not re.match(constants.EMAIL_MATCH, x['email']):
