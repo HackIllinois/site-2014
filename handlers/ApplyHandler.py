@@ -47,39 +47,53 @@ class ApplyHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandle
             if db_user.applyError:
                 data['applyError'] = True
 
-            data['nameFirst'] = db_user.nameFirst
-            data['nameLast'] = db_user.nameLast
-            data['email'] = db_user.email
-            data['school'] = db_user.school
-            data['experience'] = db_user.experience
-            data['linkedin'] = db_user.linkedin
-            data['github'] = db_user.github
-            data['foodInfo'] = db_user.foodInfo
-            data['termsOfService'] = db_user.termsOfService
+            if db_user.nameFirst:
+                data['nameFirst'] = db_user.nameFirst
+            if db_user.nameLast:
+                data['nameLast'] = db_user.nameLast
+            if db_user.email:
+                data['email'] = db_user.email
+            if db_user.school:
+                data['school'] = db_user.school
+            if db_user.experience:
+                data['experience'] = db_user.experience
+            if db_user.linkedin:
+                data['linkedin'] = db_user.linkedin
+            if db_user.github:
+                data['github'] = db_user.github
+            if db_user.foodInfo:
+                data['foodInfo'] = db_user.foodInfo
+            if db_user.termsOfService:
+                data['termsOfService'] = db_user.termsOfService
 
-            for i in data['genders']:
-                if i['name'] == db_user.gender:
-                    i['checked'] = True
-                    break
+            if db_user.gender:
+                for i in data['genders']:
+                    if i['name'] == db_user.gender:
+                        i['checked'] = True
+                        break
 
-            for i in data['years']:
-                if i['name'] == db_user.year:
-                    i['checked'] = True
-                    break
+            if db_user.year:
+                for i in data['years']:
+                    if i['name'] == db_user.year:
+                        i['checked'] = True
+                        break
 
-            for i in data['shirts']:
-                if i['name'] == db_user.shirt:
-                    i['checked'] = True
-                    break
+            if db_user.shirt:
+                for i in data['shirts']:
+                    if i['name'] == db_user.shirt:
+                        i['checked'] = True
+                        break
 
-            for i in data['foods']:
-                if i['name'] in db_user.food:
-                    i['checked'] = True
+            if db_user.food:
+                for i in data['foods']:
+                    if i['name'] in db_user.food:
+                        i['checked'] = True
 
-            for i in data['projects']:
-                if i['name'] == db_user.projectType:
-                    i['selected'] = True
-                    break
+            if db_user.projectType:
+                for i in data['projects']:
+                    if i['name'] == db_user.projectType:
+                        i['selected'] = True
+                        break
 
             if db_user.resume:
                 data['hasResume'] = True
@@ -87,8 +101,6 @@ class ApplyHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandle
 
             if db_user.errorMessages and db_user.errorMessages != '':
                 data['messages'] = db_user.errorMessages.split('$$$')
-            # Clear Error Messages
-            # models.update_search(models.Attendee, {'errorMessages':''}, {'userId':user.user_id()})
 
         data['upload_url'] = upload_url_rpc.get_result()
         self.render("apply.html", data=data)
@@ -153,14 +165,20 @@ class ApplyHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandle
             if db_user is not None:
                 x['termsOfService'] = db_user.termsOfService
 
+        # Remove any empty fields
+        for field in constants.ALL_FIELDS:
+            if field in x and not x[field]:
+                # This checks for None and '' and u''
+                del x[field]
+
         # Check required fields filled in
         for field in constants.REQUIRED_FIELDS:
-            if field not in x or x[field] is None or (isinstance(x[field], str) and x[field] == ''):
+            if field not in x:
                 errorMessages.append(constants.ERROR_MESSAGE_PREFIX + field + constants.ERROR_MESSAGE_SUFFIX)
                 valid = False
 
         # Check if email is valid (basic)
-        if not re.match(constants.EMAIL_MATCH, x['email']):
+        if 'email' in x and not re.match(constants.EMAIL_MATCH, x['email']):
             errorMessages.append('Uploaded file is too big.')
             valid = False
 
@@ -176,7 +194,6 @@ class ApplyHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandle
             valid = False
         if 'food' in x and x['food'] != '':
             for f in x['food'].split(','):
-                print 'food thing: %s' % f
                 if f not in constants.FOODS:
                     errorMessages.append(constants.ERROR_MESSAGE_PREFIX + 'dietary restriction' + constants.ERROR_MESSAGE_SUFFIX)
                     valid = False
@@ -186,32 +203,39 @@ class ApplyHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandle
             valid = False
 
         # Make sure required boxes checked
-        if not x['termsOfService']:
+        if 'termsOfService' in x and not x['termsOfService']:
             errorMessages.append('Please read and agree to the rules and code of conduct.')
             valid = False
 
         x['errorMessages'] = '$$$'.join(errorMessages)
 
-        print 'valid: %s' % valid
         if valid:
+            # print 'VALID'
             x['isRegistered'] = True
             x['applyError'] = False
             redir = '/apply/complete'
         else:
+            # print 'NOT VALID'
             x['applyError'] = True
             redir = '/apply'
 
         if db_user is not None:
             logging.info('Updated profile of %s', x['email'])
             if valid:
-                redir = '/apply/updated'
-            Attendee.update_search(x, {'userId':user.user_id()})
+                if db_user.isRegistered:
+                    redir = '/apply/updated'
+                else:
+                    redir = '/apply/complete'
+            success = Attendee.update_search(x, {'userId':user.user_id()})
+            # print "Attendee Updated: " + str(success)
         else:
             if valid:
                 logging.info('Signup with email %s', x['email'])
             else:
                 logging.info('User %s submitted an invalid form', x['userId'])
-            Attendee.add(x)
+            success = Attendee.add(x)
+            # print "Attendee Added: " + str(success)
+        # print x
 
         return self.redirect(redir)
 
