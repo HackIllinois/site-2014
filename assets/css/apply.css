@@ -80,7 +80,6 @@ body h2 {
     margin-top: 50px;
     margin-bottom: 10px;
     font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    width: 75%;
     margin-left: auto;
     margin-right: auto;
     font-size: 38px;
@@ -250,12 +249,12 @@ and (max-width : 768px) {
 @media only screen
 and (max-width : 830px) {
     .rocket-ship {
-        width: 80px;
+        width: 60px;
     }
     .launch-pad {
-        width: 80px;
+        width: 60px;
     }
     .rocket-plume {
-        width: 80px;
+        width: 60px;
     }
 }
