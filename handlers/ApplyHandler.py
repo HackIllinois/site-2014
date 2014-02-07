@@ -174,8 +174,9 @@ class ApplyHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandle
         if 'shirt' in x and x['shirt'] not in constants.SHIRTS:
             errorMessages.append(constants.ERROR_MESSAGE_PREFIX + 'shirt size' + constants.ERROR_MESSAGE_SUFFIX)
             valid = False
-        if 'food' in x:
+        if 'food' in x and x['food'] != '':
             for f in x['food'].split(','):
+                print 'food thing: %s' % f
                 if f not in constants.FOODS:
                     errorMessages.append(constants.ERROR_MESSAGE_PREFIX + 'dietary restriction' + constants.ERROR_MESSAGE_SUFFIX)
                     valid = False
