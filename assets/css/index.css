@@ -510,7 +510,4 @@ em, em * { font-style: italic !important; }
 
 /* very specific hack to remove part of facebook CSS --
     if this messes someting up yell @brendan
- */
-span.fb-like.fb_iframe_widget > span[style]{
-    vertical-align: baseline !important;
-}
+ *nde/

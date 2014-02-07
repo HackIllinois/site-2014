@@ -74,3 +74,8 @@ body {
 0% { -ms-transform: rotate(0deg);}
 100% { -ms-transform: rotate(360deg);}
 }
+
+
+span.fb-like.fb_iframe_widget > span[style]{
+    vertical-align: baseline !important;
+}
