@@ -1,7 +1,7 @@
 import MainHandler
 import re
 from datetime import datetime
-from db.models import SignUp
+from db.SignUp import SignUp
 import logging
 
 email_regex = r"^[A-Za-z0-9\.\+_-]+@[A-Za-z0-9\._-]+\.[a-zA-Z]*$"

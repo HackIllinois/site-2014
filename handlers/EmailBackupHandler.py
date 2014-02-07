@@ -4,7 +4,7 @@ from datetime import datetime
 import json
 import logging
 
-from db.models import SignUp
+from db.SignUp import SignUp
 
 from google.appengine.api import mail
 

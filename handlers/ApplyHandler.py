@@ -1,6 +1,7 @@
 import MainHandler
 import urllib, logging, re
-import db.models as models
+from db.Attendee import Attendee
+from db.Resume import Resume
 from db import constants
 from google.appengine.api import users
 from google.appengine.ext import blobstore
@@ -31,12 +32,12 @@ class ApplyHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandle
         data['projects'] = [ {'name':p, 'selected':False} for p in constants.PROJECTS ]
 
         data['title'] = constants.APPLY_TITLE
-        data['resumeRequired'] = True
+        data['resumeRequired'] = False
         data['hasResume'] = False
         data['applyError'] = False
 
         # Check if user is in our database
-        db_user = models.search_database(models.Attendee, {'userId':user.user_id()}).get()
+        db_user = Attendee.search_database({'userId': user.user_id()}).get()
         if db_user is not None:
             if db_user.isRegistered:
                 data['isUpdatingApplication'] = True
@@ -103,7 +104,7 @@ class ApplyHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandle
         x = {}
         valid = True
         errorMessages = []
-        db_user = models.search_database(models.Attendee, {'userId':user.user_id()}).get()
+        db_user = Attendee.search_database({'userId':user.user_id()}).get()
 
         # https://developers.google.com/appengine/docs/python/users/userclass
         x['userNickname'] = user.nickname()
@@ -137,7 +138,7 @@ class ApplyHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandle
                 errorMessages.append('Uploaded resume file is too big.')
                 valid = False
             else:
-               x['resume'] = models.Resume(contentType=file_info.content_type,
+               x['resume'] = Resume(contentType=file_info.content_type,
                                            creationTime=file_info.creation,
                                            fileName=file_info.filename,
                                            size=file_info.size,
@@ -190,6 +191,7 @@ class ApplyHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandle
 
         x['errorMessages'] = '$$$'.join(errorMessages)
 
+        print 'valid: %s' % valid
         if valid:
             x['isRegistered'] = True
             x['applyError'] = False
@@ -202,13 +204,13 @@ class ApplyHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandle
             logging.info('Updated profile of %s', x['email'])
             if valid:
                 redir = '/apply/updated'
-            models.update_search(models.Attendee, x, {'userId':user.user_id()})
+            Attendee.update_search(x, {'userId':user.user_id()})
         else:
             if valid:
                 logging.info('Signup with email %s', x['email'])
             else:
                 logging.info('User %s submitted an invalid form', x['userId'])
-            models.add(models.Attendee, x)
+            Attendee.add(x)
 
         return self.redirect(redir)
 
@@ -256,7 +258,7 @@ class MyResumeHandler(MainHandler.Handler, blobstore_handlers.BlobstoreDownloadH
     def get(self):
         user = users.get_current_user()
         if user:
-            db_user = models.search_database(models.Attendee, {'userId':user.user_id()}).get()
+            db_user = Attendee.search_database({'userId':user.user_id()}).get()
             if not db_user:
                 return self.redirect('/apply')
 
