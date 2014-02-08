@@ -130,12 +130,10 @@ p {
 
 .constellations {
 	min-height: 120%;
-	min-width: 120%;
 	margin-top: -10%;
-	margin-left: -10%;
 	display: block;
-	position:fixed;
-	z-index:0;
+	position: fixed;
+	z-index: 0;
 	opacity: 0.6;
 
 	-webkit-animation: spin 250s infinite linear;
