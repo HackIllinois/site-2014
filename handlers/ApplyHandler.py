@@ -242,7 +242,7 @@ class ApplyHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandle
             valid = False
 
         # Make sure required boxes checked
-        if 'termsOfService' in x and not x['termsOfService']:
+        if 'termsOfService' not in x or ('termsOfService' in x and not x['termsOfService']):
             errorMessages.append('Please read and agree to the rules and code of conduct.')
             valid = False
 

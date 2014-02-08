@@ -13,7 +13,7 @@ ERROR_MESSAGE_PREFIX = 'Please provide a valid '
 ERROR_MESSAGE_SUFFIX = '.'
 
 ALL_FIELDS = ['nameFirst', 'nameLast', 'email', 'gender', 'school', 'year', 'resume', 'linkedin', 'github', 'shirt', 'food', 'foodInfo', 'projectType', 'experience', 'termsOfService']
-REQUIRED_FIELDS = ['nameFirst', 'nameLast', 'email', 'gender', 'school', 'year', 'shirt', 'experience', 'termsOfService']
+REQUIRED_FIELDS = ['nameFirst', 'nameLast', 'email', 'gender', 'school', 'year', 'shirt', 'experience']
 
 FIELD_DISPLAY_NAMES = {'nameFirst':'First Name',
                        'nameLast':'Last Name',
