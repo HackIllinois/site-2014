@@ -174,8 +174,11 @@ class ApplyHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandle
 
         # Check required fields filled in
         for field in constants.REQUIRED_FIELDS:
+            if field is "termsOfService":
+               continue
+        
             if field not in x:
-                errorMessages.append(constants.ERROR_MESSAGE_PREFIX + field + constants.ERROR_MESSAGE_SUFFIX)
+                errorMessages.append(constants.ERROR_MESSAGE_PREFIX + constants.READABLE_REQUIRED_FIELDS[field] + constants.ERROR_MESSAGE_SUFFIX)
                 valid = False
 
         # Check if hame has a number in it
@@ -192,27 +195,12 @@ class ApplyHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandle
             valid = False
 
         # Check fields with specific values
-        if 'gender' in x and x['gender'] not in constants.GENDERS:
-            errorMessages.append(constants.ERROR_MESSAGE_PREFIX + 'gender' + constants.ERROR_MESSAGE_SUFFIX)
-            valid = False
-        if 'year' in x and x['year'] not in constants.YEARS:
-            errorMessages.append(constants.ERROR_MESSAGE_PREFIX + 'school year' + constants.ERROR_MESSAGE_SUFFIX)
-            valid = False
-        if 'shirt' in x and x['shirt'] not in constants.SHIRTS:
-            errorMessages.append(constants.ERROR_MESSAGE_PREFIX + 'shirt size' + constants.ERROR_MESSAGE_SUFFIX)
-            valid = False
-        if 'food' in x and x['food'] != '':
-            for f in x['food'].split(','):
-                if f not in constants.FOODS:
-                    errorMessages.append(constants.ERROR_MESSAGE_PREFIX + 'dietary restriction' + constants.ERROR_MESSAGE_SUFFIX)
-                    valid = False
-                    break
         if 'projectType' in x and x['projectType'] not in constants.PROJECTS:
             errorMessages.append(constants.ERROR_MESSAGE_PREFIX + 'project type' + constants.ERROR_MESSAGE_SUFFIX)
             valid = False
 
         # Make sure required boxes checked
-        if 'termsOfService' in x and not x['termsOfService']:
+        if not ('termsOfService' in x) or not x['termsOfService']:
             errorMessages.append('Please read and agree to the rules and code of conduct.')
             valid = False
 
