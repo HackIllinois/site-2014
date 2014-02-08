@@ -6,7 +6,10 @@
 
     function setupApplyButtonSlide() {
         $("#apply-btn-slide").on('click', function(event){
-            event.preventDefault();
+            if (!$('p.apply-info').is(':visible')) {
+                // Cancel the click if the dropdown menu is about to appear, otherwise we want it
+                event.preventDefault();
+            }
 
             $("p.apply-info").slideDown(function(){
                 $("a.apply-btn").attr("href","/apply");
