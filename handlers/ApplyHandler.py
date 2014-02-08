@@ -25,7 +25,6 @@ import json
 class ApplyHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandler):
     """ Handler for application page.
     This does not include the email registration we have up now."""
-    memcache = memcache.Client()
 
     def get(self):
         user = users.get_current_user()
@@ -254,7 +253,7 @@ class ApplyHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandle
             x['isRegistered'] = True
             x['applyError'] = False
             redir = '/apply/complete'
-            print 'Increasing memcache'
+
             memcache.incr('apply_count')
         else:
             x['applyError'] = True
