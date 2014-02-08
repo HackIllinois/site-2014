@@ -9,6 +9,7 @@
             $("#apply-btn-slide").css('padding-left','96px');
             $("#apply-btn-slide").css('padding-right','96px');
         });
+        $("a.apply-btn").attr("href","/apply");
     });
 
 })();
