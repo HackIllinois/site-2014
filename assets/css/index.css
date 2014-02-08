@@ -452,6 +452,15 @@ div.main-content {
 	margin: 5px;
 	margin-top: 10px;
 	}
+	.niksun, .answers, .oso {
+	width: 20%;
+	}
+	.goldmansachs {
+		width: 20%;
+	}
+	.mailgun {
+		width: 35%;
+	}
 	.spot-trading {
 		width: auto;
 	}
