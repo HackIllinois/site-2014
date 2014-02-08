@@ -9,7 +9,6 @@ ERROR_MESSAGE_SUFFIX = '.'
 ALL_FIELDS = ['nameFirst', 'nameLast', 'email', 'gender', 'school', 'year', 'resume', 'linkedin', 'github', 'shirt', 'food', 'foodInfo', 'projectType', 'experience', 'termsOfService']
 REQUIRED_FIELDS = ['nameFirst', 'nameLast', 'email', 'gender', 'school', 'year', 'shirt', 'experience', 'termsOfService']
 
-<<<<<<< HEAD
 # This should have *ALL* fields in REQUIRED_FIELDS *EXCEPT* for 'termsOfService'
 READABLE_REQUIRED_FIELDS = {'nameFirst':'your First Name',
                             'nameLast':'your Last Name',
@@ -21,26 +20,9 @@ READABLE_REQUIRED_FIELDS = {'nameFirst':'your First Name',
                             'experience':'your past experience'}
                             
 TOS_ERROR_MESSAGE = 'Please accept the Terms of Service'
-=======
-FIELD_DISPLAY_NAMES = {'nameFirst':'First Name',
-                       'nameLast':'Last Name',
-                       'email':'Email',
-                       'gender':'Gender',
-                       'school':'School',
-                       'year':'Year in School',
-                       'resume':'Resume',
-                       'linkedin':'LinkedIn Profile',
-                       'github':'Github Username',
-                       'shirt':'Shirt Size',
-                       'food':'Dietary Restriction',
-                       'foodInfo':'Food Info',
-                       'projectType':'Project Type',
-                       'experience':'Previous Experience'}
-
 
 # The below array is for more descriptive error messages. @Mattato pls fix.
 # READABLE_REQUIRED_FIELDS = ['First Name','Last Name','E-mail','Gender','School','Year in School','T-shirt size','past experience', 'Please accept the Terms of Service']
->>>>>>> e628726e31602d9160d9cba669a7114877d5d053
 
 EMAIL_MATCH = r"^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$"
 

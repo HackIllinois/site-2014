@@ -194,11 +194,7 @@ class ApplyHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandle
                continue
         
             if field not in x:
-<<<<<<< HEAD
                 errorMessages.append(constants.ERROR_MESSAGE_PREFIX + constants.READABLE_REQUIRED_FIELDS[field] + constants.ERROR_MESSAGE_SUFFIX)
-=======
-                errorMessages.append(constants.ERROR_MESSAGE_PREFIX + constants.FIELD_DISPLAY_NAMES[field] + constants.ERROR_MESSAGE_SUFFIX)
->>>>>>> e628726e31602d9160d9cba669a7114877d5d053
                 valid = False
 
         # Check if hame has a number in it
@@ -215,8 +211,6 @@ class ApplyHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandle
             valid = False
 
         # Check fields with specific values
-<<<<<<< HEAD
-=======
         if 'gender' in x and x['gender'] not in constants.GENDERS:
             errorMessages.append(constants.ERROR_MESSAGE_PREFIX + constants.FIELD_DISPLAY_NAMES['gender'] + constants.ERROR_MESSAGE_SUFFIX)
             valid = False
@@ -232,7 +226,7 @@ class ApplyHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandle
                     errorMessages.append(constants.ERROR_MESSAGE_PREFIX + constants.FIELD_DISPLAY_NAMES['food'] + constants.ERROR_MESSAGE_SUFFIX)
                     valid = False
                     break
->>>>>>> e628726e31602d9160d9cba669a7114877d5d053
+
         if 'projectType' in x and x['projectType'] not in constants.PROJECTS:
             errorMessages.append(constants.ERROR_MESSAGE_PREFIX + constants.FIELD_DISPLAY_NAMES['projectType'] + constants.ERROR_MESSAGE_SUFFIX)
             valid = False

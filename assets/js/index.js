@@ -14,10 +14,8 @@
             $("#apply-btn-slide").css('padding-left','96px');
             $("#apply-btn-slide").css('padding-right','96px');
         });
-<<<<<<< HEAD
         $("a.apply-btn").attr("href","/apply");
     });
-=======
     }
 
     /**
@@ -31,6 +29,5 @@
             $('.sponsor, .sponsor-supernova').css('-webkit-transform', 'translateZ(0)');
         }
     }
->>>>>>> e628726e31602d9160d9cba669a7114877d5d053
 
 })();
