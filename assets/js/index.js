@@ -5,7 +5,9 @@
     });
 
     function setupApplyButtonSlide() {
-        $("#apply-btn-slide").on('click', function(){
+        $("#apply-btn-slide").on('click', function(event){
+            event.preventDefault();
+
             $("p.apply-info").slideDown(function(){
                 $("a.apply-btn").attr("href","/apply");
             });
