@@ -325,7 +325,7 @@ class SchoolCheckHandler(MainHandler.Handler):
 class SchoolListHandler(MainHandler.Handler):
     def get(self):
         schools = constants.SCHOOLS
-        school_list = list(set([schools[i] for i in schools]))
+        school_list = sorted(list((set(schools))))
         out_list = [{'name':school} for school in school_list]
         self.write(json.dumps({'schools': out_list}))
 
