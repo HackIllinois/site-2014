@@ -15,7 +15,7 @@ class IndexHandler(MainHandler.Handler):
         data = {}
         user = users.get_current_user()
         data['isLoggedIn'] = False
-        if user is None:
+        if user is not None:
             db_user = Attendee.search_database({'userId': user.user_id()}).get()
             if db_user is not None:
                if db_user.isRegistered:
