@@ -8,10 +8,10 @@ class ApplyCountHandler(MainHandler.Handler):
         cached_count = memcache.get('apply_count')
 
         if cached_count:
-            self.write(cached_count + ' (and you made us do a query :( )')
+            self.write('%s (read from memcache for freeeee!)' % cached_count)
         else:
             q = Attendee.query(Attendee.isRegistered == True)
             count = q.count()
             memcache.set('apply_count', count)
 
-            self.write(count  + ' (read from memcache for freeeee!)')
+            self.write('%d (and you made us do a query :( )' % count)
