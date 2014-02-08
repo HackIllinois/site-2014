@@ -8,18 +8,18 @@ from google.appengine.ext import blobstore
 from google.appengine.ext.webapp import blobstore_handlers
 import json
 
-from datetime import datetime
-import json
-from google.appengine.api import mail
+# from datetime import datetime
+# import json
+# from google.appengine.api import mail
 
 
-def SendApplyEmail(subject, body):
-    body_str = json.dumps(body)
-    logging.info("Sent email '%s'",  subject)
-    mail.send_mail(sender="alex.burck@hackillinois.org",
-                   to="apply-watchlist@hackillinois.org",
-                   subject=subject,
-                   body=body_str)
+# def SendApplyEmail(subject, body):
+#     body_str = json.dumps(body)
+#     logging.info("Sent email '%s'",  subject)
+#     mail.send_mail(sender="alex.burck@hackillinois.org",
+#                    to="apply-watchlist@hackillinois.org",
+#                    subject=subject,
+#                    body=body_str)
 
 
 class ApplyHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandler):
@@ -262,18 +262,18 @@ class ApplyHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandle
                     redir = '/apply/updated'
                     logging.info('Updated profile of %s', x['email'])
                     logging.info(str(x))
-                    SendApplyEmail('Updated profile of ' + x['email'], x)
+                    # SendApplyEmail('Updated profile of ' + x['email'], x)
                 else:
                     redir = '/apply/complete'
                     logging.info('Signup with email %s', x['email'])
                     logging.info(str(x))
-                    SendApplyEmail('Signup with email ' + x['email'], x)
+                    # SendApplyEmail('Signup with email ' + x['email'], x)
             success = Attendee.update_search(x, {'userId':x['userId']})
         else:
             if valid:
                 logging.info('Signup with email %s', x['email'])
                 logging.info(str(x))
-                SendApplyEmail('Signup with email ' + x['email'], x)
+                # SendApplyEmail('Signup with email ' + x['email'], x)
             else:
                 logging.info('User with email %s submitted an invalid form', x['email'])
             success = Attendee.add(x)
@@ -283,18 +283,26 @@ class ApplyHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandle
 
 class ApplyCompleteHandler(MainHandler.Handler):
     def get(self):
-        return self.render("apply_complete.html")
+        return self.render( "simple_message.html",
+                            header=constants.APPLY_COMPLETE_HEADER,
+                            message=constants.APPLY_COMPLETE_MESSAGE,
+                            showSocial=True )
 
 
 class UpdateCompleteHandler(MainHandler.Handler):
     def get(self):
-        return self.render("simple_message.html", message="Update Successful!")
+        return self.render( "simple_message.html",
+                            header=constants.UPDATE_COMPLETE_HEADER,
+                            message=constants.UPDATE_COMPLETE_MESSAGE,
+                            showSocial=True )
+
 
 class ApplyCountHandler(MainHandler.Handler):
     def get(self):
         q = Attendee.query()
         q.filter(Attendee.isRegistered == True)
         self.write(q.count())
+
 
 class SchoolCheckHandler(MainHandler.Handler):
     def get(self):
@@ -316,6 +324,7 @@ class SchoolCheckHandler(MainHandler.Handler):
             return self.write(schools[domain])
         else:
             return self.write('--')
+
 
 class SchoolListHandler(MainHandler.Handler):
     def get(self):
