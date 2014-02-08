@@ -47,6 +47,19 @@ class Attendee(Model):
 
     applyError = ndb.BooleanProperty()
     errorMessages = ndb.TextProperty()
+    
+    # Per-field error messages
+    errors_nameFirst = ndb.StringProperty()
+    errors_nameLast = ndb.StringProperty()
+    errors_email = ndb.StringProperty()
+    errors_gender = ndb.StringProperty()
+    errors_school = ndb.StringProperty()
+    errors_year = ndb.StringProperty() 
+    errors_shirt = ndb.StringProperty()
+    errors_food = ndb.StringProperty()
+    errors_projectType = ndb.StringProperty()  
+    errors_experience = ndb.StringProperty()
+    errors_termsOfService = ndb.StringProperty()
 
     approved = ndb.StringProperty()
 

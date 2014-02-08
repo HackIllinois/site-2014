@@ -17,7 +17,11 @@ READABLE_REQUIRED_FIELDS = {'nameFirst':'your First Name',
                             'school':'your School',
                             'year':'your Year in School',
                             'shirt':'your T-shirt size',
-                            'experience':'your past experience'}
+                            'experience':'your past experience',
+                            'projectType':'your project type'}
+                            
+READABLE_FIELDS = {'food':'your Dietary Restrictions',
+                   'food-info':'your Dietary Restriction Information'}
                             
 TOS_ERROR_MESSAGE = 'Please accept the Terms of Service'
 

@@ -9,8 +9,8 @@ from google.appengine.ext.webapp import blobstore_handlers
 import json
 
 class ApplyHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandler):
-    """ Handler for application page.
-    This does not include the email registration we have up now."""
+    # == Handler for application page. ==
+    # This does not include the email registration we have up now.
     def get(self):
         user = users.get_current_user()
 
@@ -46,7 +46,45 @@ class ApplyHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandle
 
             if db_user.applyError:
                 data['applyError'] = True
+            
+            # Per-field errors
+            if db_user.errors_nameFirst:
+                data['errors_nameFirst'] = db_user.errors_nameFirst
+                
+            if db_user.errors_nameLast:
+                data['errors_nameLast'] = db_user.errors_nameLast    
 
+            if db_user.errors_email:
+                data['errors_email'] = db_user.errors_email  
+                
+            if db_user.errors_gender:
+                data['errors_gender'] = db_user.errors_gender
+
+            if db_user.errors_school:
+                data['errors_school'] = db_user.errors_school
+                
+            if db_user.errors_year:
+                data['errors_year'] = db_user.errors_year 
+                
+            if db_user.errors_shirt:
+                data['errors_shirt'] = db_user.errors_shirt
+                
+            if db_user.errors_experience:
+                data['errors_experience'] = db_user.errors_experience
+
+            if db_user.errors_termsOfService:
+                data['errors_termsOfService'] = db_user.errors_termsOfService
+                
+            if db_user.errors_food:
+                data['errors_food'] = db_user.errors_food
+                
+            if db_user.errors_projectType:
+                data['errors_projectType'] = db_user.errors_projectType
+                
+            if db_user.errors_termsOfService:
+                data['errors_termsOfService'] = db_user.errors_termsOfService
+
+            # Previous field data
             if db_user.nameFirst:
                 data['nameFirst'] = db_user.nameFirst
             if db_user.nameLast:
@@ -125,15 +163,12 @@ class ApplyHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandle
         x['userFederatedIdentity'] = user.federated_identity()
         x['userFederatedProvider'] = user.federated_provider()
 
-        x['nameFirst'] = self.request.get('nameFirst')
-        x['nameLast'] = self.request.get('nameLast')
-        x['email'] = self.request.get('email')
-        x['gender'] = self.request.get('gender')
-        x['school'] = self.request.get('school')
-        x['year'] = self.request.get('year')
-        x['experience'] = self.request.get('experience')
-        x['linkedin'] = self.request.get('linkedin')
-        x['github'] = self.request.get('github')
+        for field in ['nameFirst', 'nameLast', 'email', 'gender', 'school', 'year', 'experience', 'linkedin', 'github']:
+           x[field] = self.request.get(field)
+        
+        # Reset error messages
+        for field in constants.ALL_FIELDS:
+           x['errors_' + field] = "" # A slightly hacky shortcut, but it shouldn't cause any problems
 
         x['shirt'] = self.request.get('shirt')
         x['projectType'] = self.request.get('projectType')
@@ -142,31 +177,36 @@ class ApplyHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandle
         file_info = self.get_file_infos(field_name='resume')
         if file_info and len(file_info) == 1:
             file_info = file_info[0]
+            
+            delete_resume = False
+            
             if not file_info.content_type == 'application/pdf':
+            
+                # Non-pdf files
                 errorMessages.append('Uploaded resume file is not a pdf.')
-
-                # Delete non pdf file
-                resource = str(urllib.unquote(file_info.gs_object_name))
-                blob_key = blobstore.create_gs_key(resource)
-                blobstore.delete(blob_key)
-
+                delete_resume = True
                 valid = False
+                
             elif file_info.size > constants.RESUME_MAX_SIZE:
+                
+                # Big files
                 errorMessages.append('Uploaded resume file is too big.')
-
-                # Delete big file
+                delete_resume = True
+                valid = False
+                
+            else:
+            
+                # Old resumes
+                delete = db_user and db_user.resume
+            
+            # Delete resume if appropriate
+            if delete:
                 resource = str(urllib.unquote(file_info.gs_object_name))
                 blob_key = blobstore.create_gs_key(resource)
                 blobstore.delete(blob_key)
 
-                valid = False
-            else:
-                if db_user and db_user.resume:
-                    # Delete old resume
-                    resource = str(urllib.unquote(db_user.resume.gsObjectName))
-                    blob_key = blobstore.create_gs_key(resource)
-                    blobstore.delete(blob_key)
-
+            # Create new resume if appropriate
+            if valid:
                 x['resume'] = Resume(contentType=file_info.content_type,
                                      creationTime=file_info.creation,
                                      fileName=file_info.filename,
@@ -194,7 +234,8 @@ class ApplyHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandle
                continue
         
             if field not in x:
-                errorMessages.append(constants.ERROR_MESSAGE_PREFIX + constants.READABLE_REQUIRED_FIELDS[field] + constants.ERROR_MESSAGE_SUFFIX)
+                print field
+                x["errors_" + field] += constants.ERROR_MESSAGE_PREFIX + constants.READABLE_REQUIRED_FIELDS[field] + constants.ERROR_MESSAGE_SUFFIX
                 valid = False
 
         # Check if hame has a number in it
@@ -207,33 +248,43 @@ class ApplyHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandle
 
         # Check if email is valid (basic)
         if 'email' in x and not re.match(constants.EMAIL_MATCH, x['email']):
-            errorMessages.append('Uploaded file is too big.')
+            x["errors_email"] += 'Invalid e-mail address.'
             valid = False
 
         # Check fields with specific values
         if 'gender' in x and x['gender'] not in constants.GENDERS:
-            errorMessages.append(constants.ERROR_MESSAGE_PREFIX + constants.FIELD_DISPLAY_NAMES['gender'] + constants.ERROR_MESSAGE_SUFFIX)
+            x["errors_gender"] += constants.ERROR_MESSAGE_PREFIX + constants.READABLE_REQUIRED_FIELDS['gender'] + constants.ERROR_MESSAGE_SUFFIX
             valid = False
         if 'year' in x and x['year'] not in constants.YEARS:
-            errorMessages.append(constants.ERROR_MESSAGE_PREFIX + constants.FIELD_DISPLAY_NAMES['year'] + constants.ERROR_MESSAGE_SUFFIX)
+            x["errors_year"] += constants.ERROR_MESSAGE_PREFIX + constants.READABLE_REQUIRED_FIELDS['year'] + constants.ERROR_MESSAGE_SUFFIX
             valid = False
         if 'shirt' in x and x['shirt'] not in constants.SHIRTS:
-            errorMessages.append(constants.ERROR_MESSAGE_PREFIX + constants.FIELD_DISPLAY_NAMES['shirt'] + constants.ERROR_MESSAGE_SUFFIX)
+            x["errors_shirt"] += constants.ERROR_MESSAGE_PREFIX + constants.READABLE_REQUIRED_FIELDS['shirt'] + constants.ERROR_MESSAGE_SUFFIX
             valid = False
         if 'food' in x and x['food'] != '':
             for f in x['food'].split(','):
                 if f not in constants.FOODS:
-                    errorMessages.append(constants.ERROR_MESSAGE_PREFIX + constants.FIELD_DISPLAY_NAMES['food'] + constants.ERROR_MESSAGE_SUFFIX)
+                    x["errors_food"] += constants.ERROR_MESSAGE_PREFIX + constants.READABLE_FIELDS['food'] + constants.ERROR_MESSAGE_SUFFIX
                     valid = False
-                    break
+                    break # This is why we need the for loop below
+                
+            # If other is checked, we need more info
+            print "================= FOOD INFO ================="
+            for f in x['food'].split(','):
+               print f
+               if f == 'Other':
+                  if 'foodInfo' not in x:
+                     print "[[[ 2 ]]]"
+                     x["errors_food"] += constants.ERROR_MESSAGE_PREFIX + constants.READABLE_FIELDS['food'] + constants.ERROR_MESSAGE_SUFFIX
+                     valid = False
 
         if 'projectType' in x and x['projectType'] not in constants.PROJECTS:
-            errorMessages.append(constants.ERROR_MESSAGE_PREFIX + constants.FIELD_DISPLAY_NAMES['projectType'] + constants.ERROR_MESSAGE_SUFFIX)
+            x["errors_projectType"] += constants.ERROR_MESSAGE_PREFIX + constants.READABLE_FIELDS['projectType'] + constants.ERROR_MESSAGE_SUFFIX
             valid = False
 
         # Make sure required boxes checked
         if not ('termsOfService' in x) or not x['termsOfService']:
-            errorMessages.append('Please read and agree to the rules and code of conduct.')
+            x["errors_termsOfService"] += 'Please read and agree to the rules and code of conduct.'
             valid = False
 
         x['errorMessages'] = '$$$'.join(errorMessages)
