@@ -15,6 +15,10 @@ label {
     color: #fff;
 }
 
+.food-options {
+    font-weight: normal;
+}
+
 .help-block {
     font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
     color: #fff;
