@@ -48,6 +48,7 @@ class ApplyHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandle
         data['resumeRequired'] = False
         data['hasResume'] = False
         data['applyError'] = False
+        data['uploadUrl'] = '/apply'
 
         # Check if user is in our database
         db_user = Attendee.search_database({'userId': user.user_id()}).get()
