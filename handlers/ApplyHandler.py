@@ -116,6 +116,7 @@ class ApplyHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandle
         x = {}
         valid = True
         errorMessages = []
+        db_user = Attendee.search_database({'userId':user.user_id()}).get()
 
         # https://developers.google.com/appengine/docs/python/users/userclass
         x['userNickname'] = user.nickname()
@@ -140,26 +141,41 @@ class ApplyHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandle
 
         file_info = self.get_file_infos(field_name='resume')
         if file_info and len(file_info) == 1:
-            # TODO: delete file if not valid
             file_info = file_info[0]
-            if not file_info.filename.endswith(".pdf"):
+            if not file_info.content_type == 'application/pdf':
                 errorMessages.append('Uploaded resume file is not a pdf.')
+
+                # Delete non pdf file
+                resource = str(urllib.unquote(file_info.gs_object_name))
+                blob_key = blobstore.create_gs_key(resource)
+                blobstore.delete(blob_key)
+
                 valid = False
             elif file_info.size > constants.RESUME_MAX_SIZE:
                 errorMessages.append('Uploaded resume file is too big.')
+
+                # Delete big file
+                resource = str(urllib.unquote(file_info.gs_object_name))
+                blob_key = blobstore.create_gs_key(resource)
+                blobstore.delete(blob_key)
+
                 valid = False
             else:
-               x['resume'] = Resume(contentType=file_info.content_type,
-                                           creationTime=file_info.creation,
-                                           fileName=file_info.filename,
-                                           size=file_info.size,
-                                           gsObjectName=file_info.gs_object_name)
+                if db_user and db_user.resume:
+                    # Delete old resume
+                    resource = str(urllib.unquote(db_user.resume.gsObjectName))
+                    blob_key = blobstore.create_gs_key(resource)
+                    blobstore.delete(blob_key)
+
+                x['resume'] = Resume(contentType=file_info.content_type,
+                                     creationTime=file_info.creation,
+                                     fileName=file_info.filename,
+                                     size=file_info.size,
+                                     gsObjectName=file_info.gs_object_name)
 
         foods = self.request.get_all('food')
         x['food'] = ','.join(foods)
         x['foodInfo'] = self.request.get('foodInfo')
-
-        db_user = Attendee.search_database({'userId':user.user_id()}).get()
 
         x['termsOfService'] = (self.request.get('termsOfService') == 'True')
         if not x['termsOfService']:
