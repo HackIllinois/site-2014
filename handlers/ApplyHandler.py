@@ -3,7 +3,7 @@ import urllib, logging, re
 from db.Attendee import Attendee
 from db.Resume import Resume
 from db import constants
-from google.appengine.api import users
+from google.appengine.api import users, memcache
 from google.appengine.ext import blobstore
 from google.appengine.ext.webapp import blobstore_handlers
 import json
@@ -25,6 +25,8 @@ import json
 class ApplyHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandler):
     """ Handler for application page.
     This does not include the email registration we have up now."""
+    memcache = memcache.Client()
+
     def get(self):
         user = users.get_current_user()
 
@@ -252,6 +254,8 @@ class ApplyHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandle
             x['isRegistered'] = True
             x['applyError'] = False
             redir = '/apply/complete'
+            print 'Increasing memcache'
+            memcache.incr('apply_count')
         else:
             x['applyError'] = True
             redir = '/apply'
@@ -295,13 +299,6 @@ class UpdateCompleteHandler(MainHandler.Handler):
                             header=constants.UPDATE_COMPLETE_HEADER,
                             message=constants.UPDATE_COMPLETE_MESSAGE,
                             showSocial=True )
-
-
-class ApplyCountHandler(MainHandler.Handler):
-    def get(self):
-        q = Attendee.query()
-        q.filter(Attendee.isRegistered == True)
-        self.write(q.count())
 
 
 class SchoolCheckHandler(MainHandler.Handler):
