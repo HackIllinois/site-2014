@@ -34,6 +34,8 @@ class ApplyHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandle
             # TODO: redirect to error handler
             return self.write('ERROR - Apply logged in problem')
 
+        upload_url_rpc = blobstore.create_upload_url_async('/apply', gs_bucket_name=constants.BUCKET)
+
         data = {}
         data['username'] = user.nickname()
         data['logoutUrl'] = users.create_logout_url('/apply')
@@ -116,6 +118,7 @@ class ApplyHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandle
             if db_user.errorMessages and db_user.errorMessages != '':
                 data['messages'] = db_user.errorMessages.split('$$$')
 
+        data['uploadUrl'] = upload_url_rpc.get_result()
         self.render("apply.html", data=data)
 
     def post(self):
