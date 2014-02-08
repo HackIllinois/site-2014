@@ -40,3 +40,9 @@ class SignupCountHandler(MainHandler.Handler):
         for counts in sorted_counts:
             self.write("<li>" + counts[0] + ": " + str(counts[1]) + "</li>")
         self.write("</ul>")
+
+class SignupExportHandler(MainHandler.Handler):
+    def get(self):
+        q = SignUp.query()
+        for signup in q.fetch():
+            self.write(signup.email + '\n')
