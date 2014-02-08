@@ -125,6 +125,19 @@ function setupSchoolInputField() {
     });
 }
 
+function setupSubmitHandler() {
+    var form = $("#application");
+    form.on('submit', function(event){
+        $.getJSON('/apply/uploadurl', function(data, status, req) {
+            if (req.status == 200 && data && data.upload_url) {
+                form.attr('action', data.upload_url);
+            } else {
+                console.log("error on getting upload url");
+            }
+        });
+    });
+}
+
 /**
  * Initialize/setup
  */
@@ -133,6 +146,7 @@ $(document).ready(function() {
     setupResumePrompt();
     possiblySelectFirstField();
     setupSchoolInputField();
+    setupSubmitHandler();
 });
 
 })();

@@ -34,8 +34,6 @@ class ApplyHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandle
             # TODO: redirect to error handler
             return self.write('ERROR - Apply logged in problem')
 
-        upload_url_rpc = blobstore.create_upload_url_async('/apply', gs_bucket_name=constants.BUCKET)
-
         data = {}
         data['username'] = user.nickname()
         data['logoutUrl'] = users.create_logout_url('/apply')
@@ -117,9 +115,7 @@ class ApplyHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandle
             if db_user.errorMessages and db_user.errorMessages != '':
                 data['messages'] = db_user.errorMessages.split('$$$')
 
-        data['upload_url'] = upload_url_rpc.get_result()
         self.render("apply.html", data=data)
-
 
     def post(self):
         user = users.get_current_user()
@@ -348,3 +344,8 @@ class MyResumeHandler(MainHandler.Handler, blobstore_handlers.BlobstoreDownloadH
         resource = str(urllib.unquote(db_user.resume.gsObjectName))
         blob_key = blobstore.create_gs_key(resource)
         return self.send_blob(blob_key)
+
+class UploadURLHandler(MainHandler.Handler):
+    def get(self):
+        upload_url = blobstore.create_upload_url('/apply', gs_bucket_name=constants.BUCKET)
+        self.write(json.dumps({'upload_url': upload_url}))
