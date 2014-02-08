@@ -219,32 +219,31 @@ class ApplyHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandle
         x['errorMessages'] = '$$$'.join(errorMessages)
 
         if valid:
-            # print 'VALID'
             x['isRegistered'] = True
             x['applyError'] = False
             redir = '/apply/complete'
         else:
-            # print 'NOT VALID'
             x['applyError'] = True
             redir = '/apply'
 
         if db_user is not None:
-            logging.info('Updated profile of %s', x['email'])
             if valid:
                 if db_user.isRegistered:
                     redir = '/apply/updated'
+                    logging.info('Updated profile of %s', x['email'])
+                    logging.info(str(x))
                 else:
                     redir = '/apply/complete'
-            success = Attendee.update_search(x, {'userId':user.user_id()})
-            # print "Attendee Updated: " + str(success)
+                    logging.info('Signup with email %s', x['email'])
+                    logging.info(str(x))
+            success = Attendee.update_search(x, {'userId':x['userId']})
         else:
             if valid:
                 logging.info('Signup with email %s', x['email'])
+                logging.info(str(x))
             else:
-                logging.info('User %s submitted an invalid form', x['userId'])
+                logging.info('User with email %s submitted an invalid form', x['email'])
             success = Attendee.add(x)
-            # print "Attendee Added: " + str(success)
-        # print x
 
         return self.redirect(redir)
 
@@ -291,16 +290,18 @@ class SchoolListHandler(MainHandler.Handler):
 class MyResumeHandler(MainHandler.Handler, blobstore_handlers.BlobstoreDownloadHandler):
     def get(self):
         user = users.get_current_user()
-        if user:
-            db_user = Attendee.search_database({'userId':user.user_id()}).get()
-            if not db_user:
-                return self.redirect('/apply')
-
-            # https://developers.google.com/appengine/docs/python/blobstore/#Python_Using_the_Blobstore_API_with_Google_Cloud_Storage
-            resource = str(urllib.unquote(db_user.resume.gsObjectName))
-            blob_key = blobstore.create_gs_key(resource)
-            self.send_blob(blob_key)
-        else:
+        if not user:
             # User not logged in (shouldn't happen)
             # TODO: redirect to error handler
-            self.write('ERROR - Unexpected resume login')
+            return self.write('ERROR - Unexpected resume login')
+
+        db_user = Attendee.search_database({'userId':user.user_id()}).get()
+        if not db_user:
+            return self.redirect('/apply')
+
+        logging.info('Retrieving resume for %s', db_user.email)
+
+        # https://developers.google.com/appengine/docs/python/blobstore/#Python_Using_the_Blobstore_API_with_Google_Cloud_Storage
+        resource = str(urllib.unquote(db_user.resume.gsObjectName))
+        blob_key = blobstore.create_gs_key(resource)
+        return self.send_blob(blob_key)
