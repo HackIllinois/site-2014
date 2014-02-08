@@ -1,5 +1,15 @@
 .constellations{
+    min-height: 120%;
+    margin-top: -10%;
+    display: block;
+    position: fixed;
     z-index: -100;
+    opacity: 0.6;
+
+    -webkit-animation: spin 250s infinite linear;
+    -moz-animation: spin 250s infinite linear;
+    -o-animation: spin 250s infinite linear;
+    -ms-animation: spin 250s infinite linear;
 }
 
 header.logo{

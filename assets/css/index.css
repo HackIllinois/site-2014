@@ -500,6 +500,14 @@ and (max-width: 768px) {
 	}
 }
 
+@media only screen
+and (max-width : 500px) {
+    .bg-stars {
+        background-color: #2c3e50;
+        background-image: none;
+    }
+}
+
 
 /* reset.css breaks <strong> */
 strong, strong * { font-weight: bold !important; }
