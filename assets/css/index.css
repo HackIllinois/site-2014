@@ -206,7 +206,7 @@ a.apply-btn:visited, a.apply-btn:active, a.apply-btn:hover {
 }
 
 a.apply-btn:hover {
-	background-color: #ef4d36; 
+	background-color: #ef4d36;
 }
 
 .reg-form {
@@ -314,7 +314,6 @@ button:focus {
 
 .sponsor-supernova{
 	display: inline-block;
-	-webkit-transform: translateZ(0);
 	margin: 0 auto;
 	width: 80%;
 	margin-bottom: 20px;
@@ -328,7 +327,6 @@ button:focus {
 	margin-top: 10px;
 	opacity:0.5;
 	filter:alpha(opacity=50);
-	-webkit-transform: translateZ(0);
 	vertical-align:middle;
 	filter:grayscale(100%);
 		-webkit-filter:grayscale(100%);
