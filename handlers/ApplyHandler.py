@@ -175,7 +175,7 @@ class ApplyHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandle
         # Check required fields filled in
         for field in constants.REQUIRED_FIELDS:
             if field not in x:
-                errorMessages.append(constants.ERROR_MESSAGE_PREFIX + field + constants.ERROR_MESSAGE_SUFFIX)
+                errorMessages.append(constants.ERROR_MESSAGE_PREFIX + constants.FIELD_DISPLAY_NAMES[field] + constants.ERROR_MESSAGE_SUFFIX)
                 valid = False
 
         # Check if hame has a number in it
@@ -193,22 +193,22 @@ class ApplyHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandle
 
         # Check fields with specific values
         if 'gender' in x and x['gender'] not in constants.GENDERS:
-            errorMessages.append(constants.ERROR_MESSAGE_PREFIX + 'gender' + constants.ERROR_MESSAGE_SUFFIX)
+            errorMessages.append(constants.ERROR_MESSAGE_PREFIX + constants.FIELD_DISPLAY_NAMES['gender'] + constants.ERROR_MESSAGE_SUFFIX)
             valid = False
         if 'year' in x and x['year'] not in constants.YEARS:
-            errorMessages.append(constants.ERROR_MESSAGE_PREFIX + 'school year' + constants.ERROR_MESSAGE_SUFFIX)
+            errorMessages.append(constants.ERROR_MESSAGE_PREFIX + constants.FIELD_DISPLAY_NAMES['year'] + constants.ERROR_MESSAGE_SUFFIX)
             valid = False
         if 'shirt' in x and x['shirt'] not in constants.SHIRTS:
-            errorMessages.append(constants.ERROR_MESSAGE_PREFIX + 'shirt size' + constants.ERROR_MESSAGE_SUFFIX)
+            errorMessages.append(constants.ERROR_MESSAGE_PREFIX + constants.FIELD_DISPLAY_NAMES['shirt'] + constants.ERROR_MESSAGE_SUFFIX)
             valid = False
         if 'food' in x and x['food'] != '':
             for f in x['food'].split(','):
                 if f not in constants.FOODS:
-                    errorMessages.append(constants.ERROR_MESSAGE_PREFIX + 'dietary restriction' + constants.ERROR_MESSAGE_SUFFIX)
+                    errorMessages.append(constants.ERROR_MESSAGE_PREFIX + constants.FIELD_DISPLAY_NAMES['food'] + constants.ERROR_MESSAGE_SUFFIX)
                     valid = False
                     break
         if 'projectType' in x and x['projectType'] not in constants.PROJECTS:
-            errorMessages.append(constants.ERROR_MESSAGE_PREFIX + 'project type' + constants.ERROR_MESSAGE_SUFFIX)
+            errorMessages.append(constants.ERROR_MESSAGE_PREFIX + constants.FIELD_DISPLAY_NAMES['projectType'] + constants.ERROR_MESSAGE_SUFFIX)
             valid = False
 
         # Make sure required boxes checked
