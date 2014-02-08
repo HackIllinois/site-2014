@@ -103,9 +103,7 @@
 					<div class="controls col-sm-9">
 						{% if data.hasResume %}<a href="/apply/myresume" class="view-resume" target="_blank">View Uploaded Resume</a><br> {% endif %}
 						<input id="resume" name="resume" type="file" accept="application/pdf" {% if data.resumeRequired %}required="required"{% endif %}>
-						<!-- TODO: Add link to old resume -->
-						<span id="resume-prompt" class="help-block">Please upload your resume.</span>
-
+						<span id="resume-prompt" class="help-block">{% if not data.hasResume %}Please upload{% endif %}{% if data.hasResume %}Update{% endif %} your resume.</span>
 					</div>
 				</div>
 
