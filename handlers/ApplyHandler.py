@@ -290,6 +290,11 @@ class UpdateCompleteHandler(MainHandler.Handler):
     def get(self):
         return self.render("simple_message.html", message="Update Successful!")
 
+class ApplyCountHandler(MainHandler.Handler):
+    def get(self):
+        q = Attendee.query()
+        q.filter(Attendee.isRegistered == True)
+        self.write(q.count())
 
 class SchoolCheckHandler(MainHandler.Handler):
     def get(self):

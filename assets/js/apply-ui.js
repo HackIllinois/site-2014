@@ -12,7 +12,7 @@ $(document).ready(function() {
     });
 
     var stratosphere = $(window).height();
-    stratosphere+=10;
+    stratosphere+=100;
     stratosphere+='px';
 
     var form = $('#application');

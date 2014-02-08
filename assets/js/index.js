@@ -23,7 +23,6 @@
      */
     function enableRetinaSponsorLogos() {
         if (navigator.userAgent.indexOf('Chrome') != -1) {
-            console.log("applying css");
             $('.sponsor, .sponsor-supernova').css('-webkit-transform', 'translateZ(0)');
         }
     }
