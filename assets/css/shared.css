@@ -47,6 +47,7 @@ body {
 .logo-main-svg {
     width: 260px;
     margin: 0 auto;
+    min-height: 125px;
 }
 
 .info-text {
