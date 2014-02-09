@@ -1,6 +1,6 @@
 import MainHandler
 import cgi, urllib, logging, re
-import db.models as models
+from db.Attendee import Attendee
 from db import constants
 from google.appengine.api import users
 from google.appengine.ext import blobstore
@@ -20,7 +20,7 @@ class ApproveHandler(MainHandler.Handler):
     """ Handler for registration page.
     This does not include the email registration we have up now."""
     def get(self):
-        db_all_users = models.search_database(models.Attendee, {'approved':'NA'})#Should Be Yes
+        db_all_users = models.search_database(Attendee, {'approved':'NA'})#Should Be Yes
         if db_all_users is None:
             self.response.out.write('ERROR')
         else:
@@ -29,7 +29,7 @@ class ApproveHandler(MainHandler.Handler):
 
 class ApproveResumeHandler(MainHandler.Handler, blobstore_handlers.BlobstoreDownloadHandler):
     def get(self):
-        db_user = models.search_database(models.Attendee, {'userId':self.request.url.split('/')[-1]}).get()
+        db_user = models.search_database(Attendee, {'userId':self.request.url.split('/')[-1]}).get()
         if not db_user:
 		    #Should Redirect to error page
             return self.redirect('/register')
@@ -38,12 +38,12 @@ class ApproveResumeHandler(MainHandler.Handler, blobstore_handlers.BlobstoreDown
         resource = str(urllib.unquote(db_user.resume.gsObjectName))
         blob_key = blobstore.create_gs_key(resource)
         self.send_blob(blob_key)
-	
+
 class AttendeeResumeHandler(MainHandler.Handler, blobstore_handlers.BlobstoreDownloadHandler):
     def get(self):
         user = users.get_current_user()
         if user:
-            db_user = models.search_database(models.Attendee, {'userId':self.request.url.split('/')[-1]}).get()
+            db_user = models.search_database(Attendee, {'userId':self.request.url.split('/')[-1]}).get()
             if not db_user:
                 return self.redirect('/register')
 
