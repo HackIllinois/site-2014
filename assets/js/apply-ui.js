@@ -23,14 +23,13 @@ $(document).ready(function() {
         });
     }
     });
-
-    var stratosphere = $(window).height();
-    stratosphere+=100;
-    stratosphere+='px';
-
+    
     var form = $('#application');
     $('button#application-submit').click(function(event) {
         event.preventDefault();
+        var stratosphere = $(window).height();
+        stratosphere+=150;
+        stratosphere+='px';
         $(".rocket-plume").animate({
             opacity: 1,
             marginBottom: stratosphere
