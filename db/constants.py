@@ -15,21 +15,22 @@ ERROR_MESSAGE_SUFFIX = '.'
 ALL_FIELDS = ['nameFirst', 'nameLast', 'email', 'gender', 'school', 'year', 'resume', 'linkedin', 'github', 'shirt', 'food', 'foodInfo', 'projectType', 'experience', 'termsOfService']
 REQUIRED_FIELDS = ['nameFirst', 'nameLast', 'email', 'gender', 'school', 'year', 'shirt', 'experience']
 
-FIELD_DISPLAY_NAMES = {'First Name',
-                       'Last Name',
-                       'Email',
-                       'Gender',
-                       'School',
-                       'Year in School',
-                       'Resume',
-                       'LinkedIn Profile',
-                       'Github Username',
-                       'Shirt Size',
-                       'Dietary Restriction',
-                       'Food Info',
-                       'Project Type',
-                       'Previous Experience',
-                       'Terms Of Service'}
+FIELD_DISPLAY_NAMES = {'nameFirst':'First Name',
+                       'nameLast':'Last Name',
+                       'email':'Email',
+                       'gender':'Gender',
+                       'school':'School',
+                       'year':'Year in School',
+                       'resume':'Resume',
+                       'linkedin':'LinkedIn Profile',
+                       'github':'Github Username',
+                       'shirt':'Shirt Size',
+                       'food':'Dietary Restriction',
+                       'foodInfo':'Food Info',
+                       'projectType':'Project Type',
+                       'experience':'Previous Experience',
+                       'termsOfService':'Terms Of Service'}
+
 
 # The below array is for more descriptive error messages. @Mattato pls fix.
 # READABLE_REQUIRED_FIELDS = ['First Name','Last Name','E-mail','Gender','School','Year in School','T-shirt size','past experience', 'Please accept the Terms of Service']
