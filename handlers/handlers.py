@@ -6,7 +6,7 @@ from SignupCountHandler import SignupCountHandler
 from ApplyCountHandler import ApplyCountHandler
 from SubpageHandlers import RulesHandler, ScheduleHandler, TravelHandler, CoCHandler
 from TropoHandler import TropoHandler
-from AdminHandler import AdminHandler, ApproveResumeHandler, ApproveHandler
+# from AdminHandler import AdminHandler, ApproveResumeHandler, ApproveHandler
 # import AdminHandler
 # from LoginRequiredHandler import LoginRequiredHandler
 
@@ -27,9 +27,10 @@ handlers = [
     ('/signupcount', SignupCountHandler),
     ('/travel', TravelHandler),
     ('/tropo', TropoHandler),
-    ('/admin', AdminHandler),
-    ('/admin/approve', ApproveHandler),
-    ('/admin/approve/resume/.*', ApproveResumeHandler),
+    # I may have broken all of this code with the backend refactor, will help get it fixed soon. --Matthew
+    # ('/admin', AdminHandler),
+    # ('/admin/approve', ApproveHandler),
+    # ('/admin/approve/resume/.*', ApproveResumeHandler),
     ('/code-of-conduct', CoCHandler),
     # ('/_ah/login_required', LoginRequiredHandler),
     # ('/admin', AdminHandler.AdminHandler),
