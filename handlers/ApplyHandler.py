@@ -25,7 +25,6 @@ import json
 class ApplyHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandler):
     # == Handler for application page. ==
     # This does not include the email registration we have up now.
-    This does not include the email registration we have up now."""
     
     def get(self):
         user = users.get_current_user()
@@ -284,7 +283,6 @@ class ApplyHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandle
                     break # This is why we need the for loop below
                 
             # If other is checked, we need more info
-            print "================= FOOD INFO ================="
             for f in x['food'].split(','):
                print f
                if f == 'Other':
@@ -298,10 +296,9 @@ class ApplyHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandle
             valid = False
 
         # Make sure required boxes checked
-<<<<<<< HEAD
         if not ('termsOfService' in x) or not x['termsOfService']:
             x["errors_termsOfService"] += 'Please read and agree to the rules and code of conduct.'
-=======
+            
         if 'termsOfService' not in x or ('termsOfService' in x and not x['termsOfService']):
             errorMessages.append('Please read and agree to the rules and code of conduct.')
             valid = False

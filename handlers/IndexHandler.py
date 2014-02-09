@@ -1,5 +1,4 @@
 import MainHandler
-<<<<<<< HEAD
 import re
 from datetime import datetime
 from db.Attendee import Attendee
