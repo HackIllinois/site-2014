@@ -30,6 +30,7 @@ READABLE_FIELDS = {'food':'your Dietary Restrictions',
                    'food-info':'your Dietary Restriction Information'}
                             
 TOS_ERROR_MESSAGE = 'Please accept the Terms of Service'
+
 # The below array is for more descriptive error messages. @Mattato pls fix.
 # READABLE_REQUIRED_FIELDS = ['First Name','Last Name','E-mail','Gender','School','Year in School','T-shirt size','past experience', 'Please accept the Terms of Service']
 
