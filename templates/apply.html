@@ -23,7 +23,7 @@
 			<p class="loggedin">Hello {{ data.username }}! <a class="rules-link" href="{{ data.logoutUrl }}">Not you</a>?</p>
 		</div>
 
-		{% if data.applyError %}
+		{% if data.messages %}
 		<p class="errormessages">
 				{% for m in data.messages %}
 				{{ m }}<br>
@@ -128,7 +128,15 @@
 					<div class="controls col-sm-9">
 						{% if data.hasResume %}<a href="/apply/myresume" class="view-resume" target="_blank">View Uploaded Resume</a><br> {% endif %}
 						<input id="resume" name="resume" type="file" accept="application/pdf" {% if data.resumeRequired %}required="required"{% endif %}>
-						<span id="resume-prompt" class="help-block">{% if not data.hasResume %}Please upload{% endif %}{% if data.hasResume %}Update{% endif %} your resume (optional).</span>
+						
+						<span id="resume-prompt" class="help-block {%if data.errors_resume %}errormessages{% endif %}">
+						   {%if data.errors_resume %}
+						      {{ data.errors_resume }}
+						   {% else %}
+						      {% if not data.hasResume %}Please upload{% endif %}{% if data.hasResume %}Update{% endif %} your resume (optional).
+						   {% endif %}
+						</span>
+
 					</div>
 				</div>
 

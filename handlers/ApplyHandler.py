@@ -168,13 +168,12 @@ class ApplyHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandle
 
         x = {}
         valid = True
-        errorMessages = []
         db_user = Attendee.search_database({'userId':user.user_id()}).get()
 
         # https://developers.google.com/appengine/docs/python/users/userclass
         x['userNickname'] = user.nickname()
         x['userEmail'] = user.email()
-        x['userId'] = user.user_id() #use this for identificaiton
+        x['userId'] = user.user_id() #use this for identification
         x['userFederatedIdentity'] = user.federated_identity()
         x['userFederatedProvider'] = user.federated_provider()
 
@@ -182,6 +181,7 @@ class ApplyHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandle
            x[field] = self.request.get(field)
         
         # Reset error messages
+        x['errorMessages'] = ''
         for field in constants.ALL_FIELDS:
            x['errors_' + field] = "" # A slightly hacky shortcut, but it shouldn't cause any problems
 
@@ -198,14 +198,14 @@ class ApplyHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandle
             if not file_info.content_type == 'application/pdf':
             
                 # Non-pdf files
-                errorMessages.append('Uploaded resume file is not a pdf.')
+                x['errors_resume'].append('Uploaded resume file is not a pdf.')
                 delete_resume = True
                 valid = False
                 
             elif file_info.size > constants.RESUME_MAX_SIZE:
                 
                 # Big files
-                errorMessages.append('Uploaded resume file is too big.')
+                x['errors_resume'].append('Uploaded resume file is too big.')
                 delete_resume = True
                 valid = False
                 
@@ -298,12 +298,7 @@ class ApplyHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandle
         # Make sure required boxes checked
         if not ('termsOfService' in x) or not x['termsOfService']:
             x["errors_termsOfService"] += 'Please read and agree to the rules and code of conduct.'
-            
-        if 'termsOfService' not in x or ('termsOfService' in x and not x['termsOfService']):
-            errorMessages.append('Please read and agree to the rules and code of conduct.')
             valid = False
-
-        x['errorMessages'] = '$$$'.join(errorMessages)
 
         if valid:
             x['isRegistered'] = True
