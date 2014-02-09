@@ -60,6 +60,10 @@ handlers:
 #   script: main.app
 #   login: required
 
+- url: /admin/approve
+  script: main.app
+  login: admin
+
 - url: /admin*
   script: main.app
   login: admin

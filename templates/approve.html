@@ -1,0 +1,17 @@
+heagerahj
+{% extends "base/subpage.html" %}
+{% block subpage_body %}
+<form method="post">
+<table border="1"
+    {% for user in all_users %}
+        <tr>
+            <td>{{user.nameFirst}}</td>
+			<td>{{user.anameLast}}</td>
+			<td><a href="approve/resume/{{user.userId}}" target="_blank">Resume</a></td>
+			<td><input type="checkbox" name="Approved" id="Approved"></td>
+        </tr>
+    {% endfor %}
+</table>
+<button type="submit">Approve</button>
+</form>
+{% endblock subpage_body %}
