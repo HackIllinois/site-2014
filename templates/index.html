@@ -1,20 +1,14 @@
 {% extends "base/base.html" %}
 
 {% block head %}
-<link rel="stylesheet" type="text/css" href="css/site.css">
+{% include 'base/default_css_and_fonts.html' %}
+<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/pure/0.3.0/grids-min.css">
+
+<link rel="stylesheet" type="text/css" href="css/shared.css">
+<link rel="stylesheet" type="text/css" href="css/index.css">
 {% endblock head %}
 
 {% block body %}
-
-<!-- Facebook SDK -->
-<div id="fb-root"></div>
-<script>(function(d, s, id) {
-  var js, fjs = d.getElementsByTagName(s)[0];
-  if (d.getElementById(id)) return;
-  js = d.createElement(s); js.id = id;
-  js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=198636480343619";
-  fjs.parentNode.insertBefore(js, fjs);
-}(document, 'script', 'facebook-jssdk'));</script>
 
 <div class="wrapper bg-stars">
 	<div class="const">
@@ -27,24 +21,22 @@
 		        	<img class="logo-main-svg" src="/img/hackillinois_logo.svg">
 		        	<h5>Imagine. Learn. Launch.</h5>
 
-		        	<h1>April 11-13, 2014</h1>
+		        	<div>
+		        		<h1>April 11-13, 2014</h1>
+		        	</div>
 
 		        	<div class="reg-form">
-						<form action="#" method="post">
-				    		<input type="email" name="register-email" class="reg-email" value="" placeholder="E-mail">
-				    		<input type="submit" value="SIGN UP" class="send" name="reg-send">
-						</form>
-						<p class="social-follow">
-									<span class="fb-like" data-href="http://facebook.com/hackillinois" data-layout="button_count" data-action="like" data-show-faces="true" data-share="false"></span>
-
-									<a href="https://twitter.com/hackillinois" class="twitter-follow-button" data-show-count="false" data-lang="en"></a>
-									<script>
-										!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
-									</script>
-						</p>
-					</div>
-					<div class="reg-success">
-						<h3>You're all set! We'll be in touch soon.</h3>
+						<p class="apply-info">
+						<span class="squish">We're using your Google account for authentication to allow future updates to your application, and to integrate it with future HackIllinois apps.</span></p>
+						<a id="apply-btn-slide" class="apply-btn" href="/apply">{{ buttonText }}</a>
+						<div class="social-follow">
+							<span class="facebook-frame">
+								<iframe allowTransparency="true" frameborder="0" scrolling="no" style="border:none; overflow:hidden; width:90px; height:21px;" src="https://www.facebook.com/plugins/like.php?href=http%3A%2F%2Ffacebook.com%2Fhackillinois&amp;width&amp;layout=button_count&amp;action=like&amp;show_faces=false&amp;share=false&amp;height=21"></iframe>
+							</span>
+							<span class="twitter-frame">
+								<iframe allowtransparency="true" frameborder="0" scrolling="no" style="border:none; overflow:hidden; width:142px; height:21px;" src="https://platform.twitter.com/widgets/follow_button.html?screen_name=hackillinois&amp;show_count=true&amp;lang=en&amp;show_screen_name=false&amp;dnt=true"></iframe>
+							</span>
+						</div>
 					</div>
 				</div>
 		    </div>
@@ -84,24 +76,39 @@
 					    <a href="http://neustar.biz" target="_blank"><img alt="neustar" class="sponsor big" src="/img/logos/resized/neustar.png" /></a>
 					    <a href="http://statefarm.com" target="_blank"><img alt="state farm" class="sponsor big" src="/img/logos/resized/statefarm.png" /></a>
 					    <a href="http://www.venmo.com/" target="_blank"><img alt="venmo" class="sponsor big venmo" src="/img/logos/venmo.png" /></a>
-					    <a href="http://www.westmonroepartners.com/" target="_blank"><img alt="west monroe partners s-padding-fix" class="sponsor big" src="/img/logos/resized/westmonroe.png" /></a>
+					    <a href="http://www.westmonroepartners.com/" target="_blank"><img alt="west monroe partners" class="sponsor big s-padding-fix" src="/img/logos/resized/westmonroe.png" /></a>
+					    <a href="http://www.tcs.com/" target="_blank"><img alt="tcs" class="sponsor big" src="/img/logos/tcs.png" /></a>
+					    <a href="http://www.niksun.com/" target="_blank"><img alt="niksun" class="sponsor big niksun" src="/img/logos/niksun.png" /></a>
+					    <a href="http://www.answers.com/" target="_blank"><img alt="answers" class="sponsor big answers" src="/img/logos/answers.png" /></a>
 
 
 					    <a href="http://dropbox.com" target="_blank"><img alt="dropbox" class="sponsor little s-padding-fix" src="/img/logos/resized/dropbox.png" /></a>
 					    <a href="http://google.com" target="_blank"><img alt="google" class="sponsor little s-padding-fix" src="/img/logos/resized/google.png" /></a>
 					    <a href="http://www.citadel.com" target="_blank"><img alt="citadel" class="sponsor little" src="/img/logos/citadel.png" /></a>
+					    <a href="http://www.goldmansachs.com" target="_blank"><img alt="goldman sachs" class="sponsor little goldmansachs" src="/img/logos/goldman.png" /></a>
+					    <a href="http://www.mailgun.com" target="_blank"><img alt="mailgun" class="sponsor little mailgun" src="/img/logos/mailgun.png" /></a>
 
-					    <a href="http://oso.tc" target="_blank"><img alt="oso technologies - PlantLink" class="sponsor little s-padding-fix" src="/img/logos/oso.png" /></a>
+					    <a href="http://oso.tc" target="_blank"><img alt="oso technologies - PlantLink" class="sponsor little oso s-padding-fix" src="/img/logos/oso.png" /></a>
 					    <a href="http://spottradingllc.com" target="_blank"><img alt="spot trading" class="sponsor little spot-trading" src="/img/logos/resized/spottrading.png" /></a>
 
 					    <a href="http://electricimp.com" target="_blank"><img alt="electric imp" class="sponsor littler" src="/img/logos/electricimp.png" /></a>
 					    <a href="http://www.octopart.com" target="_blank"><img alt="octopart" class="sponsor littler" src="/img/logos/octopart.png" /></a>
+					    <a href="http://adrenalinemobility.com" target="_blank"><img alt="electric imp" class="sponsor littler" src="/img/logos/adr-mob.png" /></a>
 					    <a href="http://www.sparkfun.com" target="_blank"><img alt="sparkfun" class="sponsor littler" src="/img/logos/sparkfun.png" /></a>
+					    <a href="http://www.rdio.com" target="_blank"><img alt="rdio" class="sponsor littler rdio" src="/img/logos/rdio.png" /></a>
+					    <a href="http://www.lob.com" target="_blank"><img alt="lob" class="sponsor littler lob" src="/img/logos/lob.png" /></a>
+					    <a href="http://www.firebase.com" target="_blank"><img alt="firebase" class="sponsor littler firebase" src="/img/logos/firebase.png" /></a>
+					    <a href="http://makerlab.illinois.edu" target="_blank"><img alt="makerlab" class="sponsor littler makerlab" src="/img/logos/makerlab.png" /></a>
+					    <a href="http://www.masherycom" target="_blank"><img alt="mashery" class="sponsor littler mashery" src="/img/logos/mashery.png" /></a>
 
 					    <a href="http://microsoft.com" target="_blank"><img alt="microsoft" class="sponsor littler microsoft" src="/img/logos/resized/microsoft.png" /></a>
+					    <a href="http://firebase.com" target="_blank"><img alt="firebase" class="sponsor littler" src="/img/logos/firebase.png" /></a>
+					    <a href="http://mashery.com" target="_blank"><img alt="mashery" class="sponsor littler" src="/img/logos/mashery.png" /></a>
 					    <a href="http://facebook.com" target="_blank"><img alt="facebook" class="sponsor littler" src="/img/logos/resized/facebook.png" /></a>
 					    <a href="http://intel.com" target="_blank"><img alt="intel" class="sponsor littler intel" src="/img/logos/resized/intel.png" /></a>
 					    <a href="http://dwolla.com" target="_blank"><img alt="dwolla" class="sponsor littler" src="/img/logos/dwolla.png" /></a>
+					    <a href="http://stickermule.com" target="_blank"><img alt="stickermule" class="sponsor littler" src="/img/logos/stickermule.png" /></a>
+					    <a href="http://makerlab.illinois.edu" target="_blank"><img alt="illinois makerlab" class="sponsor littler" src="/img/logos/makerlab.png" /></a>
 
 					    <p class="sponsor-shoutout-CTA">If you're interested in sponsoring HackIllinois, <a href="/sponsor">view the options</a> and <a href="mailto:sponsor@hackillinois.org">drop us a line</a>!</p>
 
@@ -183,8 +190,10 @@
 		</div>
 	</div>
 </div>
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script src="js/jquery.min.js"></script>
 <script src="js/index.js"></script>
+
+
 
 {% endblock body %}
 

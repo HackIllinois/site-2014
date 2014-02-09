@@ -1,0 +1,51 @@
+.constellations{
+    min-height: 120%;
+    margin-top: -10%;
+    display: block;
+    position: fixed;
+    z-index: -100;
+    opacity: 0.6;
+
+    -webkit-animation: spin 250s infinite linear;
+    -moz-animation: spin 250s infinite linear;
+    -o-animation: spin 250s infinite linear;
+    -ms-animation: spin 250s infinite linear;
+}
+
+header.logo{
+    margin: 50px auto 20px auto;
+    text-align: center;
+}
+    header.logo a {
+        display: inline-block;
+    }
+
+.reg-message{
+    margin: 25px auto 0 auto;
+    color: white;
+    font-family: Open Sans;
+    font-size: 16px;
+    width: 800px;
+    text-align: center;
+    line-height: 1.5em;
+    position: relative;
+}
+
+.social-follow{
+    margin-top: 50px;
+}
+
+.facebook-frame{
+    margin: 0px 10px;
+}
+
+.twitter-frame{
+    margin: 0px 10px;
+}
+
+.reg-message {
+    font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    font-weight: bold;
+}
+

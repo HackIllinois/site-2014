@@ -17,4 +17,8 @@ class TravelHandler(MainHandler.Handler):
     def get(self):
         self.render("travel.html")
 
+class CoCHandler(MainHandler.Handler):
+    """ Handler for the code of conduct subpage """
+    def get(self):
+        self.render("code-of-conduct.html")
 

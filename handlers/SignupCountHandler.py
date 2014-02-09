@@ -2,7 +2,7 @@ import cgi
 import MainHandler
 import operator
 from collections import Counter
-from db.models import SignUp
+from db.SignUp import SignUp
 
 class SignupCountHandler(MainHandler.Handler):
     """ Handler for a quick page to count the number of email signups we have """

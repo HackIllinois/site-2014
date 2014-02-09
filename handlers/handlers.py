@@ -1,11 +1,12 @@
 from EmailBackupHandler import EmailBackupHandler
 from ErrorHandler import ErrorHandler
 from IndexHandler import IndexHandler
-from RegisterHandler import RegisterHandler, RegisterCompleteHandler
+from ApplyHandler import ApplyHandler, ApplyCompleteHandler, SchoolCheckHandler, SchoolListHandler, MyResumeHandler, UpdateCompleteHandler, UploadURLHandler
 from SignupCountHandler import SignupCountHandler
-from SubpageHandlers import RulesHandler, ScheduleHandler, TravelHandler
+from ApplyCountHandler import ApplyCountHandler
+from SubpageHandlers import RulesHandler, ScheduleHandler, TravelHandler, CoCHandler
 from TropoHandler import TropoHandler
-import ProfileHandler
+from AdminHandler import AdminHandler, ApproveResumeHandler, ApproveHandler
 # import AdminHandler
 # from LoginRequiredHandler import LoginRequiredHandler
 
@@ -13,15 +14,24 @@ import ProfileHandler
 handlers = [
     ('/', IndexHandler),
     ('/emailbackup', EmailBackupHandler),
-    ('/register', RegisterHandler),
-    ('/register/complete', RegisterCompleteHandler),
+    ('/apply/?', ApplyHandler),
+    ('/apply/complete', ApplyCompleteHandler),
+    ('/apply/updated', UpdateCompleteHandler),
+    ('/apply/schoolcheck', SchoolCheckHandler),
+    ('/apply/schoollist', SchoolListHandler),
+    ('/apply/myresume', MyResumeHandler),
+    ('/apply/uploadurl', UploadURLHandler),
+    ('/applycount', ApplyCountHandler),
     ('/rules', RulesHandler),
     ('/schedule', ScheduleHandler),
     ('/signupcount', SignupCountHandler),
     ('/travel', TravelHandler),
     ('/tropo', TropoHandler),
-    ('/profile', ProfileHandler.ProfileHandler),
-    # ('/admin', AdminHandler.AdminHandler),
+    ('/admin', AdminHandler),
+    ('/admin/approve', ApproveHandler),
+    ('/admin/approve/resume/.*', ApproveResumeHandler),
+    ('/code-of-conduct', CoCHandler),
     # ('/_ah/login_required', LoginRequiredHandler),
+    # ('/admin', AdminHandler.AdminHandler),
     ('.*', ErrorHandler)
 ]

@@ -1,0 +1,282 @@
+/**
+** @author: HackIllinois Staff
+**/
+
+.header {
+    margin-top: 50px;
+}
+
+.container {
+    position: relative;
+}
+
+label {
+    font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    color: #fff;
+}
+
+.food-options {
+    font-weight: normal;
+}
+
+.help-block {
+    font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    color: #fff;
+}
+
+#resume {
+    font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    color: #fff;
+    width: 100%;
+}
+
+.footer {
+    margin-bottom: 50px;
+}
+
+input[type="text"], input[type="email"], input[type="url"], .input-group-addon, #school, form div.form-group textarea.form-control, form div.form-group select {
+    font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    background: rgba(255,255,255, .1);
+    border: 1px solid rgba(255,255,255, .5);
+    color: #fff;
+}
+
+input[type="text"]:focus, input[type="email"]:focus, input[type="url"]:focus, #school:focus, form div.form-group textarea.form-control:focus, form div.form-group select:focus {
+    border: 1px solid #fff;
+    outline: none;
+}
+
+form div.form-group select {
+    width: 100%;
+}
+
+form div.form-group option {
+    color: #000;
+}
+
+.regform-container {
+    width: 70%;
+    margin-left: 7%;
+}
+
+@media only screen
+and (max-width : 768px) {
+    .regform-container {
+        width: 90%;
+        margin-left: 5%;
+    }
+}
+
+@media only screen
+and (max-width : 500px) {
+    h2:before,
+    h2:after {
+        display: none;
+    }
+    .bg-stars {
+        background-color: #2c3e50;
+        background-image: none;
+    }
+}
+
+body h2 {
+    color: #fff;
+    margin-top: 50px;
+    margin-bottom: 10px;
+    font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 38px;
+    padding-bottom: 10px;
+}
+
+p.loggedin {
+    text-align: center;
+    font-size: 14px;
+    font-weight: bold;
+    color: white;
+    font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    margin-bottom: 25px;
+}
+
+p.errormessages {
+    font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    text-align: center;
+    font-size: 11px;
+    background: rgba(255,255,255,0.8);
+    color: #333;
+    max-width: 245px;
+    width: 100%;
+    margin: 0 auto;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    border: 1px solid #ef3e36;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    text-decoration: none;
+    padding: 0;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 10px;
+    margin-bottom: 45px;
+    padding-bottom: 10px;
+}
+
+.selectize-input {
+    background-color: rgba(255,255,255,0.1);
+    color: #fff;
+}
+
+a.view-resume {
+    color: #ef3e36;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+a.view-resume:focus, a.view-resume:active, a.view-resume:visited {
+    color: #ef3e36;
+}
+
+a.view-resume:hover {
+    color: #fff;
+}
+
+span.help-block {
+    color: #fff;
+}
+
+textarea {
+    max-width: 100%;
+}
+
+.resume-slide-down-info {
+    padding-left: 20px;
+}
+
+.resume-toggle {
+    display: inline-block;
+}
+#foodInfo {
+    display:none;
+    margin-top: 20px;
+}
+
+.btn-hackil {
+    color: #fff;
+    background-color: #ef3e36;
+    border-color: #ef3e36;
+    margin: 0 auto;
+    width: 100%;
+    font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-weight: bold;
+    text-transform: uppercase;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -blink-border-radius: 3px;
+    margin-top: 20px;
+    font-size: 14px;
+}
+
+span.reqd {
+    color: #fff;
+}
+
+.btn-hackil:hover {
+    color: #fff;
+    background-color: #ef4d36;
+    border-color: #ef4d36;
+    outline: none;
+}
+
+.rules-link {
+    color: #ef3e36;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.rules-link:hover {
+    color: #fff;
+}
+
+.rules-link:active {
+    color: #ef3e36;
+}
+
+
+input[name="food"]{
+    margin: 0 5px;
+}
+
+
+.controls label[for="food-0"] > *{
+    margin-left: 0;
+}
+
+.errormessages {
+
+}
+
+/*ROCKET*/
+
+.launch-container {
+    position: absolute;
+    width: 15%;
+    right: left;
+    bottom: 0;
+    height: 100%;
+    position: fixed;
+}
+
+.launch-container {
+    margin-left: -100px;
+}
+
+.rocket-ship {
+    position: absolute;
+    width: 100px;
+    bottom: 0px;
+    left: 0px;
+    z-index: 3;
+
+}
+
+.launch-craft {
+    display: block;
+}
+
+.rocket-plume {
+    position: absolute;
+width: 100px;
+bottom: 0px;
+left: 1px;
+z-index: 2;
+opacity: 0.4;
+}
+
+.launch-pad {
+    position: absolute;
+    width: 100px;
+    left: 0;
+    bottom: 0;
+    z-index: 1;
+}
+
+@media only screen
+and (max-width : 768px) {
+    .launch-container {
+        display: none;
+    }
+}
+
+@media only screen
+and (max-width : 830px) {
+    .rocket-ship {
+        width: 60px;
+    }
+    .launch-pad {
+        width: 60px;
+    }
+    .rocket-plume {
+        width: 60px;
+    }
+}

@@ -1,0 +1,52 @@
+
+.wrapper {
+	height: auto !important; /* ie6 ignores !important, so this will be overridden below */
+    	min-height: 100%; /* ie6 ignores min-height completely */
+    	height: 100%;
+    	background-color: #000000; /* fallback for stars */
+    	width: 100%;
+}
+
+.bg-stars {
+	background-image: url('/img/starbackground.compressed.jpg');
+	background-size: cover;
+	z-index:-100;
+	background-attachment: fixed;
+}
+
+.t-centered {
+	text-align: center;
+	color: #fff;
+	font-family: font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+.constellations {
+	min-height: 120%;
+	min-width: 120%;
+	margin-top: -10%;
+	margin-left: -10%;
+	display: block;
+	position:fixed;
+	z-index:0;
+	opacity: 0.6;
+
+	-webkit-animation: spin 250s infinite linear;
+	-moz-animation: spin 250s infinite linear;
+	-o-animation: spin 250s infinite linear;
+	-ms-animation: spin 250s infinite linear;
+}
+
+.splash {
+	position: relative;
+	z-index: 100;
+}
+
+.logo-main-svg {
+	width: 260px;
+	margin: 0 auto;
+	margin-top: 150px;
+}
+
+.form-container {
+
+}
