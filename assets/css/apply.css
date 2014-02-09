@@ -42,6 +42,23 @@ input[type="text"]:focus, input[type="email"]:focus, input[type="url"]:focus, #s
     outline: none;
 }
 
+/* Error borders */
+form div.form-group textarea.errorborders {
+   border-color: #ef3e36;
+   border-width: 2px;
+}
+
+input.errorborders {
+   border-color: #ef3e36;
+   border-width: 2px;
+}
+
+form div.form-group select.errorborders {
+   border-color: #ef3e36;
+   border-width: 2px;
+}
+/* End error borders */
+
 form div.form-group select {
     width: 100%;
 }
@@ -200,7 +217,7 @@ input[name="food"]{
 }
 
 .no-bottom-margin {
-   margin-bottom: 1px;
+    margin-bottom: 1px;
 }
 
 /*ROCKET*/

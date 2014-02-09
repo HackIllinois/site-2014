@@ -41,10 +41,10 @@
 					
 						<div class="row">
 							<div class="col-xs-6">
-								<input id="nameFirst" name="nameFirst" type="text" placeholder="First Name" class="form-control" required="required" value="{{ data.nameFirst }}" onclick="this.select();">
+								<input class="{% if data.errors_nameFirst %}errorborders{% endif %} form-control" id="nameFirst" name="nameFirst" type="text" placeholder="First Name" required="required" value="{{ data.nameFirst }}" onclick="this.select();">
 							</div>
 							<div class="col-xs-6">
-								<input id="nameLast" name="nameLast" type="text" placeholder="Last Name" class="form-control" required="required" value="{{ data.nameLast }}" onclick="this.select();">
+								<input class="{% if data.errors_nameLast %}errorborders{% endif %} form-control" id="nameLast" name="nameLast" type="text" placeholder="Last Name" required="required" value="{{ data.nameLast }}" onclick="this.select();">
 							</div>
 						</div>
 						
@@ -68,7 +68,7 @@
 					<label class="control-label col-sm-3" for="email">Email<span class="reqd"> *</span></label>
 
 					<div class="controls col-sm-9">
-						<input id="email" name="email" type="email" placeholder="Email Address" class="form-control" required="required" value="{{ data.email }}" onclick="this.select();">
+						<input class="{% if data.errors_email %}errorborders{% endif %} form-control" id="email" name="email" type="email" placeholder="Email Address" required="required" value="{{ data.email }}" onclick="this.select();">
 					   <div class="errormessages">{{ data.errors_email }}</div>
 					</div>
 				</div>
@@ -96,7 +96,7 @@
 					<label class="control-label col-sm-3" for="school">School<span class="reqd"> *</span></label>
 					<div class="controls col-sm-9">
 						<div>
-						   <input id="school" type="text" name="school" class="form-control" required="required" placeholder="School Name"  value="{{ data.school }}" style="color:black">
+						   <input class="{% if data.errors_school %}errorborders{% endif %} form-control" id="school" type="text" name="school" required="required" placeholder="School Name"  value="{{ data.school }}" style="color:black">
 					   </div>
 					   <div class="errormessages">
                      {{ data.errors_school }}
@@ -160,7 +160,7 @@
 				<!-- Multiple Radios (inline) -->
 				<div class="form-group">
 					<label class="control-label col-sm-3" for="shirt">Shirt Size<span class="reqd"> *</span></label>
-					<div class="controls col-sm-9">
+					<div class="controls col-sm-9 errorborders">
                   {% for s in data.shirts %}
                      <label class="radio-inline" for="shirt-{{ loop.index0 }}">
                         <input type="radio" name="shirt" id="shirt-{{ loop.index0 }}" value="{{ s.name }}" required="required" {% if s.checked %}checked{% endif %}>
@@ -209,7 +209,7 @@
 				<div class="form-group">
 					<label class="control-label col-sm-3" for="project-type">Project Type<span class="reqd"> *</span></label>
 					<div class="controls col-sm-9">
-						<select name="projectType">
+						<select name="projectType" class="{% if data.errors_projectType %}errorborders{% endif %}" >
                      {% for p in data.projects %}
                         <option {% if p.selected %}selected=""{% endif %}>{{ p.name }}</option>
                      {% endfor %}
@@ -227,7 +227,7 @@
 					<label class="control-label col-sm-3" for="experience">Previous Experience<span class="reqd"> *</span></label>
 					<div class="controls col-sm-9">
 
-						<textarea id="experience" name="experience" class="form-control" rows="5" required="required">{{data.experience}}</textarea>
+						<textarea class="{% if data.errors_experience %}errorborders{% endif %} form-control" id="experience" name="experience" rows="5" required="required">{{data.experience}}</textarea>
 						<span class="help-block no-bottom-margin">Have you participated in other hackathons? Won any awards? Done any cool projects?
 						<br>
 						(If not, that's okay! We're just curious)</span>
