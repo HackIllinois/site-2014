@@ -1,12 +1,16 @@
 from EmailBackupHandler import EmailBackupHandler
 from ErrorHandler import ErrorHandler
 from IndexHandler import IndexHandler
-from RegisterHandler import RegisterHandler, RegisterCompleteHandler, SchoolCheckHandler
+from ApplyHandler import ApplyHandler, ApplyCompleteHandler, SchoolCheckHandler, SchoolListHandler, MyResumeHandler, UpdateCompleteHandler, UploadURLHandler
 from SignupCountHandler import SignupCountHandler
+from ApplyCountHandler import ApplyCountHandler
 from SubpageHandlers import RulesHandler, ScheduleHandler, TravelHandler, CoCHandler
 from TropoHandler import TropoHandler
+<<<<<<< HEAD
 from AdminHandler import AdminHandler, ApproveResumeHandler, ApproveHandler
 from ProfileHandler import ProfileHandler, MyResumeHandler
+=======
+>>>>>>> feature/registration
 # import AdminHandler
 # from LoginRequiredHandler import LoginRequiredHandler
 
@@ -14,9 +18,14 @@ from ProfileHandler import ProfileHandler, MyResumeHandler
 handlers = [
     ('/', IndexHandler),
     ('/emailbackup', EmailBackupHandler),
-    ('/register', RegisterHandler),
-    ('/register/complete', RegisterCompleteHandler),
-    ('/register/schoolcheck', SchoolCheckHandler),
+    ('/apply/?', ApplyHandler),
+    ('/apply/complete', ApplyCompleteHandler),
+    ('/apply/updated', UpdateCompleteHandler),
+    ('/apply/schoolcheck', SchoolCheckHandler),
+    ('/apply/schoollist', SchoolListHandler),
+    ('/apply/myresume', MyResumeHandler),
+    ('/apply/uploadurl', UploadURLHandler),
+    ('/applycount', ApplyCountHandler),
     ('/rules', RulesHandler),
     ('/schedule', ScheduleHandler),
     ('/signupcount', SignupCountHandler),
@@ -25,9 +34,8 @@ handlers = [
     ('/admin', AdminHandler),
     ('/admin/approve', ApproveHandler),
     ('/admin/approve/resume/.*', ApproveResumeHandler),
-    ('/profile', ProfileHandler),
-    ('/profile/myresume', MyResumeHandler),
     ('/code-of-conduct', CoCHandler),
     # ('/_ah/login_required', LoginRequiredHandler),
+    # ('/admin', AdminHandler.AdminHandler),
     ('.*', ErrorHandler)
 ]

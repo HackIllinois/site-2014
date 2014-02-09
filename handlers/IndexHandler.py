@@ -1,25 +1,16 @@
 import MainHandler
-import re
-from datetime import datetime
-from db.models import SignUp
-import logging
-
-email_regex = r"^[A-Za-z0-9\.\+_-]+@[A-Za-z0-9\._-]+\.[a-zA-Z]*$"
+from db.Attendee import Attendee
+from google.appengine.api import users
 
 class IndexHandler(MainHandler.Handler):
     """ Handler for the homepage, """
     def get(self):
-        self.render("index.html")
+        buttonText = 'Apply'
 
-    def post(self):
-        """ Handle email signups """
-        email = self.request.body
+        user = users.get_current_user()
+        if user:
+            db_user = Attendee.search_database({'userId': user.user_id()}).get()
+            if db_user and db_user.isRegistered:
+                buttonText = 'Update Profile'
 
-        if re.match(email_regex, email):
-            today = datetime.now().date()
-
-            newSignup = SignUp(email=email)
-            newSignup.register_date = today
-            newSignup.put()
-
-            logging.info('Signup with email %s', email)
+        self.render("index.html", buttonText=buttonText)
