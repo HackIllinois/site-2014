@@ -6,11 +6,7 @@ from SignupCountHandler import SignupCountHandler
 from ApplyCountHandler import ApplyCountHandler
 from SubpageHandlers import RulesHandler, ScheduleHandler, TravelHandler, CoCHandler
 from TropoHandler import TropoHandler
-<<<<<<< HEAD
 from AdminHandler import AdminHandler, ApproveResumeHandler, ApproveHandler
-from ProfileHandler import ProfileHandler, MyResumeHandler
-=======
->>>>>>> feature/registration
 # import AdminHandler
 # from LoginRequiredHandler import LoginRequiredHandler
 
