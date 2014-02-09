@@ -6,8 +6,10 @@ class IndexHandler(MainHandler.Handler):
     """ Handler for the homepage, """
     def get(self):
         buttonText = 'Apply'
+        addedClassesForLoggedInUsers = ''
 
         user = users.get_current_user()
+        
         if user:
             db_user = Attendee.search_database({'userId': user.user_id()}).get()
             if db_user and db_user.isRegistered:
@@ -15,4 +17,4 @@ class IndexHandler(MainHandler.Handler):
                 addedClassesForLoggedInUsers = 'update-btn' 
                 # Above line adds classes for fixing button size if person is updating application. Sorry about the long but descriptive var name.
 
-        self.render("index.html", buttonText=buttonText, addedClasses=addedClassesForLoggedInUsers)
+        self.render("index.html", buttonText=buttonText, addedClassesForLoggedInUsers=addedClassesForLoggedInUsers)

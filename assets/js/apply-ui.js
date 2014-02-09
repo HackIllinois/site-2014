@@ -1,5 +1,18 @@
 $(document).ready(function() {
 
+    $('#termsOfService-0').on('click', function(){
+        if($(this).prop('checked') == true){
+                $('#application-submit').attr("disabled","disabled");
+                $('#application-submit').addClass("submit-disabled");   
+                console.log("enabled");             
+            }
+        else {
+                $('#application-submit').removeAttr('disabled');
+                $('#application-submit').removeClass("submit-disabled");
+                console.log("disabled");   
+            }
+    });
+
     $(window).scroll(function() {
    if($(window).scrollTop() + $(window).height() == $(document).height()) {
        $(".launch-container").animate({
