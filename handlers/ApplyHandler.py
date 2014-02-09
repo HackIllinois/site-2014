@@ -3,14 +3,30 @@ import urllib, logging, re
 from db.Attendee import Attendee
 from db.Resume import Resume
 from db import constants
-from google.appengine.api import users
+from google.appengine.api import users, memcache
 from google.appengine.ext import blobstore
 from google.appengine.ext.webapp import blobstore_handlers
 import json
 
+# from datetime import datetime
+# import json
+# from google.appengine.api import mail
+
+
+# def SendApplyEmail(subject, body):
+#     body_str = json.dumps(body)
+#     logging.info("Sent email '%s'",  subject)
+#     mail.send_mail(sender="alex.burck@hackillinois.org",
+#                    to="apply-watchlist@hackillinois.org",
+#                    subject=subject,
+#                    body=body_str)
+
+
 class ApplyHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandler):
     # == Handler for application page. ==
     # This does not include the email registration we have up now.
+    This does not include the email registration we have up now."""
+    
     def get(self):
         user = users.get_current_user()
 
@@ -35,6 +51,7 @@ class ApplyHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandle
         data['resumeRequired'] = False
         data['hasResume'] = False
         data['applyError'] = False
+        data['uploadUrl'] = '/apply'
 
         # Check if user is in our database
         db_user = Attendee.search_database({'userId': user.user_id()}).get()
@@ -140,9 +157,8 @@ class ApplyHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandle
             if db_user.errorMessages and db_user.errorMessages != '':
                 data['messages'] = db_user.errorMessages.split('$$$')
 
-        data['upload_url'] = upload_url_rpc.get_result()
+        data['uploadUrl'] = upload_url_rpc.get_result()
         self.render("apply.html", data=data)
-
 
     def post(self):
         user = users.get_current_user()
@@ -234,7 +250,6 @@ class ApplyHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandle
                continue
         
             if field not in x:
-                print field
                 x["errors_" + field] += constants.ERROR_MESSAGE_PREFIX + constants.READABLE_REQUIRED_FIELDS[field] + constants.ERROR_MESSAGE_SUFFIX
                 valid = False
 
@@ -283,8 +298,12 @@ class ApplyHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandle
             valid = False
 
         # Make sure required boxes checked
+<<<<<<< HEAD
         if not ('termsOfService' in x) or not x['termsOfService']:
             x["errors_termsOfService"] += 'Please read and agree to the rules and code of conduct.'
+=======
+        if 'termsOfService' not in x or ('termsOfService' in x and not x['termsOfService']):
+            errorMessages.append('Please read and agree to the rules and code of conduct.')
             valid = False
 
         x['errorMessages'] = '$$$'.join(errorMessages)
@@ -293,6 +312,8 @@ class ApplyHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandle
             x['isRegistered'] = True
             x['applyError'] = False
             redir = '/apply/complete'
+
+            memcache.incr('apply_count')
         else:
             x['applyError'] = True
             redir = '/apply'
@@ -303,15 +324,18 @@ class ApplyHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandle
                     redir = '/apply/updated'
                     logging.info('Updated profile of %s', x['email'])
                     logging.info(str(x))
+                    # SendApplyEmail('Updated profile of ' + x['email'], x)
                 else:
                     redir = '/apply/complete'
                     logging.info('Signup with email %s', x['email'])
                     logging.info(str(x))
+                    # SendApplyEmail('Signup with email ' + x['email'], x)
             success = Attendee.update_search(x, {'userId':x['userId']})
         else:
             if valid:
                 logging.info('Signup with email %s', x['email'])
                 logging.info(str(x))
+                # SendApplyEmail('Signup with email ' + x['email'], x)
             else:
                 logging.info('User with email %s submitted an invalid form', x['email'])
             success = Attendee.add(x)
@@ -321,12 +345,18 @@ class ApplyHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandle
 
 class ApplyCompleteHandler(MainHandler.Handler):
     def get(self):
-        return self.render("apply_complete.html")
+        return self.render( "simple_message.html",
+                            header=constants.APPLY_COMPLETE_HEADER,
+                            message=constants.APPLY_COMPLETE_MESSAGE,
+                            showSocial=True )
 
 
 class UpdateCompleteHandler(MainHandler.Handler):
     def get(self):
-        return self.render("simple_message.html", message="Update Successful!")
+        return self.render( "simple_message.html",
+                            header=constants.UPDATE_COMPLETE_HEADER,
+                            message=constants.UPDATE_COMPLETE_MESSAGE,
+                            showSocial=True )
 
 
 class SchoolCheckHandler(MainHandler.Handler):
@@ -350,10 +380,11 @@ class SchoolCheckHandler(MainHandler.Handler):
         else:
             return self.write('--')
 
+
 class SchoolListHandler(MainHandler.Handler):
     def get(self):
         schools = constants.SCHOOLS
-        school_list = list(set([schools[i] for i in schools]))
+        school_list = sorted(list((set(schools))))
         out_list = [{'name':school} for school in school_list]
         self.write(json.dumps({'schools': out_list}))
 
@@ -376,3 +407,8 @@ class MyResumeHandler(MainHandler.Handler, blobstore_handlers.BlobstoreDownloadH
         resource = str(urllib.unquote(db_user.resume.gsObjectName))
         blob_key = blobstore.create_gs_key(resource)
         return self.send_blob(blob_key)
+
+class UploadURLHandler(MainHandler.Handler):
+    def get(self):
+        upload_url = blobstore.create_upload_url('/apply', gs_bucket_name=constants.BUCKET)
+        self.write(json.dumps({'upload_url': upload_url}))

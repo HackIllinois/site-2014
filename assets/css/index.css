@@ -151,6 +151,8 @@ p {
 	width: 260px;
 	margin: 0 auto;
 	margin-top: 150px;
+	min-height: 125px;
+	max-width: 100%;
 }
 
 a.apply-btn {
@@ -512,9 +514,14 @@ div.main-content {
 	padding-top: 20px;
 }
 
-.social-follow > .twitter-follow-button {
-	margin-left: 20px;
+.facebook-frame {
+    margin: 0px 10px;
 }
+
+.twitter-frame {
+    margin: 0px 10px;
+}
+
 
 @media only screen
 and (max-width: 768px) {

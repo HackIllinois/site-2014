@@ -9,6 +9,15 @@
              $("p.apply-info").slideDown(function(){
                  $("a.apply-btn").attr("href","/apply");
              });
+        $("#apply-btn-slide").on('click', function(event){
+            if (!$('p.apply-info').is(':visible')) {
+                // Cancel the click if the dropdown menu is about to appear, otherwise we want it
+                event.preventDefault();
+            }
+
+            $("p.apply-info").slideDown(function(){
+                $("a.apply-btn").attr("href","/apply");
+            });
 
              $("#apply-btn-slide").text("continue");
              $("#apply-btn-slide").css('padding-left','96px');
@@ -25,7 +34,6 @@
      */
     function enableRetinaSponsorLogos() {
         if (navigator.userAgent.indexOf('Chrome') != -1) {
-            console.log("applying css");
             $('.sponsor, .sponsor-supernova').css('-webkit-transform', 'translateZ(0)');
         }
     }

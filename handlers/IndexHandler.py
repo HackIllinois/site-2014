@@ -1,4 +1,5 @@
 import MainHandler
+<<<<<<< HEAD
 import re
 from datetime import datetime
 from db.Attendee import Attendee
@@ -7,11 +8,12 @@ import logging
 from google.appengine.api import users
 
 email_regex = r"^[A-Za-z0-9\.\+_-]+@[A-Za-z0-9\._-]+\.[a-zA-Z]*$"
+from db.Attendee import Attendee
+from google.appengine.api import users
 
 class IndexHandler(MainHandler.Handler):
-    """ Handler for the homepage, """
+    ## Handler for the homepage
     def get(self):
-    
         data = {}
         user = users.get_current_user()
         data['isLoggedIn'] = False
@@ -29,8 +31,12 @@ class IndexHandler(MainHandler.Handler):
         if re.match(email_regex, email):
             today = datetime.now().date()
 
-            newSignup = SignUp(email=email)
-            newSignup.register_date = today
-            newSignup.put()
+        buttonText = 'Apply'
 
-            logging.info('Signup with email %s', email)
+        user = users.get_current_user()
+        if user:
+            db_user = Attendee.search_database({'userId': user.user_id()}).get()
+            if db_user and db_user.isRegistered:
+                buttonText = 'Update Profile'
+
+        self.render("index.html", buttonText=buttonText)

@@ -3,11 +3,17 @@ BUCKET = 'hackillinois'
 APPLY_TITLE = 'Application'
 PROFILE_TITLE = 'Profile'
 
-ERROR_MESSAGE_PREFIX = 'Please enter '
+APPLY_COMPLETE_HEADER = 'Application Complete!'
+APPLY_COMPLETE_MESSAGE = 'Thanks for applying! To keep in touch, follow us on Facebook and Twitter. Also, don\'t forget to RSVP to the <a href="https://www.facebook.com/events/285744431573053" target="_blank" style="color: #ef3e36">Facebook event</a>!'
+
+UPDATE_COMPLETE_HEADER = 'Application Updated!'
+UPDATE_COMPLETE_MESSAGE = 'Thanks for updating your application!<br>To keep in touch, follow us on Facebook and Twitter.<br>Also, don\'t forget to RSVP to the <a href="https://www.facebook.com/events/285744431573053" target="_blank" style="color: #ef3e36">Facebook event</a>!'
+
+ERROR_MESSAGE_PREFIX = 'Please provide a valid '
 ERROR_MESSAGE_SUFFIX = '.'
 
 ALL_FIELDS = ['nameFirst', 'nameLast', 'email', 'gender', 'school', 'year', 'resume', 'linkedin', 'github', 'shirt', 'food', 'foodInfo', 'projectType', 'experience', 'termsOfService']
-REQUIRED_FIELDS = ['nameFirst', 'nameLast', 'email', 'gender', 'school', 'year', 'shirt', 'experience', 'termsOfService']
+REQUIRED_FIELDS = ['nameFirst', 'nameLast', 'email', 'gender', 'school', 'year', 'shirt', 'experience']
 
 # This should have *ALL* fields in REQUIRED_FIELDS *EXCEPT* for 'termsOfService'
 READABLE_REQUIRED_FIELDS = {'nameFirst':'your First Name',
@@ -24,7 +30,6 @@ READABLE_FIELDS = {'food':'your Dietary Restrictions',
                    'food-info':'your Dietary Restriction Information'}
                             
 TOS_ERROR_MESSAGE = 'Please accept the Terms of Service'
-
 # The below array is for more descriptive error messages. @Mattato pls fix.
 # READABLE_REQUIRED_FIELDS = ['First Name','Last Name','E-mail','Gender','School','Year in School','T-shirt size','past experience', 'Please accept the Terms of Service']
 
@@ -37,7 +42,6 @@ FOODS = ['Vegetarian','Vegan','Gluten Free','Lactose Free', 'Other']
 PROJECTS = ['Software Hack','Hardware Hack','Unsure']
 
 RESUME_MAX_SIZE = 2097152 # in Bytes = 2 mb
-
 
 SCHOOLS = {
     'binghamton.edu':'Binghamton University',

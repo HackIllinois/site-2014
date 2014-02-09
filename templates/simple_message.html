@@ -2,26 +2,32 @@
 
 {% block head %}
 {% include 'base/default_css_and_fonts.html' %}
-    <link rel="stylesheet" type="text/css" href="/css/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="/css/shared.css">
-    <link rel="stylesheet" type="text/css" href="/css/register.css">
-    <link rel="stylesheet" type="text/css" href="/css/apply_complete.css">
+    <link rel="stylesheet" type="text/css" href="/css/simple_message.css">
 {% endblock head %}
 
 {% block body %}
-    <img class="constellations" src="/img/constellations.png">
-    <header class="logo">
-        <a href="/">
-            <img class="logo-main-svg header img-responsive center-block" src="/img/hackillinois_logo.svg">
-        </a>
-    </header>
+<img class="constellations" src="/img/constellations.png"/>
+<header class="logo">
+    <a href="/"><img class="logo-main-svg header img-responsive center-block" src="/img/hackillinois_logo.svg"/></a>
+    <h2 class="info-text t-centered">{{ header }}</h2>
+</header>
 
-    <br>
+<div class="pure-g-r">
+    <section class="reg-message pure-u-1-3">
+        {{ message|safe }}
+        {% if showSocial %}
+        <div class="social-follow">
+            <span class="facebook-frame">
+                <iframe allowTransparency="true" frameborder="0" scrolling="no" style="border:none; overflow:hidden; width:135px; height:21px;" src="https://www.facebook.com/plugins/like.php?href=http%3A%2F%2Ffacebook.com%2Fevents%2F285744431573053/&amp;width&amp;layout=button_count&amp;action=like&amp;show_faces=false&amp;share=true&amp;height=21"></iframe>
+            </span>
+            <span class="twitter-frame">
+                <iframe allowtransparency="true" frameborder="0" scrolling="no" style="border:none; overflow:hidden; width:132px; height:21px;" src="https://platform.twitter.com/widgets/follow_button.html?screen_name=hackillinois&amp;show_count=false&amp;lang=en&amp;show_screen_name=true&amp;dnt=true"></iframe>
+                <iframe allowtransparency="true" frameborder="0" scrolling="no" style="border:none; overflow:hidden; width:56px; height:21px;" src="https://platform.twitter.com/widgets/tweet_button.html?url=http%3A%2F%2Fwww.hackillinois.org&amp;text=I%20just%20signed%20up%20for%20%40HackIllinois%2C%20a%2036-hour%20hackathon%20at%20the%20University%20of%20Illinois%20-%20You%20should%20come!&amp;count=none&amp;hashtags=HackIL&amp;dnt=true"></iframe>
+            </span>
+        </div>
+        {% endif %}
+    </section>
+</div>
 
-    <section class="col-md-6 col-md-offset-3">
-        <h1 class="info-text t-centered">{{ message }}</h1>
-    <section>
-
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-    <script src="/js/libraries/bootstrap.min.js"></script>
 {% endblock body %}

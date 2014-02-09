@@ -15,6 +15,10 @@ label {
     color: #fff;
 }
 
+.food-options {
+    font-weight: normal;
+}
+
 .help-block {
     font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
     color: #fff;
@@ -109,15 +113,30 @@ p.loggedin {
     font-weight: bold;
     color: white;
     font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    margin-bottom: 55px;
+    margin-bottom: 25px;
 }
 
 p.errormessages {
-    text-align: center;
-    font-size: 14px;
-    font-weight: bold;
-    color: #ef3e36;
     font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    text-align: center;
+    font-size: 11px;
+    background: rgba(255,255,255,0.8);
+    color: #333;
+    max-width: 245px;
+    width: 100%;
+    margin: 0 auto;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    border: 1px solid #ef3e36;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    text-decoration: none;
+    padding: 0;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 10px;
+    margin-bottom: 45px;
+    padding-bottom: 10px;
 }
 
 .selectize-input {
