@@ -176,6 +176,10 @@ a.apply-btn {
 
 }
 
+a.update-btn {
+	padding: 10px 68px;
+}
+
 p.apply-info {
 	font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 	font-size: 12px;
