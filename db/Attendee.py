@@ -1,6 +1,7 @@
 from google.appengine.ext import ndb
 import constants
 from Resume import Resume
+from ApplyErrors import ApplyErrors
 from Model import Model
 from google.appengine.ext.db import BadValueError
 
@@ -47,19 +48,12 @@ class Attendee(Model):
 
     applyError = ndb.BooleanProperty()
     errorMessages = ndb.TextProperty()
-    
+
     # Per-field error messages
-    errors_nameFirst = ndb.StringProperty()
-    errors_nameLast = ndb.StringProperty()
-    errors_email = ndb.StringProperty()
-    errors_gender = ndb.StringProperty()
-    errors_school = ndb.StringProperty()
-    errors_year = ndb.StringProperty() 
-    errors_shirt = ndb.StringProperty()
-    errors_food = ndb.StringProperty()
-    errors_projectType = ndb.StringProperty()  
-    errors_experience = ndb.StringProperty()
-    errors_termsOfService = ndb.StringProperty()
+    # Store errors as '<field>$$$<message>'
+    # We can do this because we do not need to do lookups by <field>,
+    #     we can just loop through the errors.
+    errors = ndb.StringProperty(repeated=True)
 
     approved = ndb.StringProperty()
 

@@ -25,10 +25,10 @@ READABLE_REQUIRED_FIELDS = {'nameFirst':'your first name',
                             'shirt':'your T-shirt size',
                             'experience':'your past experience',
                             'projectType':'your project type'}
-                            
+
 READABLE_FIELDS = {'food':'your dietary restrictions',
                    'food-info':'your dietary restriction information'}
-                            
+
 TOS_ERROR_MESSAGE = 'Please accept the Terms of Service'
 
 # The below array is for more descriptive error messages. @Mattato pls fix.

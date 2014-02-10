@@ -41,27 +41,27 @@
 				<div class="form-group">
 					<label class="control-label col-sm-3" for="name">Name<span class="reqd"> *</span></label>
 					<div class="controls col-sm-9">
-					
+
 						<div class="row">
 							<div class="col-xs-6">
-								<input class="{% if data.errors_nameFirst %}errorborders{% endif %} form-control" id="nameFirst" name="nameFirst" type="text" placeholder="First Name" required="required" value="{{ data.nameFirst }}" onclick="this.select();">
+								<input class="{% if data.errors.nameFirst %}errorborders{% endif %} form-control" id="nameFirst" name="nameFirst" type="text" placeholder="First Name" required="required" value="{{ data.nameFirst }}" onclick="this.select();">
 							</div>
 							<div class="col-xs-6">
-								<input class="{% if data.errors_nameLast %}errorborders{% endif %} form-control" id="nameLast" name="nameLast" type="text" placeholder="Last Name" required="required" value="{{ data.nameLast }}" onclick="this.select();">
+								<input class="{% if data.errors.nameLast %}errorborders{% endif %} form-control" id="nameLast" name="nameLast" type="text" placeholder="Last Name" required="required" value="{{ data.nameLast }}" onclick="this.select();">
 							</div>
 						</div>
-						
-						{% if data.errors_nameFirst or data.errors_nameLast %}
+
+						{% if data.errors.nameFirst or data.errors.nameLast %}
 						<div class="row">
 							<div class="col-xs-6 errormessages">
-							   {{ data.errors_nameFirst }}
+							   {{ data.errors.nameFirst }}
 							</div>
 							<div class="col-xs-6 errormessages">
-							   {{ data.errors_nameLast }}
+							   {{ data.errors.nameLast }}
 							</div>
 						</div>
 						{% endif %}
-						
+
 					</div>
 				</div>
 
@@ -71,8 +71,8 @@
 					<label class="control-label col-sm-3" for="email">Email<span class="reqd"> *</span></label>
 
 					<div class="controls col-sm-9">
-						<input class="{% if data.errors_email %}errorborders{% endif %} form-control" id="email" name="email" type="email" placeholder="Email Address" required="required" value="{{ data.email }}" onclick="this.select();">
-					   <div class="errormessages">{{ data.errors_email }}</div>
+						<input class="{% if data.errors.email %}errorborders{% endif %} form-control" id="email" name="email" type="email" placeholder="Email Address" required="required" value="{{ data.email }}" onclick="this.select();">
+					    <div class="errormessages">{{ data.errors.email }}</div>
 					</div>
 				</div>
 
@@ -89,7 +89,7 @@
                      {% endfor %}
                    </div>
                    <div class="errormessages">
-                     {{ data.errors_gender }}
+                     {{ data.errors.gender }}
                    </div>
 					</div>
 				</div>
@@ -99,10 +99,10 @@
 					<label class="control-label col-sm-3" for="school">School<span class="reqd"> *</span></label>
 					<div class="controls col-sm-9">
 						<div>
-						   <input class="{% if data.errors_school %}errorborders{% endif %} form-control" id="school" type="text" name="school" required="required" placeholder="School Name"  value="{{ data.school }}" style="color:black">
+						   <input class="{% if data.errors.school %}errorborders{% endif %} form-control" id="school" type="text" name="school" required="required" placeholder="School Name"  value="{{ data.school }}" style="color:black">
 					   </div>
 					   <div class="errormessages">
-                     {{ data.errors_school }}
+                     {{ data.errors.school }}
                   </div>
 					</div>
 				</div>
@@ -111,16 +111,16 @@
 				<div class="form-group">
 					<label class="control-label col-sm-3" for="year">Year in School<span class="reqd"> *</span></label>
 					<div class="controls col-sm-9">
-					   
+
                   {% for y in data.years %}
                         <label class="radio-inline" for="year-{{ loop.index0 }}">
                             <input type="radio" name="year" id="year-{{ loop.index0 }}" value="{{ y.name }}" required="required" {% if y.checked %}checked{% endif %}>
                             {{ y.name }}
                         </label>
                   {% endfor %}
-                        
+
                  <div class="errormessages">
-                     {{ data.errors_year }}
+                     {{ data.errors.year }}
                   </div>
 					</div>
 				</div>
@@ -132,10 +132,10 @@
 					<div class="controls col-sm-9">
 						{% if data.hasResume %}<a href="/apply/myresume" class="view-resume" target="_blank">View Uploaded Resume</a><br> {% endif %}
 						<input id="resume" name="resume" type="file" accept="application/pdf" {% if data.resumeRequired %}required="required"{% endif %}>
-						
-						<span id="resume-prompt" class="help-block {%if data.errors_resume %}errormessages{% endif %}">
-						   {%if data.errors_resume %}
-						      {{ data.errors_resume }}
+
+						<span id="resume-prompt" class="help-block {%if data.errors.resume %}errormessages{% endif %}">
+						   {%if data.errors.resume %}
+						      {{ data.errors.resume }}
 						   {% else %}
 						      {% if not data.hasResume %}Please upload{% endif %}{% if data.hasResume %}Update{% endif %} your resume (optional).
 						   {% endif %}
@@ -178,11 +178,11 @@
                         {{ s.name }}
                      </label>
                      {% endfor %}
-                        
+
                   <div class="errormessages">
-                     {{ data.errors_shirt }}
+                     {{ data.errors.shirt }}
                   </div>
-                  
+
 					</div>
 				</div>
 
@@ -198,26 +198,26 @@
                      </label>
                   {% endfor %}
 						<textarea id="foodInfo" name="foodInfo" class="form-control" rows="3" placeholder="Need special food arrangements? Let us know!">{{ data.foodInfo }}</textarea>
-					
+
 					   <div class="errormessages">
-                     {{ data.errors_food }}
+                     {{ data.errors.food }}
                   </div>
-					
+
 					</div>
 				</div>
 
 				<div class="form-group">
 					<label class="control-label col-sm-3" for="project-type">Project Type<span class="reqd"> *</span></label>
 					<div class="controls col-sm-9">
-						<select name="projectType" class="{% if data.errors_projectType %}errorborders{% endif %}" >
+						<select name="projectType" class="{% if data.errors.projectType %}errorborders{% endif %}" >
                      {% for p in data.projects %}
                         <option {% if p.selected %}selected=""{% endif %}>{{ p.name }}</option>
                      {% endfor %}
 						</select>
 						<span class="help-block no-bottom-margin">What might you want to work on? It's okay if this changes!</span>
-						
+
 						<div class="errormessages">
-                     {{ data.errors_projectType }}
+                     {{ data.errors.projectType }}
                   </div>
 					</div>
 				</div>
@@ -227,13 +227,13 @@
 					<label class="control-label col-sm-3" for="experience">Previous Experience<span class="reqd"> *</span></label>
 					<div class="controls col-sm-9">
 
-                  <textarea class="{% if data.errors_experience %}errorborders{% endif %} form-control" id="experience" name="experience" rows="5" required="required">{{data.experience}}</textarea>
+                  <textarea class="{% if data.errors.experience %}errorborders{% endif %} form-control" id="experience" name="experience" rows="5" required="required">{{data.experience}}</textarea>
 						<span class="help-block no-bottom-margin">Have you participated in other hackathons? Won any awards? Done any cool projects?
 						<br>
 						(If not, that's okay! We're just curious)</span>
-						
+
 						<div class="errormessages">
-                     {{ data.errors_experience }}
+                     {{ data.errors.experience }}
                   </div>
 
 					</div>
@@ -250,11 +250,11 @@
               				<a class="rules-link" href="/rules" target = "_blank">rules</a>, and comply with the
               				<a class="rules-link" href="/code-of-conduct" target="_blank" >code of conduct</a>.
 						</label>
-						
+
 						<div class="errormessages">
-                     {{ data.errors_termsOfService }}
+                     {{ data.errors.termsOfService }}
                   </div>
-						
+
 					</div>
 				</div>
 				<div class="form-group" style="">

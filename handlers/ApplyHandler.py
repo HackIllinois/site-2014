@@ -25,7 +25,7 @@ import json
 class ApplyHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandler):
     # == Handler for application page. ==
     # This does not include the email registration we have up now.
-    
+
     def get(self):
         user = users.get_current_user()
 
@@ -37,6 +37,8 @@ class ApplyHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandle
         upload_url_rpc = blobstore.create_upload_url_async('/apply', gs_bucket_name=constants.BUCKET)
 
         data = {}
+        data['errors'] = {} # Needed for template to render
+
         data['username'] = user.nickname()
         data['logoutUrl'] = users.create_logout_url('/apply')
         data['email'] = user.email()
@@ -62,43 +64,12 @@ class ApplyHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandle
 
             if db_user.applyError:
                 data['applyError'] = True
-            
+
             # Per-field errors
-            if db_user.errors_nameFirst:
-                data['errors_nameFirst'] = db_user.errors_nameFirst
-                
-            if db_user.errors_nameLast:
-                data['errors_nameLast'] = db_user.errors_nameLast    
-
-            if db_user.errors_email:
-                data['errors_email'] = db_user.errors_email  
-                
-            if db_user.errors_gender:
-                data['errors_gender'] = db_user.errors_gender
-
-            if db_user.errors_school:
-                data['errors_school'] = db_user.errors_school
-                
-            if db_user.errors_year:
-                data['errors_year'] = db_user.errors_year 
-                
-            if db_user.errors_shirt:
-                data['errors_shirt'] = db_user.errors_shirt
-                
-            if db_user.errors_experience:
-                data['errors_experience'] = db_user.errors_experience
-
-            if db_user.errors_termsOfService:
-                data['errors_termsOfService'] = db_user.errors_termsOfService
-                
-            if db_user.errors_food:
-                data['errors_food'] = db_user.errors_food
-                
-            if db_user.errors_projectType:
-                data['errors_projectType'] = db_user.errors_projectType
-                
-            if db_user.errors_termsOfService:
-                data['errors_termsOfService'] = db_user.errors_termsOfService
+            # db_user.errors == [<field1>$$$<message1>, <field1>$$$<message2>, ...]
+            if db_user.errors:
+                # Turn into dictionary so template can do lookup 'data.errors.<field>'
+                data['errors'] = { e.split('$$$')[0]:e.split('$$$')[1] for e in db_user.errors }
 
             # Previous field data
             if db_user.nameFirst:
@@ -167,6 +138,7 @@ class ApplyHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandle
             return self.write('ERROR')
 
         x = {}
+        errors = {} # Note: 1 error per field
         valid = True
         db_user = Attendee.search_database({'userId':user.user_id()}).get()
 
@@ -179,11 +151,6 @@ class ApplyHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandle
 
         for field in ['nameFirst', 'nameLast', 'email', 'gender', 'school', 'year', 'experience', 'linkedin', 'github']:
            x[field] = self.request.get(field)
-        
-        # Reset error messages
-        x['errorMessages'] = ''
-        for field in constants.ALL_FIELDS:
-           x['errors_' + field] = "" # A slightly hacky shortcut, but it shouldn't cause any problems
 
         x['shirt'] = self.request.get('shirt')
         x['projectType'] = self.request.get('projectType')
@@ -192,28 +159,28 @@ class ApplyHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandle
         file_info = self.get_file_infos(field_name='resume')
         if file_info and len(file_info) == 1:
             file_info = file_info[0]
-            
+
             delete_resume = False
-            
+
             if not file_info.content_type == 'application/pdf':
-            
+
                 # Non-pdf files
                 x['errors_resume'].append('Uploaded resume file is not a pdf.')
                 delete_resume = True
                 valid = False
-                
+
             elif file_info.size > constants.RESUME_MAX_SIZE:
-                
+
                 # Big files
                 x['errors_resume'].append('Uploaded resume file is too big.')
                 delete_resume = True
                 valid = False
-                
+
             else:
-            
+
                 # Old resumes
                 delete = db_user and db_user.resume
-            
+
             # Delete resume if appropriate
             if delete:
                 resource = str(urllib.unquote(file_info.gs_object_name))
@@ -247,9 +214,9 @@ class ApplyHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandle
         for field in constants.REQUIRED_FIELDS:
             if field is "termsOfService":
                continue
-        
+
             if field not in x:
-                x["errors_" + field] += constants.ERROR_MESSAGE_PREFIX + constants.READABLE_REQUIRED_FIELDS[field] + constants.ERROR_MESSAGE_SUFFIX
+                errors[field] = constants.ERROR_MESSAGE_PREFIX + constants.READABLE_REQUIRED_FIELDS[field] + constants.ERROR_MESSAGE_SUFFIX
                 valid = False
 
         # Check if hame has a number in it
@@ -262,43 +229,43 @@ class ApplyHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandle
 
         # Check if email is valid (basic)
         if 'email' in x and not re.match(constants.EMAIL_MATCH, x['email']):
-            x["errors_email"] += 'Invalid e-mail address.'
+            errors['email'] = 'Invalid e-mail address.'
             valid = False
 
         # Check fields with specific values
         if 'gender' in x and x['gender'] not in constants.GENDERS:
-            x["errors_gender"] += constants.ERROR_MESSAGE_PREFIX + constants.READABLE_REQUIRED_FIELDS['gender'] + constants.ERROR_MESSAGE_SUFFIX
+            errors['gender'] = constants.ERROR_MESSAGE_PREFIX + constants.READABLE_REQUIRED_FIELDS['gender'] + constants.ERROR_MESSAGE_SUFFIX
             valid = False
         if 'year' in x and x['year'] not in constants.YEARS:
-            x["errors_year"] += constants.ERROR_MESSAGE_PREFIX + constants.READABLE_REQUIRED_FIELDS['year'] + constants.ERROR_MESSAGE_SUFFIX
+            errors['year'] = constants.ERROR_MESSAGE_PREFIX + constants.READABLE_REQUIRED_FIELDS['year'] + constants.ERROR_MESSAGE_SUFFIX
             valid = False
         if 'shirt' in x and x['shirt'] not in constants.SHIRTS:
-            x["errors_shirt"] += constants.ERROR_MESSAGE_PREFIX + constants.READABLE_REQUIRED_FIELDS['shirt'] + constants.ERROR_MESSAGE_SUFFIX
+            errors['shirt'] = constants.ERROR_MESSAGE_PREFIX + constants.READABLE_REQUIRED_FIELDS['shirt'] + constants.ERROR_MESSAGE_SUFFIX
             valid = False
         if 'food' in x and x['food'] != '':
+            temp = x['food'].split(',')
+            if 'Other' in temp and ('foodInfo' not in x or ('foodInfo' in x and x['foodInfo'] == '')):
+                errors['food'] += constants.ERROR_MESSAGE_PREFIX + constants.READABLE_FIELDS['food'] + constants.ERROR_MESSAGE_SUFFIX
+                valid = False
+
             for f in x['food'].split(','):
                 if f not in constants.FOODS:
-                    x["errors_food"] += constants.ERROR_MESSAGE_PREFIX + constants.READABLE_FIELDS['food'] + constants.ERROR_MESSAGE_SUFFIX
+                    errors['food'] = constants.ERROR_MESSAGE_PREFIX + constants.READABLE_FIELDS['food'] + constants.ERROR_MESSAGE_SUFFIX
                     valid = False
                     break # This is why we need the for loop below
-                
-            # If other is checked, we need more info
-            for f in x['food'].split(','):
-               print f
-               if f == 'Other':
-                  if 'foodInfo' not in x:
-                     print "[[[ 2 ]]]"
-                     x["errors_food"] += constants.ERROR_MESSAGE_PREFIX + constants.READABLE_FIELDS['food'] + constants.ERROR_MESSAGE_SUFFIX
-                     valid = False
+
 
         if 'projectType' in x and x['projectType'] not in constants.PROJECTS:
-            x["errors_projectType"] += constants.ERROR_MESSAGE_PREFIX + constants.READABLE_FIELDS['projectType'] + constants.ERROR_MESSAGE_SUFFIX
+            errors['projectType'] = constants.ERROR_MESSAGE_PREFIX + constants.READABLE_FIELDS['projectType'] + constants.ERROR_MESSAGE_SUFFIX
             valid = False
 
         # Make sure required boxes checked
         if not ('termsOfService' in x) or not x['termsOfService']:
-            x["errors_termsOfService"] += 'Please read and agree to the rules and code of conduct.'
+            errors['termsOfService'] = 'Please read and agree to the rules and code of conduct.'
             valid = False
+
+        # Create list of error messages
+        x['errors'] = [ k + '$$$' + errors[k] for k in errors ]
 
         if valid:
             x['isRegistered'] = True
