@@ -55,7 +55,6 @@ $(document).ready(function () {
         stratosphere += 'px';
 
         if (validateApplication()) {
-            console.log(validateApplication());
             $(".rocket-ship").animate({
                 marginBottom: stratosphere
             }, {
