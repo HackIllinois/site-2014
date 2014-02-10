@@ -1,0 +1,116 @@
+Searching 249 files for "errormessages"
+
+/Users/achalv/Desktop/hackillinois-website/assets/css/apply.css:
+  100  }
+  101  
+  102: p.errormessages {
+  103      font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  104      text-align: center;
+  ...
+  216  }
+  217  
+  218: .errormessages-submit {
+  219      padding-bottom: 20px;
+  220  }
+
+/Users/achalv/Desktop/hackillinois-website/db/Attendee.py:
+   47  
+   48      applyError = ndb.BooleanProperty()
+   49:     errorMessages = ndb.TextProperty()
+   50  
+   51      approved = ndb.StringProperty()
+
+/Users/achalv/Desktop/hackillinois-website/handlers/ApplyHandler.py:
+  116                  data['resumeRequired'] = False
+  117  
+  118:             if db_user.errorMessages and db_user.errorMessages != '':
+  119:                 data['messages'] = db_user.errorMessages.split('$$$')
+  120  
+  121          data['uploadUrl'] = upload_url_rpc.get_result()
+  ...
+  131          x = {}
+  132          valid = True
+  133:         errorMessages = []
+  134          db_user = Attendee.search_database({'userId':user.user_id()}).get()
+  135  
+  ...
+  159              file_info = file_info[0]
+  160              if not file_info.content_type == 'application/pdf':
+  161:                 errorMessages.append('Uploaded resume file is not a pdf.')
+  162  
+  163                  # Delete non pdf file
+  ...
+  168                  valid = False
+  169              elif file_info.size > constants.RESUME_MAX_SIZE:
+  170:                 errorMessages.append('Uploaded resume file is too big.')
+  171  
+  172                  # Delete big file
+  ...
+  207          for field in constants.REQUIRED_FIELDS:
+  208              if field not in x:
+  209:                 errorMessages.append(constants.ERROR_MESSAGE_PREFIX + constants.FIELD_DISPLAY_NAMES[field] + constants.ERROR_MESSAGE_SUFFIX)
+  210                  valid = False
+  211  
+  212          # Check if hame has a number in it
+  213          # if 'nameFirst' in x and any(char.isdigit() for char in x['nameFirst']):
+  214:         #     errorMessages.append('Your first name cannot have an Arabic numeral in it.')
+  215          #     valid = False
+  216          # if 'nameLast' in x and any(char.isdigit() for char in x['nameLast']):
+  217:         #     errorMessages.append('Your last name cannot have an Arabic numeral in it.')
+  218          #     valid = False
+  219  
+  220          # Check if email is valid (basic)
+  221          if 'email' in x and not re.match(constants.EMAIL_MATCH, x['email']):
+  222:             errorMessages.append('Uploaded file is too big.')
+  223              valid = False
+  224  
+  225          # Check fields with specific values
+  226          if 'gender' in x and x['gender'] not in constants.GENDERS:
+  227:             errorMessages.append(constants.ERROR_MESSAGE_PREFIX + constants.FIELD_DISPLAY_NAMES['gender'] + constants.ERROR_MESSAGE_SUFFIX)
+  228              valid = False
+  229          if 'year' in x and x['year'] not in constants.YEARS:
+  230:             errorMessages.append(constants.ERROR_MESSAGE_PREFIX + constants.FIELD_DISPLAY_NAMES['year'] + constants.ERROR_MESSAGE_SUFFIX)
+  231              valid = False
+  232          if 'shirt' in x and x['shirt'] not in constants.SHIRTS:
+  233:             errorMessages.append(constants.ERROR_MESSAGE_PREFIX + constants.FIELD_DISPLAY_NAMES['shirt'] + constants.ERROR_MESSAGE_SUFFIX)
+  234              valid = False
+  235          if 'food' in x and x['food'] != '':
+  236              for f in x['food'].split(','):
+  237                  if f not in constants.FOODS:
+  238:                     errorMessages.append(constants.ERROR_MESSAGE_PREFIX + constants.FIELD_DISPLAY_NAMES['food'] + constants.ERROR_MESSAGE_SUFFIX)
+  239                      valid = False
+  240                      break
+  241          if 'projectType' in x and x['projectType'] not in constants.PROJECTS:
+  242:             errorMessages.append(constants.ERROR_MESSAGE_PREFIX + constants.FIELD_DISPLAY_NAMES['projectType'] + constants.ERROR_MESSAGE_SUFFIX)
+  243              valid = False
+  244  
+  245          # Make sure required boxes checked
+  246          if 'termsOfService' not in x or ('termsOfService' in x and not x['termsOfService']):
+  247:             errorMessages.append('Please read and agree to the rules and code of conduct.')
+  248              valid = False
+  249  
+  250:         x['errorMessages'] = '$$$'.join(errorMessages)
+  251  
+  252          if valid:
+
+/Users/achalv/Desktop/hackillinois-website/templates/apply.html:
+   26  		{% if data.applyError %}
+   27  		<div>
+   28: 			<p class="errormessages">
+   29  				{% for m in data.messages %}
+   30  				{{ m }}<br>
+   ..
+  199  					<label class="control-label col-sm-3 sr-only" for=""></label>
+  200  					<div class="controls col-sm-9">
+  201: 						<p class="errormessages errormessages-submit">Whoops! You left a required field empty.</p>						
+  202  					</div>
+  203  				</div>
+
+/Users/achalv/Desktop/hackillinois-website/templates/apply.html.orig:
+   26  		<!-- {% if data.applyError %} -->
+   27  		<div>
+   28: 			<p class="errormessages">
+   29  				{% for m in data.messages %}
+   30  				{{ m }}<br>
+
+25 matches across 5 files

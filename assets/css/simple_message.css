@@ -1,3 +1,4 @@
+
 .constellations{
     min-height: 120%;
     margin-top: -10%;
@@ -5,7 +6,6 @@
     position: fixed;
     z-index: -100;
     opacity: 0.6;
-
     -webkit-animation: spin 250s infinite linear;
     -moz-animation: spin 250s infinite linear;
     -o-animation: spin 250s infinite linear;
