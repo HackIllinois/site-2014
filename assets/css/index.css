@@ -113,7 +113,7 @@ p {
 	height: auto !important; /* ie6 ignores !important, so this will be overridden below */
     	min-height: 100%; /* ie6 ignores min-height completely */
     	height: 100%;
-    	background-color: #000000; /* fallback for stars */
+    	background-color: #2c3e50; /* fallback for stars */
     	width: 100%;
 }
 
@@ -122,6 +122,7 @@ p {
 	background-size: cover;
 	z-index:-100;
 	background-attachment: fixed;
+	background-color: #2c3e50;
 }
 
 .t-centered {
@@ -176,6 +177,10 @@ a.apply-btn {
 
 }
 
+a.update-btn {
+	padding: 10px 100px;
+}
+
 p.apply-info {
 	font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 	font-size: 12px;
@@ -196,6 +201,10 @@ p.apply-info {
 	padding-top: 10px;
 	margin-bottom: 25px;
 	padding-bottom: 10px;
+	display: none;
+}
+
+p.apply-info-invisible {
 	display: none;
 }
 
