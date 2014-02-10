@@ -6,7 +6,6 @@ from db.SignUp import SignUp
 import logging
 from google.appengine.api import users
 
-email_regex = r"^[A-Za-z0-9\.\+_-]+@[A-Za-z0-9\._-]+\.[a-zA-Z]*$"
 from db.Attendee import Attendee
 from google.appengine.api import users
 
@@ -26,9 +25,6 @@ class IndexHandler(MainHandler.Handler):
     def post(self):
         """ Handle email signups """
         email = self.request.body
-
-        if re.match(email_regex, email):
-            today = datetime.now().date()
 
         buttonText = 'Apply'
         addedClassesForLoggedInUsers = ''

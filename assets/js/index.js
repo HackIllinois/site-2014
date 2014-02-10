@@ -7,7 +7,7 @@
     function setupApplyButtonSlide() {
         $("#apply-btn-slide").on('click', function(){
         
-           $("p.apply-info").slideDown(function(){ });
+           $("p.apply-info").slideDown();
            
            $("#apply-btn-slide").text("continue");
            $("#apply-btn-slide").css('padding-left','96px');
