@@ -9,25 +9,25 @@ APPLY_COMPLETE_MESSAGE = 'Thanks for applying! To keep in touch, follow us on Fa
 UPDATE_COMPLETE_HEADER = 'Application Updated!'
 UPDATE_COMPLETE_MESSAGE = 'Thanks for updating your application!<br>To keep in touch, follow us on Facebook and Twitter.<br>Also, don\'t forget to RSVP to the <a href="https://www.facebook.com/events/285744431573053" target="_blank" style="color: #ef3e36">Facebook event</a>!'
 
-ERROR_MESSAGE_PREFIX = 'Please provide a valid '
+ERROR_MESSAGE_PREFIX = 'Please provide '
 ERROR_MESSAGE_SUFFIX = '.'
 
 ALL_FIELDS = ['nameFirst', 'nameLast', 'email', 'gender', 'school', 'year', 'resume', 'linkedin', 'github', 'shirt', 'food', 'foodInfo', 'projectType', 'experience', 'termsOfService']
 REQUIRED_FIELDS = ['nameFirst', 'nameLast', 'email', 'gender', 'school', 'year', 'shirt', 'experience']
 
 # This should have *ALL* fields in REQUIRED_FIELDS *EXCEPT* for 'termsOfService'
-READABLE_REQUIRED_FIELDS = {'nameFirst':'your First Name',
-                            'nameLast':'your Last Name',
-                            'email':'your valid E-mail Address',
-                            'gender':'your Gender',
-                            'school':'your School',
-                            'year':'your Year in School',
+READABLE_REQUIRED_FIELDS = {'nameFirst':'your first name',
+                            'nameLast':'your last name',
+                            'email':'your valid e-mail address',
+                            'gender':'your gender',
+                            'school':'your school',
+                            'year':'your year in school',
                             'shirt':'your T-shirt size',
                             'experience':'your past experience',
                             'projectType':'your project type'}
                             
-READABLE_FIELDS = {'food':'your Dietary Restrictions',
-                   'food-info':'your Dietary Restriction Information'}
+READABLE_FIELDS = {'food':'your dietary restrictions',
+                   'food-info':'your dietary restriction information'}
                             
 TOS_ERROR_MESSAGE = 'Please accept the Terms of Service'
 

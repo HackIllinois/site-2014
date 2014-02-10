@@ -49,9 +49,16 @@
 					</div>
 					<div class="reg-success">
 						<h3>You're all set! We'll be in touch soon.</h3>
+						{% if updateProfile %}
+						<a class="apply-btn update-btn" href="/apply">Update</a>
+						{% endif %}
+
+						{% if not updateProfile %}
 						<p class="apply-info">
 						<span class="squish">We're using your Google account for authentication to allow future updates to your application, and to integrate it with future HackIllinois apps.</span></p>
-						<a id="apply-btn-slide" class="apply-btn {{ addedClassesForLoggedInUsers }}" href="/apply">{{ buttonText }}</a>
+						<a id="apply-btn-slide" class="apply-btn" href="/apply">Apply</a>
+						{% endif %}
+
 						<div class="social-follow">
 							<span class="facebook-frame">
 								<iframe allowTransparency="true" frameborder="0" scrolling="no" style="border:none; overflow:hidden; width:90px; height:21px;" src="https://www.facebook.com/plugins/like.php?href=http%3A%2F%2Ffacebook.com%2Fhackillinois&amp;width&amp;layout=button_count&amp;action=like&amp;show_faces=false&amp;share=false&amp;height=21"></iframe>
@@ -116,22 +123,19 @@
 
 					    <a href="http://electricimp.com" target="_blank"><img alt="electric imp" class="sponsor littler" src="/img/logos/electricimp.png" /></a>
 					    <a href="http://www.octopart.com" target="_blank"><img alt="octopart" class="sponsor littler" src="/img/logos/octopart.png" /></a>
-					    <a href="http://adrenalinemobility.com" target="_blank"><img alt="electric imp" class="sponsor littler" src="/img/logos/adr-mob.png" /></a>
+					    <a href="http://adrenalinemobility.com" target="_blank"><img alt="adrenaline mobility" class="sponsor littler" src="/img/logos/adr-mob.png" /></a>
 					    <a href="http://www.sparkfun.com" target="_blank"><img alt="sparkfun" class="sponsor littler" src="/img/logos/sparkfun.png" /></a>
 					    <a href="http://www.rdio.com" target="_blank"><img alt="rdio" class="sponsor littler rdio" src="/img/logos/rdio.png" /></a>
 					    <a href="http://www.lob.com" target="_blank"><img alt="lob" class="sponsor littler lob" src="/img/logos/lob.png" /></a>
 					    <a href="http://www.firebase.com" target="_blank"><img alt="firebase" class="sponsor littler firebase" src="/img/logos/firebase.png" /></a>
 					    <a href="http://makerlab.illinois.edu" target="_blank"><img alt="makerlab" class="sponsor littler makerlab" src="/img/logos/makerlab.png" /></a>
-					    <a href="http://www.masherycom" target="_blank"><img alt="mashery" class="sponsor littler mashery" src="/img/logos/mashery.png" /></a>
 
 					    <a href="http://microsoft.com" target="_blank"><img alt="microsoft" class="sponsor littler microsoft" src="/img/logos/resized/microsoft.png" /></a>
-					    <a href="http://firebase.com" target="_blank"><img alt="firebase" class="sponsor littler" src="/img/logos/firebase.png" /></a>
-					    <a href="http://mashery.com" target="_blank"><img alt="mashery" class="sponsor littler" src="/img/logos/mashery.png" /></a>
 					    <a href="http://facebook.com" target="_blank"><img alt="facebook" class="sponsor littler" src="/img/logos/resized/facebook.png" /></a>
 					    <a href="http://intel.com" target="_blank"><img alt="intel" class="sponsor littler intel" src="/img/logos/resized/intel.png" /></a>
-					    <a href="http://dwolla.com" target="_blank"><img alt="dwolla" class="sponsor littler" src="/img/logos/dwolla.png" /></a>
+					    <a href="http://mashery.com" target="_blank"><img alt="mashery" class="sponsor littler" src="/img/logos/mashery.png" /></a>
+						<a href="http://dwolla.com" target="_blank"><img alt="dwolla" class="sponsor littler" src="/img/logos/dwolla.png" /></a>
 					    <a href="http://stickermule.com" target="_blank"><img alt="stickermule" class="sponsor littler" src="/img/logos/stickermule.png" /></a>
-					    <a href="http://makerlab.illinois.edu" target="_blank"><img alt="illinois makerlab" class="sponsor littler" src="/img/logos/makerlab.png" /></a>
 
 					    <p class="sponsor-shoutout-CTA">If you're interested in sponsoring HackIllinois, <a href="/sponsor">view the options</a> and <a href="mailto:sponsor@hackillinois.org">drop us a line</a>!</p>
 
