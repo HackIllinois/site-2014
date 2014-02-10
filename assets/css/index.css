@@ -178,7 +178,7 @@ a.apply-btn {
 }
 
 a.update-btn {
-	padding: 10px 68px;
+	padding: 10px 100px;
 }
 
 p.apply-info {
@@ -201,6 +201,10 @@ p.apply-info {
 	padding-top: 10px;
 	margin-bottom: 25px;
 	padding-bottom: 10px;
+	display: none;
+}
+
+p.apply-info-invisible {
 	display: none;
 }
 
