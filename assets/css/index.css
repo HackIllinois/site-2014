@@ -330,6 +330,10 @@ button:focus {
 	margin-bottom: 20px;
 }
 
+.sponsor-orion {
+	width: 35%;
+}
+
 .sponsor{
 	display: inline-block;
 	margin-left: 20px;
