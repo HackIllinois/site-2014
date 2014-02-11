@@ -8,8 +8,8 @@ from google.appengine.api import mail
 
 class TropoHandler(MainHandler.Handler):
 
-    """ Handle an incoming call or text to our phone number (312-757-5638)
-    This is handled by Tropo (http://www.tropo.com)"""
+    # -- Handle an incoming call or text to our phone number (312-757-5638)
+    # This is handled by Tropo (http://www.tropo.com)
 
     def post(self):
         session = Session(self.request.body)
