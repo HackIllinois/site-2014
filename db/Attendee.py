@@ -1,7 +1,6 @@
 from google.appengine.ext import ndb
 import constants
 from Resume import Resume
-from ApplyErrors import ApplyErrors
 from Model import Model
 from google.appengine.ext.db import BadValueError
 

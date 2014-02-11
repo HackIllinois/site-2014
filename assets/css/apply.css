@@ -34,16 +34,18 @@ label {
     margin-bottom: 50px;
 }
 
-input[type="text"], input[type="email"], input[type="url"], .input-group-addon, #school, form div.form-group textarea.form-control, form div.form-group select {
+input[type="text"], input[type="email"], input[type="url"], select[name="projectType"], .input-group-addon, #school, form div.form-group textarea.form-control, form div.form-group select {
     font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
     background: rgba(255,255,255, .1);
-    border: 1px solid rgba(255,255,255, .5);
+    /*border: 1px solid rgba(255,255,255, .5);*/
     color: #fff;
+    border-radius: 3px;
 }
 
-input[type="text"]:focus, input[type="email"]:focus, input[type="url"]:focus, #school:focus, form div.form-group textarea.form-control:focus, form div.form-group select:focus {
+input[type="text"]:focus, input[type="email"]:focus, input[type="url"]:focus, select[name="projectType"]:focus, #school:focus, form div.form-group textarea.form-control:focus, form div.form-group select:focus {
     border: 1px solid #fff;
     outline: none;
+    border-radius: inherit;
 }
 
 /* Error borders */
@@ -52,7 +54,7 @@ form div.form-group textarea.errorborders {
    border-width: 2px;
 }
 
-input.errorborders {
+form div.form-group input.errorborders {
    border-color: #ef3e36;
    border-width: 2px;
 }
@@ -295,7 +297,7 @@ input[name="food"]{
     -webkit-border-radius: 3px;
     -blink-border-radius: 3px;
     margin-top: 20px;
-    font-size: 14px;  
+    font-size: 14px;
     cursor: not-allowed;
 }
 
