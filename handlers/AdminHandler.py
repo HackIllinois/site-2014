@@ -121,7 +121,7 @@ class SummaryHandler(MainHandler.Handler):
             resume_link = None
             if hacker.resume:
                 name = hacker.resume.fileName
-                name = name if len(name)<=10 else s[0:7]+'...'
+                name = name if len(name)<=10 else name[0:7]+'...'
                 resume_link = "<a href='/admin/resume?userId=%s'>%s</a>" % (hacker.userId, name)
                 pass
             else:
