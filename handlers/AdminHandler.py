@@ -7,13 +7,6 @@ from google.appengine.ext import blobstore
 from google.appengine.ext.webapp import blobstore_handlers
 
 
-def isHackIllinoisEmail(email):
-    email = email.split('@')
-    if len(email) != 2 or (len(email) == 2 and email[1] != 'hackillinois.org'):
-        return False
-    return True
-
-
 class AdminHandler(MainHandler.Handler):
 
     def get(self):
@@ -65,20 +58,8 @@ class AttendeeResumeHandler(MainHandler.Handler, blobstore_handlers.BlobstoreDow
             self.write('ERROR')
 
 
-class AdminResumeHandler(MainHandler.Handler, blobstore_handlers.BlobstoreDownloadHandler):
+class AdminResumeHandler(MainHandler.BaseAdminHandler, blobstore_handlers.BlobstoreDownloadHandler):
     def get(self):
-        user = users.get_current_user()
-        if not user:
-            # User not logged in (shouldn't happen)
-            # TODO: redirect to error handler
-            return self.write('ERROR - User not logged in.')
-
-        if not isHackIllinoisEmail(user.email()):
-            return self.render( "simple_message.html",
-                                header="ACCESS DENIED",
-                                message="You (%s) are not an admin or are not logged in as such.<br>Please log in with a valid @hackillinois.org email address.<br><a class='logout-link' href='%s'>Logout</a>" % (user.nickname(), users.create_logout_url('/admin')),
-                                showSocial=False )
-
         userId = str(urllib.unquote(self.request.get('userId')))
         db_user = Attendee.search_database({'userId':userId}).get()
         if not db_user:
@@ -99,21 +80,8 @@ class AdminResumeHandler(MainHandler.Handler, blobstore_handlers.BlobstoreDownlo
         return self.send_blob(blob_key)
 
 
-class SummaryHandler(MainHandler.Handler):
+class SummaryHandler(MainHandler.BaseAdminHandler):
     def get(self):
-        user = users.get_current_user()
-        if not user:
-            # User not logged in (shouldn't happen)
-            # TODO: redirect to error handler
-            return self.write('ERROR - User not logged in.')
-
-        if not isHackIllinoisEmail(user.email()):
-            return self.render( "simple_message.html",
-                                header="ACCESS DENIED",
-                                message="You (%s) are not an admin or are not logged in as such.<br>Please log in with a valid @hackillinois.org email address.<br><a class='logout-link' href='%s'>Logout</a>" % (user.nickname(), users.create_logout_url('/admin')),
-                                showSocial=False )
-
-
         hackers = Attendee.search_database({'isRegistered':True})
         data = {}
         data['hackers'] = []

@@ -1,3 +1,5 @@
+ADMIN_EMAILS = set(['lx.icomputer@gmail.com','mvd7793@gmail.com'])
+
 BUCKET = 'hackillinois'
 
 APPLY_TITLE = 'Application'
