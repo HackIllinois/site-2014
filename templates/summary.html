@@ -31,51 +31,55 @@
 </head>
 
 <body>
-    <div class="col-md-12">
-        <h1>Hacker Summary</h1>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <h1>Hacker Summary<small>  </small><small id="count"></small><small> people</small></h1>
 
-        <div id="hackers" class="table-responsive">
-            <table id="usertable" class="table table-bordered table-hover">
-                <thead>
-                    <tr>
-                        <th class="sort" data-sort="fname">First<br>Name</th>
-                        <th class="sort" data-sort="lname">Last<br>Name</th>
-                        <th class="sort" data-sort="email">Email</th>
-                        <th class="sort" data-sort="gender">Gender</th>
-                        <th class="sort" data-sort="school">School</th>
-                        <th class="sort" data-sort="year">Year</th>
-                        <th class="sort" data-sort="linkedin">LinkedIn</th>
-                        <th class="sort" data-sort="github">Github</th>
-                        <th class="sort" data-sort="shirt">Shirt<br>Size</th>
-                        <th class="sort" data-sort="food">Dietary<br>Restrictions</th>
-                        <th class="sort" data-sort="project">Project<br>Type</th>
-                        <th class="sort" data-sort="time">Registered</th>
-                        <th>Resume</th>
-                        <th><input type="text" class="search" placeholder="Search hackers" autofocus/></th>
-                    </tr>
-                </thead>
-                <tbody class="list">
-                    {% for h in data.hackers %}
-                    <tr>
-                        <td class="id" style="display:none;">{{ loop.index }}</td>
-                        <td class="fname">{{ h.nameFirst }}</td>
-                        <td class="lname">{{ h.nameLast }}</td>
-                        <td class="email">{{ h.email }}</td>
-                        <td class="gender">{{ h.gender }}</td>
-                        <td class="school">{{ h.school }}</td>
-                        <td class="year">{{ h.year }}</td>
-                        <td class="linkedin">{{ h.linkedin }}</td>
-                        <td class="github">{{ h.github }}</td>
-                        <td class="shirt">{{ h.shirt }}</td>
-                        <td class="food">{{ h.food }}</td>
-                        <td class="project">{{ h.projectType }}</td>
-                        <td class="time">{{ h.registrationTime }}</td>
-                        <td>{{ h.resume|safe }}</td>
-                        <td class="approved"><button type="button" class="btn btn-primary approve-btn" {% if h.approved %}disabled="disabled"{% endif %}>Approve</button></td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+                <div id="hackers" class="table-responsive">
+                    <table id="usertable" class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th class="sort" data-sort="fname">First<br>Name</th>
+                                <th class="sort" data-sort="lname">Last<br>Name</th>
+                                <th class="sort" data-sort="email">Email</th>
+                                <th class="sort" data-sort="gender">Gender</th>
+                                <th class="sort" data-sort="school">School</th>
+                                <th class="sort" data-sort="year">Year</th>
+                                <th class="sort" data-sort="linkedin">LinkedIn</th>
+                                <th class="sort" data-sort="github">Github</th>
+                                <th class="sort" data-sort="shirt">Shirt<br>Size</th>
+                                <th class="sort" data-sort="food">Dietary<br>Restrictions</th>
+                                <th class="sort" data-sort="project">Project<br>Type</th>
+                                <th class="sort" data-sort="time">Registered</th>
+                                <th>Resume</th>
+                                <th><input type="text" class="search" placeholder="Search hackers" autofocus/></th>
+                            </tr>
+                        </thead>
+                        <tbody class="list">
+                            {% for h in data.hackers %}
+                            <tr>
+                                <td class="id" style="display:none;">{{ loop.index }}</td>
+                                <td class="fname">{{ h.nameFirst }}</td>
+                                <td class="lname">{{ h.nameLast }}</td>
+                                <td class="email">{{ h.email }}</td>
+                                <td class="gender">{{ h.gender }}</td>
+                                <td class="school">{{ h.school }}</td>
+                                <td class="year">{{ h.year }}</td>
+                                <td class="linkedin">{{ h.linkedin }}</td>
+                                <td class="github">{{ h.github }}</td>
+                                <td class="shirt">{{ h.shirt }}</td>
+                                <td class="food">{{ h.food }}</td>
+                                <td class="project">{{ h.projectType }}</td>
+                                <td class="time">{{ h.registrationTime }}</td>
+                                <td>{{ h.resume|safe }}</td>
+                                <td class="approved"><button type="button" class="btn btn-primary approve-btn" {% if h.approved %}disabled="disabled"{% endif %}>Approve</button></td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -84,10 +88,17 @@
     <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
     <script type="text/javascript">
         var options = {
-            valueNames: [ 'id', 'fname', 'lname', 'email', 'gender', 'school', 'year', 'linkedin', 'github', 'shirt', 'food', 'project', 'time' ]
+            valueNames: [ 'id', 'fname', 'lname', 'email', 'gender', 'school', 'year', 'linkedin', 'github', 'shirt', 'food', 'project', 'time' ],
+            page: 1000
         };
 
         var hackerList = new List('hackers', options);
+
+        $(document).ready(function() {
+            hackerList.sort('time', { order: "desc" });
+            document.getElementById("count").innerHTML = hackerList.size()
+            hackerList.on('searchComplete', function(){document.getElementById("count").innerHTML = hackerList.matchingItems.length;})
+        });
     </script>
 </body>
 </html>
