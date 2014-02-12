@@ -37,6 +37,8 @@ header.logo{
 
 .facebook-frame{
     margin: 0px 10px;
+    position: relative;
+    top: -7px;
 }
 
 .twitter-frame{
@@ -47,5 +49,31 @@ header.logo{
     font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
     font-size: 14px;
     font-weight: bold;
+}
+
+.mobile-break {
+    display: none;
+    padding-top: 20px;
+}
+
+.logout-link {
+    color: #ef3e36;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.logout-link:hover {
+    color: #fff;
+}
+
+.logout-link:active {
+    color: #ef3e36;
+}
+
+@media only screen
+and (max-width : 400px) {
+    .mobile-break {
+        display: block;
+    }
 }
 

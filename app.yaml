@@ -5,6 +5,7 @@ version: 1
 runtime: python27
 api_version: 1
 threadsafe: yes
+default_expiration: "10m"
 
 handlers:
 - url: /favicon\.ico
@@ -60,13 +61,9 @@ handlers:
 #   script: main.app
 #   login: required
 
-- url: /admin/approve
-  script: main.app
-  login: admin
-
 - url: /admin*
   script: main.app
-  login: admin
+  login: required
 
 # - url: /_ah/login_required
 #   script: main.app
@@ -80,3 +77,6 @@ libraries:
 
 - name: jinja2
   version: latest
+
+inbound_services:
+- warmup

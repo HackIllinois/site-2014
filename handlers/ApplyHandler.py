@@ -23,8 +23,8 @@ import json
 
 
 class ApplyHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandler):
-    """ Handler for application page.
-    This does not include the email registration we have up now."""
+    # == Handler for application page. ==
+    # This does not include the email registration we have up now.
 
     def get(self):
         user = users.get_current_user()
@@ -37,6 +37,8 @@ class ApplyHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandle
         upload_url_rpc = blobstore.create_upload_url_async('/apply', gs_bucket_name=constants.BUCKET)
 
         data = {}
+        data['errors'] = {} # Needed for template to render
+
         data['username'] = user.nickname()
         data['logoutUrl'] = users.create_logout_url('/apply')
         data['email'] = user.email()
@@ -63,6 +65,13 @@ class ApplyHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandle
             if db_user.applyError:
                 data['applyError'] = True
 
+            # Per-field errors
+            # db_user.errors == [<field1>$$$<message1>, <field1>$$$<message2>, ...]
+            if db_user.errors:
+                # Turn into dictionary so template can do lookup 'data.errors.<field>'
+                data['errors'] = { e.split('$$$')[0]:e.split('$$$')[1] for e in db_user.errors }
+
+            # Previous field data
             if db_user.nameFirst:
                 data['nameFirst'] = db_user.nameFirst
             if db_user.nameLast:
@@ -129,26 +138,19 @@ class ApplyHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandle
             return self.write('ERROR')
 
         x = {}
+        errors = {} # Note: 1 error per field
         valid = True
-        errorMessages = []
         db_user = Attendee.search_database({'userId':user.user_id()}).get()
 
         # https://developers.google.com/appengine/docs/python/users/userclass
         x['userNickname'] = user.nickname()
         x['userEmail'] = user.email()
-        x['userId'] = user.user_id() #use this for identificaiton
+        x['userId'] = user.user_id() #use this for identification
         x['userFederatedIdentity'] = user.federated_identity()
         x['userFederatedProvider'] = user.federated_provider()
 
-        x['nameFirst'] = self.request.get('nameFirst')
-        x['nameLast'] = self.request.get('nameLast')
-        x['email'] = self.request.get('email')
-        x['gender'] = self.request.get('gender')
-        x['school'] = self.request.get('school')
-        x['year'] = self.request.get('year')
-        x['experience'] = self.request.get('experience')
-        x['linkedin'] = self.request.get('linkedin')
-        x['github'] = self.request.get('github')
+        for field in ['nameFirst', 'nameLast', 'email', 'gender', 'school', 'year', 'experience', 'linkedin', 'github']:
+           x[field] = self.request.get(field)
 
         x['shirt'] = self.request.get('shirt')
         x['projectType'] = self.request.get('projectType')
@@ -157,31 +159,36 @@ class ApplyHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandle
         file_info = self.get_file_infos(field_name='resume')
         if file_info and len(file_info) == 1:
             file_info = file_info[0]
+
+            delete_resume = False
+
             if not file_info.content_type == 'application/pdf':
-                errorMessages.append('Uploaded resume file is not a pdf.')
 
-                # Delete non pdf file
-                resource = str(urllib.unquote(file_info.gs_object_name))
-                blob_key = blobstore.create_gs_key(resource)
-                blobstore.delete(blob_key)
-
+                # Non-pdf files
+                x['errors_resume'].append('Uploaded resume file is not a pdf.')
+                delete_resume = True
                 valid = False
+
             elif file_info.size > constants.RESUME_MAX_SIZE:
-                errorMessages.append('Uploaded resume file is too big.')
 
-                # Delete big file
+                # Big files
+                x['errors_resume'].append('Uploaded resume file is too big.')
+                delete_resume = True
+                valid = False
+
+            else:
+
+                # Old resumes
+                delete = db_user and db_user.resume
+
+            # Delete resume if appropriate
+            if delete:
                 resource = str(urllib.unquote(file_info.gs_object_name))
                 blob_key = blobstore.create_gs_key(resource)
                 blobstore.delete(blob_key)
 
-                valid = False
-            else:
-                if db_user and db_user.resume:
-                    # Delete old resume
-                    resource = str(urllib.unquote(db_user.resume.gsObjectName))
-                    blob_key = blobstore.create_gs_key(resource)
-                    blobstore.delete(blob_key)
-
+            # Create new resume if appropriate
+            if valid:
                 x['resume'] = Resume(contentType=file_info.content_type,
                                      creationTime=file_info.creation,
                                      fileName=file_info.filename,
@@ -205,8 +212,11 @@ class ApplyHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandle
 
         # Check required fields filled in
         for field in constants.REQUIRED_FIELDS:
+            if field is "termsOfService":
+               continue
+
             if field not in x:
-                errorMessages.append(constants.ERROR_MESSAGE_PREFIX + constants.FIELD_DISPLAY_NAMES[field] + constants.ERROR_MESSAGE_SUFFIX)
+                errors[field] = constants.ERROR_MESSAGE_PREFIX + constants.READABLE_REQUIRED_FIELDS[field] + constants.ERROR_MESSAGE_SUFFIX
                 valid = False
 
         # Check if hame has a number in it
@@ -219,35 +229,43 @@ class ApplyHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandle
 
         # Check if email is valid (basic)
         if 'email' in x and not re.match(constants.EMAIL_MATCH, x['email']):
-            errorMessages.append('Uploaded file is too big.')
+            errors['email'] = 'Invalid e-mail address.'
             valid = False
 
         # Check fields with specific values
         if 'gender' in x and x['gender'] not in constants.GENDERS:
-            errorMessages.append(constants.ERROR_MESSAGE_PREFIX + constants.FIELD_DISPLAY_NAMES['gender'] + constants.ERROR_MESSAGE_SUFFIX)
+            errors['gender'] = constants.ERROR_MESSAGE_PREFIX + constants.READABLE_REQUIRED_FIELDS['gender'] + constants.ERROR_MESSAGE_SUFFIX
             valid = False
         if 'year' in x and x['year'] not in constants.YEARS:
-            errorMessages.append(constants.ERROR_MESSAGE_PREFIX + constants.FIELD_DISPLAY_NAMES['year'] + constants.ERROR_MESSAGE_SUFFIX)
+            errors['year'] = constants.ERROR_MESSAGE_PREFIX + constants.READABLE_REQUIRED_FIELDS['year'] + constants.ERROR_MESSAGE_SUFFIX
             valid = False
         if 'shirt' in x and x['shirt'] not in constants.SHIRTS:
-            errorMessages.append(constants.ERROR_MESSAGE_PREFIX + constants.FIELD_DISPLAY_NAMES['shirt'] + constants.ERROR_MESSAGE_SUFFIX)
+            errors['shirt'] = constants.ERROR_MESSAGE_PREFIX + constants.READABLE_REQUIRED_FIELDS['shirt'] + constants.ERROR_MESSAGE_SUFFIX
             valid = False
         if 'food' in x and x['food'] != '':
+            temp = x['food'].split(',')
+            if 'Other' in temp and ('foodInfo' not in x or ('foodInfo' in x and x['foodInfo'] == '')):
+                errors['food'] += constants.ERROR_MESSAGE_PREFIX + constants.READABLE_FIELDS['food'] + constants.ERROR_MESSAGE_SUFFIX
+                valid = False
+
             for f in x['food'].split(','):
                 if f not in constants.FOODS:
-                    errorMessages.append(constants.ERROR_MESSAGE_PREFIX + constants.FIELD_DISPLAY_NAMES['food'] + constants.ERROR_MESSAGE_SUFFIX)
+                    errors['food'] = constants.ERROR_MESSAGE_PREFIX + constants.READABLE_FIELDS['food'] + constants.ERROR_MESSAGE_SUFFIX
                     valid = False
-                    break
+                    break # This is why we need the for loop below
+
+
         if 'projectType' in x and x['projectType'] not in constants.PROJECTS:
-            errorMessages.append(constants.ERROR_MESSAGE_PREFIX + constants.FIELD_DISPLAY_NAMES['projectType'] + constants.ERROR_MESSAGE_SUFFIX)
+            errors['projectType'] = constants.ERROR_MESSAGE_PREFIX + constants.READABLE_FIELDS['projectType'] + constants.ERROR_MESSAGE_SUFFIX
             valid = False
 
         # Make sure required boxes checked
-        if 'termsOfService' not in x or ('termsOfService' in x and not x['termsOfService']):
-            errorMessages.append('Please read and agree to the rules and code of conduct.')
+        if not ('termsOfService' in x) or not x['termsOfService']:
+            errors['termsOfService'] = 'Please read and agree to the rules and code of conduct.'
             valid = False
 
-        x['errorMessages'] = '$$$'.join(errorMessages)
+        # Create list of error messages
+        x['errors'] = [ k + '$$$' + errors[k] for k in errors ]
 
         if valid:
             x['isRegistered'] = True

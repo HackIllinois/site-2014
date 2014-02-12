@@ -237,14 +237,18 @@ class Model(ndb.Model):
         ex: search_database(Attendee, {'email':'doe1@illinois.edu'})
         '''
         if search == {}:
-            return cls.gql()
+            return cls.gql("")
         q = "WHERE "
         if perfect_match:
             ao = " AND "
         else:
             ao = " OR "
         for param in search:
-            q += param + " = '" + search[param] + "'" + ao
+            if type(search[param]) is str:
+                q += param + " = '" + search[param] + "'" + ao
+            else:
+                q += param + " = " + str(search[param]) + ao
+            # q += param + " = '" + search[param] + "'" + ao
 
         q = q[:-len(ao)]
         # This is terrible terrible code. We can fix by moving off GQL :P

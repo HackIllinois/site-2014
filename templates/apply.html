@@ -23,14 +23,12 @@
 			<p class="loggedin">Hello {{ data.username }}! <a class="rules-link" href="{{ data.logoutUrl }}">Not you</a>?</p>
 		</div>
 
-		{% if data.applyError %}
-		<div>
-			<p class="errormessages">
+		{% if data.messages %}
+		<p class="errormessages">
 				{% for m in data.messages %}
 				{{ m }}<br>
 				{% endfor %}
-			</p>
-		</div>
+		</p>
 		{% endif %}
 		<div class="field-missing">
 			<p class="errormessages">
@@ -43,14 +41,27 @@
 				<div class="form-group">
 					<label class="control-label col-sm-3" for="name">Name<span class="reqd"> *</span></label>
 					<div class="controls col-sm-9">
+
 						<div class="row">
 							<div class="col-xs-6">
-								<input id="nameFirst" name="nameFirst" type="text" placeholder="First Name" class="form-control" required="required" value="{{ data.nameFirst }}" onclick="this.select();">
+								<input class="{% if data.errors.nameFirst %}errorborders{% endif %} form-control" id="nameFirst" name="nameFirst" type="text" placeholder="First Name" required="required" value="{{ data.nameFirst }}" onclick="this.select();">
 							</div>
 							<div class="col-xs-6">
-								<input id="nameLast" name="nameLast" type="text" placeholder="Last Name" class="form-control" required="required" value="{{ data.nameLast }}" onclick="this.select();">
+								<input class="{% if data.errors.nameLast %}errorborders{% endif %} form-control" id="nameLast" name="nameLast" type="text" placeholder="Last Name" required="required" value="{{ data.nameLast }}" onclick="this.select();">
 							</div>
 						</div>
+
+						{% if data.errors.nameFirst or data.errors.nameLast %}
+						<div class="row">
+							<div class="col-xs-6 errormessages">
+							   {{ data.errors.nameFirst }}
+							</div>
+							<div class="col-xs-6 errormessages">
+							   {{ data.errors.nameLast }}
+							</div>
+						</div>
+						{% endif %}
+
 					</div>
 				</div>
 
@@ -60,7 +71,8 @@
 					<label class="control-label col-sm-3" for="email">Email<span class="reqd"> *</span></label>
 
 					<div class="controls col-sm-9">
-						<input id="email" name="email" type="email" placeholder="Email Address" class="form-control" required="required" value="{{ data.email }}" onclick="this.select();">
+						<input class="{% if data.errors.email %}errorborders{% endif %} form-control" id="email" name="email" type="email" placeholder="Email Address" required="required" value="{{ data.email }}" onclick="this.select();">
+					    <div class="errormessages">{{ data.errors.email }}</div>
 					</div>
 				</div>
 
@@ -68,13 +80,17 @@
 				<div class="form-group">
 					<label class="control-label col-sm-3" for="gender">Gender<span class="reqd"> *</span></label>
 					<div class="controls col-sm-9">
-
-                        {% for g in data.genders %}
+                  <div>
+                     {% for g in data.genders %}
                         <label class="radio-inline" for="gender-{{ loop.index0 }}">
                             <input type="radio" name="gender" id="gender-{{ loop.index0 }}" value="{{ g.name }}" required="required" {% if g.checked %}checked{% endif %}>
                             {{ g.name }}
                         </label>
-                        {% endfor %}
+                     {% endfor %}
+                   </div>
+                   <div class="errormessages">
+                     {{ data.errors.gender }}
+                   </div>
 					</div>
 				</div>
 
@@ -82,7 +98,12 @@
 				<div class="form-group">
 					<label class="control-label col-sm-3" for="school">School<span class="reqd"> *</span></label>
 					<div class="controls col-sm-9">
-						<input id="school" type="text" name="school" class="form-control" required="required" placeholder="School Name"  value="{{ data.school }}" style="color:black">
+						<div>
+						   <input class="{% if data.errors.school %}errorborders{% endif %} form-control" id="school" type="text" name="school" required="required" placeholder="School Name"  value="{{ data.school }}" style="color:black">
+					   </div>
+					   <div class="errormessages">
+                     {{ data.errors.school }}
+                  </div>
 					</div>
 				</div>
 
@@ -90,12 +111,17 @@
 				<div class="form-group">
 					<label class="control-label col-sm-3" for="year">Year in School<span class="reqd"> *</span></label>
 					<div class="controls col-sm-9">
-                        {% for y in data.years %}
+
+                  {% for y in data.years %}
                         <label class="radio-inline" for="year-{{ loop.index0 }}">
                             <input type="radio" name="year" id="year-{{ loop.index0 }}" value="{{ y.name }}" required="required" {% if y.checked %}checked{% endif %}>
                             {{ y.name }}
                         </label>
-                        {% endfor %}
+                  {% endfor %}
+
+                 <div class="errormessages">
+                     {{ data.errors.year }}
+                  </div>
 					</div>
 				</div>
 
@@ -106,7 +132,15 @@
 					<div class="controls col-sm-9">
 						{% if data.hasResume %}<a href="/apply/myresume" class="view-resume" target="_blank">View Uploaded Resume</a><br> {% endif %}
 						<input id="resume" name="resume" type="file" accept="application/pdf" {% if data.resumeRequired %}required="required"{% endif %}>
-						<span id="resume-prompt" class="help-block">{% if not data.hasResume %}Please upload{% endif %}{% if data.hasResume %}Update{% endif %} your resume.</span>
+
+						<span id="resume-prompt" class="help-block {%if data.errors.resume %}errormessages{% endif %}">
+						   {%if data.errors.resume %}
+						      {{ data.errors.resume }}
+						   {% else %}
+						      {% if not data.hasResume %}Please upload{% endif %}{% if data.hasResume %}Update{% endif %} your resume (optional).
+						   {% endif %}
+						</span>
+
 					</div>
 				</div>
 
@@ -137,13 +171,18 @@
 				<!-- Multiple Radios (inline) -->
 				<div class="form-group">
 					<label class="control-label col-sm-3" for="shirt">Shirt Size<span class="reqd"> *</span></label>
-					<div class="controls col-sm-9">
-                        {% for s in data.shirts %}
-                        <label class="radio-inline" for="shirt-{{ loop.index0 }}">
-                        	<input type="radio" name="shirt" id="shirt-{{ loop.index0 }}" value="{{ s.name }}" required="required" {% if s.checked %}checked{% endif %}>
-                            {{ s.name }}
-                        </label>
-                        {% endfor %}
+					<div class="controls col-sm-9 errorborders">
+                  {% for s in data.shirts %}
+                     <label class="radio-inline" for="shirt-{{ loop.index0 }}">
+                        <input type="radio" name="shirt" id="shirt-{{ loop.index0 }}" value="{{ s.name }}" required="required" {% if s.checked %}checked{% endif %}>
+                        {{ s.name }}
+                     </label>
+                     {% endfor %}
+
+                  <div class="errormessages">
+                     {{ data.errors.shirt }}
+                  </div>
+
 					</div>
 				</div>
 
@@ -152,25 +191,34 @@
 					<label class="control-label col-sm-3 launcher-btn" for="food">Dietary Restrictions</label>
 					<div class="controls col-sm-9">
 
-                        {% for f in data.foods %}
-                        <label class="food-options" for="food-{{ loop.index0 }}">
-                        	<input type="checkbox" name="food" id="food-{{ loop.index0 }}" value="{{ f.name }}" {% if f.checked %}checked{% endif %}/>
-                            {{ f.name }}
-                        </label>
-                        {% endfor %}
+                  {% for f in data.foods %}
+                     <label class="food-options" for="food-{{ loop.index0 }}">
+                       	<input type="checkbox" name="food" id="food-{{ loop.index0 }}" value="{{ f.name }}" {% if f.checked %}checked{% endif %}/>
+                        {{ f.name }}
+                     </label>
+                  {% endfor %}
 						<textarea id="foodInfo" name="foodInfo" class="form-control" rows="3" placeholder="Need special food arrangements? Let us know!">{{ data.foodInfo }}</textarea>
+
+					   <div class="errormessages">
+                     {{ data.errors.food }}
+                  </div>
+
 					</div>
 				</div>
 
 				<div class="form-group">
 					<label class="control-label col-sm-3" for="project-type">Project Type<span class="reqd"> *</span></label>
 					<div class="controls col-sm-9">
-						<select name="projectType">
-                            {% for p in data.projects %}
-                            <option {% if p.selected %}selected=""{% endif %}>{{ p.name }}</option>
-                            {% endfor %}
+						<select name="projectType" class="{% if data.errors.projectType %}errorborders{% endif %}" >
+                     {% for p in data.projects %}
+                        <option {% if p.selected %}selected=""{% endif %}>{{ p.name }}</option>
+                     {% endfor %}
 						</select>
-						<span class="help-block">What might you want to work on? It's okay if this changes!</span>
+						<span class="help-block no-bottom-margin">What might you want to work on? It's okay if this changes!</span>
+
+						<div class="errormessages">
+                     {{ data.errors.projectType }}
+                  </div>
 					</div>
 				</div>
 
@@ -179,10 +227,15 @@
 					<label class="control-label col-sm-3" for="experience">Previous Experience<span class="reqd"> *</span></label>
 					<div class="controls col-sm-9">
 
-						<textarea id="experience" name="experience" class="form-control" rows="5" required="required">{{data.experience}}</textarea>
- 						<span class="help-block">Have you participated in other hackathons? Won any awards? Done any cool projects?
- 						<br>
- 						(If not, that's okay! We're just curious)</span>
+                  <textarea class="{% if data.errors.experience %}errorborders{% endif %} form-control" id="experience" name="experience" rows="5" required="required">{{data.experience}}</textarea>
+						<span class="help-block no-bottom-margin">Have you participated in other hackathons? Won any awards? Done any cool projects?
+						<br>
+						(If not, that's okay! We're just curious)</span>
+
+						<div class="errormessages">
+                     {{ data.errors.experience }}
+                  </div>
+
 					</div>
 				</div>
 
@@ -197,6 +250,11 @@
               				<a class="rules-link" href="/rules" target = "_blank">rules</a>, and comply with the
               				<a class="rules-link" href="/code-of-conduct" target="_blank" >code of conduct</a>.
 						</label>
+
+						<div class="errormessages">
+                     {{ data.errors.termsOfService }}
+                  </div>
+
 					</div>
 				</div>
 				<div class="form-group" style="">

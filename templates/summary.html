@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="description" content="Imagine. Learn. Launch. Join us for a 36-hour hackathon at the University of Illinois at Urbana-Champaign. April 11-13, 2014.">
+
+    <title>HackIllinois</title>
+
+    <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Lato:700|Open+Sans:700,400">
+    <link rel="icon" type="image/ico" href="favicon.ico"/>
+    <style type="text/css">
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Open Sans', sans-serif;
+        }
+        p, div {
+            font-family: 'Lato', sans-serif;
+            /*font-size: 2.5em;*/
+        }
+        .t-centered {
+            text-align: center;
+        }
+        .search {
+            width:100%;
+        }
+        .approve-btn {
+            width:100%;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="col-md-12">
+        <h1>Hacker Summary</h1>
+
+        <div id="hackers" class="table-responsive">
+            <table id="usertable" class="table table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th class="sort" data-sort="fname">First<br>Name</th>
+                        <th class="sort" data-sort="lname">Last<br>Name</th>
+                        <th class="sort" data-sort="email">Email</th>
+                        <th class="sort" data-sort="gender">Gender</th>
+                        <th class="sort" data-sort="school">School</th>
+                        <th class="sort" data-sort="year">Year</th>
+                        <th class="sort" data-sort="linkedin">LinkedIn</th>
+                        <th class="sort" data-sort="github">Github</th>
+                        <th class="sort" data-sort="shirt">Shirt<br>Size</th>
+                        <th class="sort" data-sort="food">Dietary<br>Restrictions</th>
+                        <th class="sort" data-sort="project">Project<br>Type</th>
+                        <th class="sort" data-sort="time">Registered</th>
+                        <th>Resume</th>
+                        <th><input type="text" class="search" placeholder="Search hackers" autofocus/></th>
+                    </tr>
+                </thead>
+                <tbody class="list">
+                    {% for h in data.hackers %}
+                    <tr>
+                        <td class="id" style="display:none;">{{ loop.index }}</td>
+                        <td class="fname">{{ h.nameFirst }}</td>
+                        <td class="lname">{{ h.nameLast }}</td>
+                        <td class="email">{{ h.email }}</td>
+                        <td class="gender">{{ h.gender }}</td>
+                        <td class="school">{{ h.school }}</td>
+                        <td class="year">{{ h.year }}</td>
+                        <td class="linkedin">{{ h.linkedin }}</td>
+                        <td class="github">{{ h.github }}</td>
+                        <td class="shirt">{{ h.shirt }}</td>
+                        <td class="food">{{ h.food }}</td>
+                        <td class="project">{{ h.projectType }}</td>
+                        <td class="time">{{ h.registrationTime }}</td>
+                        <td>{{ h.resume|safe }}</td>
+                        <td class="approved"><button type="button" class="btn btn-primary approve-btn" {% if h.approved %}disabled="disabled"{% endif %}>Approve</button></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/list.js/1.1.0/list.min.js"></script>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+        var options = {
+            valueNames: [ 'id', 'fname', 'lname', 'email', 'gender', 'school', 'year', 'linkedin', 'github', 'shirt', 'food', 'project', 'time' ]
+        };
+
+        var hackerList = new List('hackers', options);
+    </script>
+</body>
+</html>

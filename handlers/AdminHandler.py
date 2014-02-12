@@ -1,10 +1,18 @@
 import MainHandler
-import cgi, urllib, logging, re
+import cgi, urllib, logging, re, datetime
 from db.Attendee import Attendee
 from db import constants
 from google.appengine.api import users
 from google.appengine.ext import blobstore
 from google.appengine.ext.webapp import blobstore_handlers
+
+
+def isHackIllinoisEmail(email):
+    email = email.split('@')
+    if len(email) != 2 or (len(email) == 2 and email[1] != 'hackillinois.org'):
+        return False
+    return True
+
 
 class AdminHandler(MainHandler.Handler):
 
@@ -55,3 +63,85 @@ class AttendeeResumeHandler(MainHandler.Handler, blobstore_handlers.BlobstoreDow
             # User not logged in (shouldn't happen)
             # TODO: redirect to error handler
             self.write('ERROR')
+
+
+class AdminResumeHandler(MainHandler.Handler, blobstore_handlers.BlobstoreDownloadHandler):
+    def get(self):
+        user = users.get_current_user()
+        if not user:
+            # User not logged in (shouldn't happen)
+            # TODO: redirect to error handler
+            return self.write('ERROR - User not logged in.')
+
+        if not isHackIllinoisEmail(user.email()):
+            return self.render( "simple_message.html",
+                                header="ACCESS DENIED",
+                                message="You (%s) are not an admin or are not logged in as such.<br>Please log in with a valid @hackillinois.org email address.<br><a class='logout-link' href='%s'>Logout</a>" % (user.nickname(), users.create_logout_url('/admin')),
+                                showSocial=False )
+
+        userId = str(urllib.unquote(self.request.get('userId')))
+        db_user = Attendee.search_database({'userId':userId}).get()
+        if not db_user:
+            return self.render( "simple_message.html",
+                                header="Not Available",
+                                message="User ID is not valid.",
+                                showSocial=False )
+
+        if not db_user.resume:
+            return self.render( "simple_message.html",
+                                header="Not Available",
+                                message="User has not uploaded a resume.",
+                                showSocial=False )
+
+        # https://developers.google.com/appengine/docs/python/blobstore/#Python_Using_the_Blobstore_API_with_Google_Cloud_Storage
+        resource = str(urllib.unquote(db_user.resume.gsObjectName))
+        blob_key = blobstore.create_gs_key(resource)
+        return self.send_blob(blob_key)
+
+
+class SummaryHandler(MainHandler.Handler):
+    def get(self):
+        user = users.get_current_user()
+        if not user:
+            # User not logged in (shouldn't happen)
+            # TODO: redirect to error handler
+            return self.write('ERROR - User not logged in.')
+
+        if not isHackIllinoisEmail(user.email()):
+            return self.render( "simple_message.html",
+                                header="ACCESS DENIED",
+                                message="You (%s) are not an admin or are not logged in as such.<br>Please log in with a valid @hackillinois.org email address.<br><a class='logout-link' href='%s'>Logout</a>" % (user.nickname(), users.create_logout_url('/admin')),
+                                showSocial=False )
+
+
+        hackers = Attendee.search_database({'isRegistered':True})
+        data = {}
+        data['hackers'] = []
+        for hacker in hackers:
+            resume_link = None
+            if hacker.resume:
+                name = hacker.resume.fileName
+                name = name if len(name)<=10 else name[0:7]+'...'
+                resume_link = "<a href='/admin/resume?userId=%s'>%s</a>" % (hacker.userId, name)
+                pass
+            else:
+                resume_link = ''
+
+            food = '' if not hacker.food else ', '.join(hacker.food.split(','))
+
+            data['hackers'].append({ 'nameFirst':hacker.nameFirst,
+                                     'nameLast':hacker.nameLast,
+                                     'email':hacker.email,
+                                     'gender':hacker.gender,
+                                     'school':hacker.school,
+                                     'year':hacker.year,
+                                     'linkedin':hacker.linkedin,
+                                     'github':hacker.github,
+                                     'shirt':hacker.shirt,
+                                     'food':food,
+                                     'projectType':hacker.projectType,
+                                     'registrationTime':hacker.registrationTime.strftime('%x %X'),
+                                     'resume':resume_link,
+                                     'approved':True })
+
+        self.render("summary.html", data=data)
