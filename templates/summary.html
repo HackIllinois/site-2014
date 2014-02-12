@@ -18,6 +18,35 @@
             font-family: 'Lato', sans-serif;
             /*font-size: 2.5em;*/
         }
+        table {
+            table-layout: fixed;
+        }
+        td {
+            text-overflow: ellipsis;
+            overflow: hidden;
+        }
+        td:hover {
+            overflow: visible;
+            word-wrap:break-word;
+        }
+        .c1{width:9%;}
+        .c2{width:9%;}
+        .c3{width:10%;}
+        .c4{width:5%;}
+        .c5{width:7%;}
+        .c6{width:5%;}
+        .c7{width:7%;}
+        .c8{width:7%;}
+        .c9{width:4%;}
+        .c10{width:7%;}
+        .c11{width:9%;}
+        .c12{width:7%;}
+        .c13{width:7%;}
+        .c14{width:7%;}
+        .search-container {
+            width: 14%;/*c13+c14*/
+            vertical-align: middle;
+        }
         .t-centered {
             text-align: center;
         }
@@ -40,40 +69,40 @@
                     <table id="usertable" class="table table-bordered table-hover">
                         <thead>
                             <tr>
-                                <th class="sort" data-sort="fname">First<br>Name</th>
-                                <th class="sort" data-sort="lname">Last<br>Name</th>
-                                <th class="sort" data-sort="email">Email</th>
-                                <th class="sort" data-sort="gender">Gender</th>
-                                <th class="sort" data-sort="school">School</th>
-                                <th class="sort" data-sort="year">Year</th>
-                                <th class="sort" data-sort="linkedin">LinkedIn</th>
-                                <th class="sort" data-sort="github">Github</th>
-                                <th class="sort" data-sort="shirt">Shirt<br>Size</th>
-                                <th class="sort" data-sort="food">Dietary<br>Restrictions</th>
-                                <th class="sort" data-sort="project">Project<br>Type</th>
-                                <th class="sort" data-sort="time">Registered</th>
-                                <th>Resume</th>
-                                <th><input type="text" class="search" placeholder="Search hackers" autofocus/></th>
+                                <th class="c1 sort" data-sort="fname">First<br>Name</th>
+                                <th class="c2 sort" data-sort="lname">Last<br>Name</th>
+                                <th class="c3 sort" data-sort="email">Email</th>
+                                <th class="c4 sort" data-sort="gender">Gender</th>
+                                <th class="c5 sort" data-sort="school">School</th>
+                                <th class="c6 sort" data-sort="year">Year</th>
+                                <th class="c7 sort" data-sort="linkedin">LinkedIn</th>
+                                <th class="c8 sort" data-sort="github">Github</th>
+                                <th class="c9 sort" data-sort="shirt">Shirt<br>Size</th>
+                                <th class="c10 sort" data-sort="food">Dietary<br>Restrictions</th>
+                                <th class="c11 sort" data-sort="project">Project<br>Type</th>
+                                <th class="c12 sort" data-sort="time">Registered</th>
+                                <!-- <th class="c13">Resume</th> -->
+                                <th class="search-container" colspan="2"><input type="text" class="search" placeholder="Search hackers" autofocus/></th>
                             </tr>
                         </thead>
                         <tbody class="list">
                             {% for h in data.hackers %}
                             <tr>
                                 <td class="id" style="display:none;">{{ loop.index }}</td>
-                                <td class="fname">{{ h.nameFirst }}</td>
-                                <td class="lname">{{ h.nameLast }}</td>
-                                <td class="email">{{ h.email }}</td>
-                                <td class="gender">{{ h.gender }}</td>
-                                <td class="school">{{ h.school }}</td>
-                                <td class="year">{{ h.year }}</td>
-                                <td class="linkedin">{{ h.linkedin }}</td>
-                                <td class="github">{{ h.github }}</td>
-                                <td class="shirt">{{ h.shirt }}</td>
-                                <td class="food">{{ h.food }}</td>
-                                <td class="project">{{ h.projectType }}</td>
-                                <td class="time">{{ h.registrationTime }}</td>
-                                <td>{{ h.resume|safe }}</td>
-                                <td class="approved"><button type="button" class="btn btn-primary approve-btn" {% if h.approved %}disabled="disabled"{% endif %}>Approve</button></td>
+                                <td class="c1 fname">{{ h.nameFirst }}</td>
+                                <td class="c2 lname">{{ h.nameLast }}</td>
+                                <td class="c3 email">{{ h.email }}</td>
+                                <td class="c4 gender">{{ h.gender }}</td>
+                                <td class="c5 school">{{ h.school }}</td>
+                                <td class="c6 year">{{ h.year }}</td>
+                                <td class="c7 linkedin">{{ h.linkedin }}</td>
+                                <td class="c8 github">{{ h.github }}</td>
+                                <td class="c9 shirt">{{ h.shirt }}</td>
+                                <td class="c10 food">{{ h.food }}</td>
+                                <td class="c11 project">{{ h.projectType }}</td>
+                                <td class="c12 time">{{ h.registrationTime }}</td>
+                                <td class="c13">{{ h.resume|safe }}</td>
+                                <td class="c14 approved"><button type="button" class="btn btn-primary approve-btn" {% if h.approved %}disabled="disabled"{% endif %}>Approve</button></td>
                             </tr>
                             {% endfor %}
                         </tbody>
