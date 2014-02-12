@@ -31,24 +31,26 @@
 </head>
 
 <body>
-    <div class="col-md-10 col-md-offset-1">
+    <div class="col-md-12">
         <h1>Hacker Summary</h1>
 
         <div id="hackers" class="table-responsive">
             <table id="usertable" class="table table-bordered table-hover">
                 <thead>
                     <tr>
-                        <th class="sort" data-sort="fname">First Name</th>
-                        <th class="sort" data-sort="lname">Last Name</th>
+                        <th class="sort" data-sort="fname">First<br>Name</th>
+                        <th class="sort" data-sort="lname">Last<br>Name</th>
                         <th class="sort" data-sort="email">Email</th>
                         <th class="sort" data-sort="gender">Gender</th>
                         <th class="sort" data-sort="school">School</th>
                         <th class="sort" data-sort="year">Year</th>
                         <th class="sort" data-sort="linkedin">LinkedIn</th>
                         <th class="sort" data-sort="github">Github</th>
-                        <th class="sort" data-sort="shirt">Shirt Size</th>
+                        <th class="sort" data-sort="shirt">Shirt<br>Size</th>
                         <th class="sort" data-sort="food">Dietary<br>Restrictions</th>
-                        <th class="sort" data-sort="time">Project Type</th>
+                        <th class="sort" data-sort="project">Project<br>Type</th>
+                        <th class="sort" data-sort="time">Registered</th>
+                        <th>Resume</th>
                         <th><input type="text" class="search" placeholder="Search hackers" autofocus/></th>
                     </tr>
                 </thead>
@@ -67,6 +69,8 @@
                         <td class="shirt">{{ h.shirt }}</td>
                         <td class="food">{{ h.food }}</td>
                         <td class="project">{{ h.projectType }}</td>
+                        <td class="time">{{ h.registrationTime }}</td>
+                        <td>{{ h.resume|safe }}</td>
                         <td class="approved"><button type="button" class="btn btn-primary approve-btn" {% if h.approved %}disabled="disabled"{% endif %}>Approve</button></td>
                     </tr>
                     {% endfor %}
