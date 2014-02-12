@@ -95,18 +95,16 @@ class SummaryHandler(MainHandler.BaseAdminHandler):
             else:
                 resume_link = ''
 
-            food = '' if not hacker.food else ', '.join(hacker.food.split(','))
-
             data['hackers'].append({ 'nameFirst':hacker.nameFirst,
                                      'nameLast':hacker.nameLast,
                                      'email':hacker.email,
-                                     'gender':hacker.gender,
+                                     'gender':hacker.gender if hacker.gender == 'Male' or hacker.gender == 'Female' else 'Other',
                                      'school':hacker.school,
                                      'year':hacker.year,
                                      'linkedin':hacker.linkedin,
                                      'github':hacker.github,
                                      'shirt':hacker.shirt,
-                                     'food':food,
+                                     'food':'' if not hacker.food else ', '.join(hacker.food.split(',')),
                                      'projectType':hacker.projectType,
                                      'registrationTime':hacker.registrationTime.strftime('%x %X'),
                                      'resume':resume_link,
