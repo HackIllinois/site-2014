@@ -125,7 +125,9 @@ class SummaryHandler(MainHandler.Handler):
                 resume_link = "<a href='/admin/resume?userId=%s'>%s</a>" % (hacker.userId, name)
                 pass
             else:
-                resume_link = 'None'
+                resume_link = ''
+
+            food = '' if not hacker.food else ', '.join(hacker.food.split(','))
 
             data['hackers'].append({ 'nameFirst':hacker.nameFirst,
                                      'nameLast':hacker.nameLast,
@@ -136,7 +138,7 @@ class SummaryHandler(MainHandler.Handler):
                                      'linkedin':hacker.linkedin,
                                      'github':hacker.github,
                                      'shirt':hacker.shirt,
-                                     'food':', '.join(hacker.food.split(',')),
+                                     'food':food,
                                      'projectType':hacker.projectType,
                                      'registrationTime':hacker.registrationTime.strftime('%x %X'),
                                      'resume':resume_link,
