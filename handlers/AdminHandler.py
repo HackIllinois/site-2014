@@ -55,3 +55,40 @@ class AttendeeResumeHandler(MainHandler.Handler, blobstore_handlers.BlobstoreDow
             # User not logged in (shouldn't happen)
             # TODO: redirect to error handler
             self.write('ERROR')
+
+class SummaryHandler(MainHandler.Handler):
+    def get(self):
+        user = users.get_current_user()
+        if not user:
+            # User not logged in (shouldn't happen)
+            # TODO: redirect to error handler
+            return self.write('ERROR - User not logged in.')
+
+        email = user.email()
+        email = email.split('@')
+        if len(email) != 2 or (len(email) == 2 and email[1] != 'hackillinois.org'):
+            return self.render( "simple_message.html",
+                                header="ACCESS DENIED",
+                                message="You (%s) are not an admin or are not logged in as such.<br>Please log in with a valid @hackillinois.org email address.<br><a class='logout-link' href='%s'>Logout</a>" % (user.nickname(), users.create_logout_url('/admin')),
+                                showSocial=False )
+
+
+        hackers = Attendee.search_database({})
+        data = {}
+        data['hackers'] = []
+        for hacker in hackers:
+            data['hackers'].append({ 'nameFirst':hacker.nameFirst,
+                                     'nameLast':hacker.nameLast,
+                                     'email':hacker.email,
+                                     'gender':hacker.gender,
+                                     'school':hacker.school,
+                                     'year':hacker.year,
+                                     'linkedin':hacker.linkedin,
+                                     'github':hacker.github,
+                                     'shirt':hacker.shirt,
+                                     'food':hacker.food,
+                                     'projectType':hacker.projectType,
+                                     'registrationTime':str(hacker.registrationTime),
+                                     'approved':hacker.approved })
+
+        self.render("summary.html", data=data)

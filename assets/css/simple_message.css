@@ -56,8 +56,22 @@ header.logo{
     padding-top: 20px;
 }
 
-@media only screen 
-and (max-width : 400px) { 
+.logout-link {
+    color: #ef3e36;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.logout-link:hover {
+    color: #fff;
+}
+
+.logout-link:active {
+    color: #ef3e36;
+}
+
+@media only screen
+and (max-width : 400px) {
     .mobile-break {
         display: block;
     }

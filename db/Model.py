@@ -237,7 +237,7 @@ class Model(ndb.Model):
         ex: search_database(Attendee, {'email':'doe1@illinois.edu'})
         '''
         if search == {}:
-            return cls.gql()
+            return cls.gql("")
         q = "WHERE "
         if perfect_match:
             ao = " AND "
