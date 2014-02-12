@@ -2,3 +2,10 @@ cron:
 - description: daily email update
   url: /emailbackup
   schedule: every day 06:00
+
+# https://developers.google.com/appengine/articles/scheduled_backups
+cron:
+- description: daily attendee backup
+  url: /_ah/datastore_admin/backup.create?name=BackupToCloud&kind=Attendee&filesystem=gs&gs_bucket_name=hackillinois_backup
+  schedule: every day 06:05
+  target: ah-builtin-python-bundle
