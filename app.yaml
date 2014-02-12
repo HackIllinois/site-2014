@@ -5,6 +5,7 @@ version: 1
 runtime: python27
 api_version: 1
 threadsafe: yes
+default_expiration: "10m"
 
 handlers:
 - url: /favicon\.ico
@@ -76,3 +77,6 @@ libraries:
 
 - name: jinja2
   version: latest
+
+inbound_services:
+- warmup
