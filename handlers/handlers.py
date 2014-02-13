@@ -30,6 +30,13 @@ handlers = [
     ('/admin', AdminHandler),
     ('/admin/xkcd', AdminXkcdHandler),
     ('/admin/approve', AdminApproveHandler),
+#    ('/mobile', )
+    # I may have broken all of this code with the backend refactor, will help get it fixed soon. --Matthew
+    # ('/admin', AdminHandler),
+    # ('/admin/approve', ApproveHandler),
+    # ('/admin/approve/resume/.*', ApproveResumeHandler),
+    ('/admin', SummaryHandler),
+    ('/admin/resume', AdminResumeHandler),
     ('/admin/stats', AdminStatsHandler),
     ('/admin/basicstats', AdminBasicStatsHandler),
     ('/admin/resume', AdminResumeHandler),
