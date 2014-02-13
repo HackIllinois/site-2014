@@ -5,7 +5,8 @@ from db import constants
 from google.appengine.api import users, memcache
 import json
 
-class MobileHandler:
+
+class MobileLoginHandler:
 
     def get(self):
         pass
