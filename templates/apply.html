@@ -239,6 +239,20 @@
 					</div>
 				</div>
 
+                <!-- Textarea -->
+                <div class="form-group">
+                    <label class="control-label col-sm-3" for="teamMembers">Team Members<br>(Emails)</label>
+                    <div class="controls col-sm-9">
+                        <textarea class="{% if data.errors.teamMembers %}errorborders{% endif %} form-control" id="teamMembers" name="teamMembers" rows="3" required="required">{{ data.teamMembers }}</textarea>
+                        <span class="help-block no-bottom-margin">
+                            List anyone that you would like to work with.
+                        </span>
+                        <div class="errormessages">
+                            {{ data.errors.teamMembers }}
+                        </div>
+                    </div>
+                </div>
+
 				<!-- Multiple Checkboxes (inline) -->
 				<div class="form-group">
 					<label class="control-label col-sm-3 sr-only" for="termsOfService">Agree to terms of service</label>

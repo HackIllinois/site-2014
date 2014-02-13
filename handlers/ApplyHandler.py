@@ -90,6 +90,8 @@ class ApplyHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandle
                 data['foodInfo'] = db_user.foodInfo
             if db_user.termsOfService:
                 data['termsOfService'] = db_user.termsOfService
+            if db_user.teamMembers:
+                data['teamMembers'] = db_user.teamMembers
 
             if db_user.gender:
                 for i in data['genders']:
@@ -149,12 +151,8 @@ class ApplyHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandle
         x['userFederatedIdentity'] = user.federated_identity()
         x['userFederatedProvider'] = user.federated_provider()
 
-        for field in ['nameFirst', 'nameLast', 'email', 'gender', 'school', 'year', 'experience', 'linkedin', 'github']:
+        for field in ['nameFirst', 'nameLast', 'email', 'gender', 'school', 'year', 'experience', 'linkedin', 'github', 'teamMembers', 'shirt', 'projectType']:
            x[field] = self.request.get(field)
-
-        x['shirt'] = self.request.get('shirt')
-        x['projectType'] = self.request.get('projectType')
-        # x['teamMembers'] = self.request.get('team')
 
         file_info = self.get_file_infos(field_name='resume')
         if file_info and len(file_info) == 1:

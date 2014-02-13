@@ -31,7 +31,7 @@ class Attendee(Model):
     food = ndb.StringProperty()
     foodInfo = ndb.TextProperty()
 
-    # teamMembers = ndb.TextProperty()
+    teamMembers = ndb.TextProperty()
     projectType = ndb.StringProperty(choices=constants.PROJECTS + [''], default='')
     # userNotes = ndb.TextProperty()
 
