@@ -100,7 +100,7 @@
                         </thead>
                         <tbody class="list">
                             {% for h in data.hackers %}
-                            <tr>
+                            <tr id="{{ h.userId }}">
                                 <td class="id" style="display:none;">{{ loop.index }}</td>
                                 <td class="c1 fname">{{ h.nameFirst }}</td>
                                 <td class="c2 lname">{{ h.nameLast }}</td>
@@ -136,12 +136,6 @@
 
         var hackerList = new List('hackers', options);
 
-        $(document).ready(function() {
-            hackerList.sort('time', { order: "desc" });
-            document.getElementById("count").innerHTML = hackerList.size()
-            hackerList.on('searchComplete', function(){document.getElementById("count").innerHTML = hackerList.matchingItems.length;})
-        });
-
         // http://www.fiendish.demon.co.uk/html/javascript/hidetablecols.html
         var showMode = 'table-cell';
         if (document.all) showMode='block';
@@ -152,6 +146,31 @@
             mode = btn.checked ? showMode : 'none';
             for(j = 0; j < cells.length; j++) cells[j].style.display = mode;
         }
+
+        var approveBtns = $('.approve-btn');
+
+        function applyBtnCallbacks() {
+            approveBtns.click(function() {
+                var itemfName = $(this).closest('tr').find('.fname').text();
+                var itemlName = $(this).closest('tr').find('.lname').text();
+                var itemuserId = $(this).closest('tr')[0].id;
+                var r = confirm("Approve " + itemfName + " " + itemlName);
+                if (r == true) {
+                    // $.post("/admin", {userId:itemuserId});
+                    // var itemId = $(this).closest('tr').find('.id').text();
+                    // hackerList.remove('id', itemId);
+                    $(this)[0].disabled = true;
+                }
+            });
+        }
+
+        $(document).ready(function() {
+            hackerList.sort('time', { order: "desc" });
+            document.getElementById("count").innerHTML = hackerList.size()
+            hackerList.on('searchComplete', function(){document.getElementById("count").innerHTML = hackerList.matchingItems.length;})
+
+            applyBtnCallbacks();
+        });
     </script>
 </body>
 </html>

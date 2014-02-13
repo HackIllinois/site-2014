@@ -108,6 +108,7 @@ class SummaryHandler(MainHandler.BaseAdminHandler):
                                      'projectType':hacker.projectType,
                                      'registrationTime':hacker.registrationTime.strftime('%x %X'),
                                      'resume':resume_link,
-                                     'approved':True })
+                                     'approved':False,
+                                     'userId':hacker.userId })
 
         self.render("summary.html", data=data)
