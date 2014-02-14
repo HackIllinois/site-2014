@@ -115,7 +115,7 @@
                                 <td name="tproject" class="c11 project">{{ h.projectType }}</td>
                                 <td name="ttime" class="c12 time">{{ h.registrationTime }}</td>
                                 <td class="c13">{{ h.resume|safe }}</td>
-                                <td class="c14 approved"><button type="button" class="btn btn-primary approve-btn" {% if h.approved %}disabled="disabled"{% endif %}>Approve</button></td>
+                                <td class="c14 approved"><button type="submit" class="btn btn-primary approve-btn" {% if h.approved %}disabled="disabled"{% endif %}>Approve</button></td>
                             </tr>
                             {% endfor %}
                         </tbody>
@@ -156,7 +156,7 @@
                 var itemuserId = $(this).closest('tr')[0].id;
                 var r = confirm("Approve " + itemfName + " " + itemlName);
                 if (r == true) {
-                    // $.post("/admin", {userId:itemuserId});
+                    $.post("/admin", {'userId':itemuserId});
                     // var itemId = $(this).closest('tr').find('.id').text();
                     // hackerList.remove('id', itemId);
                     $(this)[0].disabled = true;
