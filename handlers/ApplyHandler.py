@@ -181,10 +181,10 @@ class ApplyHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandle
             else:
 
                 # Old resumes
-                delete = db_user and db_user.resume
+                delete_resume = db_user and db_user.resume
 
             # Delete resume if appropriate
-            if delete:
+            if delete_resume:
                 resource = str(urllib.unquote(file_info.gs_object_name))
                 blob_key = blobstore.create_gs_key(resource)
                 blobstore.delete(blob_key)
