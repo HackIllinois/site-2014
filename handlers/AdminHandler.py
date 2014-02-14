@@ -113,14 +113,13 @@ class SummaryHandler(MainHandler.BaseAdminHandler):
 
         self.render("summary.html", data=data)
     def post(self):
-        #Temp hardcode
-        userid = '111264371297391252131'
-        user = Attendee.search_database({'userId':userid}).get()
+        userid = str(self.request.get('id'))
+        user = Attendee.search_database({'userId':userid}).get() #works now
         if not user:
            # TODO: redirect to error handler
             return self.write('ERROR')
         x = {}
-        x['approved'] = 'False'
+        x['approved'] = 'True'
         success = Attendee.update_search(x, {'userId':userid})
 
-        return self.redirect("/admin")
+        #return self.redirect("/admin") #unnessicary

@@ -156,8 +156,8 @@
                 var itemuserId = $(this).closest('tr')[0].id;
                 var r = confirm("Approve " + itemfName + " " + itemlName);
                 if (r == true) {
-                    $.post("/admin", {'userId':itemuserId});
-                    // var itemId = $(this).closest('tr').find('.id').text();
+                    $.post("/admin", {"id": itemuserId});
+					// var itemId = $(this).closest('tr').find('.id').text();
                     // hackerList.remove('id', itemId);
                     $(this)[0].disabled = true;
                 }
