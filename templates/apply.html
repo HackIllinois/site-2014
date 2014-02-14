@@ -135,7 +135,9 @@
 
 						<span id="resume-prompt" class="help-block {%if data.errors.resume %}errormessages{% endif %}">
 						   {%if data.errors.resume %}
+                           <div class="errormessages">
 						      {{ data.errors.resume }}
+                          </div>
 						   {% else %}
 						      {% if not data.hasResume %}Please upload{% endif %}{% if data.hasResume %}Update{% endif %} your resume (optional).
 						   {% endif %}

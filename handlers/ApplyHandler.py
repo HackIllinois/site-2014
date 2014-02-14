@@ -163,18 +163,14 @@ class ApplyHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandle
             if not file_info.content_type == 'application/pdf':
 
                 # Non-pdf files
-                if 'errors_resume' not in x or not x['errors_resume']:
-                    x['errors_resume'] = []
-                x['errors_resume'].append('Uploaded resume file is not a pdf.')
+                errors['resume'] = 'Uploaded resume file is not a pdf.'
                 delete_resume = True
                 valid = False
 
             elif file_info.size > constants.RESUME_MAX_SIZE:
 
                 # Big files
-                if 'errors_resume' not in x or not x['errors_resume']:
-                    x['errors_resume'] = []
-                x['errors_resume'].append('Uploaded resume file is too big.')
+                errors['resume'] = 'Uploaded resume file is too big.'
                 delete_resume = True
                 valid = False
 
