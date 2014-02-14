@@ -1,5 +1,5 @@
 from EmailBackupHandler import EmailBackupHandler
-from ErrorHandler import ErrorHandler
+from ErrorHandlers import handle_401, handle_404, handle_500, Error401Handler, Error404Handler, Error500Handler
 from IndexHandler import IndexHandler
 from ApplyHandler import ApplyHandler, ApplyCompleteHandler, SchoolCheckHandler, SchoolListHandler, MyResumeHandler, UpdateCompleteHandler, UploadURLHandler
 from SignupCountHandler import SignupCountHandler
@@ -37,5 +37,13 @@ handlers = [
     ('/code-of-conduct', CoCHandler),
     # ('/_ah/login_required', LoginRequiredHandler),
     # ('/admin', AdminHandler.AdminHandler),
-    ('.*', ErrorHandler)
+	('/401', Error401Handler),
+	('/404', Error404Handler),
+	('/500', Error500Handler),
 ]
+
+errorHandlers = {
+	401: handle_401,
+	404: handle_404,
+	500: handle_500,
+}

@@ -40,7 +40,7 @@ class BaseAdminHandler(Handler):
 
         user = users.get_current_user()
         if not user:
-            return self.abort(404)
+            return self.abort(401)
 
         email = user.email()
         domain = email.split('@')[1] if len(email.split('@')) == 2 else None # Sanity check
@@ -55,7 +55,4 @@ class BaseAdminHandler(Handler):
             super(BaseAdminHandler, self).dispatch()
         else:
             logging.info('%s attempted to access an admin page but was denied.', email)
-            return self.render( "simple_message.html",
-                                header="ACCESS DENIED",
-                                message="You (%s) are not an admin or are not logged in as such.<br>Please log in with a valid @hackillinois.org email address.<br><a class='logout-link' href='%s'>Logout</a>" % (user.nickname(), users.create_logout_url('/admin')),
-                                showSocial=False )
+            return self.abort(401)
