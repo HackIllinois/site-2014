@@ -65,6 +65,11 @@ handlers:
   script: main.app
   login: required
 
+# https://developers.google.com/appengine/articles/python/recording_exceptions_with_ereporter
+- url: /_ereporter.*
+  script: google.appengine.ext.ereporter.report_generator.application
+  login: admin
+
 # - url: /_ah/login_required
 #   script: main.app
 

@@ -4,9 +4,14 @@ import webapp2
 import logging
 from google.appengine.api import users
 from db import constants
+from google.appengine.ext import ereporter
 
 template_dir = os.path.join(os.path.dirname(__file__), os.path.join(os.pardir, 'templates'))
 jinja_env = jinja2.Environment(loader = jinja2.FileSystemLoader(template_dir), autoescape = True)
+
+# https://developers.google.com/appengine/articles/python/recording_exceptions_with_ereporter
+ereporter.register_logger()
+
 
 class Handler(webapp2.RequestHandler):
     """ Someone should fill in what this is """
