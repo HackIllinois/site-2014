@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="description" content="Imagine. Learn. Launch. Join us for a 36-hour hackathon at the University of Illinois at Urbana-Champaign. April 11-13, 2014.">
+
+    <title>HackIllinois</title>
+
+    <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Lato:700|Open+Sans:700,400">
+    <link rel="icon" type="image/ico" href="favicon.ico"/>
+    <style type="text/css">
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Open Sans', sans-serif;
+        }
+        p, div {
+            font-family: 'Lato', sans-serif;
+            /*font-size: 2.5em;*/
+        }
+        table {
+            table-layout: fixed;
+        }
+        td {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        td:hover {
+            white-space: normal;
+            overflow: visible;
+            word-wrap:break-word;
+        }
+        .c1{width:7%;}
+        .c2{width:7%;}
+        .c3{width:11%;}
+        .c4{width:6%;}
+        .c5{width:9%;}
+        .c6{width:5%;}
+        .c7{width:7%;}
+        .c8{width:7%;}
+        .c9{width:4%;}
+        .c10{width:7%;}
+        .c11{width:9%;}
+        .c12{width:7%;}
+        .c13{width:7%;}
+        .c14{width:7%;}
+		.search-name {
+            width: 14%;
+            vertical-align: middle;
+        }
+		.width100 {
+            width:100%;
+        }
+        .search-container {
+            width: 14%;
+            vertical-align: middle;
+        }
+        .t-centered {
+            text-align: center;
+        }
+        .search {
+            width:100%;
+        }
+        .approve-btn {
+            width:100%;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <h1>Hacker Summary<small>&nbsp;&nbsp;</small><small id="count"></small><small>&nbsp;people</small></h1>
+                <form name="tcol" onsubmit="return false">
+                    <label>Show columns:&nbsp;&nbsp;</label>
+                    <input type=checkbox name="gender" onclick="toggleVis(this.name)" checked> Gender&nbsp;&nbsp;
+                    <input type=checkbox name="school" onclick="toggleVis(this.name)" checked> School&nbsp;&nbsp;
+                    <input type=checkbox name="year" onclick="toggleVis(this.name)" checked> Year&nbsp;&nbsp;
+                    <input type=checkbox name="linkedin" onclick="toggleVis(this.name)" checked> LinkedIn&nbsp;&nbsp;
+                    <input type=checkbox name="github" onclick="toggleVis(this.name)" checked> Github&nbsp;&nbsp;
+                    <input type=checkbox name="shirt" onclick="toggleVis(this.name)" checked> Shirt&nbsp;&nbsp;
+                    <input type=checkbox name="food" onclick="toggleVis(this.name)" checked> Dietary Restrictions&nbsp;&nbsp;
+                    <input type=checkbox name="project" onclick="toggleVis(this.name)" checked> Project Type&nbsp;&nbsp;
+                    <input type=checkbox name="time" onclick="toggleVis(this.name)" checked> Registered&nbsp;&nbsp;
+                </form>
+                <div id="hackers" class="table-responsive">
+                    <table id="usertable" class="table table-bordered table-hover">
+                        <thead>
+							<tr name="search_params">
+                                <td class="search-name" colspan="2"><input id="search_name" type="text" class="width100" placeholder="Search Names" onchange="searchHackers()" /></td>
+								<td class="c3"><input id="search_email" type="text" class="width100" placeholder="Search Email" onchange="searchHackers()"/></td>
+								<td class="c4">
+									<form name="search_gender">
+										<input type=checkbox name="Male" onclick="searchHackers()" checked> Male<br>
+										<input type=checkbox name="Female" onclick="searchHackers()" checked> Female<br>
+										<input type=checkbox name="Other" onclick="searchHackers()" checked> Other<br>
+										<!--"I chose not to specify" is being stored as "Other"-->
+									</form>
+								</td>
+								<!--It would be great if "Chosen.js" could be added so they could select multiply schools-->
+								<!--or at least like apply-->
+								
+								<td class="c5"><input id="search_school" type="text" class="width100" placeholder="Search School" onchange="searchHackers()"/></td>
+								<td class="c6">
+									<form name="search_year">
+										<input type=checkbox name="Freshman" onclick="searchHackers()" checked> Freshman<br>
+										<input type=checkbox name="Sophomore" onclick="searchHackers()" checked> Sophomore<br>
+										<input type=checkbox name="Junior" onclick="searchHackers()" checked> Junior<br>
+										<input type=checkbox name="Senior" onclick="searchHackers()" checked> Senior<br>
+										<input type=checkbox name="Grad" onclick="searchHackers()" checked> Grad<br>
+										<input type=checkbox name="HS" onclick="searchHackers()" checked> HS
+									</form>
+								</td>
+								<td class="c7"><input id="search_linkedin" type="text" class="width100" placeholder="Search LinkedIn" onchange="searchHackers()"/></td>
+								<td class="c8"><input id="search_github" type="text" class="width100" placeholder="Search GitHub" onchange="searchHackers()"/></td>
+								<td class="c9">
+									<form name="search_shirt">
+										<input type=checkbox name="XS" onclick="searchHackers()" checked> XS<br>
+										<input type=checkbox name="S" onclick="searchHackers()" checked> S<br>
+										<input type=checkbox name="M" onclick="searchHackers()" checked> M<br>
+										<input type=checkbox name="L" onclick="searchHackers()" checked> L<br>
+										<input type=checkbox name="XL" onclick="searchHackers()" checked> XL<br>
+										<input type=checkbox name="XXL" onclick="searchHackers()" checked> XXL
+									</form>
+								</td>
+								<td class="c10">
+									<form name="search_food">
+										<input type=checkbox name="Vegetarian" onclick="searchHackers()"> Vegetarian<br>
+										<input type=checkbox name="Vegan" onclick="searchHackers()"> Vegan<br>
+										<input type=checkbox name="Gluten Free" onclick="searchHackers()"> Gluten Free<br>
+										<input type=checkbox name="Lactose Free" onclick="searchHackers()"> Lactose Free<br>
+										<input type=checkbox name="Other" onclick="searchHackers()"> Other
+									</form>
+								</td>
+								<td class="c11">
+									<form name="search_project">
+										<input type=checkbox name="Software Hack" onclick="searchHackers()" checked> Software Hack<br>
+										<input type=checkbox name="Hardware Hack" onclick="searchHackers()" checked> Hardware Hack<br>
+										<input type=checkbox name="Unsure" onclick="searchHackers()" checked> Unsure
+									</form>
+								</td>
+
+							</tr>
+                            <tr>
+                                <th class="c1 sort" data-sort="fname">First Name</th>
+                                <th class="c2 sort" data-sort="lname">Last Name</th>
+                                <th class="c3 sort" data-sort="email">Email</th>
+                                <th name="tgender" class="c4 sort" data-sort="gender">Gender</th>
+                                <th name="tschool" class="c5 sort" data-sort="school">School</th>
+                                <th name="tyear" class="c6 sort" data-sort="year">Year</th>
+                                <th name="tlinkedin" class="c7 sort" data-sort="linkedin">LinkedIn</th>
+                                <th name="tgithub" class="c8 sort" data-sort="github">Github</th>
+                                <th name="tshirt" class="c9 sort" data-sort="shirt">Shirt Size</th>
+                                <th name="tfood" class="c10 sort" data-sort="food">Dietary Restrictions</th>
+                                <th name="tproject" class="c11 sort" data-sort="project">Project Type</th>
+                                <th name="ttime" class="c12 sort" data-sort="time">Registered</th>
+                                <!-- <th class="c13">Resume</th> -->
+                            </tr>
+                        </thead>
+                        <tbody class="list">
+                            {% for h in data.hackers %}
+							{% if h.approved != "True"%}
+                            <tr id="{{ h.userId }}">
+                                <td class="id" style="display:none;">{{ loop.index }}</td>
+                                <td class="c1 fname">{{ h.nameFirst }}</td>
+                                <td class="c2 lname">{{ h.nameLast }}</td>
+                                <td class="c3 email">{{ h.email }}</td>
+                                <td name="tgender" class="c4 gender">{{ h.gender }}</td>
+                                <td name="tschool" class="c5 school">{{ h.school }}</td>
+                                <td name="tyear" class="c6 year">{{ h.year }}</td>
+                                <td name="tlinkedin" class="c7 linkedin">{{ h.linkedin }}</td>
+                                <td name="tgithub" class="c8 github">{{ h.github }}</td>
+                                <td name="tshirt" class="c9 shirt">{{ h.shirt }}</td>
+                                <td name="tfood" class="c10 food">{{ h.food }}</td>
+                                <td name="tproject" class="c11 project">{{ h.projectType }}</td>
+                                <td name="ttime" class="c12 time">{{ h.registrationTime }}</td>
+                                <td class="c13">{{ h.resume|safe }}</td>
+                                <td class="c14 approved"><button type="submit" class="btn btn-primary approve-btn">Approve</button></td>
+                            </tr>
+							{% endif %}
+                            {% endfor %}
+                            {% for h in data.hackers %}
+							{% if h.approved == "True"%}
+                            <tr id="{{ h.userId }}" name="hackerData">
+                                <td class="id" style="display:none;">{{ loop.index }}</td>
+                                <td name="tfirstName" class="c1 fname">{{ h.nameFirst }}</td>
+                                <td name="tlastName" class="c2 lname">{{ h.nameLast }}</td>
+                                <td name="temail" class="c3 email">{{ h.email }}</td>
+                                <td name="tgender" class="c4 gender">{{ h.gender }}</td>
+                                <td name="tschool" class="c5 school">{{ h.school }}</td>
+                                <td name="tyear" class="c6 year">{{ h.year }}</td>
+                                <td name="tlinkedin" class="c7 linkedin">{{ h.linkedin }}</td>
+                                <td name="tgithub" class="c8 github">{{ h.github }}</td>
+                                <td name="tshirt" class="c9 shirt">{{ h.shirt }}</td>
+                                <td name="tfood" class="c10 food">{{ h.food }}</td>
+                                <td name="tproject" class="c11 project">{{ h.projectType }}</td>
+                                <td name="ttime" class="c12 time">{{ h.registrationTime }}</td>
+                                <td class="c13">{{ h.resume|safe }}</td>
+                                <td class="c14 approved"><button type="submit" class="btn btn-primary approve-btn" disabled="disabled">Approve</button></td>
+                            </tr>
+							{% endif %}
+                            {% endfor %}
+							
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/list.js/1.1.0/list.min.js"></script>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+        var options = {
+            valueNames: [ 'id', 'fname', 'lname', 'email', 'gender', 'school', 'year', 'linkedin', 'github', 'shirt', 'food', 'project', 'time' ],
+            page: 1000
+        };
+
+        var hackerList = new List('hackers', options);
+
+        // http://www.fiendish.demon.co.uk/html/javascript/hidetablecols.html
+        var showMode = 'table-cell';
+        if (document.all) showMode='block';
+
+        function toggleVis(btn){
+            btn = document.forms['tcol'].elements[btn];
+            cells = document.getElementsByName('t'+btn.name);
+            mode = btn.checked ? showMode : 'none';
+            for(j = 0; j < cells.length; j++) cells[j].style.display = mode;
+        }
+		
+		function searchHackers(){
+			search_name = document.getElementById('search_name').value;
+			search_email = document.getElementById('search_email').value;
+			search_gender = document.forms['search_gender'].elements;
+            search_school = document.getElementById('search_school').value;
+			search_year = document.forms['search_year'].elements;
+            search_linkedin = document.getElementById('search_linkedin').value;
+            search_github = document.getElementById('search_github').value;
+			search_shirt = document.forms['search_shirt'].elements;
+			search_food = document.forms['search_food'].elements;
+			search_project = document.forms['search_project'].elements;
+			rows = document.getElementsByName('hackerData');
+            for(j = 0; j < rows.length; j++) 
+			{
+				var hide = false;
+				var hacker_name = rows[j].cells['tfirstName'].innerHTML + " " + rows[j].cells['tlastName'].innerHTML;
+				var hacker_email = rows[j].cells['temail'].innerHTML;
+				var hacker_gender = rows[j].cells['tgender'].innerHTML;
+				var hacker_school = rows[j].cells['tschool'].innerHTML;
+				var hacker_year = rows[j].cells['tyear'].innerHTML;
+				var hacker_linkedin = rows[j].cells['tlinkedin'].innerHTML;
+				var hacker_github = rows[j].cells['tgithub'].innerHTML;
+				var hacker_shirt = rows[j].cells['tshirt'].innerHTML;
+				var hacker_food = rows[j].cells['tfood'].innerHTML;
+				var hacker_project = rows[j].cells['tproject'].innerHTML;
+				if(hacker_name.toUpperCase().indexOf(search_name.toUpperCase()) == -1)
+				{
+					hide = true;
+				}
+				if(hacker_email.toUpperCase().indexOf(search_email.toUpperCase()) == -1)
+				{
+					hide = true;
+				}
+				var hide_gender = true;
+				for(i = 0; i < search_gender.length; i++)
+				{
+					if(search_gender[i].checked && (search_gender[i].name == hacker_gender))
+					{
+						hide_gender = false;
+					}
+				}
+				hide = hide_gender || hide;
+				if(hacker_school.toUpperCase().indexOf(search_school.toUpperCase()) == -1)
+				{
+					hide = true;
+				}
+				var hide_year = true;
+				for(i = 0; i < search_year.length; i++)
+				{
+					if(search_year[i].checked && (search_year[i].name == hacker_year))
+					{
+						hide_year = false;
+					}
+				}
+				hide = hide_year || hide;
+				if(hacker_linkedin.toUpperCase().indexOf(search_linkedin.toUpperCase()) == -1)
+				{
+					hide = true;
+				}
+				if(hacker_github.toUpperCase().indexOf(search_github.toUpperCase()) == -1)
+				{
+					hide = true;
+				}
+				var hide_shirt = true;
+				for(i = 0; i < search_shirt.length; i++)
+				{
+					if(search_shirt[i].checked && (search_shirt[i].name == hacker_shirt))
+					{
+						hide_shirt = false;
+					}
+				}
+				hide = hide_shirt || hide;
+				var hide_food = false;
+				for(i = 0; i < search_food.length; i++)
+				{
+					if(search_food[i].checked && (hacker_food.indexOf(search_food[i].name) == -1))
+					{
+						hide_food = true;
+					}
+				}
+				hide = hide_food || hide;
+				var hide_project = true;
+				for(i = 0; i < search_project.length; i++)
+				{
+					if(search_project[i].checked && (search_project[i].name == hacker_project))
+					{
+						hide_project = false;
+					}
+				}
+				hide = hide_project || hide;
+				if(hide)
+				{
+					rows[j].style.display = 'none';
+				}
+				else
+				{
+					rows[j].style.display = 'table-row';
+				}
+			}
+		}
+
+        var approveBtns = $('.approve-btn');
+
+        function applyBtnCallbacks() {
+            approveBtns.click(function() {
+                var itemfName = $(this).closest('tr').find('.fname').text();
+                var itemlName = $(this).closest('tr').find('.lname').text();
+                var itemuserId = $(this).closest('tr')[0].id;
+                var r = confirm("Approve " + itemfName + " " + itemlName);
+                if (r == true) {
+                    $.post("/sponsor", {"id": itemuserId});
+					// var itemId = $(this).closest('tr').find('.id').text();
+                    // hackerList.remove('id', itemId);
+                    $(this)[0].disabled = true;
+                }
+            });
+        }
+
+        $(document).ready(function() {
+            hackerList.sort('time', { order: "desc" });
+            document.getElementById("count").innerHTML = hackerList.size()
+            hackerList.on('searchComplete', function(){document.getElementById("count").innerHTML = hackerList.matchingItems.length;})
+
+            applyBtnCallbacks();
+        });
+    </script>
+</body>
+</html>
