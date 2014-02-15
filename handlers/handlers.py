@@ -6,7 +6,7 @@ from SignupCountHandler import SignupCountHandler
 from ApplyCountHandler import ApplyCountHandler
 from SubpageHandlers import RulesHandler, ScheduleHandler, TravelHandler, CoCHandler
 from TropoHandler import TropoHandler
-from AdminHandler import SummaryHandler, AdminResumeHandler
+from AdminHandler import AdminApproveHandler, AdminResumeHandler, AdminStatsHandler
 # from AdminHandler import AdminHandler, ApproveResumeHandler, ApproveHandler
 # import AdminHandler
 # from LoginRequiredHandler import LoginRequiredHandler
@@ -32,7 +32,8 @@ handlers = [
     # ('/admin', AdminHandler),
     # ('/admin/approve', ApproveHandler),
     # ('/admin/approve/resume/.*', ApproveResumeHandler),
-    ('/admin', SummaryHandler),
+    ('/admin/approve', AdminApproveHandler),
+    ('/admin/stats', AdminStatsHandler),
     ('/admin/resume', AdminResumeHandler),
     ('/code-of-conduct', CoCHandler),
     # ('/_ah/login_required', LoginRequiredHandler),
