@@ -111,7 +111,7 @@ class AdminApproveHandler(MainHandler.BaseAdminHandler):
                                      'approved':hacker.approved,
                                      'userId':hacker.userId})
 
-        self.render("summary.html", data=data)
+        self.render("approve.html", data=data)
     def post(self):
         userid = str(self.request.get('id'))
         user = Attendee.search_database({'userId':userid}).get() #works now
@@ -155,7 +155,7 @@ class AdminStatsHandler(MainHandler.BaseAdminHandler):
                                      'approved':hacker.approved,
                                      'userId':hacker.userId})
 
-        self.render("summary.html", data=data)
+        self.render("approve.html", data=data)
     def post(self):
         userid = str(self.request.get('id'))
         user = Attendee.search_database({'userId':userid}).get() #works now
