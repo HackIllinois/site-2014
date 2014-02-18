@@ -8,19 +8,6 @@ from google.appengine.ext import blobstore
 from google.appengine.ext.webapp import blobstore_handlers
 import json
 
-# from datetime import datetime
-# import json
-# from google.appengine.api import mail
-
-
-# def SendApplyEmail(subject, body):
-#     body_str = json.dumps(body)
-#     logging.info("Sent email '%s'",  subject)
-#     mail.send_mail(sender="alex.burck@hackillinois.org",
-#                    to="apply-watchlist@hackillinois.org",
-#                    subject=subject,
-#                    body=body_str)
-
 
 class ApplyHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandler):
     # == Handler for application page. ==
@@ -51,7 +38,7 @@ class ApplyHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandle
         data['title'] = constants.APPLY_TITLE
         data['resumeRequired'] = False
         data['hasResume'] = False
-        data['applyError'] = False
+        # data['applyError'] = False
         data['uploadUrl'] = '/apply'
 
         # Check if user is in our database
@@ -62,8 +49,8 @@ class ApplyHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandle
                 data['title'] = constants.PROFILE_TITLE
                 data['resumeRequired'] = False
 
-            if db_user.applyError:
-                data['applyError'] = True
+            # if db_user.applyError:
+            #     data['applyError'] = True
 
             # Per-field errors
             # db_user.errors == [<field1>$$$<message1>, <field1>$$$<message2>, ...]
@@ -126,8 +113,8 @@ class ApplyHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandle
                 data['hasResume'] = True
                 data['resumeRequired'] = False
 
-            if db_user.errorMessages and db_user.errorMessages != '':
-                data['messages'] = db_user.errorMessages.split('$$$')
+            # if db_user.errorMessages and db_user.errorMessages != '':
+            #     data['messages'] = db_user.errorMessages.split('$$$')
 
         data['uploadUrl'] = upload_url_rpc.get_result()
         self.render("apply.html", data=data)
@@ -281,18 +268,15 @@ class ApplyHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandle
                     redir = '/apply/updated'
                     logging.info('Updated profile of %s', x['email'])
                     logging.info(str(x))
-                    # SendApplyEmail('Updated profile of ' + x['email'], x)
                 else:
                     redir = '/apply/complete'
                     logging.info('Signup with email %s', x['email'])
                     logging.info(str(x))
-                    # SendApplyEmail('Signup with email ' + x['email'], x)
             success = Attendee.update_search(x, {'userId':x['userId']})
         else:
             if valid:
                 logging.info('Signup with email %s', x['email'])
                 logging.info(str(x))
-                # SendApplyEmail('Signup with email ' + x['email'], x)
             else:
                 logging.info('User with email %s submitted an invalid form', x['email'])
             success = Attendee.add(x)
