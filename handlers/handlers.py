@@ -40,6 +40,7 @@ handlers = [
     ('/admin/approve', AdminApproveHandler),
 #    ('/mobile', )
 #    ('/mobile', MobileLoginHandler)
+    ('/mobile', MobileLoginHandler),
 #    ('/mobile/schedule', ScheduleHandler)
 #    ('/mobile/maps', MapsHandler)
 #    ('/mobile/support/types', SupportTypeHandler)

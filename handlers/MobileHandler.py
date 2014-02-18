@@ -10,14 +10,20 @@ import json
    
     Note: Place userId in the header with key being AuthName
 '''
-class MobileLoginHandler:
+class MobileLoginHandler(MainHandler.BaseMobileHandler):
     
     '''
        
         @return Reject request if the userId is not in the database otherwise let through
     '''
     def get(self):
-        pass
+##        userId = self.request.header['AuthName']
+##        db_user = Attendee.search_database({'userId':userId}).get()
+##    
+##        if (db_user)
+        return self.write('You are valid user')
+##        else
+##            return self.write('Hello World!')
 
     '''
         
@@ -26,12 +32,18 @@ class MobileLoginHandler:
     def post(self):
         pass
 
+    def put(self):
+        pass
+
+    def delete(self):
+        pass
+
 '''
     
     
     Note:
 '''
-class ScheduleHandler:
+class ScheduleHandler(MainHandler.BaseMobileHandler):
 
     '''
         Get the current schedule of HackIllinois
@@ -49,11 +61,17 @@ class ScheduleHandler:
     def post(self):
         pass
 
+    def put(self):
+        pass
+
+    def delete(self):
+        pass
+
 '''
     
     Note:
 '''
-class MapsHandler:
+class MapsHandler(MainHandler.BaseMobileHandler):
     
     '''
        
@@ -69,7 +87,7 @@ class MapsHandler:
                 }
     '''
     def get(self):
-        pass
+        return self.write(json.dumps({'Siebel':{'1':['Ground Zero', 'Space Station']},'DCL':{'1':['Galaxy']}}))
     
     '''
         Updates a model for a location
@@ -87,12 +105,15 @@ class MapsHandler:
     def put(self):
         pass
 
+    def delete(self):
+        pass
+
 '''
     
     
     Note:
 '''
-class SupportTypeHandler:
+class SupportTypeHandler(MainHandler.BaseMobileHandler):
 
     '''
        
@@ -115,11 +136,17 @@ class SupportTypeHandler:
     def post(self):
         pass
 
+    def put(self):
+        pass
+
+    def delete(self):
+        pass
+
 '''
     
     Note:
 '''
-class EmergencyHandler:
+class EmergencyHandler(MainHandler.BaseMobileHandler):
 
     '''
         
@@ -147,11 +174,14 @@ class EmergencyHandler:
     def put(self):
         pass
 
+    def delete(self):
+        pass
+
 '''
     
     Note:
 '''
-class NewsfeedHandler:
+class NewsfeedHandler(MainHandler.BaseMobileHandler):
 
     '''
        
@@ -170,11 +200,17 @@ class NewsfeedHandler:
     def post(self):
         pass
 
+    def put(self):
+        pass
+
+    def delete(self):
+        pass
+
 '''
     
     Note:
 '''
-class StaffHandler:
+class StaffHandler(MainHandler.BaseMobileHandler):
 
     '''
        
@@ -201,11 +237,14 @@ class StaffHandler:
     def put(self):
         pass
 
+    def delete(self):
+        pass
+
 '''
     
     Note:
 '''
-class HackersHandler:
+class HackersHandler(MainHandler.BaseMobileHandler):
 
     '''
        
@@ -232,11 +271,14 @@ class HackersHandler:
     def put(self):
         pass
 
+    def delete(self):
+        pass
+
 '''
     
     Note:
 '''
-class CompanyHandler:
+class CompanyHandler(MainHandler.BaseMobileHandler):
     
     '''
         
@@ -265,11 +307,14 @@ class CompanyHandler:
     def put(self):
         pass
 
+    def delete(self):
+        pass
+
 '''
     
     Note:
 '''
-class SkillsHandler:
+class SkillsHandler(MainHandler.BaseMobileHandler):
     
     '''
        
@@ -284,4 +329,10 @@ class SkillsHandler:
         @return
     '''
     def post(self):
+        pass
+
+    def put(self):
+        pass
+
+    def delete(self):
         pass
