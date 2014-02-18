@@ -5,18 +5,14 @@ from ApplyHandler import ApplyHandler, ApplyCompleteHandler, SchoolCheckHandler,
 from ApplyCountHandler import ApplyCountHandler
 from SubpageHandlers import RulesHandler, ScheduleHandler, TravelHandler, CoCHandler, StaffHandler, SponsorFAQHandler
 from TropoHandler import TropoHandler
-<<<<<<< HEAD
 from AdminHandler import AdminHandler, AdminApproveHandler, AdminResumeHandler, AdminStatsHandler, AdminBasicStatsHandler, AdminXkcdHandler, AdminApplyCountHandler, AdminSchoolCountHandler
 from SponsorHandler import SponsorHandler
 from LogoutHandler import LogoutHandler
 from MGTHandler import MGTHandler, ParticlesHandler
-=======
-from AdminHandler import SummaryHandler, AdminResumeHandler, AdminStatsHandler
-from MobileHandler import MobileHandler, ScheduleHandler, MapsHandler, SupportTypeHandler, EmergencyHandler, NewsfeedHandler, StaffHandler, HackersHandler, CompanyHandler, SkillsHandler
+from MobileHandler import ScheduleHandler, MapsHandler, SupportTypeHandler, EmergencyHandler, NewsfeedHandler, StaffHandler, HackersHandler, CompanyHandler, SkillsHandler
 # from AdminHandler import AdminHandler, ApproveResumeHandler, ApproveHandler
 # import AdminHandler
 # from LoginRequiredHandler import LoginRequiredHandler
->>>>>>> setup endpoints in handlers and basic outline in MobileHandlers
 
 
 handlers = [
@@ -38,18 +34,16 @@ handlers = [
     ('/admin', AdminHandler),
     ('/admin/xkcd', AdminXkcdHandler),
     ('/admin/approve', AdminApproveHandler),
-#    ('/mobile', )
-#    ('/mobile', MobileLoginHandler)
     ('/mobile', MobileLoginHandler),
-#    ('/mobile/schedule', ScheduleHandler)
-#    ('/mobile/maps', MapsHandler)
-#    ('/mobile/support/types', SupportTypeHandler)
-#    ('/mobile/messages/emergency', EmergencyHandler)
-#    ('/mobile/messages/newsfeed', NewsfeedHandler)
-#    ('/mobile/people/staff, StaffHandler)
-#    ('/mobile/people/hackers', HackersHandler)
-#    ('/mobile/company', CompanyHandler)
-#    ('/mobile/skills', SkillsHandler)
+    ('/mobile/schedule', ScheduleHandler),
+    ('/mobile/maps', MapsHandler),
+    ('/mobile/support/types', SupportTypeHandler),
+    ('/mobile/messages/emergency', EmergencyHandler),
+    ('/mobile/messages/newsfeed', NewsfeedHandler),
+    ('/mobile/people/staff', StaffHandler),
+    ('/mobile/people/hackers', HackersHandler),
+    ('/mobile/company', CompanyHandler),
+    ('/mobile/skills', SkillsHandler),
     # I may have broken all of this code with the backend refactor, will help get it fixed soon. --Matthew
     # ('/admin', AdminHandler),
     # ('/admin/approve', ApproveHandler),

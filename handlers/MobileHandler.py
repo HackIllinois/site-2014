@@ -6,39 +6,6 @@ from google.appengine.api import users, memcache
 import json
 
 '''
-    This is for the /mobile endpoint. All requests will pass through this and where the authentication check will be. Will be checking userId against all userId in the database.
-   
-    Note: Place userId in the header with key being AuthName
-'''
-class MobileLoginHandler(MainHandler.BaseMobileHandler):
-    
-    '''
-       
-        @return Reject request if the userId is not in the database otherwise let through
-    '''
-    def get(self):
-##        userId = self.request.header['AuthName']
-##        db_user = Attendee.search_database({'userId':userId}).get()
-##    
-##        if (db_user)
-        return self.write('You are valid user')
-##        else
-##            return self.write('Hello World!')
-
-    '''
-        
-        @return Reject request if the userId is not in the database otherwise let through
-    '''
-    def post(self):
-        pass
-
-    def put(self):
-        pass
-
-    def delete(self):
-        pass
-
-'''
     
     
     Note:
@@ -51,28 +18,28 @@ class ScheduleHandler(MainHandler.BaseMobileHandler):
         @return the schedule of HackIllinois
     '''
     def get(self):
-        pass
+        return self.write(json.dumps({'Schedule':[]}))
 
     '''
         Update the schedule of HackIllinois
     
         @return Success or Fail (for now)
     '''
-    def post(self):
-        pass
-
-    def put(self):
-        pass
-
-    def delete(self):
-        pass
+#    def post(self):
+#        pass
+#
+#    def put(self):
+#        pass
+#
+#    def delete(self):
+#        pass
 
 '''
     
     Note:
 '''
 class MapsHandler(MainHandler.BaseMobileHandler):
-    
+
     '''
        
         @return A dictionary of each location and the value is a dictionary of floors and a list of rooms on each floor
@@ -94,19 +61,19 @@ class MapsHandler(MainHandler.BaseMobileHandler):
        
         @return Success or Fail (for now)
     '''
-    def post(self):
-        pass
+#    def post(self):
+#        pass
+#
+#    '''
+#        Makes a new model for a location
+#        
+#        @return Success or Fail (for now)
+#    '''
+#    def put(self):
+#        pass
 
-    '''
-        Makes a new model for a location
-        
-        @return Success or Fail (for now)
-    '''
-    def put(self):
-        pass
-
-    def delete(self):
-        pass
+#    def delete(self):
+#        pass
 
 '''
     
@@ -126,21 +93,21 @@ class SupportTypeHandler(MainHandler.BaseMobileHandler):
                 }
     '''
     def get(self):
-        pass
+        return self.write(json.dumps({'General':['general1'],'Schedule':['schedule1','schedule2','schedule3'],'Rules':['rule1','rule2']}))
 
     '''
         Update the support types of HackIllinois
        
         @return Success or Fail (for now)
     '''
-    def post(self):
-        pass
-
-    def put(self):
-        pass
-
-    def delete(self):
-        pass
+#    def post(self):
+#        pass
+#
+#    def put(self):
+#        pass
+#
+#    def delete(self):
+#        pass
 
 '''
     
@@ -154,28 +121,28 @@ class EmergencyHandler(MainHandler.BaseMobileHandler):
         @return Emergency Messages
     '''
     def get(self):
-        pass
+        return self.write(json.dumps({'Emergency':[]}))
 
     '''
         Update an Emergency Message
         
         @return Success or Fail (for now)
     '''
-    def post(self):
-        pass
+#    def post(self):
+#        pass
+#
+#    '''
+#        Create a new Emergency Message
+#        
+#        Note: Must be an admin or current Staff
+#        
+#        @return Success or Fail (for now)
+#    '''
+#    def put(self):
+#        pass
 
-    '''
-        Create a new Emergency Message
-        
-        Note: Must be an admin or current Staff
-        
-        @return Success or Fail (for now)
-    '''
-    def put(self):
-        pass
-
-    def delete(self):
-        pass
+#    def delete(self):
+#        pass
 
 '''
     
@@ -189,22 +156,22 @@ class NewsfeedHandler(MainHandler.BaseMobileHandler):
         @parameter since Bottom bound on the time for the NewsFeed (default should be your last time of the NewFeed card you have)
         @return The NewFeed models that are between the before and since parameters
     '''
-    def get(self, before, since, count):
-        pass
+    def get(self):
+        return self.write(json.dumps({'NewsFeed':[]}))
 
     '''
         Add an item to the news feed. Only Admin/Staff will be able to use this functionality.
 
         @return Success or fail (for now)
     '''
-    def post(self):
-        pass
-
-    def put(self):
-        pass
-
-    def delete(self):
-        pass
+#    def post(self):
+#        pass
+#
+#    def put(self):
+#        pass
+#
+#    def delete(self):
+#        pass
 
 '''
     
@@ -217,28 +184,28 @@ class StaffHandler(MainHandler.BaseMobileHandler):
         @return The models of all the Staff for HackIllinois
     '''
     def get(self):
-        pass
-    
+        return self.write(json.dumps({'Staff':[]}))
+
     '''
         Update the current model associated with the userId
         
         @return Success or Fail (for now)
     '''
-    def post(self):
-        pass
-    
-    '''
-        Create a new model for a Staff member for HackIllinois
-       
-        Note: Must be an admin or current Staff
-       
-        @return Success or Fail (for now)
-    '''
-    def put(self):
-        pass
-
-    def delete(self):
-        pass
+#    def post(self):
+#        pass
+#    
+#    '''
+#        Create a new model for a Staff member for HackIllinois
+#       
+#        Note: Must be an admin or current Staff
+#       
+#        @return Success or Fail (for now)
+#    '''
+#    def put(self):
+#        pass
+#
+#    def delete(self):
+#        pass
 
 '''
     
@@ -251,28 +218,28 @@ class HackersHandler(MainHandler.BaseMobileHandler):
         @return The models of all the Hackers attendeeing HackIllinois
     '''
     def get(self):
-        pass
+        return self.write(json.dumps({'Hacker':[]}))
 
     '''
         Update the current model associated with the userId
         
         @return Success or Fail (for now)
     '''
-    def post(self):
-        pass
-
-    '''
-        Create a new model for a Hacker that is attendeeing HackIllinois
-        
-        Note: Must be an admin or current Staff
-        
-        @return Success or Fail (for now)
-    '''
-    def put(self):
-        pass
-
-    def delete(self):
-        pass
+#    def post(self):
+#        pass
+#
+#    '''
+#        Create a new model for a Hacker that is attendeeing HackIllinois
+#        
+#        Note: Must be an admin or current Staff
+#        
+#        @return Success or Fail (for now)
+#    '''
+#    def put(self):
+#        pass
+#
+#    def delete(self):
+#        pass
 
 '''
     
@@ -285,7 +252,7 @@ class CompanyHandler(MainHandler.BaseMobileHandler):
         @return The models of all the Companies attendeeing HackIllinois
     '''
     def get(self):
-        pass
+        return self.write(json.dumps({'Company':[]}))
 
     '''
         Update the current model associated with a company
@@ -294,21 +261,21 @@ class CompanyHandler(MainHandler.BaseMobileHandler):
        
         @return Success or Fail (for now)
     '''
-    def post(self):
-        pass
-
-    '''
-        Create a new model for a Company that is attendeeing HackIllinois
-        
-        Note: Must be an admin or current Staff
-        
-        @return
-    '''
-    def put(self):
-        pass
-
-    def delete(self):
-        pass
+#    def post(self):
+#        pass
+#
+#    '''
+#        Create a new model for a Company that is attendeeing HackIllinois
+#        
+#        Note: Must be an admin or current Staff
+#        
+#        @return
+#    '''
+#    def put(self):
+#        pass
+#
+#    def delete(self):
+#        pass
 
 '''
     
@@ -321,18 +288,18 @@ class SkillsHandler(MainHandler.BaseMobileHandler):
         @return A list of Skills that Hackers can have
     '''
     def get(self):
-        pass
+        return self.write(json.dumps({'Skills':['skill1','skill2','skill3','skill4','skill5']}))
 
     '''
         Update the list of Skills Hackers can have
         
         @return
     '''
-    def post(self):
-        pass
-
-    def put(self):
-        pass
-
-    def delete(self):
-        pass
+#    def post(self):
+#        pass
+#
+#    def put(self):
+#        pass
+#
+#    def delete(self):
+#        pass
