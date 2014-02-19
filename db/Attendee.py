@@ -15,6 +15,10 @@ class Attendee(Model):
     userFederatedIdentity = ndb.StringProperty()
     userFederatedProvider = ndb.StringProperty()
 
+    # https://developers.google.com/appengine/docs/python/users/userclass
+    # .nickname(), .email(), .user_id()
+    googleUser = ndb.UserProperty()
+
     nameFirst = ndb.StringProperty()
     nameLast = ndb.StringProperty()
     email = ndb.StringProperty()
