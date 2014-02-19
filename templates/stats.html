@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="description" content="Imagine. Learn. Launch. Join us for a 36-hour hackathon at the University of Illinois at Urbana-Champaign. April 11-13, 2014.">
+
+    <title>HackIllinois</title>
+
+    <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Lato:700|Open+Sans:700,400">
+    <link rel="icon" type="image/ico" href="favicon.ico"/>
+    <style type="text/css">
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Open Sans', sans-serif;
+        }
+        p, div {
+            font-family: 'Lato', sans-serif;
+            /*font-size: 2.5em;*/
+        }
+        table {
+            table-layout: fixed;
+        }
+        td {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        td:hover {
+            white-space: normal;
+            overflow: visible;
+            word-wrap:break-word;
+        }
+        .c1{width:14%;}
+        .c2{width:5%;}
+        .c3{width:11%;}
+        .c4{width:16%;}
+        .c5{width:15%;}
+        .c6{width:10%;}
+        .c7{width:14%;}
+		.search-name {
+            width: 14%;
+            vertical-align: middle;
+        }
+		.width100 {
+            width:100%;
+        }
+        .search-container {
+            width: 14%;
+            vertical-align: middle;
+        }
+        .t-centered {
+            text-align: center;
+        }
+        .search {
+            width:100%;
+        }
+        .approve-btn {
+            width:100%;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <h1>School Summary</h1>
+                <form name="tcol" onsubmit="return false">
+                    <label>Show columns:&nbsp;&nbsp;</label>
+					<input type=checkbox name="total" onclick="toggleVis(this.name)" checked> Total&nbsp;&nbsp;
+					<input type=checkbox name="gender" onclick="toggleVis(this.name)" checked> Gender&nbsp;&nbsp;
+                    <input type=checkbox name="year" onclick="toggleVis(this.name)" checked> Year&nbsp;&nbsp;
+                    <input type=checkbox name="shirt" onclick="toggleVis(this.name)" checked> Shirt&nbsp;&nbsp;
+                    <input type=checkbox name="food" onclick="toggleVis(this.name)" checked> Dietary Restrictions&nbsp;&nbsp;
+                    <input type=checkbox name="project" onclick="toggleVis(this.name)" checked> Project Type&nbsp;&nbsp;
+                </form>
+                <div id="hackers" class="table-responsive">
+                    <table id="usertable" class="table table-bordered table-hover">
+                        <thead>
+                            {% for t in schools.total %}
+                            <tr>
+                                <td name="tschool" class="c1">Totals</td>
+                                <td name="ttotal" class="c2">{{ t.total }}</td>
+								<td name="tgender" class="c3">{{ t.male }} / {{ t.female }} / {{ t.other }}</td>
+                                <td name="tyear" class="c4">{{ t.freshman }} / {{ t.sophomore }} / {{ t.junior }} / {{ t.senior }} / {{ t.grad }} / {{ t.hs }}</td>
+                                <td name="tshirt" class="c5">{{ t.xs }} / {{ t.s }} / {{ t.m }} / {{ t.l }} / {{ t.xl }} / {{ t.xxl }}</td>
+								<td name="tfood" class="c6">{{ t.vegetarian }} / {{ t.vegan }} / {{ t.gluten }} / {{ t.lactose }} / {{ t.otherfood }}</td>
+                                <td name="tproject" class="c7">{{ t.software }} / {{ t.hardware }} / {{ t.unsure }}</td>
+                            </tr>
+                            {% endfor %}
+							<tr name="search_params">								
+								<td class="c1"><input id="search_school" type="text" class="width100" placeholder="Search School" onchange="searchHackers()"/></td>
+							</tr>
+                            <tr>
+                                <th name="tschool" class="c1">School Name</th>
+                                <th name="ttotal" class="c2">Total</th>
+                                <th name="tgender" class="c3">Male/Female/Other</th>
+                                <th name="tyear" class="c4">Fresh/Soph/Junior/Senior/Grad/HS</th>
+                                <th name="tshirt" class="c5">XS/S/M/L/XL/XXL</th>
+                                <th name="tfood" class="c6">Vegetarian/Vegan/Gluten Free/Lactose Free/Other</th>
+                                <th name="tproject" class="c7">Software/Hardware/Unsure</th>
+                                <!-- <th class="c13">Resume</th> -->
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for s in schools.schools %}
+                            <tr id="{{ s.name }}" name="schoolData">
+                                <td name="tschool" class="c1">{{ s.name }}</td>
+                                <td name="ttotal" class="c2">{{ s.total }}</td>
+								<td name="tgender" class="c3">{{ s.male }} / {{ s.female }} / {{ s.other }}</td>
+                                <td name="tyear" class="c4">{{ s.freshman }} / {{ s.sophomore }} / {{ s.junior }} / {{ s.senior }} / {{ s.grad }} / {{ s.hs }}</td>
+                                <td name="tshirt" class="c5">{{ s.xs }} / {{ s.s }} / {{ s.m }} / {{ s.l }} / {{ s.xl }} / {{ s.xxl }}</td>
+								<td name="tfood" class="c6">{{ s.vegetarian }} / {{ s.vegan }} / {{ s.gluten }} / {{ s.lactose }} / {{ s.otherfood }}</td>
+                                <td name="tproject" class="c7">{{ s.software }} / {{ s.hardware }} / {{ s.unsure }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/list.js/1.1.0/list.min.js"></script>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+        var options = {
+            valueNames: [ 'id', 'fname', 'lname', 'email', 'gender', 'school', 'year', 'linkedin', 'github', 'shirt', 'food', 'project', 'time' ],
+            page: 1000
+        };
+		
+        // http://www.fiendish.demon.co.uk/html/javascript/hidetablecols.html
+        var showMode = 'table-cell';
+
+        function toggleVis(btn){
+            btn = document.forms['tcol'].elements[btn];
+            cells = document.getElementsByName('t'+btn.name);
+            mode = btn.checked ? showMode : 'none';
+            for(j = 0; j < cells.length; j++) cells[j].style.display = mode;
+        }
+		
+		function searchHackers(){
+			search_school = document.getElementById('search_school').value;
+            rows = document.getElementsByName('schoolData');
+			for(j = 0; j < rows.length; j++) 
+			{
+				var hide = false;
+				var school_name = rows[j].cells['tschool'].innerHTML;
+			
+				if(school_name.toUpperCase().indexOf(search_school.toUpperCase()) == -1)
+				{
+					hide = true;
+				}
+				if(hide)
+				{
+					rows[j].style.display = 'none';
+				}
+				else
+				{
+					rows[j].style.display = 'table-row';
+				}
+			}
+		}
+    </script>
+</body>
+</html>
