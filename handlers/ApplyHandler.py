@@ -198,7 +198,7 @@ class ApplyHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandle
                 errors[field] = constants.ERROR_MESSAGE_PREFIX + \
                                 constants.READABLE_REQUIRED_FIELDS[field] + \
                                 constants.ERROR_MESSAGE_SUFFIX
-            valid = False
+                valid = False
 
         if 'food' in x and x['food']:
             temp = x['food'].split(',')
