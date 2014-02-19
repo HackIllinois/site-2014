@@ -13,8 +13,8 @@ handlers:
   upload: assets/img/favicon\.ico
 
 - url: /robots.txt
-  static_files: templates/robots.txt
-  upload: templates/robots\.txt
+  static_files: assets/robots.txt
+  upload: assets/robots\.txt
 
 - url: /css
   static_dir: assets/css
