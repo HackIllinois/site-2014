@@ -162,11 +162,11 @@
                         <tbody class="list">
                             {% for h in data.hackers %}
 							{% if h.approved != "True"%}
-                            <tr id="{{ h.userId }}">
+                            <tr id="{{ h.userId }}" name="hackerData">
                                 <td class="id" style="display:none;">{{ loop.index }}</td>
-                                <td class="c1 fname">{{ h.nameFirst }}</td>
-                                <td class="c2 lname">{{ h.nameLast }}</td>
-                                <td class="c3 email">{{ h.email }}</td>
+                                <td name="tfirstName" class="c1 fname">{{ h.nameFirst }}</td>
+                                <td name="tlastName" class="c2 lname">{{ h.nameLast }}</td>
+                                <td name="temail" class="c3 email">{{ h.email }}</td>
                                 <td name="tgender" class="c4 gender">{{ h.gender }}</td>
                                 <td name="tschool" class="c5 school">{{ h.school }}</td>
                                 <td name="tyear" class="c6 year">{{ h.year }}</td>
@@ -351,7 +351,7 @@
         }
 
         $(document).ready(function() {
-            hackerList.sort('time', { order: "desc" });
+            hackerList.sort('approve', 'time', { order: "desc" });
             document.getElementById("count").innerHTML = hackerList.size()
             hackerList.on('searchComplete', function(){document.getElementById("count").innerHTML = hackerList.matchingItems.length;})
 
