@@ -37,7 +37,7 @@ class AdminBasicStatsHandler(MainHandler.BaseAdminHandler):
         count = 0
         collected = {}
         for f in fields:
-            collected[f] = defaultdict(lambda : defaultdict(int))
+            collected[f] = defaultdict(int)
 
         hackers = Attendee.search_database({'isRegistered':True})
         for hacker in hackers:
