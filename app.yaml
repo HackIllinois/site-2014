@@ -1,6 +1,6 @@
 # There's no need to change this app ID anymore to push to dev! See the "Git Deploy Setup Guide" in README.md
 # Again: DO NOT CHANGE THIS APP ID FROM "hackillinois"
-application: hackillinois
+application: hackillinois-dev
 version: 1
 runtime: python27
 api_version: 1

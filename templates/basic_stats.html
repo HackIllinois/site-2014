@@ -38,7 +38,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for s in f.stats %}
+                    {% for s in f.stats|sort(reverse=True,attribute='num') %}
                     <tr>
                         <td>{{ s.name }}</td>
                         <td class="t-centered">{{ s.num }}</td>
