@@ -91,7 +91,7 @@
 							<tr name="search_params">
                                 <td class="search-name" colspan="2"><input id="search_name" type="text" class="width100" placeholder="Search Names" onchange="searchHackers()" /></td>
 								<td class="c3"><input id="search_email" type="text" class="width100" placeholder="Search Email" onchange="searchHackers()"/></td>
-								<td class="c4">
+								<td class="c4" name="tgender">
 									<form name="search_gender">
 										<input type=checkbox name="Male" onclick="searchHackers()" checked> Male<br>
 										<input type=checkbox name="Female" onclick="searchHackers()" checked> Female<br>
@@ -101,9 +101,8 @@
 								</td>
 								<!--It would be great if "Chosen.js" could be added so they could select multiply schools-->
 								<!--or at least like apply-->
-								
-								<td class="c5"><input id="search_school" type="text" class="width100" placeholder="Search School" onchange="searchHackers()"/></td>
-								<td class="c6">
+								<td class="c5" name="tschool"><input id="search_school" type="text" class="width100" placeholder="Search School" onchange="searchHackers()"/></td>
+								<td class="c6" name="tyear">
 									<form name="search_year">
 										<input type=checkbox name="Freshman" onclick="searchHackers()" checked> Freshman<br>
 										<input type=checkbox name="Sophomore" onclick="searchHackers()" checked> Sophomore<br>
@@ -113,9 +112,9 @@
 										<input type=checkbox name="HS" onclick="searchHackers()" checked> HS
 									</form>
 								</td>
-								<td class="c7"><input id="search_linkedin" type="text" class="width100" placeholder="Search LinkedIn" onchange="searchHackers()"/></td>
-								<td class="c8"><input id="search_github" type="text" class="width100" placeholder="Search GitHub" onchange="searchHackers()"/></td>
-								<td class="c9">
+								<td class="c7" name="tlinkedin"><input id="search_linkedin" type="text" class="width100" placeholder="Search LinkedIn" onchange="searchHackers()"/></td>
+								<td class="c8" name="tgithub"><input id="search_github" type="text" class="width100" placeholder="Search GitHub" onchange="searchHackers()"/></td>
+								<td class="c9" name="tshirt">
 									<form name="search_shirt">
 										<input type=checkbox name="XS" onclick="searchHackers()" checked> XS<br>
 										<input type=checkbox name="S" onclick="searchHackers()" checked> S<br>
@@ -125,7 +124,7 @@
 										<input type=checkbox name="XXL" onclick="searchHackers()" checked> XXL
 									</form>
 								</td>
-								<td class="c10">
+								<td class="c10" name="tfood">
 									<form name="search_food">
 										<input type=checkbox name="Vegetarian" onclick="searchHackers()"> Vegetarian<br>
 										<input type=checkbox name="Vegan" onclick="searchHackers()"> Vegan<br>
@@ -134,7 +133,7 @@
 										<input type=checkbox name="Other" onclick="searchHackers()"> Other
 									</form>
 								</td>
-								<td class="c11">
+								<td class="c11" name="tproject">
 									<form name="search_project">
 										<input type=checkbox name="Software Hack" onclick="searchHackers()" checked> Software Hack<br>
 										<input type=checkbox name="Hardware Hack" onclick="searchHackers()" checked> Hardware Hack<br>
