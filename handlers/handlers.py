@@ -6,11 +6,9 @@ from SignupCountHandler import SignupCountHandler
 from ApplyCountHandler import ApplyCountHandler
 from SubpageHandlers import RulesHandler, ScheduleHandler, TravelHandler, CoCHandler
 from TropoHandler import TropoHandler
-from AdminHandler import AdminApproveHandler, AdminResumeHandler, AdminStatsHandler
+from AdminHandler import AdminHandler, AdminApproveHandler, AdminResumeHandler, AdminStatsHandler, AdminBasicStatsHandler, AdminXkcdHandler
 from SponsorHandler import SponsorHandler
-# from AdminHandler import AdminHandler, ApproveResumeHandler, ApproveHandler
-# import AdminHandler
-# from LoginRequiredHandler import LoginRequiredHandler
+from LogoutHandler import LogoutHandler
 
 
 handlers = [
@@ -29,17 +27,15 @@ handlers = [
     ('/signupcount', SignupCountHandler),
     ('/travel', TravelHandler),
     ('/tropo', TropoHandler),
-    # I may have broken all of this code with the backend refactor, will help get it fixed soon. --Matthew
-    # ('/admin', AdminHandler),
-    # ('/admin/approve', ApproveHandler),
-    # ('/admin/approve/resume/.*', ApproveResumeHandler),
+    ('/admin', AdminHandler),
+    ('/admin/xkcd', AdminXkcdHandler),
     ('/admin/approve', AdminApproveHandler),
     ('/admin/stats', AdminStatsHandler),
+    ('/admin/basicstats', AdminBasicStatsHandler),
     ('/admin/resume', AdminResumeHandler),
     ('/sponsor/download', SponsorHandler),
     ('/code-of-conduct', CoCHandler),
-    # ('/_ah/login_required', LoginRequiredHandler),
-    # ('/admin', AdminHandler.AdminHandler),
+    ('/logout', LogoutHandler),
 	('/401', Error401Handler),
 	('/404', Error404Handler),
 	('/500', Error500Handler),

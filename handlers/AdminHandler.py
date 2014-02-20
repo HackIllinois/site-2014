@@ -5,57 +5,68 @@ from db import constants
 from google.appengine.api import users
 from google.appengine.ext import blobstore
 from google.appengine.ext.webapp import blobstore_handlers
+from google.appengine.api import urlfetch
+from collections import defaultdict
 
-
-class AdminHandler(MainHandler.Handler):
-
+class AdminHandler(MainHandler.BaseAdminHandler):
     def get(self):
-        user = users.get_current_user()
-        if user:
-            name = user.nickname()
-        else:
-            name = 'ERROR'
-        self.render('admin.html', name=name, logout=users.create_logout_url('/'))
+        return self.render('admin.html', data={})
 
-class ApproveHandler(MainHandler.Handler):
-    """ Handler for registration page.
-    This does not include the email registration we have up now."""
+
+class AdminXkcdHandler(MainHandler.BaseAdminHandler):
     def get(self):
-        db_all_users = models.search_database(Attendee, {'approved':'NA'})#Should Be Yes
-        if db_all_users is None:
-            self.response.out.write('ERROR')
-        else:
-            all_users = db_all_users.fetch()
-        self.render('approve.html', all_users=all_users)
+        self.response.headers.add("Access-Control-Allow-Origin", "*")
+        self.response.headers['Content-Type'] = 'text/json'
+        return self.write(urlfetch.fetch('http://xkcd.com/info.0.json').content)
 
-class ApproveResumeHandler(MainHandler.Handler, blobstore_handlers.BlobstoreDownloadHandler):
+
+class AdminBasicStatsHandler(MainHandler.BaseAdminHandler):
     def get(self):
-        db_user = models.search_database(Attendee, {'userId':self.request.url.split('/')[-1]}).get()
-        if not db_user:
-		    #Should Redirect to error page
-            return self.redirect('/register')
+        # data = {}
+        # data.numPeople = 0
+        # data.fields = []
+        # data.fields[0].name
+        # data.fields[0].stats = []
+        # data.fields[0].stats[0] = {}
+        # data.fields[0].stats[0].name
+        # data.fields[0].stats[0].num
 
-        # https://developers.google.com/appengine/docs/python/blobstore/#Python_Using_the_Blobstore_API_with_Google_Cloud_Storage
-        resource = str(urllib.unquote(db_user.resume.gsObjectName))
-        blob_key = blobstore.create_gs_key(resource)
-        self.send_blob(blob_key)
+        fields = {'Schools':'school', 'Genders':'gender', 'Years':'year', 'Shirts':'shirt', 'Diets':'food', 'Projects':'projectType'}
+        resume = 'Resume'
 
-class AttendeeResumeHandler(MainHandler.Handler, blobstore_handlers.BlobstoreDownloadHandler):
-    def get(self):
-        user = users.get_current_user()
-        if user:
-            db_user = models.search_database(Attendee, {'userId':self.request.url.split('/')[-1]}).get()
-            if not db_user:
-                return self.redirect('/register')
+        count = 0
+        collected = {}
+        for f in fields:
+            collected[f] = defaultdict(lambda : defaultdict(int))
 
-            # https://developers.google.com/appengine/docs/python/blobstore/#Python_Using_the_Blobstore_API_with_Google_Cloud_Storage
-            resource = str(urllib.unquote(db_user.resume.gsObjectName))
-            blob_key = blobstore.create_gs_key(resource)
-            self.send_blob(blob_key)
-        else:
-            # User not logged in (shouldn't happen)
-            # TODO: redirect to error handler
-            self.write('ERROR')
+        hackers = Attendee.search_database({'isRegistered':True})
+        for hacker in hackers:
+            count += 1
+            for f in fields:
+                collected[f][getattr(hacker, fields[f])] += 1
+
+            if hacker.resume and hacker.resume.fileName:
+                collected[resume]['Has Resume'] += 1
+            else:
+                collected[resume]['No Resume'] += 1
+
+        data = {}
+
+        data['numPeople'] = count
+        data['fields'] = []
+
+        for field in fields:
+            d = {}
+            d['name'] = field
+            d['stats'] = []
+            for option in collected[field]:
+                e = {}
+                e['name'] = option
+                e['num'] = collected[field][option]
+                d['stats'].append(e)
+            data['fields'].append(d)
+
+        return self.render('basic_stats.html', data=data)
 
 
 class AdminResumeHandler(MainHandler.BaseAdminHandler, blobstore_handlers.BlobstoreDownloadHandler):
@@ -108,24 +119,27 @@ class AdminApproveHandler(MainHandler.BaseAdminHandler):
                                      'projectType':hacker.projectType,
                                      'registrationTime':hacker.registrationTime.strftime('%x %X'),
                                      'resume':resume_link,
-                                     'approved':hacker.approved,
+                                     # 'approved':hacker.approved,
+                                     'approved':True,
                                      'userId':hacker.userId})
 
         self.render("approve.html", data=data)
-    def post(self):
-        userid = str(self.request.get('id'))
-        user = Attendee.search_database({'userId':userid}).get() #works now
-        if not user:
-           # TODO: redirect to error handler
-            return self.write('ERROR')
-        x = {}
-        x['approved'] = 'True'
-        success = Attendee.update_search(x, {'userId':userid})
+
+    # def post(self):
+    #     userid = str(self.request.get('id'))
+    #     user = Attendee.search_database({'userId':userid}).get() #works now
+    #     if not user:
+    #        # TODO: redirect to error handler
+    #         return self.write('ERROR')
+    #     x = {}
+    #     x['approved'] = 'True'
+    #     success = Attendee.update_search(x, {'userId':userid})
+
 
 class AdminStatsHandler(MainHandler.BaseAdminHandler):
     def get(self):
         hackers = Attendee.search_database({'isRegistered':True})
-  
+
         data = {}
         data['total'] = {}
         data['total']['male'] = 0
@@ -144,14 +158,14 @@ class AdminStatsHandler(MainHandler.BaseAdminHandler):
         data['total']['xl'] = 0
         data['total']['xxl'] = 0
         data['total']['vegetarian'] = 0
-        data['total']['vegan'] = 0				
-        data['total']['gluten'] = 0				
-        data['total']['lactose'] = 0				
+        data['total']['vegan'] = 0
+        data['total']['gluten'] = 0
+        data['total']['lactose'] = 0
         data['total']['otherfood'] = 0
         data['total']['software'] = 0
         data['total']['hardware'] = 0
         data['total']['unsure'] = 0
-		
+
         for hacker in hackers:
             if hacker.school not in data:
                 data[hacker.school] = {}
@@ -172,9 +186,9 @@ class AdminStatsHandler(MainHandler.BaseAdminHandler):
                 data[hacker.school]['xl'] = 0
                 data[hacker.school]['xxl'] = 0
                 data[hacker.school]['vegetarian'] = 0
-                data[hacker.school]['vegan'] = 0				
-                data[hacker.school]['gluten'] = 0				
-                data[hacker.school]['lactose'] = 0				
+                data[hacker.school]['vegan'] = 0
+                data[hacker.school]['gluten'] = 0
+                data[hacker.school]['lactose'] = 0
                 data[hacker.school]['otherfood'] = 0
                 data[hacker.school]['software'] = 0
                 data[hacker.school]['hardware'] = 0
@@ -226,9 +240,9 @@ class AdminStatsHandler(MainHandler.BaseAdminHandler):
                                 'xl':data[x]['xl'],
                                 'xxl':data[x]['xxl'],
                                 'vegetarian':data[x]['vegetarian'],
-                                'vegan':data[x]['vegan'],            
-                                'gluten':data[x]['gluten'],                
-                                'lactose':data[x]['lactose'],                
+                                'vegan':data[x]['vegan'],
+                                'gluten':data[x]['gluten'],
+                                'lactose':data[x]['lactose'],
                                 'otherfood':data[x]['otherfood'],
                                 'software':data[x]['software'],
                                 'hardware':data[x]['hardware'],
@@ -250,11 +264,11 @@ class AdminStatsHandler(MainHandler.BaseAdminHandler):
                         'xl':data['total']['xl'],
                         'xxl':data['total']['xxl'],
                         'vegetarian':data['total']['vegetarian'],
-                        'vegan':data['total']['vegan'],            
-                        'gluten':data['total']['gluten'],                
-                        'lactose':data['total']['lactose'],                
+                        'vegan':data['total']['vegan'],
+                        'gluten':data['total']['gluten'],
+                        'lactose':data['total']['lactose'],
                         'otherfood':data['total']['otherfood'],
-                        'software':data['total']['software'],                                    
+                        'software':data['total']['software'],
                         'hardware':data['total']['hardware'],
                         'unsure':data['total']['unsure'] })
         self.render("stats.html", schools=schools)

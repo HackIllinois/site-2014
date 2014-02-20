@@ -9,7 +9,7 @@
 
     <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Lato:700|Open+Sans:700,400">
-    <link rel="icon" type="image/ico" href="favicon.ico"/>
+    <link rel="icon" type="image/ico" href="/favicon.ico"/>
     <style type="text/css">
         h1, h2, h3, h4, h5, h6 {
             font-family: 'Open Sans', sans-serif;
@@ -89,7 +89,7 @@
                                 <td name="tproject" class="c7">{{ t.software }} / {{ t.hardware }} / {{ t.unsure }}</td>
                             </tr>
                             {% endfor %}
-							<tr name="search_params">								
+							<tr name="search_params">
 								<td class="c1"><input id="search_school" type="text" class="width100" placeholder="Search School" onchange="searchHackers()"/></td>
 							</tr>
                             <tr>
@@ -130,7 +130,7 @@
             valueNames: [ 'id', 'fname', 'lname', 'email', 'gender', 'school', 'year', 'linkedin', 'github', 'shirt', 'food', 'project', 'time' ],
             page: 1000
         };
-		
+
         // http://www.fiendish.demon.co.uk/html/javascript/hidetablecols.html
         var showMode = 'table-cell';
 
@@ -140,15 +140,15 @@
             mode = btn.checked ? showMode : 'none';
             for(j = 0; j < cells.length; j++) cells[j].style.display = mode;
         }
-		
+
 		function searchHackers(){
 			search_school = document.getElementById('search_school').value;
             rows = document.getElementsByName('schoolData');
-			for(j = 0; j < rows.length; j++) 
+			for(j = 0; j < rows.length; j++)
 			{
 				var hide = false;
 				var school_name = rows[j].cells['tschool'].innerHTML;
-			
+
 				if(school_name.toUpperCase().indexOf(search_school.toUpperCase()) == -1)
 				{
 					hide = true;

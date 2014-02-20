@@ -16,10 +16,10 @@ def handle_401(request, response, exception):
 	user = users.get_current_user()
 	if not user:
 		render( response, "simple_message.html", showSocial=False, header="ACCESS DENIED",
-				message="You are not an admin or are not logged in as such.<br>Please log in with a valid @hackillinois.org email address.<br><a class='logout-link' href='%s'>Login</a>" % users.create_login_url('/') )	
+				message="You are not an admin or are not logged in as such.<br>Please log in with a valid @hackillinois.org email address.<br><a class='logout-link' href='%s'>Login</a>" % users.create_login_url('/') )
 	else:
 		render( response, "simple_message.html", showSocial=False, header="ACCESS DENIED",
-				message="You (%s) are not an admin or are not logged in as such.<br>Please log in with a valid @hackillinois.org email address.<br><a class='logout-link' href='%s'>Logout</a>" % (user.nickname(), users.create_logout_url('/')) )
+				message="You (%s) are not an admin or are not logged in as such.<br>Please log in with a valid @hackillinois.org email address.<br><a class='logout-link' href='/logout'>Logout</a>" % user.nickname() )
 	response.set_status(401)
 
 def handle_404(request, response, exception):
@@ -31,17 +31,17 @@ def handle_404(request, response, exception):
 def handle_500(request, response, exception):
 	# Internal Server Error
 	logging.exception(exception)
-	render( response, "simple_message.html", showSocial=False, header="A server error occurred!", message="" )
+	render( response, "simple_message.html", showSocial=False, header="A server error occurred!", message="We are sorry for the inconvienence.<br>Our team has been automatically notified of this incident." )
 	response.set_status(500)
 
 class Error401Handler(MainHandler.Handler):
 	def get(self):
 		return self.abort(401)
-		
+
 class Error404Handler(MainHandler.Handler):
 	def get(self):
 		return self.abort(404)
-		
+
 class Error500Handler(MainHandler.Handler):
 	def get(self):
 		return self.abort(500)

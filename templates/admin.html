@@ -1,13 +1,46 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8">
-    <title></title>
-    <meta name="description" content="">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-</head>
-<body>
-    <p>Hello {{ name }}! (ADMIN)</p>
-    <a href="{{ logout }}">sign out</a>
-</body>
-</html>
+{% extends "base/admin_base.html" %}
+{% set active_page = "admin" %}
+
+{% block head %}
+<style type="text/css">
+    .page-header {
+        margin-top: 0;
+    }
+    .t-centered {
+        text-align: center;
+    }
+    .xkcd-container {
+        display: inline-block;
+    }
+</style>
+{% endblock head %}
+
+
+{% block body %}
+<h1 class="page-header">Dashboard</h1>
+<span class="xkcd-container">
+    <h3 id="xkcd_title" class="t-centered"></h3>
+    <a href="http://xkcd.com/"><img id="xkcd" class="img-responsive"></a>
+</span>
+{% endblock body %}
+
+
+{% block scripts %}
+<script type="text/javascript">
+var num = 0
+
+$(document).ready(function() {
+    var img = document.getElementById("xkcd");
+    var title = document.getElementById("xkcd_title");
+    $.getJSON( "/admin/xkcd", function( data ) {
+        img.src = data.img;
+        img.title = data.title;
+        img.alt = data.alt;
+
+        title.innerHTML = data.title;
+
+        num = data.num;
+    });
+});
+</script>
+{% endblock scripts%}

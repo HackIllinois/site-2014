@@ -9,7 +9,7 @@
 
     <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Lato:700|Open+Sans:700,400">
-    <link rel="icon" type="image/ico" href="favicon.ico"/>
+    <link rel="icon" type="image/ico" href="/favicon.ico"/>
     <style type="text/css">
         h1, h2, h3, h4, h5, h6 {
             font-family: 'Open Sans', sans-serif;
@@ -201,7 +201,7 @@
                             </tr>
 							{% endif %}
                             {% endfor %}
-							
+
                         </tbody>
                     </table>
                 </div>
@@ -230,7 +230,7 @@
             mode = btn.checked ? showMode : 'none';
             for(j = 0; j < cells.length; j++) cells[j].style.display = mode;
         }
-		
+
 		function searchHackers(){
 			search_name = document.getElementById('search_name').value;
 			search_email = document.getElementById('search_email').value;
@@ -243,7 +243,7 @@
 			search_food = document.forms['search_food'].elements;
 			search_project = document.forms['search_project'].elements;
 			rows = document.getElementsByName('hackerData');
-            for(j = 0; j < rows.length; j++) 
+            for(j = 0; j < rows.length; j++)
 			{
 				var hide = false;
 				var hacker_name = rows[j].cells['tfirstName'].innerHTML + " " + rows[j].cells['tlastName'].innerHTML;
