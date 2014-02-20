@@ -2,6 +2,8 @@ ADMIN_EMAILS = set(['lx.icomputer@gmail.com','mvd7793@gmail.com'])
 
 BUCKET = 'hackillinois'
 
+MEMCACHE_TIMEOUT = 3600 # seconds = 1 hour
+
 APPLY_TITLE = 'Application'
 PROFILE_TITLE = 'Profile'
 

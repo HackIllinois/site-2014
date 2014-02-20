@@ -20,7 +20,7 @@ class AdminXkcdHandler(MainHandler.BaseAdminHandler):
         xkcd_json = memcache.get('xkcd')
         if not xkcd_json:
             xkcd_json = urlfetch.fetch('http://xkcd.com/info.0.json').content
-            if not memcache.add('xkcd', xkcd_json, time=3600):
+            if not memcache.add('xkcd', xkcd_json, time=constants.MEMCACHE_TIMEOUT):
                 logging.error('Memcache set failed.')
 
         stats = memcache.get_stats()
@@ -73,7 +73,7 @@ class AdminBasicStatsHandler(MainHandler.BaseAdminHandler):
                     d['stats'].append(e)
                 data['fields'].append(d)
 
-            if not memcache.add('basic_stats', data, time=900):
+            if not memcache.add('basic_stats', data, time=constants.MEMCACHE_TIMEOUT):
                 logging.error('Memcache set failed.')
 
         stats = memcache.get_stats()
@@ -140,7 +140,7 @@ class AdminApproveHandler(MainHandler.BaseAdminHandler):
                                          'approved':True,
                                          'userId':hacker.userId})
 
-            if not memcache.add('hackers', data, time=900):
+            if not memcache.add('hackers', data, time=constants.MEMCACHE_TIMEOUT):
                 logging.error('Memcache set failed.')
 
         stats = memcache.get_stats()
@@ -299,7 +299,7 @@ class AdminStatsHandler(MainHandler.BaseAdminHandler):
                             'hardware':data['total']['hardware'],
                             'unsure':data['total']['unsure'] })
 
-            if not memcache.add('stats', schools, time=900):
+            if not memcache.add('stats', schools, time=constants.MEMCACHE_TIMEOUT):
                 logging.error('Memcache set failed.')
 
         stats = memcache.get_stats()
