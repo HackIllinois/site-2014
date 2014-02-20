@@ -1,6 +1,8 @@
 {% set navigation_sidebar = [
     ('/admin', 'admin', 'Admin'),
     ('/admin/basicstats', 'basicstats', 'Basic Stats'),
+    ('/admin/stats', 'stats', 'Advanced Stats'),
+    ('/admin/approve', 'hackers', 'All Hackers'),
 ] %}
 
 {% set navigation_topbar = [
@@ -25,6 +27,14 @@
         <link rel="icon" type="image/ico" href="/favicon.ico"/>
 
         <style type="text/css">
+            h1, h2, h3, h4, h5, h6 {
+                font-family: 'Open Sans', sans-serif;
+            }
+            p, div {
+                font-family: 'Lato', sans-serif;
+                /*font-size: 2.5em;*/
+            }
+
             body {
                 padding-top: 50px;
             }

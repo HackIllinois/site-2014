@@ -22,14 +22,6 @@ class AdminXkcdHandler(MainHandler.BaseAdminHandler):
 
 class AdminBasicStatsHandler(MainHandler.BaseAdminHandler):
     def get(self):
-        # data = {}
-        # data.numPeople = 0
-        # data.fields = []
-        # data.fields[0].name
-        # data.fields[0].stats = []
-        # data.fields[0].stats[0] = {}
-        # data.fields[0].stats[0].name
-        # data.fields[0].stats[0].num
 
         fields = {'Schools':'school', 'Genders':'gender', 'Years':'year', 'Shirts':'shirt', 'Diets':'food', 'Projects':'projectType'}
         resume = 'Resume'
@@ -38,6 +30,7 @@ class AdminBasicStatsHandler(MainHandler.BaseAdminHandler):
         collected = {}
         for f in fields:
             collected[f] = defaultdict(int)
+        collected[resume] = defaultdict(int)
 
         hackers = Attendee.search_database({'isRegistered':True})
         for hacker in hackers:
@@ -55,11 +48,11 @@ class AdminBasicStatsHandler(MainHandler.BaseAdminHandler):
         data['numPeople'] = count
         data['fields'] = []
 
-        for field in fields:
+        for field in sorted(collected.keys()):
             d = {}
             d['name'] = field
             d['stats'] = []
-            for option in collected[field]:
+            for option in sorted(collected[field].keys()):
                 e = {}
                 e['name'] = option
                 e['num'] = collected[field][option]

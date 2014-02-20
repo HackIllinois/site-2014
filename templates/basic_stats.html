@@ -3,13 +3,6 @@
 
 {% block head %}
 <style type="text/css">
-    h1, h2, h3, h4, h5, h6 {
-        font-family: 'Open Sans', sans-serif;
-    }
-    p, div {
-        font-family: 'Lato', sans-serif;
-        /*font-size: 2.5em;*/
-    }
     table {
         table-layout: auto;
     }
@@ -32,9 +25,9 @@
     <div class="row">
     {% endif %}
         {% if column == 0 %}
-        <div class="col-md-4 col-md-offset-1">
+        <div class="col-md-6">
         {% else %}
-        <div class="col-md-4 col-md-offset-2">
+        <div class="col-md-6">
         {% endif %}
             <table class="table table-bordered table-hover">
                 <thead>

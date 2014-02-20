@@ -1,15 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <meta name="description" content="Imagine. Learn. Launch. Join us for a 36-hour hackathon at the University of Illinois at Urbana-Champaign. April 11-13, 2014.">
+{% extends "base/admin_base.html" %}
+{% set active_page = "hackers" %}
 
-    <title>HackIllinois</title>
-
-    <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Lato:700|Open+Sans:700,400">
-    <link rel="icon" type="image/ico" href="/favicon.ico"/>
+{% block head %}
     <style type="text/css">
         h1, h2, h3, h4, h5, h6 {
             font-family: 'Open Sans', sans-serif;
@@ -66,9 +58,10 @@
             width:100%;
         }
     </style>
-</head>
+{% endblock head %}
 
-<body>
+
+{% block body %}
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
@@ -126,11 +119,11 @@
 								</td>
 								<td class="c10" name="tfood">
 									<form name="search_food">
-										<input type=checkbox name="Vegetarian" onclick="searchHackers()"> Vegetarian<br>
-										<input type=checkbox name="Vegan" onclick="searchHackers()"> Vegan<br>
-										<input type=checkbox name="Gluten Free" onclick="searchHackers()"> Gluten Free<br>
-										<input type=checkbox name="Lactose Free" onclick="searchHackers()"> Lactose Free<br>
-										<input type=checkbox name="Other" onclick="searchHackers()"> Other
+										<input type=checkbox name="Vegetarian" onclick="searchHackers()" checked> Vegetarian<br>
+										<input type=checkbox name="Vegan" onclick="searchHackers()" checked> Vegan<br>
+										<input type=checkbox name="Gluten Free" onclick="searchHackers()" checked> Gluten Free<br>
+										<input type=checkbox name="Lactose Free" onclick="searchHackers()" checked> Lactose Free<br>
+										<input type=checkbox name="Other" onclick="searchHackers()" checked> Other
 									</form>
 								</td>
 								<td class="c11" name="tproject">
@@ -155,7 +148,7 @@
                                 <th name="tfood" class="c10 sort" data-sort="food">Dietary Restrictions</th>
                                 <th name="tproject" class="c11 sort" data-sort="project">Project Type</th>
                                 <th name="ttime" class="c12 sort" data-sort="time">Registered</th>
-                                <!-- <th class="c13">Resume</th> -->
+                                <th class="c13">Resume</th>
                             </tr>
                         </thead>
                         <tbody class="list">
@@ -176,7 +169,7 @@
                                 <td name="tproject" class="c11 project">{{ h.projectType }}</td>
                                 <td name="ttime" class="c12 time">{{ h.registrationTime }}</td>
                                 <td class="c13">{{ h.resume|safe }}</td>
-                                <td class="c14 approved"><button type="submit" class="btn btn-primary approve-btn">Approve</button></td>
+                                <!-- <td class="c14 approved"><button type="submit" class="btn btn-primary approve-btn">Approve</button></td> -->
                             </tr>
 							{% endif %}
                             {% endfor %}
@@ -197,7 +190,7 @@
                                 <td name="tproject" class="c11 project">{{ h.projectType }}</td>
                                 <td name="ttime" class="c12 time">{{ h.registrationTime }}</td>
                                 <td class="c13">{{ h.resume|safe }}</td>
-                                <td class="c14 approved"><button type="submit" class="btn btn-primary approve-btn" disabled="disabled">Approve</button></td>
+                                <!-- <td class="c14 approved"><button type="submit" class="btn btn-primary approve-btn" disabled="disabled">Approve</button></td> -->
                             </tr>
 							{% endif %}
                             {% endfor %}
@@ -208,10 +201,11 @@
             </div>
         </div>
     </div>
+{% endblock body %}
 
-    <script src="https://code.jquery.com/jquery.js"></script>
+
+{% block scripts %}
     <script src="//cdnjs.cloudflare.com/ajax/libs/list.js/1.1.0/list.min.js"></script>
-    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
     <script type="text/javascript">
         var options = {
             valueNames: [ 'id', 'fname', 'lname', 'email', 'gender', 'school', 'year', 'linkedin', 'github', 'shirt', 'food', 'project', 'time' ],
@@ -357,5 +351,4 @@
             applyBtnCallbacks();
         });
     </script>
-</body>
-</html>
+{% endblock scripts%}
