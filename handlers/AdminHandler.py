@@ -22,7 +22,6 @@ class AdminXkcdHandler(MainHandler.BaseAdminHandler):
 
 class AdminBasicStatsHandler(MainHandler.BaseAdminHandler):
     def get(self):
-
         fields = {'Schools':'school', 'Genders':'gender', 'Years':'year', 'Shirts':'shirt', 'Diets':'food', 'Projects':'projectType'}
         resume = 'Resume'
 
@@ -93,7 +92,7 @@ class AdminApproveHandler(MainHandler.BaseAdminHandler):
             resume_link = None
             if hacker.resume:
                 name = hacker.resume.fileName
-                name = name if len(name)<=10 else name[0:7]+'...'
+                # name = name if len(name)<=10 else name[0:7]+'...'
                 resume_link = "<a href='/admin/resume?userId=%s'>%s</a>" % (hacker.userId, name)
                 pass
             else:
@@ -116,7 +115,8 @@ class AdminApproveHandler(MainHandler.BaseAdminHandler):
                                      'approved':True,
                                      'userId':hacker.userId})
 
-        self.render("approve.html", data=data)
+        # self.render("approve.html", data=data)
+        self.render("summary.html", data=data)
 
     # def post(self):
     #     userid = str(self.request.get('id'))

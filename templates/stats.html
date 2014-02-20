@@ -1,30 +1,23 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <meta name="description" content="Imagine. Learn. Launch. Join us for a 36-hour hackathon at the University of Illinois at Urbana-Champaign. April 11-13, 2014.">
+{% extends "base/admin_base.html" %}
+{% set active_page = "stats" %}
 
-    <title>HackIllinois</title>
-
-    <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Lato:700|Open+Sans:700,400">
-    <link rel="icon" type="image/ico" href="/favicon.ico"/>
+{% block head %}
     <style type="text/css">
-        h1, h2, h3, h4, h5, h6 {
-            font-family: 'Open Sans', sans-serif;
-        }
-        p, div {
-            font-family: 'Lato', sans-serif;
-            /*font-size: 2.5em;*/
+        .page-header {
+            margin-top: 0;
         }
         table {
             table-layout: fixed;
         }
-        td {
+        tbody > tr > td {
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+        }
+        thead > tr > td {
+            white-space: normal;
+            overflow: visible;
+            word-wrap:break-word;
         }
         td:hover {
             white-space: normal;
@@ -59,13 +52,14 @@
             width:100%;
         }
     </style>
-</head>
+{% endblock head %}
 
-<body>
+
+{% block body %}
+    <h1 class="page-header">School Summary</h1>
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
-                <h1>School Summary</h1>
                 <form name="tcol" onsubmit="return false">
                     <label>Show columns:&nbsp;&nbsp;</label>
 					<input type=checkbox name="total" onclick="toggleVis(this.name)" checked> Total&nbsp;&nbsp;
@@ -82,11 +76,11 @@
                             <tr>
                                 <td name="tschool" class="c1">Totals</td>
                                 <td name="ttotal" class="c2">{{ t.total }}</td>
-								<td name="tgender" class="c3">{{ t.male }} / {{ t.female }} / {{ t.other }}</td>
-                                <td name="tyear" class="c4">{{ t.freshman }} / {{ t.sophomore }} / {{ t.junior }} / {{ t.senior }} / {{ t.grad }} / {{ t.hs }}</td>
-                                <td name="tshirt" class="c5">{{ t.xs }} / {{ t.s }} / {{ t.m }} / {{ t.l }} / {{ t.xl }} / {{ t.xxl }}</td>
-								<td name="tfood" class="c6">{{ t.vegetarian }} / {{ t.vegan }} / {{ t.gluten }} / {{ t.lactose }} / {{ t.otherfood }}</td>
-                                <td name="tproject" class="c7">{{ t.software }} / {{ t.hardware }} / {{ t.unsure }}</td>
+								<td name="tgender" class="c3">{{ t.male }}{{ ' / ' }}{{ t.female }}{{ ' / ' }}{{ t.other }}</td>
+                                <td name="tyear" class="c4">{{ t.freshman }}{{ ' / ' }}{{ t.sophomore }}{{ ' / ' }}{{ t.junior }}{{ ' / ' }}{{ t.senior }}{{ ' / ' }}{{ t.grad }}{{ ' / ' }}{{ t.hs }}</td>
+                                <td name="tshirt" class="c5">{{ t.xs }}{{ ' / ' }}{{ t.s }}{{ ' / ' }}{{ t.m }}{{ ' / ' }}{{ t.l }}{{ ' / ' }}{{ t.xl }}{{ ' / ' }}{{ t.xxl }}</td>
+								<td name="tfood" class="c6">{{ t.vegetarian }}{{ ' / ' }}{{ t.vegan }}{{ ' / ' }}{{ t.gluten }}{{ ' / ' }}{{ t.lactose }}{{ ' / ' }}{{ t.otherfood }}</td>
+                                <td name="tproject" class="c7">{{ t.software }}{{ ' / ' }}{{ t.hardware }}{{ ' / ' }}{{ t.unsure }}</td>
                             </tr>
                             {% endfor %}
 							<tr name="search_params">
@@ -95,11 +89,11 @@
                             <tr>
                                 <th name="tschool" class="c1">School Name</th>
                                 <th name="ttotal" class="c2">Total</th>
-                                <th name="tgender" class="c3">Male/Female/Other</th>
-                                <th name="tyear" class="c4">Fresh/Soph/Junior/Senior/Grad/HS</th>
-                                <th name="tshirt" class="c5">XS/S/M/L/XL/XXL</th>
-                                <th name="tfood" class="c6">Vegetarian/Vegan/Gluten Free/Lactose Free/Other</th>
-                                <th name="tproject" class="c7">Software/Hardware/Unsure</th>
+                                <th name="tgender" class="c3">Male / Female / Other</th>
+                                <th name="tyear" class="c4">Fresh / Soph / Junior / Senior / Grad / HS</th>
+                                <th name="tshirt" class="c5">XS / S / M / L / XL / XXL</th>
+                                <th name="tfood" class="c6">Vegetarian / Vegan / Gluten_Free / Lactose_Free / Other</th>
+                                <th name="tproject" class="c7">Software / Hardware / Unsure</th>
                                 <!-- <th class="c13">Resume</th> -->
                             </tr>
                         </thead>
@@ -108,11 +102,11 @@
                             <tr id="{{ s.name }}" name="schoolData">
                                 <td name="tschool" class="c1">{{ s.name }}</td>
                                 <td name="ttotal" class="c2">{{ s.total }}</td>
-								<td name="tgender" class="c3">{{ s.male }} / {{ s.female }} / {{ s.other }}</td>
-                                <td name="tyear" class="c4">{{ s.freshman }} / {{ s.sophomore }} / {{ s.junior }} / {{ s.senior }} / {{ s.grad }} / {{ s.hs }}</td>
-                                <td name="tshirt" class="c5">{{ s.xs }} / {{ s.s }} / {{ s.m }} / {{ s.l }} / {{ s.xl }} / {{ s.xxl }}</td>
-								<td name="tfood" class="c6">{{ s.vegetarian }} / {{ s.vegan }} / {{ s.gluten }} / {{ s.lactose }} / {{ s.otherfood }}</td>
-                                <td name="tproject" class="c7">{{ s.software }} / {{ s.hardware }} / {{ s.unsure }}</td>
+								<td name="tgender" class="c3">{{ s.male }}{{ ' / ' }}{{ s.female }}{{ ' / ' }}{{ s.other }}</td>
+                                <td name="tyear" class="c4">{{ s.freshman }}{{ ' / ' }}{{ s.sophomore }}{{ ' / ' }}{{ s.junior }}{{ ' / ' }}{{ s.senior }}{{ ' / ' }}{{ s.grad }}{{ ' / ' }}{{ s.hs }}</td>
+                                <td name="tshirt" class="c5">{{ s.xs }}{{ ' / ' }}{{ s.s }}{{ ' / ' }}{{ s.m }}{{ ' / ' }}{{ s.l }}{{ ' / ' }}{{ s.xl }}{{ ' / ' }}{{ s.xxl }}</td>
+								<td name="tfood" class="c6">{{ s.vegetarian }}{{ ' / ' }}{{ s.vegan }}{{ ' / ' }}{{ s.gluten }}{{ ' / ' }}{{ s.lactose }}{{ ' / ' }}{{ s.otherfood }}</td>
+                                <td name="tproject" class="c7">{{ s.software }}{{ ' / ' }}{{ s.hardware }}{{ ' / ' }}{{ s.unsure }}</td>
                             </tr>
                             {% endfor %}
                         </tbody>
@@ -121,10 +115,11 @@
             </div>
         </div>
     </div>
+{% endblock body %}
 
-    <script src="https://code.jquery.com/jquery.js"></script>
+
+{% block scripts %}
     <script src="//cdnjs.cloudflare.com/ajax/libs/list.js/1.1.0/list.min.js"></script>
-    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
     <script type="text/javascript">
         var options = {
             valueNames: [ 'id', 'fname', 'lname', 'email', 'gender', 'school', 'year', 'linkedin', 'github', 'shirt', 'food', 'project', 'time' ],
@@ -164,5 +159,4 @@
 			}
 		}
     </script>
-</body>
-</html>
+{% endblock scripts%}
