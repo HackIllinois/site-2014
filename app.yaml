@@ -79,3 +79,7 @@ libraries:
 
 - name: jinja2
   version: latest
+
+# https://developers.google.com/appengine/docs/python/tools/appstats?csw=1
+builtins:
+- appstats: on

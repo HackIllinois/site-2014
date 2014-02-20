@@ -18,3 +18,12 @@ sys.path.append(os.path.join(third_party, 'cloudstorage'))
 # sys.path.append(os.path.join(third_party, 'httplib2'))
 # sys.path.append(os.path.join(third_party, 'oauth2client'))
 # sys.path.append(os.path.join(third_party, 'uritemplate'))
+
+
+# https://developers.google.com/appengine/docs/python/tools/appstats?csw=1
+appstats_CALC_RPC_COSTS = True
+
+def webapp_add_wsgi_middleware(app):
+      from google.appengine.ext.appstats import recording
+      app = recording.appstats_wsgi_middleware(app)
+      return app
