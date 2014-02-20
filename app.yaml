@@ -12,6 +12,10 @@ handlers:
   static_files: assets/img/favicon.ico
   upload: assets/img/favicon\.ico
 
+- url: /robots.txt
+  static_files: assets/robots.txt
+  upload: assets/robots\.txt
+
 - url: /css
   static_dir: assets/css
 
@@ -57,16 +61,14 @@ handlers:
   script: main.app
   login: required
 
-# - url: /profile*
-#   script: main.app
-#   login: required
-
 - url: /admin*
   script: main.app
   login: required
 
-# - url: /_ah/login_required
-#   script: main.app
+# https://developers.google.com/appengine/articles/python/recording_exceptions_with_ereporter
+- url: /_ereporter.*
+  script: google.appengine.ext.ereporter.report_generator.application
+  login: admin
 
 - url: .*
   script: main.app
@@ -77,6 +79,3 @@ libraries:
 
 - name: jinja2
   version: latest
-
-inbound_services:
-- warmup

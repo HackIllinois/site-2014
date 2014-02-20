@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="description" content="Imagine. Learn. Launch. Join us for a 36-hour hackathon at the University of Illinois at Urbana-Champaign. April 11-13, 2014.">
+
+    <title>HackIllinois</title>
+
+    <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Lato:700|Open+Sans:700,400">
+    <link rel="icon" type="image/ico" href="favicon.ico"/>
+    <style type="text/css">
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Open Sans', sans-serif;
+        }
+        p, div {
+            font-family: 'Lato', sans-serif;
+            /*font-size: 2.5em;*/
+        }
+        table {
+            table-layout: auto;
+        }
+        .t-centered {
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Hacker Stats<small>&nbsp;&nbsp;</small><small id="count">{{ data.numPeople }}</small><small>&nbsp;people</small></h1>
+    <div class="container-fluid">
+        {% for r in data.rows %}
+        <div class="row">
+            <div class="col-md-4 col-md-offset-1">
+                <table class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>{{ r.col1.field }}</th>
+                            <th class="t-centered">#</th>
+                            <th class="t-centered">%</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for s in r.col1.stats %}
+                        <tr>
+                            <td>{{ s.name }}</td>
+                            <td>{{ s.num }}</td>
+                            <td>{{ s.percent }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td>{{ r.col1.numFields }}</td>
+                            <td>{{ r.col1.totNum }}</td>
+                            <td>{{ r.col1.totPercent }}</td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+            {% if r.col2 %}
+            <div class="col-md-4 col-md-offset-2">
+                <table class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>{{ r.col2.field }}</th>
+                            <th class="t-centered">#</th>
+                            <th class="t-centered">%</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for s in r.col2.stats %}
+                        <tr>
+                            <td>{{ s.name }}</td>
+                            <td>{{ s.num }}</td>
+                            <td>{{ s.percent }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td>{{ r.col2.numFields }}</td>
+                            <td>{{ r.col2.totNum }}</td>
+                            <td>{{ r.col2.totPercent }}</td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+
+    <script src="https://code.jquery.com/jquery.js"></script>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
+    <script type="text/javascript"></script>
+</body>
+</html>

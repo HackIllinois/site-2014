@@ -23,13 +23,6 @@
 			<p class="loggedin">Hello {{ data.username }}! <a class="rules-link" href="{{ data.logoutUrl }}">Not you</a>?</p>
 		</div>
 
-		{% if data.messages %}
-		<p class="errormessages">
-				{% for m in data.messages %}
-				{{ m }}<br>
-				{% endfor %}
-		</p>
-		{% endif %}
 		<div class="field-missing">
 			<p class="errormessages">
 				Whoops! Looks like you missed a required field or two.
@@ -131,11 +124,13 @@
 					<label class="control-label col-sm-3" for="resume">Resume</label>
 					<div class="controls col-sm-9">
 						{% if data.hasResume %}<a href="/apply/myresume" class="view-resume" target="_blank">View Uploaded Resume</a><br> {% endif %}
-						<input id="resume" name="resume" type="file" accept="application/pdf" {% if data.resumeRequired %}required="required"{% endif %}>
+						<input id="resume" name="resume" type="file" accept="application/pdf">
 
 						<span id="resume-prompt" class="help-block {%if data.errors.resume %}errormessages{% endif %}">
 						   {%if data.errors.resume %}
+                           <div class="errormessages">
 						      {{ data.errors.resume }}
+                          </div>
 						   {% else %}
 						      {% if not data.hasResume %}Please upload{% endif %}{% if data.hasResume %}Update{% endif %} your resume (optional).
 						   {% endif %}
@@ -238,6 +233,20 @@
 
 					</div>
 				</div>
+
+                <!-- Textarea -->
+                <div class="form-group">
+                    <label class="control-label col-sm-3" for="teamMembers">Team Members<br>(Emails)</label>
+                    <div class="controls col-sm-9">
+                        <textarea class="{% if data.errors.teamMembers %}errorborders{% endif %} form-control" id="teamMembers" name="teamMembers" rows="3">{{ data.teamMembers }}</textarea>
+                        <span class="help-block no-bottom-margin">
+                            List anyone that you would like to work with.
+                        </span>
+                        <div class="errormessages">
+                            {{ data.errors.teamMembers }}
+                        </div>
+                    </div>
+                </div>
 
 				<!-- Multiple Checkboxes (inline) -->
 				<div class="form-group">

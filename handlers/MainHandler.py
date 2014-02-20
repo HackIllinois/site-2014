@@ -4,9 +4,14 @@ import webapp2
 import logging
 from google.appengine.api import users
 from db import constants
+from google.appengine.ext import ereporter
 
 template_dir = os.path.join(os.path.dirname(__file__), os.path.join(os.pardir, 'templates'))
 jinja_env = jinja2.Environment(loader = jinja2.FileSystemLoader(template_dir), autoescape = True)
+
+# https://developers.google.com/appengine/articles/python/recording_exceptions_with_ereporter
+ereporter.register_logger()
+
 
 class Handler(webapp2.RequestHandler):
     """ Someone should fill in what this is """
@@ -35,7 +40,7 @@ class BaseAdminHandler(Handler):
 
         user = users.get_current_user()
         if not user:
-            return self.abort(404)
+            return self.abort(401)
 
         email = user.email()
         domain = email.split('@')[1] if len(email.split('@')) == 2 else None # Sanity check
@@ -50,7 +55,4 @@ class BaseAdminHandler(Handler):
             super(BaseAdminHandler, self).dispatch()
         else:
             logging.info('%s attempted to access an admin page but was denied.', email)
-            return self.render( "simple_message.html",
-                                header="ACCESS DENIED",
-                                message="You (%s) are not an admin or are not logged in as such.<br>Please log in with a valid @hackillinois.org email address.<br><a class='logout-link' href='%s'>Logout</a>" % (user.nickname(), users.create_logout_url('/admin')),
-                                showSocial=False )
+            return self.abort(401)

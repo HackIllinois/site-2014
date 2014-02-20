@@ -15,6 +15,10 @@ class Attendee(Model):
     userFederatedIdentity = ndb.StringProperty()
     userFederatedProvider = ndb.StringProperty()
 
+    # https://developers.google.com/appengine/docs/python/users/userclass
+    # .nickname(), .email(), .user_id()
+    googleUser = ndb.UserProperty()
+
     nameFirst = ndb.StringProperty()
     nameLast = ndb.StringProperty()
     email = ndb.StringProperty()
@@ -31,7 +35,7 @@ class Attendee(Model):
     food = ndb.StringProperty()
     foodInfo = ndb.TextProperty()
 
-    # teamMembers = ndb.TextProperty()
+    teamMembers = ndb.TextProperty()
     projectType = ndb.StringProperty(choices=constants.PROJECTS + [''], default='')
     # userNotes = ndb.TextProperty()
 

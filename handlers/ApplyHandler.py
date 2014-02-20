@@ -1,40 +1,22 @@
+import urllib
+import logging
+import re
+import json
+
 import MainHandler
-import urllib, logging, re
+
 from db.Attendee import Attendee
 from db.Resume import Resume
 from db import constants
-from google.appengine.api import users, memcache
+from google.appengine.api import users
 from google.appengine.ext import blobstore
 from google.appengine.ext.webapp import blobstore_handlers
-import json
-
-# from datetime import datetime
-# import json
-# from google.appengine.api import mail
-
-
-# def SendApplyEmail(subject, body):
-#     body_str = json.dumps(body)
-#     logging.info("Sent email '%s'",  subject)
-#     mail.send_mail(sender="alex.burck@hackillinois.org",
-#                    to="apply-watchlist@hackillinois.org",
-#                    subject=subject,
-#                    body=body_str)
 
 
 class ApplyHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandler):
-    # == Handler for application page. ==
-    # This does not include the email registration we have up now.
-
     def get(self):
         user = users.get_current_user()
-
-        if not user:
-            # User not logged in (shouldn't happen)
-            # TODO: redirect to error handler
-            return self.write('ERROR - Apply logged in problem')
-
-        upload_url_rpc = blobstore.create_upload_url_async('/apply', gs_bucket_name=constants.BUCKET)
+        if not user: return self.abort(500, detail='User not logged in')
 
         data = {}
         data['errors'] = {} # Needed for template to render
@@ -42,28 +24,22 @@ class ApplyHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandle
         data['username'] = user.nickname()
         data['logoutUrl'] = users.create_logout_url('/apply')
         data['email'] = user.email()
-        data['genders'] = [ {'name':g, 'checked':False} for g in constants.GENDERS ]
-        data['years'] = [ {'name':y, 'checked':False} for y in constants.YEARS ]
-        data['shirts'] = [ {'name':s, 'checked':False} for s in constants.SHIRTS ]
-        data['foods'] = [ {'name':f, 'checked':False} for f in constants.FOODS ]
-        data['projects'] = [ {'name':p, 'selected':False} for p in constants.PROJECTS ]
+
+        lists = {
+            'genders':constants.GENDERS, 'years':constants.YEARS, 'shirts':constants.SHIRTS,
+            'foods':constants.FOODS, 'projects':constants.PROJECTS
+        }
+        for l, options in lists.iteritems(): data[l] = [ {'name':n, 'checked':False} for n in options ]
 
         data['title'] = constants.APPLY_TITLE
-        data['resumeRequired'] = False
         data['hasResume'] = False
-        data['applyError'] = False
-        data['uploadUrl'] = '/apply'
 
         # Check if user is in our database
         db_user = Attendee.search_database({'userId': user.user_id()}).get()
-        if db_user is not None:
+        if db_user:
             if db_user.isRegistered:
                 data['isUpdatingApplication'] = True
                 data['title'] = constants.PROFILE_TITLE
-                data['resumeRequired'] = False
-
-            if db_user.applyError:
-                data['applyError'] = True
 
             # Per-field errors
             # db_user.errors == [<field1>$$$<message1>, <field1>$$$<message2>, ...]
@@ -71,77 +47,53 @@ class ApplyHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandle
                 # Turn into dictionary so template can do lookup 'data.errors.<field>'
                 data['errors'] = { e.split('$$$')[0]:e.split('$$$')[1] for e in db_user.errors }
 
-            # Previous field data
-            if db_user.nameFirst:
-                data['nameFirst'] = db_user.nameFirst
-            if db_user.nameLast:
-                data['nameLast'] = db_user.nameLast
-            if db_user.email:
-                data['email'] = db_user.email
-            if db_user.school:
-                data['school'] = db_user.school
-            if db_user.experience:
-                data['experience'] = db_user.experience
-            if db_user.linkedin:
-                data['linkedin'] = db_user.linkedin
-            if db_user.github:
-                data['github'] = db_user.github
-            if db_user.foodInfo:
-                data['foodInfo'] = db_user.foodInfo
-            if db_user.termsOfService:
-                data['termsOfService'] = db_user.termsOfService
+            text_fields = [
+                'nameFirst', 'nameLast', 'email', 'school',
+                'experience', 'linkedin', 'github', 'foodInfo',
+                'teamMembers'
+            ]
+            for field in text_fields:
+                value = getattr(db_user, field) # Gets db_user.field using a string
+                if value: data[field] = value
 
-            if db_user.gender:
-                for i in data['genders']:
-                    if i['name'] == db_user.gender:
-                        i['checked'] = True
-                        break
+            choose_one_fields = {
+                'gender':('genders','checked'), 'year':('years','checked'),
+                'shirt':('shirts','checked'), 'projectType':('projects','selected')
+            }
+            for field, conn in choose_one_fields.iteritems():
+                value = getattr(db_user, field)
+                if value:
+                    for i in data[conn[0]]:
+                        if i['name'] == value:
+                            i[conn[1]] = True
+                            break
 
-            if db_user.year:
-                for i in data['years']:
-                    if i['name'] == db_user.year:
-                        i['checked'] = True
-                        break
-
-            if db_user.shirt:
-                for i in data['shirts']:
-                    if i['name'] == db_user.shirt:
-                        i['checked'] = True
-                        break
-
-            if db_user.food:
+            # Multi-choice check box
+            food = db_user.food
+            if food:
                 for i in data['foods']:
-                    if i['name'] in db_user.food:
-                        i['checked'] = True
+                    if i['name'] in food: i['checked'] = True
 
-            if db_user.projectType:
-                for i in data['projects']:
-                    if i['name'] == db_user.projectType:
-                        i['selected'] = True
-                        break
-
-            if db_user.resume:
+            if db_user.resume and db_user.resume.fileName:
                 data['hasResume'] = True
-                data['resumeRequired'] = False
 
-            if db_user.errorMessages and db_user.errorMessages != '':
-                data['messages'] = db_user.errorMessages.split('$$$')
+            if db_user.termsOfService:
+                data['termsOfService'] = True
 
-        data['uploadUrl'] = upload_url_rpc.get_result()
+        data['uploadUrl'] = blobstore.create_upload_url('/apply', gs_bucket_name=constants.BUCKET)
         self.render("apply.html", data=data)
 
     def post(self):
         user = users.get_current_user()
-        if not user:
-            # User not logged in (shouldn't happen)
-            # TODO: redirect to error handler
-            return self.write('ERROR')
+        if not user: return self.abort(500, detail='User not logged in')
 
-        x = {}
+        # Initialization
+        x = {} # dictionary that will be used to create a new Attendee or update one
         errors = {} # Note: 1 error per field
         valid = True
         db_user = Attendee.search_database({'userId':user.user_id()}).get()
 
+        # Save user information
         # https://developers.google.com/appengine/docs/python/users/userclass
         x['userNickname'] = user.nickname()
         x['userEmail'] = user.email()
@@ -149,83 +101,87 @@ class ApplyHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandle
         x['userFederatedIdentity'] = user.federated_identity()
         x['userFederatedProvider'] = user.federated_provider()
 
-        for field in ['nameFirst', 'nameLast', 'email', 'gender', 'school', 'year', 'experience', 'linkedin', 'github']:
+        x['googleUser'] = user
+
+
+        # Get data from form
+        fields = [
+            'nameFirst', 'nameLast', 'email', 'gender', 'school', 'year', 'experience',
+            'linkedin', 'github', 'teamMembers', 'shirt', 'projectType'
+        ]
+        for field in fields:
            x[field] = self.request.get(field)
-
-        x['shirt'] = self.request.get('shirt')
-        x['projectType'] = self.request.get('projectType')
-        # x['teamMembers'] = self.request.get('team')
-
-        file_info = self.get_file_infos(field_name='resume')
-        if file_info and len(file_info) == 1:
-            file_info = file_info[0]
-
-            delete_resume = False
-
-            if not file_info.content_type == 'application/pdf':
-
-                # Non-pdf files
-                x['errors_resume'].append('Uploaded resume file is not a pdf.')
-                delete_resume = True
-                valid = False
-
-            elif file_info.size > constants.RESUME_MAX_SIZE:
-
-                # Big files
-                x['errors_resume'].append('Uploaded resume file is too big.')
-                delete_resume = True
-                valid = False
-
-            else:
-
-                # Old resumes
-                delete = db_user and db_user.resume
-
-            # Delete resume if appropriate
-            if delete:
-                resource = str(urllib.unquote(file_info.gs_object_name))
-                blob_key = blobstore.create_gs_key(resource)
-                blobstore.delete(blob_key)
-
-            # Create new resume if appropriate
-            if valid:
-                x['resume'] = Resume(contentType=file_info.content_type,
-                                     creationTime=file_info.creation,
-                                     fileName=file_info.filename,
-                                     size=file_info.size,
-                                     gsObjectName=file_info.gs_object_name)
 
         foods = self.request.get_all('food')
         x['food'] = ','.join(foods)
         x['foodInfo'] = self.request.get('foodInfo')
 
         x['termsOfService'] = (self.request.get('termsOfService') == 'True')
-        if not x['termsOfService']:
-            if db_user is not None:
-                x['termsOfService'] = db_user.termsOfService
+        if not x['termsOfService'] and db_user:
+            x['termsOfService'] = db_user.termsOfService
 
-        # Remove any empty fields
+
+        # Get resume data
+        file_info = self.get_file_infos(field_name='resume')
+        if file_info and len(file_info) == 1:
+            file_info = file_info[0]
+            delete_file = False
+
+            # Non-pdf files
+            if not file_info.content_type == 'application/pdf':
+                errors['resume'] = 'Uploaded resume file is not a pdf.'
+                delete_file = True
+                valid = False
+
+            # Big files
+            elif file_info.size > constants.RESUME_MAX_SIZE:
+                errors['resume'] = 'Uploaded resume file is too big.'
+                delete_file = True
+                valid = False
+
+            # Delete uploaded file if appropriate
+            if delete_file:
+                resource = str(urllib.unquote(file_info.gs_object_name))
+                blob_key = blobstore.create_gs_key(resource)
+                blobstore.delete(blob_key)
+
+            # Uploaded file is valid, delete old resume if there is one and save new resume
+            else:
+                # Delete old resume
+                if db_user and db_user.resume and db_user.resume.gsObjectName:
+                    resource = str(urllib.unquote(db_user.resume.gsObjectName))
+                    blob_key = blobstore.create_gs_key(resource)
+                    blobstore.delete(blob_key)
+
+                # Save new resume
+                x['resume'] = Resume(contentType=file_info.content_type,
+                                     creationTime=file_info.creation,
+                                     fileName=file_info.filename,
+                                     size=file_info.size,
+                                     gsObjectName=file_info.gs_object_name)
+
+
+        # Remove any empty fields from x
         for field in constants.ALL_FIELDS:
+            # This checks for None and '' and u''
             if field in x and not x[field]:
-                # This checks for None and '' and u''
                 del x[field]
+
+
+        # ---------- BEGIN VALIDATION ----------
 
         # Check required fields filled in
         for field in constants.REQUIRED_FIELDS:
-            if field is "termsOfService":
-               continue
-
             if field not in x:
-                errors[field] = constants.ERROR_MESSAGE_PREFIX + constants.READABLE_REQUIRED_FIELDS[field] + constants.ERROR_MESSAGE_SUFFIX
+                errors[field] = constants.ERROR_MESSAGE_PREFIX + \
+                                constants.READABLE_REQUIRED_FIELDS[field] + \
+                                constants.ERROR_MESSAGE_SUFFIX
                 valid = False
 
-        # Check if hame has a number in it
-        # if 'nameFirst' in x and any(char.isdigit() for char in x['nameFirst']):
-        #     errorMessages.append('Your first name cannot have an Arabic numeral in it.')
-        #     valid = False
-        # if 'nameLast' in x and any(char.isdigit() for char in x['nameLast']):
-        #     errorMessages.append('Your last name cannot have an Arabic numeral in it.')
-        #     valid = False
+        # Make sure required boxes checked
+        if not ('termsOfService' in x) or not x['termsOfService']:
+            errors['termsOfService'] = 'Please read and agree to the rules and code of conduct.'
+            valid = False
 
         # Check if email is valid (basic)
         if 'email' in x and not re.match(constants.EMAIL_MATCH, x['email']):
@@ -233,71 +189,64 @@ class ApplyHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandle
             valid = False
 
         # Check fields with specific values
-        if 'gender' in x and x['gender'] not in constants.GENDERS:
-            errors['gender'] = constants.ERROR_MESSAGE_PREFIX + constants.READABLE_REQUIRED_FIELDS['gender'] + constants.ERROR_MESSAGE_SUFFIX
-            valid = False
-        if 'year' in x and x['year'] not in constants.YEARS:
-            errors['year'] = constants.ERROR_MESSAGE_PREFIX + constants.READABLE_REQUIRED_FIELDS['year'] + constants.ERROR_MESSAGE_SUFFIX
-            valid = False
-        if 'shirt' in x and x['shirt'] not in constants.SHIRTS:
-            errors['shirt'] = constants.ERROR_MESSAGE_PREFIX + constants.READABLE_REQUIRED_FIELDS['shirt'] + constants.ERROR_MESSAGE_SUFFIX
-            valid = False
-        if 'food' in x and x['food'] != '':
+        choose_one_fields = {
+            'gender':constants.GENDERS, 'year':constants.YEARS,
+            'shirt':constants.SHIRTS, 'projectType':constants.PROJECTS
+        }
+        for field in choose_one_fields:
+            if field in x and x[field] not in choose_one_fields[field]:
+                errors[field] = constants.ERROR_MESSAGE_PREFIX + \
+                                constants.READABLE_REQUIRED_FIELDS[field] + \
+                                constants.ERROR_MESSAGE_SUFFIX
+                valid = False
+
+        if 'food' in x and x['food']:
             temp = x['food'].split(',')
-            if 'Other' in temp and ('foodInfo' not in x or ('foodInfo' in x and x['foodInfo'] == '')):
-                errors['food'] += constants.ERROR_MESSAGE_PREFIX + constants.READABLE_FIELDS['food'] + constants.ERROR_MESSAGE_SUFFIX
+
+            # If answer is Other, user must fill in foodInfo field
+            if 'Other' in temp and ('foodInfo' not in x or ('foodInfo' in x and not x['foodInfo'])):
+                errors['food'] = constants.ERROR_MESSAGE_PREFIX + \
+                                 constants.READABLE_FIELDS['food'] + \
+                                 constants.ERROR_MESSAGE_SUFFIX
                 valid = False
 
             for f in x['food'].split(','):
                 if f not in constants.FOODS:
-                    errors['food'] = constants.ERROR_MESSAGE_PREFIX + constants.READABLE_FIELDS['food'] + constants.ERROR_MESSAGE_SUFFIX
+                    errors['food'] = constants.ERROR_MESSAGE_PREFIX + \
+                                     constants.READABLE_FIELDS['food'] + \
+                                     constants.ERROR_MESSAGE_SUFFIX
                     valid = False
-                    break # This is why we need the for loop below
+                    break
+
+        # ---------- END VALIDATION ----------
 
 
-        if 'projectType' in x and x['projectType'] not in constants.PROJECTS:
-            errors['projectType'] = constants.ERROR_MESSAGE_PREFIX + constants.READABLE_FIELDS['projectType'] + constants.ERROR_MESSAGE_SUFFIX
-            valid = False
-
-        # Make sure required boxes checked
-        if not ('termsOfService' in x) or not x['termsOfService']:
-            errors['termsOfService'] = 'Please read and agree to the rules and code of conduct.'
-            valid = False
-
-        # Create list of error messages
+        # Create list of error messages separated by '$$$'
         x['errors'] = [ k + '$$$' + errors[k] for k in errors ]
 
+        # Logging based on validity and whether the user is registered already
         if valid:
             x['isRegistered'] = True
-            x['applyError'] = False
             redir = '/apply/complete'
+            log_str = 'Signup with email %s' % x['email']
 
-            memcache.incr('apply_count')
+            if db_user and db_user.isRegistered:
+                redir = '/apply/updated'
+                log_str = 'Updated profile of %s' % x['email']
+
+            logging.info(log_str)
+            logging.info(str(x))
         else:
-            x['applyError'] = True
             redir = '/apply'
+            logging.info('User with email %s submitted an invalid form', x['email'])
+            logging.info(str(errors))
 
-        if db_user is not None:
-            if valid:
-                if db_user.isRegistered:
-                    redir = '/apply/updated'
-                    logging.info('Updated profile of %s', x['email'])
-                    logging.info(str(x))
-                    # SendApplyEmail('Updated profile of ' + x['email'], x)
-                else:
-                    redir = '/apply/complete'
-                    logging.info('Signup with email %s', x['email'])
-                    logging.info(str(x))
-                    # SendApplyEmail('Signup with email ' + x['email'], x)
-            success = Attendee.update_search(x, {'userId':x['userId']})
-        else:
-            if valid:
-                logging.info('Signup with email %s', x['email'])
-                logging.info(str(x))
-                # SendApplyEmail('Signup with email ' + x['email'], x)
-            else:
-                logging.info('User with email %s submitted an invalid form', x['email'])
-            success = Attendee.add(x)
+        # Always store the user's data so we can autofill
+        # actual registration is determined by the isRegistered flag
+        if db_user: success = Attendee.update_search(x, {'userId':x['userId']})
+        else: success = Attendee.add(x)
+
+        # TODO check success
 
         return self.redirect(redir)
 
@@ -351,10 +300,8 @@ class SchoolListHandler(MainHandler.Handler):
 class MyResumeHandler(MainHandler.Handler, blobstore_handlers.BlobstoreDownloadHandler):
     def get(self):
         user = users.get_current_user()
-        if not user:
-            # User not logged in (shouldn't happen)
-            # TODO: redirect to error handler
-            return self.write('ERROR - Unexpected resume login')
+
+        if not user: return self.abort(500, detail='User not logged in')
 
         db_user = Attendee.search_database({'userId':user.user_id()}).get()
         if not db_user:

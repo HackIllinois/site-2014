@@ -18,3 +18,5 @@ import webapp2
 from handlers import handlers
 
 app = webapp2.WSGIApplication(handlers.handlers, debug=True)
+for error in handlers.errorHandlers:
+	app.error_handlers[error] = handlers.errorHandlers[error]
