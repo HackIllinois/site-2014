@@ -44,3 +44,9 @@ handlers = [
 	('/404', Error404Handler),
 	('/500', Error500Handler),
 ]
+
+errorHandlers = {
+    401: handle_401,
+    404: handle_404,
+    500: handle_500,
+}
