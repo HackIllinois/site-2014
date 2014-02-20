@@ -111,3 +111,7 @@ class SummaryHandler(MainHandler.BaseAdminHandler):
                                      'approved':True })
 
         self.render("summary.html", data=data)
+
+class AdminStatsHandler(MainHandler.BaseAdminHandler):
+    def get(self):
+        self.render("basic_stats.html", data=data)
