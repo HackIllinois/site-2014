@@ -312,7 +312,7 @@ class AdminProfileHandler(MainHandler.BaseAdminHandler):
     def get(self, userId):
         userId = str(urllib.unquote(userId))
         db_user = Attendee.search_database({'userId':userId}).get()
-        return self.write(db_user.email)
+        return self.render("admin_profile.html", data={'email':db_user.email})
 
 class AdminEditProfileHandler(MainHandler.BaseAdminHandler):
     def get(self, userId):
