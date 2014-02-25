@@ -14,7 +14,17 @@
 
 {% block body %}
 <h1 class="page-header">Profile</h1>
+<p>{{ data.nameFirst }} {{ data.nameLast }}</p>
 <p>{{ data.email }}</p>
+<p>{{ data.school }}</p>
+<p>{{ data.year }}</p>
+<p>{{ data.gender }}</p>
+</br>
+<p>{{ data.resume|safe }}</p>
+<p>{{ data.projectType }}</p>
+<p>{{ data.experience }}</p>
+<p>{{ data.linkedin }}</p>
+<p>{{ data.github }}</p>
 {% endblock body %}
 
 

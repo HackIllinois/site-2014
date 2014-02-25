@@ -312,7 +312,26 @@ class AdminProfileHandler(MainHandler.BaseAdminHandler):
     def get(self, userId):
         userId = str(urllib.unquote(userId))
         db_user = Attendee.search_database({'userId':userId}).get()
-        return self.render("admin_profile.html", data={'email':db_user.email})
+        data = {}
+        text_fields = [
+                'nameFirst', 'nameLast', 'email', 'school',
+                'experience', 'linkedin', 'github', 'year',
+                'gender', 'projectType'
+                ]
+        for field in text_fields:
+            value = getattr(db_user, field) # Gets db_user.field using a string
+            if value: data[field] = value
+
+        resume_link = None
+        if db_user.resume:
+            name = db_user.resume.fileName
+            resume_link = "<a href='/admin/resume?userId=%s'>%s</a>" % (db_user.userId, name)
+            pass
+        else:
+            resume_link = ''
+        data['resume'] = resume_link
+
+        return self.render("admin_profile.html", data=data)
 
 class AdminEditProfileHandler(MainHandler.BaseAdminHandler):
     def get(self, userId):
