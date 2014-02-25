@@ -306,3 +306,21 @@ class AdminStatsHandler(MainHandler.BaseAdminHandler):
         logging.info('Advanced Stats:: Cache Hits:%s  Cache Misses:%s' % (stats['hits'], stats['misses']))
 
         self.render("stats.html", schools=schools)
+
+
+class AdminProfileHandler(MainHandler.BaseAdminHandler):
+    def get(self, userId):
+        userId = str(urllib.unquote(userId))
+        db_user = Attendee.search_database({'userId':userId}).get()
+        return self.write(db_user.email)
+
+class AdminEditProfileHandler(MainHandler.BaseAdminHandler):
+    def get(self, userId):
+        userId = str(urllib.unquote(userId))
+        db_user = Attendee.search_database({'userId':userId}).get()
+        return self.write(db_user.email)
+
+    def post(self, userId):
+        userId = str(urllib.unquote(userId))
+        db_user = Attendee.search_database({'userId':userId}).get()
+        return self.write(db_user.email)
