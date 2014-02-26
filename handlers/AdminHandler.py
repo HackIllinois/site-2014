@@ -39,6 +39,24 @@ class AdminApplyCountHandler(MainHandler.BaseAdminHandler):
         self.write('%d' % cached_count)
 
 
+class AdminSchoolCountHandler(MainHandler.BaseAdminHandler):
+    def get(self):
+        cache_key = 'school_count'
+        cached_count = memcache.get(cache_key)
+
+        if not cached_count:
+            q = Attendee.query(Attendee.isRegistered == True, projection=[Attendee.school], distinct=True)
+            set_of_field = set([data.school for data in q])
+            cached_count = len(set_of_field)
+            if not memcache.set(cache_key, cached_count, time=900): # 15 min
+                logging.error('Memcache set failed.')
+
+        stats = memcache.get_stats()
+        logging.info('School Count:: Cache Hits:%s  Cache Misses:%s' % (stats['hits'], stats['misses']))
+
+        self.write('%d' % cached_count)
+
+
 class AdminBasicStatsHandler(MainHandler.BaseAdminHandler):
     def get(self):
         data = memcache.get('basic_stats')

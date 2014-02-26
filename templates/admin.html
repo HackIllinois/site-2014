@@ -28,12 +28,22 @@
 {% block scripts %}
 <script src="/js/jquery.fittext.js"></script>
 <script type="text/javascript">
-var num = 0
+var num = 0;
 
 $(document).ready(function() {
+    hacker_count = "";
+    school_count = "";
+
 	$.get( "/admin/applycount", function( data ) {
-		$("#typer_target").html(data + " hackers regisered!");
-		$("#typer_target").fitText();
+        hacker_count = data;
+
+        $.get( "/admin/schoolcount", function( data ) {
+            school_count = data;
+
+            $("#typer_target").html(hacker_count + " hackers regisered<br>from " + school_count + " schools!");
+            $("#typer_target").fitText(1.1);
+        });
+
 	});
 
     var img = document.getElementById("xkcd");
