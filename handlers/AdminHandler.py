@@ -17,19 +17,26 @@ class AdminHandler(MainHandler.BaseAdminHandler):
 
 class AdminXkcdHandler(MainHandler.BaseAdminHandler):
     def get(self):
-        xkcd_json = memcache.get('xkcd')
-        if not xkcd_json:
-            xkcd_json = urlfetch.fetch('http://xkcd.com/info.0.json').content
-            if not memcache.add('xkcd', xkcd_json, time=constants.MEMCACHE_TIMEOUT):
-                logging.error('Memcache set failed.')
-
-        stats = memcache.get_stats()
-        logging.info('XKCD:: Cache Hits:%s  Cache Misses:%s' % (stats['hits'], stats['misses']))
-
-
+        xkcd_json = urlfetch.fetch('http://xkcd.com/info.0.json').content
         self.response.headers.add("Access-Control-Allow-Origin", "*")
         self.response.headers['Content-Type'] = 'text/json'
         return self.write(xkcd_json)
+
+
+class AdminApplyCountHandler(MainHandler.BaseAdminHandler):
+    def get(self):
+        cached_count = memcache.get('apply_count')
+
+        if not cached_count:
+            q = Attendee.query(Attendee.isRegistered == True)
+            cached_count = q.count()
+            if not memcache.set('apply_count', cached_count, time=900): # 15 min
+                logging.error('Memcache set failed.')
+
+        stats = memcache.get_stats()
+        logging.info('Apply Count:: Cache Hits:%s  Cache Misses:%s' % (stats['hits'], stats['misses']))
+
+        self.write('%d' % cached_count)
 
 
 class AdminBasicStatsHandler(MainHandler.BaseAdminHandler):
