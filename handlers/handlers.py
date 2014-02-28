@@ -3,7 +3,7 @@ from ErrorHandlers import handle_401, handle_404, handle_500, Error401Handler, E
 from IndexHandler import IndexHandler
 from ApplyHandler import ApplyHandler, ApplyCompleteHandler, SchoolCheckHandler, SchoolListHandler, MyResumeHandler, UpdateCompleteHandler, UploadURLHandler
 from ApplyCountHandler import ApplyCountHandler
-from SubpageHandlers import RulesHandler, ScheduleHandler, TravelHandler, CoCHandler
+from SubpageHandlers import RulesHandler, ScheduleHandler, TravelHandler, CoCHandler, StaffHandler
 from TropoHandler import TropoHandler
 from AdminHandler import AdminHandler, AdminApproveHandler, AdminResumeHandler, AdminStatsHandler, AdminBasicStatsHandler, AdminXkcdHandler, AdminApplyCountHandler, AdminSchoolCountHandler
 from SponsorHandler import SponsorHandler
@@ -35,6 +35,7 @@ handlers = [
     ('/admin/schoolcount', AdminSchoolCountHandler),
     ('/sponsor/download', SponsorHandler),
     ('/code-of-conduct', CoCHandler),
+    ('/hidden/staff', StaffHandler),
     ('/logout', LogoutHandler),
 	('/401', Error401Handler),
 	('/404', Error404Handler),
