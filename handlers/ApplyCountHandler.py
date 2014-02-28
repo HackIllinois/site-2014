@@ -1,17 +1,34 @@
 from db.Attendee import Attendee
+import logging
 import MainHandler
 
 from google.appengine.api import memcache
 
+page = """<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>HackIllinois</title>
+</head>
+<body>
+    <p>%d %s</p>
+</body>
+</html>
+"""
+
 class ApplyCountHandler(MainHandler.Handler):
     def get(self):
         cached_count = memcache.get('apply_count')
+        s = '(memcache &#9786; )'
 
-        if cached_count:
-            self.write('%s (read from memcache for freeeee!)' % cached_count)
-        else:
+        if cached_count is None:
+            s = '(datastore &#9785; )'
             q = Attendee.query(Attendee.isRegistered == True)
-            count = q.count()
-            memcache.set('apply_count', count)
+            cached_count = q.count()
+            if not memcache.add('apply_count', cached_count, time=900): # 15 min
+                logging.error('Memcache set failed.')
 
-            self.write('%d (and you made us do a query :( )' % count)
+        stats = memcache.get_stats()
+        logging.info('Apply Count:: Cache Hits:%s  Cache Misses:%s' % (stats['hits'], stats['misses']))
+                
+        self.write(page % (cached_count, s))

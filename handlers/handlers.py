@@ -24,7 +24,7 @@ handlers = [
     ('/applycount', ApplyCountHandler),
     ('/rules', RulesHandler),
     ('/schedule', ScheduleHandler),
-    ('/signupcount', SignupCountHandler),
+    # ('/signupcount', SignupCountHandler), # No longer using
     ('/travel', TravelHandler),
     ('/tropo', TropoHandler),
     ('/admin', AdminHandler),
