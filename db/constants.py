@@ -2,7 +2,8 @@ ADMIN_EMAILS = set(['lx.icomputer@gmail.com','mvd7793@gmail.com'])
 
 BUCKET = 'hackillinois'
 
-MEMCACHE_TIMEOUT = 3600 # seconds = 1 hour
+MEMCACHE_TIMEOUT = 10800 # seconds = 3 hours , once we close registration increase to 1 day
+MEMCACHE_COUNT_TIMEOUT = 900 # seconds = 15 min
 
 APPLY_TITLE = 'Application'
 PROFILE_TITLE = 'Profile'

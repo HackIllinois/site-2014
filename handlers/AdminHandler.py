@@ -27,10 +27,10 @@ class AdminApplyCountHandler(MainHandler.BaseAdminHandler):
     def get(self):
         cached_count = memcache.get('apply_count')
 
-        if not cached_count:
+        if cached_count is None:
             q = Attendee.query(Attendee.isRegistered == True)
             cached_count = q.count()
-            if not memcache.set('apply_count', cached_count, time=900): # 15 min
+            if not memcache.add('apply_count', cached_count, time=constants.MEMCACHE_COUNT_TIMEOUT):
                 logging.error('Memcache set failed.')
 
         stats = memcache.get_stats()
@@ -44,11 +44,11 @@ class AdminSchoolCountHandler(MainHandler.BaseAdminHandler):
         cache_key = 'school_count'
         cached_count = memcache.get(cache_key)
 
-        if not cached_count:
+        if cached_count is None:
             q = Attendee.query(Attendee.isRegistered == True, projection=[Attendee.school], distinct=True)
             set_of_field = set([data.school for data in q])
             cached_count = len(set_of_field)
-            if not memcache.set(cache_key, cached_count, time=900): # 15 min
+            if not memcache.add(cache_key, cached_count, time=constants.MEMCACHE_COUNT_TIMEOUT):
                 logging.error('Memcache set failed.')
 
         stats = memcache.get_stats()
@@ -85,6 +85,9 @@ class AdminBasicStatsHandler(MainHandler.BaseAdminHandler):
             data = {}
 
             data['numPeople'] = count
+            if not memcache.set('apply_count', count, time=constants.MEMCACHE_COUNT_TIMEOUT):
+                logging.error('Memcache set failed.')
+
             data['fields'] = []
 
             for field in sorted(collected.keys()):

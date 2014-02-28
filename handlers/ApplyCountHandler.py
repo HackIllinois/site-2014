@@ -1,4 +1,5 @@
 from db.Attendee import Attendee
+from db import constants
 import logging
 import MainHandler
 
@@ -25,7 +26,7 @@ class ApplyCountHandler(MainHandler.Handler):
             s = '(datastore &#9785; )'
             q = Attendee.query(Attendee.isRegistered == True)
             cached_count = q.count()
-            if not memcache.add('apply_count', cached_count, time=900): # 15 min
+            if not memcache.add('apply_count', cached_count, time=constants.MEMCACHE_COUNT_TIMEOUT):
                 logging.error('Memcache set failed.')
 
         stats = memcache.get_stats()
