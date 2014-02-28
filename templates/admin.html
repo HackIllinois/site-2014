@@ -40,7 +40,7 @@ $(document).ready(function() {
         $.get( "/admin/schoolcount", function( data ) {
             school_count = data;
 
-            $("#typer_target").html(hacker_count + " hackers regisered<br>from " + school_count + " schools!");
+            $("#typer_target").html(hacker_count + " hackers registered<br>from " + school_count + " schools!");
             $("#typer_target").fitText(1.1);
         });
 
