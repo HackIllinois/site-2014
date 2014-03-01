@@ -8,6 +8,7 @@ from TropoHandler import TropoHandler
 from AdminHandler import AdminHandler, AdminApproveHandler, AdminResumeHandler, AdminStatsHandler, AdminBasicStatsHandler, AdminXkcdHandler, AdminApplyCountHandler, AdminSchoolCountHandler
 from SponsorHandler import SponsorHandler
 from LogoutHandler import LogoutHandler
+from MGTHandler import MGTHandler
 
 
 handlers = [
@@ -35,8 +36,9 @@ handlers = [
     ('/admin/schoolcount', AdminSchoolCountHandler),
     ('/sponsor/download', SponsorHandler),
     ('/code-of-conduct', CoCHandler),
-    ('/hidden/staff', StaffHandler),
+    # ('/hidden/staff', StaffHandler),
     ('/logout', LogoutHandler),
+    ('/mgt', MGTHandler),
 	('/401', Error401Handler),
 	('/404', Error404Handler),
 	('/500', Error500Handler),
