@@ -26,3 +26,8 @@ class StaffHandler(MainHandler.Handler):
     """ Handler for the staff subpage """
     def get(self):
         self.render("staff.html")
+
+class SponsorFAQHandler(MainHandler.Handler):
+    """ Handler for the staff subpage """
+    def get(self):
+        self.render("sponsor_faq.html")
