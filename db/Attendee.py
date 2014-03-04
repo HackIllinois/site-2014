@@ -59,6 +59,7 @@ class Attendee(Model):
     errors = ndb.StringProperty(repeated=True)
 
     approved = ndb.StringProperty()
+    isApproved = ndb.BooleanProperty(default=False)
 
     team = ndb.KeyProperty()
 
