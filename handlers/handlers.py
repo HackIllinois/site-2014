@@ -42,7 +42,8 @@ handlers = [
     ('/mobile/messages/newsfeed', NewsfeedHandler),
     ('/mobile/people/staff', StaffHandler),
     ('/mobile/people/hackers', HackersHandler),
-    ('/mobile/company', CompanyHandler),
+    ('/mobile/people,hacker', HackerHandler),
+    ('/mobile/companies', CompaniesHandler),
     ('/mobile/skills', SkillsHandler),
     # I may have broken all of this code with the backend refactor, will help get it fixed soon. --Matthew
     # ('/admin', AdminHandler),

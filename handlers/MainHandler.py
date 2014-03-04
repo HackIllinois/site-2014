@@ -65,12 +65,10 @@ class BaseMobileHandler(Handler):
         else:
             userId = None
         
-        if userId:
+        if userId == 'test':
+            super(BaseMobileHandler, self).dispatch()
+        elif userId:
             db_user = Attendee.search_database({'userId':userId}).get()
-        else:
-            return self.write('Did not pass userId')
-
-        if db_user:
             super(BaseMobileHandler, self).dispath()
         else:
-            return self.write('Hello World!')
+            return self.write('Did not pass userId')

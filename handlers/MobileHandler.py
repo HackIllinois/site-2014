@@ -7,6 +7,16 @@ import json
 
 '''
     
+    for example:
+        [
+            {
+                event name: ,
+                description: ,
+                location: ,
+                time: ,
+
+            }
+        ]
     
     Note:
 '''
@@ -14,25 +24,12 @@ class ScheduleHandler(MainHandler.BaseMobileHandler):
 
     '''
         Get the current schedule of HackIllinois
+            for example:
         
         @return the schedule of HackIllinois
     '''
     def get(self):
-        return self.write(json.dumps({'Schedule':[]}))
-
-    '''
-        Update the schedule of HackIllinois
-    
-        @return Success or Fail (for now)
-    '''
-#    def post(self):
-#        pass
-#
-#    def put(self):
-#        pass
-#
-#    def delete(self):
-#        pass
+        return self.write(json.dumps([{'event name':'First Event' ,'description':'Blast Off' ,'location':'room #1' ,'time':'12:00pm'}]))
 
 '''
     
@@ -55,25 +52,6 @@ class MapsHandler(MainHandler.BaseMobileHandler):
     '''
     def get(self):
         return self.write(json.dumps({'Siebel':{'1':['Ground Zero', 'Space Station']},'DCL':{'1':['Galaxy']}}))
-    
-    '''
-        Updates a model for a location
-       
-        @return Success or Fail (for now)
-    '''
-#    def post(self):
-#        pass
-#
-#    '''
-#        Makes a new model for a location
-#        
-#        @return Success or Fail (for now)
-#    '''
-#    def put(self):
-#        pass
-
-#    def delete(self):
-#        pass
 
 '''
     
@@ -87,29 +65,22 @@ class SupportTypeHandler(MainHandler.BaseMobileHandler):
         @return The list of Support Types
             for example:
                 {
-                    "General":[],
-                    "Schedule":[],
-                    "Rules":[]
+                    "General":[events schedule, rules, comments/suggestions],
+                    "Requests":[food & drinks, medical, equipment, other],
+                    "Technical":[WIFI, power, locked out, other]
                 }
     '''
     def get(self):
-        return self.write(json.dumps({'General':['general1'],'Schedule':['schedule1','schedule2','schedule3'],'Rules':['rule1','rule2']}))
-
-    '''
-        Update the support types of HackIllinois
-       
-        @return Success or Fail (for now)
-    '''
-#    def post(self):
-#        pass
-#
-#    def put(self):
-#        pass
-#
-#    def delete(self):
-#        pass
+        return self.write(json.dumps({'General':['events schedule', 'rules', 'comments/suggestions'],'Requests':['food & drinks', 'medical', 'equipment', 'other'],"Technical":['WIFI', 'power', 'locked out', 'other']}))
 
 '''
+
+    for example:
+        [
+            {
+                announcement:
+            }
+        ]
     
     Note:
 '''
@@ -121,31 +92,27 @@ class EmergencyHandler(MainHandler.BaseMobileHandler):
         @return Emergency Messages
     '''
     def get(self):
-        return self.write(json.dumps({'Emergency':[]}))
+        return self.write(json.dumps([{'announcement':'first emergency announcement of HackIllinois'}]))
 
     '''
         Update an Emergency Message
         
         @return Success or Fail (for now)
     '''
-#    def post(self):
-#        pass
-#
-#    '''
-#        Create a new Emergency Message
-#        
-#        Note: Must be an admin or current Staff
-#        
-#        @return Success or Fail (for now)
-#    '''
-#    def put(self):
-#        pass
-
-#    def delete(self):
-#        pass
+    def put(self):
+        pass
 
 '''
     
+    for example:
+        [
+            {
+                event name: ,
+                location: ,
+                time:
+            }
+        ]
+
     Note:
 '''
 class NewsfeedHandler(MainHandler.BaseMobileHandler):
@@ -157,20 +124,14 @@ class NewsfeedHandler(MainHandler.BaseMobileHandler):
         @return The NewFeed models that are between the before and since parameters
     '''
     def get(self):
-        return self.write(json.dumps({'NewsFeed':[]}))
+        return self.write(json.dumps([{'event name':'first event of HackIllinois' ,'location':'room #1' ,'time':'1:00pm'}]))
 
     '''
         Add an item to the news feed. Only Admin/Staff will be able to use this functionality.
 
         @return Success or fail (for now)
     '''
-#    def post(self):
-#        pass
-#
 #    def put(self):
-#        pass
-#
-#    def delete(self):
 #        pass
 
 '''
@@ -181,34 +142,36 @@ class StaffHandler(MainHandler.BaseMobileHandler):
 
     '''
        
+        for example:
+            [
+                {
+                    name: ,
+                    email: ,
+                    school: ,
+                    year: ,
+                    homebase: ,
+                    skills: ,
+                }
+            ]
+
         @return The models of all the Staff for HackIllinois
     '''
     def get(self):
-        return self.write(json.dumps({'Staff':[]}))
-
-    '''
-        Update the current model associated with the userId
-        
-        @return Success or Fail (for now)
-    '''
-#    def post(self):
-#        pass
-#    
-#    '''
-#        Create a new model for a Staff member for HackIllinois
-#       
-#        Note: Must be an admin or current Staff
-#       
-#        @return Success or Fail (for now)
-#    '''
-#    def put(self):
-#        pass
-#
-#    def delete(self):
-#        pass
+        return self.write(json.dumps({'name':'Jacob', 'email':'cool@email.com', 'school':'U of I', 'year':'senior', 'homebase':'room #4', 'skills':'awesome'}))
 
 '''
-    
+        for example:
+            [
+                {
+                    name: ,
+                    email: ,
+                    school: ,
+                    year: ,
+                    skills: ,
+                    homebase: ,
+                }
+            ]
+
     Note:
 '''
 class HackersHandler(MainHandler.BaseMobileHandler):
@@ -218,31 +181,42 @@ class HackersHandler(MainHandler.BaseMobileHandler):
         @return The models of all the Hackers attendeeing HackIllinois
     '''
     def get(self):
-        return self.write(json.dumps({'Hacker':[]}))
-
-    '''
-        Update the current model associated with the userId
-        
-        @return Success or Fail (for now)
-    '''
-#    def post(self):
-#        pass
-#
-#    '''
-#        Create a new model for a Hacker that is attendeeing HackIllinois
-#        
-#        Note: Must be an admin or current Staff
-#        
-#        @return Success or Fail (for now)
-#    '''
-#    def put(self):
-#        pass
-#
-#    def delete(self):
-#        pass
+        return self.write(json.dumps([{'name':'Jacob', 'email':'cool@email.com', 'school':'U of I', 'year':'senior', 'homebase':'room #4', 'skills':'awesome'}]))
 
 '''
-    
+        for example:
+            {
+                name: ,
+                email: ,
+                school: ,
+                year: ,
+                skills: ,
+                homebase: ,
+            }
+
+'''
+class HackerHandler(MainHandler.BaseMobileHandler):
+
+    def get(self):
+        return self.write(json.dumps({'name':'Jacob', 'email':'cool@email.com', 'school':'U of I', 'year':'senior', 'homebase':'room #4', 'skills':'awesome'}))
+
+    def Post(self):
+        pass
+
+'''
+        for example:
+            [
+                company name: {
+                    name: ,
+                    company: ,
+                    job title: ,
+                    skills: ,
+                    events: ,
+                    office hours: ,
+                    email/contact: ,
+                }
+            ]
+
     Note:
 '''
 class CompanyHandler(MainHandler.BaseMobileHandler):
@@ -252,32 +226,16 @@ class CompanyHandler(MainHandler.BaseMobileHandler):
         @return The models of all the Companies attendeeing HackIllinois
     '''
     def get(self):
-        return self.write(json.dumps({'Company':[]}))
-
-    '''
-        Update the current model associated with a company
-        
-        Note: Must be an admin or current Staff
-       
-        @return Success or Fail (for now)
-    '''
-#    def post(self):
-#        pass
-#
-#    '''
-#        Create a new model for a Company that is attendeeing HackIllinois
-#        
-#        Note: Must be an admin or current Staff
-#        
-#        @return
-#    '''
-#    def put(self):
-#        pass
-#
-#    def delete(self):
-#        pass
+        return self.write(json.dumps(['Apple':{'name':'Joe Smith','company':'Apple','job title':'iOS Developer','skills':'cool things','events':'other cool things','office hours':'1:00 pm','email/contact':'coolemail@apple.com',}]))
 
 '''
+
+    for example:
+        [
+            skill1,
+            skill2,
+            skill3,
+        ]
     
     Note:
 '''
@@ -288,18 +246,7 @@ class SkillsHandler(MainHandler.BaseMobileHandler):
         @return A list of Skills that Hackers can have
     '''
     def get(self):
-        return self.write(json.dumps({'Skills':['skill1','skill2','skill3','skill4','skill5']}))
+        return self.write(json.dumps(['skill1','skill2','skill3','skill4','skill5']))
 
-    '''
-        Update the list of Skills Hackers can have
-        
-        @return
-    '''
-#    def post(self):
-#        pass
-#
-#    def put(self):
-#        pass
-#
-#    def delete(self):
-#        pass
+    def put(self):
+        pass
