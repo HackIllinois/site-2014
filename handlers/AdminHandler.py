@@ -146,8 +146,7 @@ class AdminApproveHandler(MainHandler.BaseAdminHandler):
         stats = memcache.get_stats()
         logging.info('Hackers:: Cache Hits:%s  Cache Misses:%s' % (stats['hits'], stats['misses']))
 
-        # self.render("approve.html", data=data)
-        self.render("approve.html", data=data)
+        self.render("summary.html", data=data)
 
     # def post(self):
     #     userid = str(self.request.get('id'))

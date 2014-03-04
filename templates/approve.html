@@ -156,7 +156,7 @@
                         <tbody class="list">
                             {% for h in data.hackers %}
 							{% if h.approved != "True"%}
-                            <tr id="{{ h.userId }}" name="hackerData">
+                            <tr id="{{ h.userId }}" name="hackerData" onclick="document.location='/admin/profile/{{ h.userId }}';">
                                 <td class="id" style="display:none;">{{ loop.index }}</td>
                                 <td name="tfirstName" class="c1 fname">{{ h.nameFirst }}</td>
                                 <td name="tlastName" class="c2 lname">{{ h.nameLast }}</td>
@@ -177,7 +177,7 @@
                             {% endfor %}
                             {% for h in data.hackers %}
 							{% if h.approved == "True"%}
-                            <tr id="{{ h.userId }}" name="hackerData">
+                            <tr id="{{ h.userId }}" name="hackerData" onclick="document.location='/admin/profile/{{ h.userId }}';">
                                 <td class="id" style="display:none;">{{ loop.index }}</td>
                                 <td name="tfirstName" class="c1 fname">{{ h.nameFirst }}</td>
                                 <td name="tlastName" class="c2 lname">{{ h.nameLast }}</td>
@@ -303,7 +303,7 @@
 				var checked = false;
 				for(i = 0; i < search_food.length; i++)
 				{
-					checked = checked || search_food[i].checked; 
+					checked = checked || search_food[i].checked;
 					if(search_food[i].checked && (hacker_food.indexOf(search_food[i].name) == -1))
 					{
 						hide_food = true;
