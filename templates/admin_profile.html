@@ -13,18 +13,97 @@
 {% endblock head %}
 
 {% block body %}
-<h1 class="page-header">Profile</h1>
-<p>{{ data.nameFirst }} {{ data.nameLast }}</p>
-<p>{{ data.email }}</p>
-<p>{{ data.school }}</p>
-<p>{{ data.year }}</p>
-<p>{{ data.gender }}</p>
-</br>
-<p>{{ data.resume|safe }}</p>
-<p>{{ data.projectType }}</p>
-<p>{{ data.experience }}</p>
-<p>{{ data.linkedin }}</p>
-<p>{{ data.github }}</p>
+<h1 class="page-header">{{ data.nameFirst }} {{ data.nameLast }}</h1>
+<div class="table-responsive">
+    <table class="table">
+        <thead class="invisible">
+            <tr>
+                <th class="col-sm-2"></th>
+                <th class="col-sm-10"></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="pull-right">Email:</td>
+                <td>{{ data.email }}</td>
+            </tr>
+            <tr>
+                <td class="pull-right">Gender:</td>
+                <td>{{ data.gender }}</td>
+            </tr>
+            <tr>
+                <td class="pull-right">School:</td>
+                <td>{{ data.school }}</td>
+            </tr>
+            <tr>
+                <td class="pull-right">Year:</td>
+                <td>{{ data.year }}</td>
+            </tr>
+            <tr>
+                <td class="pull-right">Resume:</td>
+                <td>{% if data.resumeName %}<a href='/admin/resume?userId={{ data.userId }}'>{{ data.resumeName }}</a>{% endif %}</td>
+            </tr>
+            <tr>
+                <td class="pull-right">LinkedIn:</td>
+                <td>{{ data.linkedin }}</td>
+            </tr>
+            <tr>
+                <td class="pull-right">Github:</td>
+                <td>{{ data.github }}</td>
+            </tr>
+            <tr>
+                <td class="pull-right">Shirt Size:</td>
+                <td>{{ data.shirt }}</td>
+            </tr>
+            <tr>
+                <td class="pull-right">Dietary Restrictions:</td>
+                <td>{{ data.food }}</td>
+                    <p>{{ data.foodInfo }}</p>
+            </tr>
+            <tr>
+                <td class="pull-right">Project Type:</td>
+                <td>{{ data.projectType }}</td>
+            </tr>
+            <tr>
+                <td class="pull-right">Experience:</td>
+                <td>{{ data.experience }}</td>
+            </tr>
+            <tr>
+                <td class="pull-right">Team Members:</td>
+                <td>{{ data.teamMembers }}</td>
+            </tr>
+        </tbody>
+    </table>
+<div>
+<h2>Systems Data</h2>
+<div class="table-responsive">
+    <table class="table">
+        <thead class="invisible">
+            <tr>
+                <th class="col-sm-2"></th>
+                <th class="col-sm-10"></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="pull-right">Registration Time:</td>
+                <td>{{ data.registrationTime }}</td>
+            </tr>
+            <tr>
+                <td class="pull-right">Nickname:</td>
+                <td>{{ data.userNickname }}</td>
+            </tr>
+            <tr>
+                <td class="pull-right">Google Email:</td>
+                <td>{{ data.userEmail }}</td>
+            </tr>
+            <tr>
+                <td class="pull-right">User ID:</td>
+                <td>{{ data.userId }}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
 {% endblock body %}
 
 
