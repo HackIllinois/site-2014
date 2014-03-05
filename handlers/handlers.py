@@ -5,6 +5,7 @@ from ErrorHandlers import handle_401, handle_404, handle_500, Error401Handler, E
 from IndexHandler import IndexHandler
 from ApplyHandler import ApplyHandler, ApplyCompleteHandler, SchoolCheckHandler, SchoolListHandler, MyResumeHandler, UpdateCompleteHandler, UploadURLHandler
 from ApplyCountHandler import ApplyCountHandler
+import SubpageHandlers
 from SubpageHandlers import RulesHandler, ScheduleHandler, TravelHandler, CoCHandler, StaffHandler, SponsorFAQHandler
 from TropoHandler import TropoHandler
 from AdminHandler import AdminHandler, AdminApproveHandler, AdminResumeHandler, AdminStatsHandler, AdminBasicStatsHandler, AdminXkcdHandler, AdminProfileHandler, AdminEditProfileHandler, AdminApplyCountHandler, AdminSchoolCountHandler
@@ -27,7 +28,7 @@ handlers = [
     RedirectRoute('/applycount', handler=ApplyCountHandler, name='ApplyCount', strict_slash=True),
 
     RedirectRoute('/rules', handler=RulesHandler, name='Rules', strict_slash=True),
-    RedirectRoute('/schedule', handler=ScheduleHandler, name='Schedule', strict_slash=True),
+    RedirectRoute('/schedule', handler=SubpageHandlers.ScheduleHandler, name='Schedule', strict_slash=True),
     RedirectRoute('/travel', handler=TravelHandler, name='Travel', strict_slash=True),
     RedirectRoute('/sponsor/faq', handler=SponsorFAQHandler, name='SponsorFAQ', strict_slash=True),
     RedirectRoute('/tropo', handler=TropoHandler, name='Tropo', strict_slash=True),

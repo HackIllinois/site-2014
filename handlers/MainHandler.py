@@ -58,13 +58,13 @@ class BaseAdminHandler(Handler):
             return self.abort(401)
 
 class BaseMobileHandler(Handler):
-    
+
     def dispatch(self):
         if 'AuthName' in self.request.headers:
             userId = self.request.headers['AuthName']
         else:
             userId = None
-        
+
         if userId == 'test':
             super(BaseMobileHandler, self).dispatch()
         elif userId:
