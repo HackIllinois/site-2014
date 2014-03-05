@@ -334,3 +334,39 @@ class AdminStatsHandler(MainHandler.BaseAdminHandler):
         logging.info('Advanced Stats:: Cache Hits:%s  Cache Misses:%s' % (stats['hits'], stats['misses']))
 
         self.render("stats.html", schools=schools)
+
+
+class AdminProfileHandler(MainHandler.BaseAdminHandler):
+    def get(self, userId):
+        userId = str(urllib.unquote(userId))
+        db_user = Attendee.search_database({'userId':userId}).get()
+        # TODO: add sanity check for user exists
+
+        data = {}
+        text_fields = [
+            'nameFirst', 'nameLast', 'email', 'school',
+            'experience', 'linkedin', 'github', 'year',
+            'gender', 'projectType', 'shirt', 'food',
+            'foodInfo', 'teamMembers', 'registrationTime',
+            'userNickname', 'userEmail', 'userId', 'isApproved'
+        ]
+
+        for field in text_fields:
+            value = getattr(db_user, field) # Gets db_user.field using a string
+            if value is not None: data[field] = value
+
+        if db_user.resume and db_user.resume.fileName:
+            data['resumeName'] = db_user.resume.fileName
+
+        return self.render("admin_profile.html", data=data)
+
+class AdminEditProfileHandler(MainHandler.BaseAdminHandler):
+    def get(self, userId):
+        userId = str(urllib.unquote(userId))
+        db_user = Attendee.search_database({'userId':userId}).get()
+        return self.write(db_user.email)
+
+    def post(self, userId):
+        userId = str(urllib.unquote(userId))
+        db_user = Attendee.search_database({'userId':userId}).get()
+        return self.write(db_user.email)
