@@ -1,4 +1,3 @@
-
 import MainHandler
 import urllib, logging, re
 from db.Attendee import Attendee
@@ -21,7 +20,7 @@ import json
 
     Note:
 '''
-class ScheduleHandler(MainHandler.BaseMobileHandler):
+class MobileScheduleHandler(MainHandler.BaseMobileHandler):
 
     '''
         Get the current schedule of HackIllinois
@@ -36,7 +35,7 @@ class ScheduleHandler(MainHandler.BaseMobileHandler):
 
     Note:
 '''
-class MapsHandler(MainHandler.BaseMobileHandler):
+class MobileMapsHandler(MainHandler.BaseMobileHandler):
 
     '''
 
@@ -59,7 +58,7 @@ class MapsHandler(MainHandler.BaseMobileHandler):
 
     Note:
 '''
-class SupportTypeHandler(MainHandler.BaseMobileHandler):
+class MobileSupportTypeHandler(MainHandler.BaseMobileHandler):
 
     '''
 
@@ -85,7 +84,7 @@ class SupportTypeHandler(MainHandler.BaseMobileHandler):
 
     Note:
 '''
-class EmergencyHandler(MainHandler.BaseMobileHandler):
+class MobileEmergencyHandler(MainHandler.BaseMobileHandler):
 
     '''
 
@@ -116,7 +115,7 @@ class EmergencyHandler(MainHandler.BaseMobileHandler):
 
     Note:
 '''
-class NewsfeedHandler(MainHandler.BaseMobileHandler):
+class MobileNewsfeedHandler(MainHandler.BaseMobileHandler):
 
     '''
 
@@ -139,7 +138,7 @@ class NewsfeedHandler(MainHandler.BaseMobileHandler):
 
     Note:
 '''
-class StaffHandler(MainHandler.BaseMobileHandler):
+class MobileStaffHandler(MainHandler.BaseMobileHandler):
 
     '''
 
@@ -175,7 +174,7 @@ class StaffHandler(MainHandler.BaseMobileHandler):
 
     Note:
 '''
-class HackersHandler(MainHandler.BaseMobileHandler):
+class MobileHackersHandler(MainHandler.BaseMobileHandler):
 
     '''
 
@@ -196,7 +195,7 @@ class HackersHandler(MainHandler.BaseMobileHandler):
             }
 
 '''
-class HackerHandler(MainHandler.BaseMobileHandler):
+class MobileHackerHandler(MainHandler.BaseMobileHandler):
 
     def get(self):
         return self.write(json.dumps({'name':'Jacob', 'email':'cool@email.com', 'school':'U of I', 'year':'senior', 'homebase':'room #4', 'skills':'awesome'}))
@@ -220,7 +219,7 @@ class HackerHandler(MainHandler.BaseMobileHandler):
 
     Note:
 '''
-class CompaniesHandler(MainHandler.BaseMobileHandler):
+class MobileCompaniesHandler(MainHandler.BaseMobileHandler):
 
     '''
 
@@ -248,7 +247,7 @@ class CompaniesHandler(MainHandler.BaseMobileHandler):
 
     Note:
 '''
-class SkillsHandler(MainHandler.BaseMobileHandler):
+class MobileSkillsHandler(MainHandler.BaseMobileHandler):
 
     '''
 
