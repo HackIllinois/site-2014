@@ -17,19 +17,44 @@ class AdminHandler(MainHandler.BaseAdminHandler):
 
 class AdminXkcdHandler(MainHandler.BaseAdminHandler):
     def get(self):
-        xkcd_json = memcache.get('xkcd')
-        if not xkcd_json:
-            xkcd_json = urlfetch.fetch('http://xkcd.com/info.0.json').content
-            if not memcache.add('xkcd', xkcd_json, time=constants.MEMCACHE_TIMEOUT):
-                logging.error('Memcache set failed.')
-
-        stats = memcache.get_stats()
-        logging.info('XKCD:: Cache Hits:%s  Cache Misses:%s' % (stats['hits'], stats['misses']))
-
-
+        xkcd_json = urlfetch.fetch('http://xkcd.com/info.0.json').content
         self.response.headers.add("Access-Control-Allow-Origin", "*")
         self.response.headers['Content-Type'] = 'text/json'
         return self.write(xkcd_json)
+
+
+class AdminApplyCountHandler(MainHandler.BaseAdminHandler):
+    def get(self):
+        cached_count = memcache.get('apply_count')
+
+        if cached_count is None:
+            q = Attendee.query(Attendee.isRegistered == True)
+            cached_count = q.count()
+            if not memcache.add('apply_count', cached_count, time=constants.MEMCACHE_COUNT_TIMEOUT):
+                logging.error('Memcache set failed.')
+
+        stats = memcache.get_stats()
+        logging.info('Apply Count:: Cache Hits:%s  Cache Misses:%s' % (stats['hits'], stats['misses']))
+
+        self.write('%d' % cached_count)
+
+
+class AdminSchoolCountHandler(MainHandler.BaseAdminHandler):
+    def get(self):
+        cache_key = 'school_count'
+        cached_count = memcache.get(cache_key)
+
+        if cached_count is None:
+            q = Attendee.query(Attendee.isRegistered == True, projection=[Attendee.school], distinct=True)
+            set_of_field = set([data.school for data in q])
+            cached_count = len(set_of_field)
+            if not memcache.add(cache_key, cached_count, time=constants.MEMCACHE_COUNT_TIMEOUT):
+                logging.error('Memcache set failed.')
+
+        stats = memcache.get_stats()
+        logging.info('School Count:: Cache Hits:%s  Cache Misses:%s' % (stats['hits'], stats['misses']))
+
+        self.write('%d' % cached_count)
 
 
 class AdminBasicStatsHandler(MainHandler.BaseAdminHandler):
@@ -60,6 +85,9 @@ class AdminBasicStatsHandler(MainHandler.BaseAdminHandler):
             data = {}
 
             data['numPeople'] = count
+            if not memcache.set('apply_count', count, time=constants.MEMCACHE_COUNT_TIMEOUT):
+                logging.error('Memcache set failed.')
+
             data['fields'] = []
 
             for field in sorted(collected.keys()):
@@ -146,6 +174,7 @@ class AdminApproveHandler(MainHandler.BaseAdminHandler):
         stats = memcache.get_stats()
         logging.info('Hackers:: Cache Hits:%s  Cache Misses:%s' % (stats['hits'], stats['misses']))
 
+        # self.render("approve.html", data=data)
         self.render("summary.html", data=data)
 
     # def post(self):

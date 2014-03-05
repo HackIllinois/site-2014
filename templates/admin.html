@@ -17,7 +17,7 @@
 
 
 {% block body %}
-<h1 class="page-header">Dashboard</h1>
+<h1 id="typer_target" class="page-header">XXX hackers registered<br>from XXX schools!</h1>
 <span class="xkcd-container">
     <h3 id="xkcd_title" class="t-centered"></h3>
     <a href="http://xkcd.com/"><img id="xkcd" class="img-responsive"></a>
@@ -26,10 +26,28 @@
 
 
 {% block scripts %}
+<script src="/js/jquery.fittext.js"></script>
 <script type="text/javascript">
-var num = 0
+var num = 0;
 
 $(document).ready(function() {
+    $("#typer_target").fitText(1.1);
+
+    hacker_count = "";
+    school_count = "";
+
+	$.get( "/admin/applycount", function( data ) {
+        hacker_count = data;
+
+        $.get( "/admin/schoolcount", function( data ) {
+            school_count = data;
+
+            $("#typer_target").html(hacker_count + " hackers registered<br>from " + school_count + " schools!");
+            $("#typer_target").fitText(1.1);
+        });
+
+	});
+
     var img = document.getElementById("xkcd");
     var title = document.getElementById("xkcd_title");
     $.getJSON( "/admin/xkcd", function( data ) {

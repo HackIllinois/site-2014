@@ -177,6 +177,28 @@ a.apply-btn {
 
 }
 
+a.volunteer-btn {
+	font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+	font-size: 14px;
+	font-weight: bold;
+	background: #ef3e36;
+	color: #fff;
+	max-width: 254px;
+	width: 100%;
+	cursor: pointer;
+	padding: 10px 91px;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	border: none;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	text-decoration: none;
+	border: 1px solid #ef3e36;
+	text-transform: uppercase;
+	margin-right: 4px;
+}
+
+
 a.update-btn {
 	padding: 10px 100px;
 }
@@ -216,7 +238,7 @@ a.apply-btn:visited, a.apply-btn:active, a.apply-btn:hover {
 	color: #fff;
 }
 
-a.apply-btn:hover {
+a.apply-btn:hover, a.volunteer-btn:hover {
 	background-color: #ef4d36;
 }
 
@@ -402,6 +424,10 @@ button:focus {
 	width: 12%;
 }
 
+.epic {
+	width: 10%;
+}
+
 .rdio {
 	width: 10%;
 }
@@ -447,6 +473,10 @@ div.main-content {
 	max-width: 840px;
 	color: #bbb;
 	font-size: 12px;
+}
+
+.thanks {
+	margin-top: 5px;
 }
 
 @media (max-width: 480px) {

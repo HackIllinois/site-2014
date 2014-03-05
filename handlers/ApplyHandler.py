@@ -128,7 +128,8 @@ class ApplyHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandle
             delete_file = False
 
             # Non-pdf files
-            if not (file_info.content_type == 'application/pdf' or file_info.filename.split('.')[-1].tolower() == 'pdf'):
+            # if not file_info.content_type == 'application/pdf':
+            if not file_info.filename[-4:] == '.pdf':
                 errors['resume'] = 'Uploaded resume file is not a pdf.'
                 delete_file = True
                 valid = False
