@@ -1,3 +1,5 @@
+from webapp2_extras.routes import RedirectRoute
+
 from EmailBackupHandler import EmailBackupHandler
 from ErrorHandlers import handle_401, handle_404, handle_500, Error401Handler, Error404Handler, Error500Handler
 from IndexHandler import IndexHandler
@@ -5,65 +7,65 @@ from ApplyHandler import ApplyHandler, ApplyCompleteHandler, SchoolCheckHandler,
 from ApplyCountHandler import ApplyCountHandler
 from SubpageHandlers import RulesHandler, ScheduleHandler, TravelHandler, CoCHandler, StaffHandler, SponsorFAQHandler
 from TropoHandler import TropoHandler
-from AdminHandler import AdminHandler, AdminApproveHandler, AdminResumeHandler, AdminStatsHandler, AdminBasicStatsHandler, AdminXkcdHandler, AdminApplyCountHandler, AdminSchoolCountHandler
+from AdminHandler import AdminHandler, AdminApproveHandler, AdminResumeHandler, AdminStatsHandler, AdminBasicStatsHandler, AdminXkcdHandler, AdminProfileHandler, AdminEditProfileHandler, AdminApplyCountHandler, AdminSchoolCountHandler
 from SponsorHandler import SponsorHandler
 from LogoutHandler import LogoutHandler
 from MGTHandler import MGTHandler, ParticlesHandler
 from MobileHandler import ScheduleHandler, MapsHandler, SupportTypeHandler, EmergencyHandler, NewsfeedHandler, StaffHandler, HackersHandler, CompanyHandler, SkillsHandler
-# from AdminHandler import AdminHandler, ApproveResumeHandler, ApproveHandler
-# import AdminHandler
-# from LoginRequiredHandler import LoginRequiredHandler
-
 
 handlers = [
-    ('/', IndexHandler),
-    ('/emailbackup', EmailBackupHandler),
-    ('/apply/?', ApplyHandler),
-    ('/apply/complete', ApplyCompleteHandler),
-    ('/apply/updated', UpdateCompleteHandler),
-    ('/apply/schoolcheck', SchoolCheckHandler),
-    ('/apply/schoollist', SchoolListHandler),
-    ('/apply/myresume', MyResumeHandler),
-    ('/apply/uploadurl', UploadURLHandler),
-    ('/applycount', ApplyCountHandler),
-    ('/rules', RulesHandler),
-    ('/schedule', ScheduleHandler),
-    ('/travel', TravelHandler),
-    ('/sponsor/faq', SponsorFAQHandler),
-    ('/tropo', TropoHandler),
-    ('/admin', AdminHandler),
-    ('/admin/xkcd', AdminXkcdHandler),
-    ('/admin/approve', AdminApproveHandler),
-    ('/mobile/schedule', ScheduleHandler),
-    ('/mobile/maps', MapsHandler),
-    ('/mobile/support/types', SupportTypeHandler),
-    ('/mobile/messages/emergency', EmergencyHandler),
-    ('/mobile/messages/newsfeed', NewsfeedHandler),
-    ('/mobile/people/staff', StaffHandler),
-    ('/mobile/people/hackers', HackersHandler),
-    ('/mobile/people,hacker', HackerHandler),
-    ('/mobile/companies', CompaniesHandler),
-    ('/mobile/skills', SkillsHandler),
-    # I may have broken all of this code with the backend refactor, will help get it fixed soon. --Matthew
-    # ('/admin', AdminHandler),
-    # ('/admin/approve', ApproveHandler),
-    # ('/admin/approve/resume/.*', ApproveResumeHandler),
-    ('/admin', SummaryHandler),
-    ('/admin/resume', AdminResumeHandler),
-    ('/admin/stats', AdminStatsHandler),
-    ('/admin/basicstats', AdminBasicStatsHandler),
-    ('/admin/resume', AdminResumeHandler),
-    ('/admin/applycount', AdminApplyCountHandler),
-    ('/admin/schoolcount', AdminSchoolCountHandler),
-    ('/sponsor/download', SponsorHandler),    
-    ('/code-of-conduct', CoCHandler),
-    # ('/hidden/staff', StaffHandler),
-    ('/logout', LogoutHandler),
-    ('/mgt', MGTHandler),
-    ('/particles', ParticlesHandler),
-	('/401', Error401Handler),
-	('/404', Error404Handler),
-	('/500', Error500Handler),
+    RedirectRoute('/', handler=IndexHandler, name='Index', strict_slash=True),
+    RedirectRoute('/emailbackup', handler=EmailBackupHandler, name='EmailBackup', strict_slash=True),
+
+    RedirectRoute('/apply', handler=ApplyHandler, name='Apply', strict_slash=True),
+    RedirectRoute('/apply/complete', handler=ApplyCompleteHandler, name='ApplyComplete', strict_slash=True),
+    RedirectRoute('/apply/updated', handler=UpdateCompleteHandler, name='UpdateComplete', strict_slash=True),
+    RedirectRoute('/apply/schoolcheck', handler=SchoolCheckHandler, name='SchoolCheck', strict_slash=True),
+    RedirectRoute('/apply/schoollist', handler=SchoolListHandler, name='SchoolList', strict_slash=True),
+    RedirectRoute('/apply/myresume', handler=MyResumeHandler, name='MyResume', strict_slash=True),
+    RedirectRoute('/apply/uploadurl', handler=UploadURLHandler, name='UploadURL', strict_slash=True),
+    RedirectRoute('/applycount', handler=ApplyCountHandler, name='ApplyCount', strict_slash=True),
+
+    RedirectRoute('/rules', handler=RulesHandler, name='Rules', strict_slash=True),
+    RedirectRoute('/schedule', handler=ScheduleHandler, name='Schedule', strict_slash=True),
+    RedirectRoute('/travel', handler=TravelHandler, name='Travel', strict_slash=True),
+    RedirectRoute('/sponsor/faq', handler=SponsorFAQHandler, name='SponsorFAQ', strict_slash=True),
+    RedirectRoute('/tropo', handler=TropoHandler, name='Tropo', strict_slash=True),
+    RedirectRoute('/code-of-conduct', handler=CoCHandler, name='CoC', strict_slash=True),
+
+    RedirectRoute('/sponsor/download', handler=SponsorHandler, name='Sponsor', strict_slash=True),
+
+    RedirectRoute('/admin', handler=AdminHandler, name='Admin', strict_slash=True),
+    RedirectRoute('/admin/xkcd', handler=AdminXkcdHandler, name='AdminXkcd', strict_slash=True),
+    RedirectRoute('/admin/approve', handler=AdminApproveHandler, name='AdminApprove', strict_slash=True),
+    RedirectRoute('/admin/stats', handler=AdminStatsHandler, name='AdminStats', strict_slash=True),
+    RedirectRoute('/admin/basicstats', handler=AdminBasicStatsHandler, name='AdminBasicStats', strict_slash=True),
+    RedirectRoute('/admin/resume', handler=AdminResumeHandler, name='AdminResume', strict_slash=True),
+    RedirectRoute('/admin/applycount', handler=AdminApplyCountHandler, name='AdminApplyCount', strict_slash=True),
+    RedirectRoute('/admin/schoolcount', handler=AdminSchoolCountHandler, name='AdminSchoolCount', strict_slash=True),
+    RedirectRoute('/admin/profile/<userId>', handler=AdminProfileHandler, name='AdminProfile', strict_slash=True),
+    RedirectRoute('/admin/profile/<userId>/edit', handler=AdminEditProfileHandler, name='AdminEditProfile', strict_slash=True),
+
+    RedirectRoute('/mobile/schedule', handler=ScheduleHandler, name='Schedule', strict_slash=True),
+    RedirectRoute('/mobile/maps', handler=MapsHandler, name='Maps', strict_slash=True),
+    RedirectRoute('/mobile/support/types', handler=SupportTypeHandler, name='SupportType', strict_slash=True),
+    RedirectRoute('/mobile/messages/emergency', handler=EmergencyHandler, name='Emergency', strict_slash=True),
+    RedirectRoute('/mobile/messages/newsfeed', handler=NewsfeedHandler, name='Newsfeed', strict_slash=True),
+    RedirectRoute('/mobile/people/staff', handler=StaffHandler, name='Staff', strict_slash=True),
+    RedirectRoute('/mobile/people/hackers', handler=HackersHandler, name='Hackers', strict_slash=True),
+    RedirectRoute('/mobile/people,hacker', handler=HackerHandler, name='Hacker', strict_slash=True),
+    RedirectRoute('/mobile/companies', handler=CompaniesHandler, name='Companies', strict_slash=True),
+    RedirectRoute('/mobile/skills', handler=SkillsHandler, name='Skills', strict_slash=True),
+
+    RedirectRoute('/logout', handler=LogoutHandler, name='Logout', strict_slash=True),
+
+    # RedirectRoute('/hidden/staff', handler=StaffHandler, name='Staff', strict_slash=True),
+    RedirectRoute('/mgt', handler=MGTHandler, name='MGT', strict_slash=True),
+    RedirectRoute('/particles', handler=ParticlesHandler, name='Particles', strict_slash=True),
+
+    RedirectRoute('/401', handler=Error401Handler, name='Error401', strict_slash=True),
+    RedirectRoute('/404', handler=Error404Handler, name='Error404', strict_slash=True),
+    RedirectRoute('/500', handler=Error500Handler, name='Error500', strict_slash=True),
 ]
 
 errorHandlers = {

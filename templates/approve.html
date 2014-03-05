@@ -68,15 +68,15 @@
                 <h1>Hacker Summary<small>&nbsp;&nbsp;</small><small id="count"></small><small>&nbsp;people</small></h1>
                 <form name="tcol" onsubmit="return false">
                     <label>Show columns:&nbsp;&nbsp;</label>
-                    <input type=checkbox name="gender" onclick="toggleVis(this.name)" checked> Gender&nbsp;&nbsp;
-                    <input type=checkbox name="school" onclick="toggleVis(this.name)" checked> School&nbsp;&nbsp;
-                    <input type=checkbox name="year" onclick="toggleVis(this.name)" checked> Year&nbsp;&nbsp;
-                    <input type=checkbox name="linkedin" onclick="toggleVis(this.name)" checked> LinkedIn&nbsp;&nbsp;
-                    <input type=checkbox name="github" onclick="toggleVis(this.name)" checked> Github&nbsp;&nbsp;
-                    <input type=checkbox name="shirt" onclick="toggleVis(this.name)" checked> Shirt&nbsp;&nbsp;
-                    <input type=checkbox name="food" onclick="toggleVis(this.name)" checked> Dietary Restrictions&nbsp;&nbsp;
-                    <input type=checkbox name="project" onclick="toggleVis(this.name)" checked> Project Type&nbsp;&nbsp;
-                    <input type=checkbox name="time" onclick="toggleVis(this.name)" checked> Registered&nbsp;&nbsp;
+                    <input id="c-gender" type=checkbox name="gender" onclick="toggleVis(this.name)" checked> Gender&nbsp;&nbsp;
+                    <input id="c-school" type=checkbox name="school" onclick="toggleVis(this.name)" checked> School&nbsp;&nbsp;
+                    <input id="c-year" type=checkbox name="year" onclick="toggleVis(this.name)" checked> Year&nbsp;&nbsp;
+                    <input id="c-linkedin" type=checkbox name="linkedin" onclick="toggleVis(this.name)" checked> LinkedIn&nbsp;&nbsp;
+                    <input id="c-github" type=checkbox name="github" onclick="toggleVis(this.name)" checked> Github&nbsp;&nbsp;
+                    <input id="c-shirt" type=checkbox name="shirt" onclick="toggleVis(this.name)" checked> Shirt&nbsp;&nbsp;
+                    <input id="c-food" type=checkbox name="food" onclick="toggleVis(this.name)" checked> Dietary Restrictions&nbsp;&nbsp;
+                    <input id="c-project" type=checkbox name="project" onclick="toggleVis(this.name)" checked> Project Type&nbsp;&nbsp;
+                    <input id="c-time" type=checkbox name="time" onclick="toggleVis(this.name)" checked> Registered&nbsp;&nbsp;
                 </form>
                 <div id="hackers" class="table-responsive">
                     <table id="usertable" class="table table-bordered table-hover">
@@ -88,7 +88,7 @@
 									<form name="search_gender">
 										<input type=checkbox name="Male" onclick="searchHackers()" checked> Male<br>
 										<input type=checkbox name="Female" onclick="searchHackers()" checked> Female<br>
-										<input type=checkbox name="Other" onclick="searchHackers()" checked> Other<br>
+										<input type=checkbox name="Other" onclick="searchHackers()" checked> Other
 										<!--"I chose not to specify" is being stored as "Other"-->
 									</form>
 								</td>
@@ -119,11 +119,11 @@
 								</td>
 								<td class="c10" name="tfood">
 									<form name="search_food">
-										<input type=checkbox name="Vegetarian" onclick="searchHackers()" checked> Vegetarian<br>
-										<input type=checkbox name="Vegan" onclick="searchHackers()" checked> Vegan<br>
-										<input type=checkbox name="Gluten Free" onclick="searchHackers()" checked> Gluten Free<br>
-										<input type=checkbox name="Lactose Free" onclick="searchHackers()" checked> Lactose Free<br>
-										<input type=checkbox name="Other" onclick="searchHackers()" checked> Other
+										<input type=checkbox name="Vegetarian" onclick="searchHackers()"> Vegetarian<br>
+										<input type=checkbox name="Vegan" onclick="searchHackers()"> Vegan<br>
+										<input type=checkbox name="Gluten Free" onclick="searchHackers()"> Gluten Free<br>
+										<input type=checkbox name="Lactose Free" onclick="searchHackers()"> Lactose Free<br>
+										<input type=checkbox name="Other" onclick="searchHackers()"> Other
 									</form>
 								</td>
 								<td class="c11" name="tproject">
@@ -133,6 +133,8 @@
 										<input type=checkbox name="Unsure" onclick="searchHackers()" checked> Unsure
 									</form>
 								</td>
+								<td class="c12" name="ttime"></td>
+								<td class="c13"></td>
 
 							</tr>
                             <tr>
@@ -154,7 +156,7 @@
                         <tbody class="list">
                             {% for h in data.hackers %}
 							{% if h.approved != "True"%}
-                            <tr id="{{ h.userId }}" name="hackerData">
+                            <tr id="{{ h.userId }}" name="hackerData" onclick="document.location='/admin/profile/{{ h.userId }}';">
                                 <td class="id" style="display:none;">{{ loop.index }}</td>
                                 <td name="tfirstName" class="c1 fname">{{ h.nameFirst }}</td>
                                 <td name="tlastName" class="c2 lname">{{ h.nameLast }}</td>
@@ -175,7 +177,7 @@
                             {% endfor %}
                             {% for h in data.hackers %}
 							{% if h.approved == "True"%}
-                            <tr id="{{ h.userId }}" name="hackerData">
+                            <tr id="{{ h.userId }}" name="hackerData" onclick="document.location='/admin/profile/{{ h.userId }}';">
                                 <td class="id" style="display:none;">{{ loop.index }}</td>
                                 <td name="tfirstName" class="c1 fname">{{ h.nameFirst }}</td>
                                 <td name="tlastName" class="c2 lname">{{ h.nameLast }}</td>
@@ -298,14 +300,16 @@
 				}
 				hide = hide_shirt || hide;
 				var hide_food = false;
+				var checked = false;
 				for(i = 0; i < search_food.length; i++)
 				{
+					checked = checked || search_food[i].checked;
 					if(search_food[i].checked && (hacker_food.indexOf(search_food[i].name) == -1))
 					{
 						hide_food = true;
 					}
 				}
-				hide = hide_food || hide;
+				hide = (hide_food && checked) || hide;
 				var hide_project = true;
 				for(i = 0; i < search_project.length; i++)
 				{
@@ -344,11 +348,17 @@
         }
 
         $(document).ready(function() {
-            hackerList.sort('approve', 'time', { order: "desc" });
-            document.getElementById("count").innerHTML = hackerList.size()
-            hackerList.on('searchComplete', function(){document.getElementById("count").innerHTML = hackerList.matchingItems.length;})
+            hackerList.sort('time', { order: "desc" });
+            document.getElementById("count").innerHTML = hackerList.size();
+            hackerList.on('searchComplete', function(){document.getElementById("count").innerHTML = hackerList.matchingItems.length;});
 
-            applyBtnCallbacks();
+            document.getElementById("c-gender").click();
+            document.getElementById("c-linkedin").click();
+            document.getElementById("c-github").click();
+            document.getElementById("c-shirt").click();
+            document.getElementById("c-food").click();
+            document.getElementById("c-time").click();
+           // applyBtnCallbacks();
         });
     </script>
 {% endblock scripts%}

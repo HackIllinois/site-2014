@@ -89,7 +89,7 @@
                         </thead>
                         <tbody class="list">
                             {% for h in data.hackers %}
-                            <tr>
+                            <tr id="{{ h.userId }}" onclick="document.location='/admin/profile/{{ h.userId }}';">
                                 <td class="id" style="display:none;">{{ loop.index }}</td>
                                 <td class="c1 fname">{{ h.nameFirst }}</td>
                                 <td class="c2 lname">{{ h.nameLast }}</td>
@@ -104,7 +104,7 @@
                                 <td name="tproject" class="c11 project">{{ h.projectType }}</td>
                                 <td name="ttime" class="c12 time">{{ h.registrationTime }}</td>
                                 <td class="c13">{{ h.resume|safe }}</td>
-                                <td class="c14 approved"><button type="button" class="btn btn-primary approve-btn" {% if h.approved %}disabled="disabled"{% endif %}>Approve</button></td>
+                                <td class="c14 approved"><button type="button" class="btn btn-primary approve-btn invisible" {% if h.approved %}disabled="disabled"{% endif %}>Approve</button></td>
                             </tr>
                             {% endfor %}
                         </tbody>
