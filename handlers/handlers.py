@@ -11,7 +11,7 @@ from AdminHandler import AdminHandler, AdminApproveHandler, AdminResumeHandler, 
 from SponsorHandler import SponsorHandler
 from LogoutHandler import LogoutHandler
 from MGTHandler import MGTHandler, ParticlesHandler
-from MobileHandler import ScheduleHandler, MapsHandler, SupportTypeHandler, EmergencyHandler, NewsfeedHandler, StaffHandler, HackersHandler, CompanyHandler, SkillsHandler
+from MobileHandler import ScheduleHandler, MapsHandler, SupportTypeHandler, EmergencyHandler, NewsfeedHandler, StaffHandler, HackersHandler, CompaniesHandler, SkillsHandler, HackerHandler, CompaniesHandler
 
 handlers = [
     RedirectRoute('/', handler=IndexHandler, name='Index', strict_slash=True),
@@ -53,7 +53,7 @@ handlers = [
     RedirectRoute('/mobile/messages/newsfeed', handler=NewsfeedHandler, name='Newsfeed', strict_slash=True),
     RedirectRoute('/mobile/people/staff', handler=StaffHandler, name='Staff', strict_slash=True),
     RedirectRoute('/mobile/people/hackers', handler=HackersHandler, name='Hackers', strict_slash=True),
-    RedirectRoute('/mobile/people,hacker', handler=HackerHandler, name='Hacker', strict_slash=True),
+    RedirectRoute('/mobile/people/hacker', handler=HackerHandler, name='Hacker', strict_slash=True),
     RedirectRoute('/mobile/companies', handler=CompaniesHandler, name='Companies', strict_slash=True),
     RedirectRoute('/mobile/skills', handler=SkillsHandler, name='Skills', strict_slash=True),
 

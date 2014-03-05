@@ -1,3 +1,4 @@
+
 import MainHandler
 import urllib, logging, re
 from db.Attendee import Attendee
@@ -6,7 +7,7 @@ from google.appengine.api import users, memcache
 import json
 
 '''
-    
+
     for example:
         [
             {
@@ -17,7 +18,7 @@ import json
 
             }
         ]
-    
+
     Note:
 '''
 class ScheduleHandler(MainHandler.BaseMobileHandler):
@@ -25,20 +26,20 @@ class ScheduleHandler(MainHandler.BaseMobileHandler):
     '''
         Get the current schedule of HackIllinois
             for example:
-        
+
         @return the schedule of HackIllinois
     '''
     def get(self):
         return self.write(json.dumps([{'event name':'First Event' ,'description':'Blast Off' ,'location':'room #1' ,'time':'12:00pm'}]))
 
 '''
-    
+
     Note:
 '''
 class MapsHandler(MainHandler.BaseMobileHandler):
 
     '''
-       
+
         @return A dictionary of each location and the value is a dictionary of floors and a list of rooms on each floor
             for example:
                 {
@@ -54,14 +55,14 @@ class MapsHandler(MainHandler.BaseMobileHandler):
         return self.write(json.dumps({'Siebel':{'1':['Ground Zero', 'Space Station']},'DCL':{'1':['Galaxy']}}))
 
 '''
-    
-    
+
+
     Note:
 '''
 class SupportTypeHandler(MainHandler.BaseMobileHandler):
 
     '''
-       
+
         @return The list of Support Types
             for example:
                 {
@@ -81,14 +82,14 @@ class SupportTypeHandler(MainHandler.BaseMobileHandler):
                 announcement:
             }
         ]
-    
+
     Note:
 '''
 class EmergencyHandler(MainHandler.BaseMobileHandler):
 
     '''
-        
-        
+
+
         @return Emergency Messages
     '''
     def get(self):
@@ -96,14 +97,14 @@ class EmergencyHandler(MainHandler.BaseMobileHandler):
 
     '''
         Update an Emergency Message
-        
+
         @return Success or Fail (for now)
     '''
     def put(self):
         pass
 
 '''
-    
+
     for example:
         [
             {
@@ -118,7 +119,7 @@ class EmergencyHandler(MainHandler.BaseMobileHandler):
 class NewsfeedHandler(MainHandler.BaseMobileHandler):
 
     '''
-       
+
         @parameter before Top bound on the time for the NewsFeed
         @parameter since Bottom bound on the time for the NewsFeed (default should be your last time of the NewFeed card you have)
         @return The NewFeed models that are between the before and since parameters
@@ -135,13 +136,13 @@ class NewsfeedHandler(MainHandler.BaseMobileHandler):
 #        pass
 
 '''
-    
+
     Note:
 '''
 class StaffHandler(MainHandler.BaseMobileHandler):
 
     '''
-       
+
         for example:
             [
                 {
@@ -177,7 +178,7 @@ class StaffHandler(MainHandler.BaseMobileHandler):
 class HackersHandler(MainHandler.BaseMobileHandler):
 
     '''
-       
+
         @return The models of all the Hackers attendeeing HackIllinois
     '''
     def get(self):
@@ -219,14 +220,22 @@ class HackerHandler(MainHandler.BaseMobileHandler):
 
     Note:
 '''
-class CompanyHandler(MainHandler.BaseMobileHandler):
-    
+class CompaniesHandler(MainHandler.BaseMobileHandler):
+
     '''
-        
+
         @return The models of all the Companies attendeeing HackIllinois
     '''
     def get(self):
-        return self.write(json.dumps(['Apple':{'name':'Joe Smith','company':'Apple','job title':'iOS Developer','skills':'cool things','events':'other cool things','office hours':'1:00 pm','email/contact':'coolemail@apple.com',}]))
+        return self.write(json.dumps(
+            {'Apple':
+                {'name':'Joe Smith',
+                 'company':'Apple',
+                 'job title':'iOS Developer',
+                 'skills':'cool things',
+                 'events':'other cool things',
+                 'office hours':'1:00 pm',
+                 'email/contact':'coolemail@apple.com'}}))
 
 '''
 
@@ -236,13 +245,13 @@ class CompanyHandler(MainHandler.BaseMobileHandler):
             skill2,
             skill3,
         ]
-    
+
     Note:
 '''
 class SkillsHandler(MainHandler.BaseMobileHandler):
-    
+
     '''
-       
+
         @return A list of Skills that Hackers can have
     '''
     def get(self):
