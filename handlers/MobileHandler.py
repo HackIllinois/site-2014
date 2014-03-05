@@ -1,4 +1,3 @@
-
 import MainHandler
 import urllib, logging, re
 from db.Attendee import Attendee

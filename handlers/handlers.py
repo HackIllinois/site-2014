@@ -12,7 +12,7 @@ from AdminHandler import AdminHandler, AdminApproveHandler, AdminResumeHandler, 
 from SponsorHandler import SponsorHandler
 from LogoutHandler import LogoutHandler
 from MGTHandler import MGTHandler, ParticlesHandler
-from MobileHandler import ScheduleHandler, MapsHandler, SupportTypeHandler, EmergencyHandler, NewsfeedHandler, StaffHandler, HackersHandler, CompaniesHandler, SkillsHandler, HackerHandler, CompaniesHandler
+import MobileHandler
 
 handlers = [
     RedirectRoute('/', handler=IndexHandler, name='Index', strict_slash=True),
@@ -47,16 +47,16 @@ handlers = [
     RedirectRoute('/admin/profile/<userId>', handler=AdminProfileHandler, name='AdminProfile', strict_slash=True),
     RedirectRoute('/admin/profile/<userId>/edit', handler=AdminEditProfileHandler, name='AdminEditProfile', strict_slash=True),
 
-    RedirectRoute('/mobile/schedule', handler=ScheduleHandler, name='Schedule', strict_slash=True),
-    RedirectRoute('/mobile/maps', handler=MapsHandler, name='Maps', strict_slash=True),
-    RedirectRoute('/mobile/support/types', handler=SupportTypeHandler, name='SupportType', strict_slash=True),
-    RedirectRoute('/mobile/messages/emergency', handler=EmergencyHandler, name='Emergency', strict_slash=True),
-    RedirectRoute('/mobile/messages/newsfeed', handler=NewsfeedHandler, name='Newsfeed', strict_slash=True),
-    RedirectRoute('/mobile/people/staff', handler=StaffHandler, name='Staff', strict_slash=True),
-    RedirectRoute('/mobile/people/hackers', handler=HackersHandler, name='Hackers', strict_slash=True),
-    RedirectRoute('/mobile/people/hacker', handler=HackerHandler, name='Hacker', strict_slash=True),
-    RedirectRoute('/mobile/companies', handler=CompaniesHandler, name='Companies', strict_slash=True),
-    RedirectRoute('/mobile/skills', handler=SkillsHandler, name='Skills', strict_slash=True),
+    RedirectRoute('/mobile/schedule', handler=MobileHandler.ScheduleHandler, name='MobileSchedule', strict_slash=True),
+    RedirectRoute('/mobile/maps', handler=MobileHandler.MapsHandler, name='MobileMaps', strict_slash=True),
+    RedirectRoute('/mobile/support/types', handler=MobileHandler.SupportTypeHandler, name='MobileSupportType', strict_slash=True),
+    RedirectRoute('/mobile/messages/emergency', handler=MobileHandler.EmergencyHandler, name='MobileEmergency', strict_slash=True),
+    RedirectRoute('/mobile/messages/newsfeed', handler=MobileHandler.NewsfeedHandler, name='MobileNewsfeed', strict_slash=True),
+    RedirectRoute('/mobile/people/staff', handler=MobileHandler.StaffHandler, name='MobileStaff', strict_slash=True),
+    RedirectRoute('/mobile/people/hackers', handler=MobileHandler.HackersHandler, name='MobileHackers', strict_slash=True),
+    RedirectRoute('/mobile/people/hacker', handler=MobileHandler.HackerHandler, name='MobileHacker', strict_slash=True),
+    RedirectRoute('/mobile/companies', handler=MobileHandler.CompaniesHandler, name='MobileCompanies', strict_slash=True),
+    RedirectRoute('/mobile/skills', handler=MobileHandler.SkillsHandler, name='MobileSkills', strict_slash=True),
 
     RedirectRoute('/logout', handler=LogoutHandler, name='Logout', strict_slash=True),
 
