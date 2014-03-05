@@ -13,7 +13,7 @@
 {% endblock head %}
 
 {% block body %}
-<h1 class="page-header">{{ data.nameFirst }} {{ data.nameLast }}</h1>
+<h1 class="page-header">{{ data.nameFirst }} {{ data.nameLast }}<small>&nbsp;&nbsp;is {% if not data.isApproved %}not {% endif %}approved</small></h1>
 <div class="table-responsive">
     <table class="table">
         <thead class="invisible">
