@@ -56,3 +56,19 @@ class BaseAdminHandler(Handler):
         else:
             logging.info('%s attempted to access an admin page but was denied.', email)
             return self.abort(401)
+
+class BaseMobileHandler(Handler):
+    
+    def dispatch(self):
+        if 'AuthName' in self.request.headers:
+            userId = self.request.headers['AuthName']
+        else:
+            userId = None
+        
+        if userId == 'test':
+            super(BaseMobileHandler, self).dispatch()
+        elif userId:
+            db_user = Attendee.search_database({'userId':userId}).get()
+            super(BaseMobileHandler, self).dispath()
+        else:
+            return self.write('Did not pass userId')
