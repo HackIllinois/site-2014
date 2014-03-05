@@ -34,7 +34,6 @@ handlers = [
     ('/admin', AdminHandler),
     ('/admin/xkcd', AdminXkcdHandler),
     ('/admin/approve', AdminApproveHandler),
-    ('/mobile', MobileLoginHandler),
     ('/mobile/schedule', ScheduleHandler),
     ('/mobile/maps', MapsHandler),
     ('/mobile/support/types', SupportTypeHandler),
