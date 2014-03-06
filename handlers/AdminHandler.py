@@ -142,14 +142,6 @@ class AdminApproveHandler(MainHandler.BaseAdminHandler):
             data = {}
             data['hackers'] = []
             for hacker in hackers:
-                resume_link = None
-                if hacker.resume:
-                    name = hacker.resume.fileName
-                    # name = name if len(name)<=10 else name[0:7]+'...'
-                    resume_link = "<a href='/admin/resume?userId=%s'>%s</a>" % (hacker.userId, name)
-                    pass
-                else:
-                    resume_link = ''
 
                 data['hackers'].append({ 'nameFirst':hacker.nameFirst,
                                          'nameLast':hacker.nameLast,
@@ -163,9 +155,8 @@ class AdminApproveHandler(MainHandler.BaseAdminHandler):
                                          'food':'None' if not hacker.food else ', '.join(hacker.food.split(',')),
                                          'projectType':hacker.projectType,
                                          'registrationTime':hacker.registrationTime.strftime('%x %X'),
-                                         'resume':resume_link,
-                                         # 'approved':hacker.approved,
-                                         'approved':True,
+                                         'resume':hacker.resume,
+                                         'approved':hacker.approved,
                                          'userId':hacker.userId})
 
             if not memcache.add('hackers', data, time=constants.MEMCACHE_TIMEOUT):
@@ -174,18 +165,17 @@ class AdminApproveHandler(MainHandler.BaseAdminHandler):
         stats = memcache.get_stats()
         logging.info('Hackers:: Cache Hits:%s  Cache Misses:%s' % (stats['hits'], stats['misses']))
 
-        # self.render("approve.html", data=data)
-        self.render("summary.html", data=data)
-
-    # def post(self):
-    #     userid = str(self.request.get('id'))
-    #     user = Attendee.search_database({'userId':userid}).get() #works now
-    #     if not user:
-    #        # TODO: redirect to error handler
-    #         return self.write('ERROR')
-    #     x = {}
-    #     x['approved'] = 'True'
-    #     success = Attendee.update_search(x, {'userId':userid})
+        self.render("approve.html", data=data)
+        
+    def post(self):
+        userid = str(self.request.get('id'))
+        user = Attendee.search_database({'userId':userid}).get()
+        if not user:
+           # TODO: redirect to error handler
+            return self.write('ERROR')
+        x = {}
+        x['approved'] = 'True'
+        success = Attendee.update_search(x, {'userId':userid})
 
 
 class AdminStatsHandler(MainHandler.BaseAdminHandler):
