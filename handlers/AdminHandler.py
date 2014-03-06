@@ -156,7 +156,7 @@ class AdminApproveHandler(MainHandler.BaseAdminHandler):
                                          'projectType':hacker.projectType,
                                          'registrationTime':hacker.registrationTime.strftime('%x %X'),
                                          'resume':hacker.resume,
-                                         'approved':hacker.isApproved,
+                                         'isApproved':hacker.isApproved,
                                          'userId':hacker.userId})
 
             if not memcache.add('hackers', data, time=constants.MEMCACHE_TIMEOUT):
