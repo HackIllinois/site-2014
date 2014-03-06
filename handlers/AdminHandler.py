@@ -338,7 +338,7 @@ class AdminProfileHandler(MainHandler.BaseAdminHandler):
             'experience', 'linkedin', 'github', 'year',
             'gender', 'projectType', 'shirt', 'food',
             'foodInfo', 'teamMembers', 'registrationTime',
-            'userNickname', 'userEmail', 'userId', 'isApproved'
+            'userNickname', 'userEmail', 'userId', 'isApproved', 'resume'
         ]
 
         for field in text_fields:

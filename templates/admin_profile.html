@@ -13,7 +13,8 @@
 {% endblock head %}
 
 {% block body %}
-<h1 class="page-header">{{ data.nameFirst }} {{ data.nameLast }}<small>&nbsp;&nbsp;is {% if not data.isApproved %}not {% endif %}approved</small></h1>
+<h1 class="page-header">{{ data.nameFirst }} {{ data.nameLast }}<small>&nbsp;&nbsp;is {% if not data.isApproved %}not {% endif %}approved              
+ </small><button type="submit" class="btn btn-primary approve-btn" {% if data.isApproved %}disabled="disabled"{% endif %}>{% if data.isApproved %}Un-{% endif %}Approve{% if not data.isApproved %}!{% endif %}</button></h1>
 <div class="table-responsive">
     <table class="table">
         <thead class="invisible">
@@ -23,6 +24,10 @@
             </tr>
         </thead>
         <tbody>
+			<tr>
+                <td class="pull-right">Name:</td>
+                <td class="name">{{ data.nameFirst }} {{ data.nameLast }}</td>
+            </tr>
             <tr>
                 <td class="pull-right">Email:</td>
                 <td>{{ data.email }}</td>
@@ -41,7 +46,7 @@
             </tr>
             <tr>
                 <td class="pull-right">Resume:</td>
-                <td>{% if data.resumeName %}<a href='/admin/resume?userId={{ data.userId }}'>{{ data.resumeName }}</a>{% endif %}</td>
+                <td>{% if data.resume %}<a href='/admin/resume?userId={{ data.userId }}'>Resume</a>{% endif %}</td>
             </tr>
             <tr>
                 <td class="pull-right">LinkedIn:</td>
@@ -99,7 +104,7 @@
             </tr>
             <tr>
                 <td class="pull-right">User ID:</td>
-                <td>{{ data.userId }}</td>
+                <td class="id" >{{ data.userId }}</td>
             </tr>
         </tbody>
     </table>
@@ -108,5 +113,31 @@
 
 
 {% block scripts %}
-<script type="text/javascript"></script>
+<script type="text/javascript">
+
+        var approveBtns = $('.approve-btn');
+		
+        function applyBtnCallbacks() {
+		
+            approveBtns.click(function() {
+                var itemName = $(".name").text();
+                var itemuserId = $(".id").text();
+				
+				alert("GAD");
+                var r = confirm("Approve " + itemName + "?");
+                if (r == true) {
+                    $.post("/admin/approve", {"id": itemuserId});
+					// var itemId = $(this).closest('tr').find('.id').text();
+                    // hackerList.remove('id', itemId);
+                    $(this)[0].disabled = true;
+                }
+            });
+        }
+
+        $(document).ready(function() {
+		
+            applyBtnCallbacks();
+			
+        });
+</script>
 {% endblock scripts%}

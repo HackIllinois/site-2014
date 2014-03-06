@@ -179,7 +179,7 @@
                             {% endfor %}
                             {% for h in data.hackers %}
 							{% if h.isApproved == True%}
-                            <tr id="{{ h.userId }}" name="hackerData" onclick="document.location='/admin/profile/{{ h.userId }}';">
+                            <tr id="{{ h.userId }}" name="hackerData">
                                 <td class="id" style="display:none;">{{ loop.index }}</td>
                                 <td name="tfirstName" class="c1 fname" onclick="document.location='/admin/profile/{{ h.userId }}';">{{ h.nameFirst }}</td>
                                 <td name="tlastName" class="c2 lname" onclick="document.location='/admin/profile/{{ h.userId }}';">{{ h.nameLast }}</td>
@@ -194,7 +194,7 @@
                                 <td name="tproject" class="c11 project">{{ h.projectType }}</td>
                                 <td name="ttime" class="c12 time">{{ h.registrationTime }}</td>
                                 <td class="c13">{% if h.resume %}<a href='/admin/resume?userId={{ h.userId }}'>Resume</a>{% endif %}</td>
-                                <td class="c14 approved"><button type="submit" class="btn btn-primary approve-btn" disabled="disabled">Approved</button></td>
+                                <td class="c14 approved"><button type="submit" class="btn btn-primary approve-btn" disabled="disabled">Un-Approve</button></td>
                             </tr>
 							{% endif %}
                             {% endfor %}
