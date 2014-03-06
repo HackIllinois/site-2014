@@ -156,7 +156,7 @@ class AdminApproveHandler(MainHandler.BaseAdminHandler):
                                          'projectType':hacker.projectType,
                                          'registrationTime':hacker.registrationTime.strftime('%x %X'),
                                          'resume':hacker.resume,
-                                         'approved':hacker.approved,
+                                         'approved':hacker.isApproved,
                                          'userId':hacker.userId})
 
             if not memcache.add('hackers', data, time=constants.MEMCACHE_TIMEOUT):
@@ -174,7 +174,7 @@ class AdminApproveHandler(MainHandler.BaseAdminHandler):
            # TODO: redirect to error handler
             return self.write('ERROR')
         x = {}
-        x['approved'] = 'True'
+        x['isApproved'] = True
         success = Attendee.update_search(x, {'userId':userid})
 
 
@@ -344,9 +344,6 @@ class AdminProfileHandler(MainHandler.BaseAdminHandler):
         for field in text_fields:
             value = getattr(db_user, field) # Gets db_user.field using a string
             if value is not None: data[field] = value
-
-        if db_user.resume and db_user.resume.fileName:
-            data['resumeName'] = db_user.resume.fileName
 
         return self.render("admin_profile.html", data=data)
 

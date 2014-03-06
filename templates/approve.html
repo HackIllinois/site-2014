@@ -157,7 +157,7 @@
                         </thead>
                         <tbody class="list">
                             {% for h in data.hackers %}
-							{% if h.approved != "True"%}
+							{% if h.approved != True%}
                             <tr id="{{ h.userId }}" name="hackerData">
                                 <td class="id" style="display:none;">{{ loop.index }}</td>
                                 <td name="tfirstName" class="c1 fname" onclick="document.location='/admin/profile/{{ h.userId }}';">{{ h.nameFirst }}</td>
@@ -178,7 +178,7 @@
 							{% endif %}
                             {% endfor %}
                             {% for h in data.hackers %}
-							{% if h.approved == "True"%}
+							{% if h.approved == True%}
                             <tr id="{{ h.userId }}" name="hackerData" onclick="document.location='/admin/profile/{{ h.userId }}';">
                                 <td class="id" style="display:none;">{{ loop.index }}</td>
                                 <td name="tfirstName" class="c1 fname" onclick="document.location='/admin/profile/{{ h.userId }}';">{{ h.nameFirst }}</td>
