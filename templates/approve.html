@@ -349,25 +349,17 @@
                 }
             });
         }
-		
-        function checkedColumns() {
-            document.getElementById('c-gender').checked = false;
-            document.getElementById('c-school').checked = true;
-            document.getElementById('c-year').checked = true;
-            document.getElementById('c-linkedin').checked = false;
-            document.getElementById('c-github').checked = false;
-            document.getElementById('c-shirt').checked = false;
-            document.getElementById('c-food').checked = false;
-            document.getElementById('c-project').checked = true;
-            document.getElementById('c-time').checked = false;
-        }
 
         $(document).ready(function() {
             hackerList.sort('approved');
             document.getElementById("count").innerHTML = hackerList.size();
             hackerList.on('searchComplete', function(){document.getElementById("count").innerHTML = hackerList.matchingItems.length;});
-			checkedColumns()
-            applyBtnCallbacks();
+			var col = document.forms['tcol'].elements;
+			for(var i = 0; i < col.length; i++){
+				toggleVis(document.forms['tcol'].elements[i].name);
+			}
+			searchHackers();
+			applyBtnCallbacks();
         });
     </script>
 {% endblock scripts%}
