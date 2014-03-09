@@ -68,15 +68,15 @@
                 <h1>Hacker Summary<small>&nbsp;&nbsp;</small><small id="count"></small><small>&nbsp;people</small></h1>
                 <form name="tcol" onsubmit="return false">
                     <label>Show columns:&nbsp;&nbsp;</label>
-                    <input id="c-gender" type=checkbox name="gender" onclick="toggleVis(this.name)"> Gender&nbsp;&nbsp;
-                    <input id="c-school" type=checkbox name="school" onclick="toggleVis(this.name)" checked> School&nbsp;&nbsp;
-                    <input id="c-year" type=checkbox name="year" onclick="toggleVis(this.name)" checked> Year&nbsp;&nbsp;
-                    <input id="c-linkedin" type=checkbox name="linkedin" onclick="toggleVis(this.name)"> LinkedIn&nbsp;&nbsp;
-                    <input id="c-github" type=checkbox name="github" onclick="toggleVis(this.name)"> Github&nbsp;&nbsp;
-                    <input id="c-shirt" type=checkbox name="shirt" onclick="toggleVis(this.name)"> Shirt&nbsp;&nbsp;
-                    <input id="c-food" type=checkbox name="food" onclick="toggleVis(this.name)"> Dietary Restrictions&nbsp;&nbsp;
-                    <input id="c-project" type=checkbox name="project" onclick="toggleVis(this.name)" checked> Project Type&nbsp;&nbsp;
-                    <input id="c-time" type=checkbox name="time" onclick="toggleVis(this.name)"> Registered&nbsp;&nbsp;
+                    <input id="c-gender" type=checkbox name="gender" onclick="toggleVis(this.name)"> <label id="lgender">Gender</label>&nbsp;&nbsp;
+                    <input id="c-school" type=checkbox name="school" onclick="toggleVis(this.name)" checked> <label id="lschool">School</label>&nbsp;&nbsp;
+                    <input id="c-year" type=checkbox name="year" onclick="toggleVis(this.name)" checked> <label id="lyear">Year</label>&nbsp;&nbsp;
+                    <input id="c-linkedin" type=checkbox name="linkedin" onclick="toggleVis(this.name)"> <label id="llinkedin">LinkedIn</label>&nbsp;&nbsp;
+                    <input id="c-github" type=checkbox name="github" onclick="toggleVis(this.name)"> <label id="lgithub">Github</label>&nbsp;&nbsp;
+                    <input id="c-shirt" type=checkbox name="shirt" onclick="toggleVis(this.name)"> <label id="lshirt">Shirt</label>&nbsp;&nbsp;
+                    <input id="c-food" type=checkbox name="food" onclick="toggleVis(this.name)"> <label id="lfood">Dietary Restrictions</label>&nbsp;&nbsp;
+                    <input id="c-project" type=checkbox name="project" onclick="toggleVis(this.name)" checked> <label id="lproject">Dietary Restrictions</label>&nbsp;&nbsp;
+                    <input id="c-time" type=checkbox name="time" onclick="toggleVis(this.name)"> <label id="ltime">Registered</label>&nbsp;&nbsp;
                 </form>
                 <div id="hackers" class="table-responsive">
                     <table id="usertable" class="table table-bordered table-hover">
@@ -222,11 +222,59 @@
         var showMode = 'table-cell';
         if (document.all) showMode='block';
 
-        function toggleVis(btn){
-            btn = document.forms['tcol'].elements[btn];
-            cells = document.getElementsByName('t'+btn.name);
-            mode = btn.checked ? showMode : 'none';
-            for(j = 0; j < cells.length; j++) cells[j].style.display = mode;
+		function toggleVis(btn){
+			btn = document.forms['tcol'].elements[btn];
+			cells = document.getElementsByName('t' + btn.name);
+			mode = btn.checked ? showMode : 'none';
+			for(j = 0; j < cells.length; j++) cells[j].style.display = mode;
+            var is_filtered = false;
+			if(btn.name == "gender" || btn.name == "year" || btn.name == "shirt" || btn.name == "project"){
+				search_btn = document.forms['search_' + btn.name].elements;
+				for(i = 0; i < search_btn.length; i++)
+				{
+					if(!search_btn[i].checked)
+					{
+						is_filtered = true;
+					}
+				}
+			}
+			else if(btn.name == "food"){
+				search_btn = document.forms['search_' + btn.name].elements;
+				for(i = 0; i < search_btn.length; i++)
+				{
+					if(search_btn[i].checked)
+					{
+						is_filtered = true;
+					}
+				}
+			}
+			else if(btn.name == "school" || btn.name == "github" || btn.name == "linkedin"){
+				search_btn = document.getElementById('search_' + btn.name).value;
+				if(search_btn != '')
+				{
+					is_filtered = true;
+				}
+			}
+			if(is_filtered && !btn.checked){
+				if(btn.name == "linkedin")
+				{
+					document.getElementById('l' + btn.name).innerHTML = "LinkedIn is filtering";
+				}
+				else{
+					document.getElementById('l' + btn.name).innerHTML = btn.name.replace(btn.name.charAt(0),btn.name.charAt(0).toUpperCase()) + " is filering";
+				}
+				document.getElementById('l' + btn.name).style.color = "red";
+			}
+			else{
+				if(btn.name == "linkedin")
+				{
+					document.getElementById('l' + btn.name).innerHTML = "LinkedIn";
+				}
+				else{
+					document.getElementById('l' + btn.name).innerHTML = btn.name.replace(btn.name.charAt(0),btn.name.charAt(0).toUpperCase());
+				}
+				document.getElementById('l' + btn.name).style.color = "black";
+			}
         }
 
 		function searchHackers(){
