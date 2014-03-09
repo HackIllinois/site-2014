@@ -135,14 +135,11 @@ class AdminResumeHandler(MainHandler.BaseAdminHandler, blobstore_handlers.Blobst
 class AdminApproveHandler(MainHandler.BaseAdminHandler):
     def get(self):
         data = memcache.get('hackers')
-
         if not data:
-
             hackers = Attendee.search_database({'isRegistered':True})
             data = {}
             data['hackers'] = []
             for hacker in hackers:
-
                 data['hackers'].append({ 'nameFirst':hacker.nameFirst,
                                          'nameLast':hacker.nameLast,
                                          'email':hacker.email,
@@ -165,7 +162,7 @@ class AdminApproveHandler(MainHandler.BaseAdminHandler):
         stats = memcache.get_stats()
         logging.info('Hackers:: Cache Hits:%s  Cache Misses:%s' % (stats['hits'], stats['misses']))
 
-        self.render("approve.html", data=data)
+        self.render("sponsor_download.html", data=data)
         
     def post(self):
         userid = str(self.request.get('id'))

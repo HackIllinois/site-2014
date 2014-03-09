@@ -8,7 +8,7 @@ from ApplyCountHandler import ApplyCountHandler
 from SubpageHandlers import RulesHandler, ScheduleHandler, TravelHandler, CoCHandler, StaffHandler, SponsorFAQHandler
 from TropoHandler import TropoHandler
 from AdminHandler import AdminHandler, AdminApproveHandler, AdminResumeHandler, AdminStatsHandler, AdminBasicStatsHandler, AdminXkcdHandler, AdminProfileHandler, AdminEditProfileHandler, AdminApplyCountHandler, AdminSchoolCountHandler
-from SponsorHandler import SponsorHandler
+from SponsorHandler import SponsorDownloadHandler
 from LogoutHandler import LogoutHandler
 from MGTHandler import MGTHandler, ParticlesHandler
 
@@ -32,7 +32,7 @@ handlers = [
     RedirectRoute('/tropo', handler=TropoHandler, name='Tropo', strict_slash=True),
     RedirectRoute('/code-of-conduct', handler=CoCHandler, name='CoC', strict_slash=True),
 
-    RedirectRoute('/sponsor/download', handler=SponsorHandler, name='Sponsor', strict_slash=True),
+    RedirectRoute('/sponsor/download', handler=SponsorDownloadHandler, name='SponsorDownload', strict_slash=True),
 
     RedirectRoute('/admin', handler=AdminHandler, name='Admin', strict_slash=True),
     RedirectRoute('/admin/xkcd', handler=AdminXkcdHandler, name='AdminXkcd', strict_slash=True),
@@ -54,7 +54,7 @@ handlers = [
     RedirectRoute('/401', handler=Error401Handler, name='Error401', strict_slash=True),
     RedirectRoute('/404', handler=Error404Handler, name='Error404', strict_slash=True),
     RedirectRoute('/500', handler=Error500Handler, name='Error500', strict_slash=True),
-]
+    ]
 
 errorHandlers = {
     401: handle_401,
