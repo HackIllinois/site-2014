@@ -11,8 +11,8 @@ def count_words_at_url(url):
     return len(resp.text.split())
 
 #zips a full directory
-def toZip(directory):
-    zippedHelp = zipfile.ZipFile(zip, "w", compression=zipfile.ZIP_DEFLATED )
+def toZip(name, directory):
+    zippedHelp = zipfile.ZipFile(name+".zip", "w", compression=zipfile.ZIP_DEFLATED )
  
     list = os.listdir(directory)
  
