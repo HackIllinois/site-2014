@@ -325,7 +325,9 @@
 			lName = document.getElementsByName('tlastName');
 			
 			for(j = 0; j < checked.length; j++){
+				if(checked[j].checked){
 				download.push(String(checked[j].id) + '-' + fName[j].innerHTML + " " + lName[j].innerHTML);
+				}
 			}
 			
 			$.post("/sponsor/download",  { 'download[]': download } );
