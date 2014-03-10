@@ -372,3 +372,8 @@ and (max-width: 800px) {
 100% { -ms-transform: rotate(360deg);}
 
 }
+
+
+/* reset.css breaks <strong> */
+strong, strong * { font-weight: bold !important; }
+em, em * { font-style: italic !important; }
