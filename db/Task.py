@@ -1,6 +1,11 @@
-class Task(ndb.Model):
+from Model import Model
+from google.appengine.ext import ndb
+
+class Task(Model):
+    # This is the workaround for the strong consistency
+    Model._automatically_add_event_as_ancestor()
+
     jobFunction = ndb.StringProperty(required=True)
-    gsObjectName = ndb.StringProperty()
     complete = ndb.BooleanProperty(default=False)
     data = nbd.JsonProperty()
     creationTime = ndb.DateTimeProperty()
@@ -8,7 +13,7 @@ class Task(ndb.Model):
 
     @classmethod
     def new(cls, data):
-        attendee = cls()
+        task = cls()
         for k in data:
             setattr(task, k, data[k])
         return task
