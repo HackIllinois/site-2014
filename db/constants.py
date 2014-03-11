@@ -142,3 +142,45 @@ SCHOOLS = [
     'Wright State University',
     'Yale University'
 ]
+
+
+# List containing all the site URL's to test in unittests
+TEST_SITE_URLS = [
+    '/',
+    '/emailbackup',
+
+    '/apply',
+    '/apply/complete',
+    '/apply/updated',
+    '/apply/schoolcheck',
+    '/apply/schoollist',
+    '/apply/myresume',
+    '/apply/uploadurl',
+    '/applycount',
+
+    '/rules',
+    '/schedule',
+    '/travel',
+    '/sponsor/faq',
+    '/tropo',
+    '/code-of-conduct',
+
+    '/sponsor/download',
+
+    '/admin',
+    '/admin/xkcd',
+    '/admin/approve',
+    '/admin/stats',
+    '/admin/basicstats',
+    '/admin/resume',
+    '/admin/applycount',
+    '/admin/schoolcount',
+
+    '/logout',
+
+    '/mgt',
+    '/particles',
+]
+
+
+

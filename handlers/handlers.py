@@ -11,6 +11,7 @@ from AdminHandler import AdminHandler, AdminApproveHandler, AdminResumeHandler, 
 from SponsorHandler import SponsorDownloadHandler
 from LogoutHandler import LogoutHandler
 from MGTHandler import MGTHandler, ParticlesHandler
+from TestAllHandlers import TestAllHandlers
 
 handlers = [
     RedirectRoute('/', handler=IndexHandler, name='Index', strict_slash=True),
@@ -44,6 +45,8 @@ handlers = [
     RedirectRoute('/admin/schoolcount', handler=AdminSchoolCountHandler, name='AdminSchoolCount', strict_slash=True),
     RedirectRoute('/admin/profile/<userId>', handler=AdminProfileHandler, name='AdminProfile', strict_slash=True),
     RedirectRoute('/admin/profile/<userId>/edit', handler=AdminEditProfileHandler, name='AdminEditProfile', strict_slash=True),
+    RedirectRoute('/admin/tests', handler=TestAllHandlers, name='TestAllHandlers', strict_slash=True),
+
 
     RedirectRoute('/logout', handler=LogoutHandler, name='Logout', strict_slash=True),
 
