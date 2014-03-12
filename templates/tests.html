@@ -1,0 +1,47 @@
+{% extends "base/admin_base.html" %}
+{% set active_page = "tests" %}
+
+{% block head %}
+<style type="text/css">
+    .page-header {
+        margin-top: 0;
+    }
+    .t-centered {
+        text-align: center;
+    }
+</style>
+{% endblock head %}
+
+
+{% block body %}
+<h1 class="page-header">404 Tests for {{ data.base }}</h1>
+<table class="table table-bordered" id="tests">
+    {% for e in data.extensions %}
+    <tr>
+        <td class="ext">{{ e }}</td>
+        <td class="result"></td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock body %}
+
+
+{% block scripts %}
+<script type="text/javascript">
+$(document).ready(function() {
+    $("#tests tr").each(function() {
+        var row = $(this);
+        var ext = $(this).find(".ext").html();
+        var res = $(this).find(".result");
+
+        $.get( ext, function() {
+            row.addClass("success");
+            res.html("yay :)");
+        }).fail(function() {
+            row.addClass("danger");
+            res.html("boo :(");
+        });
+    });
+});
+</script>
+{% endblock scripts%}

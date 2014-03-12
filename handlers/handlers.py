@@ -12,7 +12,7 @@ from AdminHandler import AdminHandler, AdminApproveHandler, AdminResumeHandler, 
 from SponsorHandler import SponsorDownloadHandler
 from LogoutHandler import LogoutHandler
 from MGTHandler import MGTHandler, ParticlesHandler
-from TestAllHandlers import TestAllHandlers
+from TestAllHandler import TestAllHandler, TestAllJsHandler
 import MobileHandler
 
 handlers = [
@@ -47,7 +47,8 @@ handlers = [
     RedirectRoute('/admin/schoolcount', handler=AdminSchoolCountHandler, name='AdminSchoolCount', strict_slash=True),
     RedirectRoute('/admin/profile/<userId>', handler=AdminProfileHandler, name='AdminProfile', strict_slash=True),
     RedirectRoute('/admin/profile/<userId>/edit', handler=AdminEditProfileHandler, name='AdminEditProfile', strict_slash=True),
-    RedirectRoute('/admin/tests', handler=TestAllHandlers, name='TestAllHandlers', strict_slash=True),
+    RedirectRoute('/admin/tests', handler=TestAllHandler, name='TestAll', strict_slash=True),
+    RedirectRoute('/admin/testsjs', handler=TestAllJsHandler, name='TestAllJs', strict_slash=True),
 
     RedirectRoute('/mobile/schedule', handler=MobileHandler.ScheduleHandler, name='MobileSchedule', strict_slash=True),
     RedirectRoute('/mobile/maps', handler=MobileHandler.MapsHandler, name='MobileMaps', strict_slash=True),

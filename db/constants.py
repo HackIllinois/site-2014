@@ -147,25 +147,26 @@ SCHOOLS = [
 # List containing all the site URL's to test in unittests
 TEST_SITE_URLS = [
     '/',
-    '/emailbackup',
+    # '/emailbackup',
 
     '/apply',
     '/apply/complete',
     '/apply/updated',
     '/apply/schoolcheck',
     '/apply/schoollist',
-    '/apply/myresume',
+    # '/apply/myresume',
     '/apply/uploadurl',
-    '/applycount',
 
     '/rules',
     '/schedule',
     '/travel',
     '/sponsor/faq',
-    '/tropo',
+    # '/tropo',
     '/code-of-conduct',
 
     '/sponsor/download',
+
+    '/applycount',
 
     '/admin',
     '/admin/xkcd',
