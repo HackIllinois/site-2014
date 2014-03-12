@@ -5,6 +5,7 @@ from ErrorHandlers import handle_401, handle_404, handle_500, Error401Handler, E
 from IndexHandler import IndexHandler
 from ApplyHandler import ApplyHandler, ApplyCompleteHandler, SchoolCheckHandler, SchoolListHandler, MyResumeHandler, UpdateCompleteHandler, UploadURLHandler
 from ApplyCountHandler import ApplyCountHandler
+import SubpageHandlers
 from SubpageHandlers import RulesHandler, ScheduleHandler, TravelHandler, CoCHandler, StaffHandler, SponsorFAQHandler
 from TropoHandler import TropoHandler
 from AdminHandler import AdminHandler, AdminApproveHandler, AdminResumeHandler, AdminStatsHandler, AdminBasicStatsHandler, AdminXkcdHandler, AdminProfileHandler, AdminEditProfileHandler, AdminApplyCountHandler, AdminSchoolCountHandler
@@ -12,6 +13,7 @@ from SponsorHandler import SponsorDownloadHandler
 from LogoutHandler import LogoutHandler
 from MGTHandler import MGTHandler, ParticlesHandler
 from TestAllHandlers import TestAllHandlers
+import MobileHandler
 
 handlers = [
     RedirectRoute('/', handler=IndexHandler, name='Index', strict_slash=True),
@@ -27,7 +29,7 @@ handlers = [
     RedirectRoute('/applycount', handler=ApplyCountHandler, name='ApplyCount', strict_slash=True),
 
     RedirectRoute('/rules', handler=RulesHandler, name='Rules', strict_slash=True),
-    RedirectRoute('/schedule', handler=ScheduleHandler, name='Schedule', strict_slash=True),
+    RedirectRoute('/schedule', handler=SubpageHandlers.ScheduleHandler, name='Schedule', strict_slash=True),
     RedirectRoute('/travel', handler=TravelHandler, name='Travel', strict_slash=True),
     RedirectRoute('/sponsor/faq', handler=SponsorFAQHandler, name='SponsorFAQ', strict_slash=True),
     RedirectRoute('/tropo', handler=TropoHandler, name='Tropo', strict_slash=True),
@@ -47,6 +49,16 @@ handlers = [
     RedirectRoute('/admin/profile/<userId>/edit', handler=AdminEditProfileHandler, name='AdminEditProfile', strict_slash=True),
     RedirectRoute('/admin/tests', handler=TestAllHandlers, name='TestAllHandlers', strict_slash=True),
 
+    RedirectRoute('/mobile/schedule', handler=MobileHandler.ScheduleHandler, name='MobileSchedule', strict_slash=True),
+    RedirectRoute('/mobile/maps', handler=MobileHandler.MapsHandler, name='MobileMaps', strict_slash=True),
+    RedirectRoute('/mobile/support/types', handler=MobileHandler.SupportTypeHandler, name='MobileSupportType', strict_slash=True),
+    RedirectRoute('/mobile/messages/emergency', handler=MobileHandler.EmergencyHandler, name='MobileEmergency', strict_slash=True),
+    RedirectRoute('/mobile/messages/newsfeed', handler=MobileHandler.NewsfeedHandler, name='MobileNewsfeed', strict_slash=True),
+    RedirectRoute('/mobile/people/staff', handler=MobileHandler.StaffHandler, name='MobileStaff', strict_slash=True),
+    RedirectRoute('/mobile/people/hackers', handler=MobileHandler.HackersHandler, name='MobileHackers', strict_slash=True),
+    RedirectRoute('/mobile/people/hacker', handler=MobileHandler.HackerHandler, name='MobileHacker', strict_slash=True),
+    RedirectRoute('/mobile/companies', handler=MobileHandler.CompaniesHandler, name='MobileCompanies', strict_slash=True),
+    RedirectRoute('/mobile/skills', handler=MobileHandler.SkillsHandler, name='MobileSkills', strict_slash=True),
 
     RedirectRoute('/logout', handler=LogoutHandler, name='Logout', strict_slash=True),
 
@@ -57,7 +69,7 @@ handlers = [
     RedirectRoute('/401', handler=Error401Handler, name='Error401', strict_slash=True),
     RedirectRoute('/404', handler=Error404Handler, name='Error404', strict_slash=True),
     RedirectRoute('/500', handler=Error500Handler, name='Error500', strict_slash=True),
-    ]
+]
 
 errorHandlers = {
     401: handle_401,
