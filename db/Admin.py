@@ -23,4 +23,4 @@ class Admin(Model):
 
     @classmethod
     def unique_properties(cls):
-        return ['userEmail']
+        return ['email']

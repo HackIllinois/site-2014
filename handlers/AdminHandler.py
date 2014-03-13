@@ -1,6 +1,7 @@
 import MainHandler
 import cgi, urllib, logging, re, datetime
 from db.Attendee import Attendee
+from db.Admin import Admin
 from db import constants
 from google.appengine.api import users
 from google.appengine.ext import blobstore
@@ -9,10 +10,19 @@ from google.appengine.api import urlfetch
 from collections import defaultdict
 from google.appengine.api import memcache
 
+def get_admin_user():
+    user = users.get_current_user()
+    if not user: return None
+    admin_user = Admin.search_database({'email': user.email()}).get()
+    if not admin_user: return None
+    return admin_user
+
 
 class AdminHandler(MainHandler.BaseAdminHandler):
     def get(self):
-        return self.render('admin.html', data={})
+        admin_user = get_admin_user()
+        if not admin_user: return self.abort(500, detail='User not in database')
+        return self.render('admin.html', data={}, approveAccess=admin_user.approveAccess, fullAccess=admin_user.fullAccess)
 
 
 class AdminXkcdHandler(MainHandler.BaseAdminHandler):
@@ -59,6 +69,9 @@ class AdminSchoolCountHandler(MainHandler.BaseAdminHandler):
 
 class AdminBasicStatsHandler(MainHandler.BaseAdminHandler):
     def get(self):
+        admin_user = get_admin_user()
+        if not admin_user: return self.abort(500, detail='User not in database')
+
         data = memcache.get('basic_stats')
 
         if not data:
@@ -107,11 +120,16 @@ class AdminBasicStatsHandler(MainHandler.BaseAdminHandler):
         stats = memcache.get_stats()
         logging.info('Basic Stats:: Cache Hits:%s  Cache Misses:%s' % (stats['hits'], stats['misses']))
 
-        return self.render('basic_stats.html', data=data)
+        return self.render('basic_stats.html', data=data, approveAccess=admin_user.approveAccess, fullAccess=admin_user.fullAccess)
 
 
 class AdminResumeHandler(MainHandler.BaseAdminHandler, blobstore_handlers.BlobstoreDownloadHandler):
     def get(self):
+        admin_user = get_admin_user()
+        if not admin_user: return self.abort(500, detail='User not in database')
+        if not admin_user.approveAccess:
+            return self.abort(401, detail='User does not have permission to view attendee resumes.')
+
         userId = str(urllib.unquote(self.request.get('userId')))
         db_user = Attendee.search_database({'userId':userId}).get()
         if not db_user:
@@ -134,6 +152,11 @@ class AdminResumeHandler(MainHandler.BaseAdminHandler, blobstore_handlers.Blobst
 
 class AdminApproveHandler(MainHandler.BaseAdminHandler):
     def get(self):
+        admin_user = get_admin_user()
+        if not admin_user: return self.abort(500, detail='User not in database')
+        if not admin_user.approveAccess:
+            return self.abort(401, detail='User does not have permission to view attendees.')
+
         data = memcache.get('hackers')
         if not data:
             hackers = Attendee.search_database({'isRegistered':True})
@@ -162,8 +185,8 @@ class AdminApproveHandler(MainHandler.BaseAdminHandler):
         stats = memcache.get_stats()
         logging.info('Hackers:: Cache Hits:%s  Cache Misses:%s' % (stats['hits'], stats['misses']))
 
-        self.render("sponsor_download.html", data=data)
-        
+        self.render("sponsor_download.html", data=data, approveAccess=admin_user.approveAccess, fullAccess=admin_user.fullAccess)
+
     def post(self):
         userid = str(self.request.get('id'))
         user = Attendee.search_database({'userId':userid}).get()
@@ -177,6 +200,9 @@ class AdminApproveHandler(MainHandler.BaseAdminHandler):
 
 class AdminStatsHandler(MainHandler.BaseAdminHandler):
     def get(self):
+        admin_user = get_admin_user()
+        if not admin_user: return self.abort(500, detail='User not in database')
+
         schools = memcache.get('stats')
 
         if not schools:
@@ -320,11 +346,16 @@ class AdminStatsHandler(MainHandler.BaseAdminHandler):
         stats = memcache.get_stats()
         logging.info('Advanced Stats:: Cache Hits:%s  Cache Misses:%s' % (stats['hits'], stats['misses']))
 
-        self.render("stats.html", schools=schools)
+        self.render("stats.html", schools=schools, approveAccess=admin_user.approveAccess, fullAccess=admin_user.fullAccess)
 
 
 class AdminProfileHandler(MainHandler.BaseAdminHandler):
     def get(self, userId):
+        admin_user = get_admin_user()
+        if not admin_user: return self.abort(500, detail='User not in database')
+        if not admin_user.approveAccess:
+            return self.abort(401, detail='User does not have permission to view attendee profiles.')
+
         userId = str(urllib.unquote(userId))
         db_user = Attendee.search_database({'userId':userId}).get()
         # TODO: add sanity check for user exists
@@ -342,7 +373,7 @@ class AdminProfileHandler(MainHandler.BaseAdminHandler):
             value = getattr(db_user, field) # Gets db_user.field using a string
             if value is not None: data[field] = value
 
-        return self.render("admin_profile.html", data=data)
+        return self.render("admin_profile.html", data=data, approveAccess=admin_user.approveAccess, fullAccess=admin_user.fullAccess)
 
 class AdminEditProfileHandler(MainHandler.BaseAdminHandler):
     def get(self, userId):
