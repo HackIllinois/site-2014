@@ -54,7 +54,7 @@ handlers = [
     RedirectRoute('/mobile/messages/newsfeed', handler=MobileHandler.NewsfeedHandler, name='MobileNewsfeed', strict_slash=True),
     RedirectRoute('/mobile/people/staff', handler=MobileHandler.StaffHandler, name='MobileStaff', strict_slash=True),
     RedirectRoute('/mobile/people/hackers', handler=MobileHandler.HackersHandler, name='MobileHackers', strict_slash=True),
-    RedirectRoute('/mobile/people/hacker', handler=MobileHandler.HackerHandler, name='MobileHacker', strict_slash=True),
+    RedirectRoute('/mobile/people/hacker/<userId>', handler=MobileHandler.HackerHandler, name='MobileHacker', strict_slash=True),
     RedirectRoute('/mobile/companies', handler=MobileHandler.CompaniesHandler, name='MobileCompanies', strict_slash=True),
     RedirectRoute('/mobile/skills', handler=MobileHandler.SkillsHandler, name='MobileSkills', strict_slash=True),
 

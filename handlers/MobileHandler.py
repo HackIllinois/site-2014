@@ -2,6 +2,7 @@ import MainHandler
 import urllib, logging, re
 from db.Attendee import Attendee
 from db import constants
+from db.mobile import MobileConstants
 from google.appengine.api import users, memcache
 import json
 
@@ -51,7 +52,7 @@ class MapsHandler(MainHandler.BaseMobileHandler):
                 }
     '''
     def get(self):
-        return self.write(json.dumps({'Siebel':{'1':['Ground Zero', 'Space Station']},'DCL':{'1':['Galaxy']}}))
+        return self.write(json.dumps(MobileConstants.ROOM))
 
 '''
 
@@ -71,7 +72,7 @@ class SupportTypeHandler(MainHandler.BaseMobileHandler):
                 }
     '''
     def get(self):
-        return self.write(json.dumps({'General':['events schedule', 'rules', 'comments/suggestions'],'Requests':['food & drinks', 'medical', 'equipment', 'other'],"Technical":['WIFI', 'power', 'locked out', 'other']}))
+        return self.write(json.dumps(MobileConstants.SUPPORT_TYPE))
 
 '''
 
@@ -254,7 +255,7 @@ class SkillsHandler(MainHandler.BaseMobileHandler):
         @return A list of Skills that Hackers can have
     '''
     def get(self):
-        return self.write(json.dumps(['skill1','skill2','skill3','skill4','skill5']))
+        return self.write(json.dumps(MobileConstants.SKILLS))
 
     def put(self):
         pass
