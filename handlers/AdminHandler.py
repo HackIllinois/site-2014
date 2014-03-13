@@ -486,7 +486,7 @@ class AdminExportHandler(MainHandler.BaseAdminHandler):
                               h['food'],
                               h['projectType'],
                               h['registrationTime'],
-                              h['resume'],
+                              '/admin/resume?userId='+h['userId'],
                               h['isApproved'],
                               h['userId'] ])
         return
