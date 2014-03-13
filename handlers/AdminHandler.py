@@ -162,7 +162,7 @@ class AdminApproveHandler(MainHandler.BaseAdminHandler):
         stats = memcache.get_stats()
         logging.info('Hackers:: Cache Hits:%s  Cache Misses:%s' % (stats['hits'], stats['misses']))
 
-        self.render("sponsor_download.html", data=data)
+        self.render("approve.html", data=data)
         
     def post(self):
         userid = str(self.request.get('id'))
@@ -171,9 +171,8 @@ class AdminApproveHandler(MainHandler.BaseAdminHandler):
            # TODO: redirect to error handler
             return self.write('ERROR')
         x = {}
-        x['isApproved'] = True
+        x['isApproved'] = (str(self.request.get('approve')) == 'True')
         success = Attendee.update_search(x, {'userId':userid})
-
 
 class AdminStatsHandler(MainHandler.BaseAdminHandler):
     def get(self):
