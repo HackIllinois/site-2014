@@ -1,5 +1,5 @@
 import MainHandler
-import cgi, urllib, logging, re, datetime
+import cgi, urllib, logging, re, datetime, csv
 from db.Attendee import Attendee
 from db.Admin import Admin
 from db import constants
@@ -426,3 +426,67 @@ class AdminAccessControlHandler(MainHandler.BaseAdminHandler):
                                 {'email': email})
 
         return self.redirect('/admin/manager')
+
+
+class AdminExportHandler(MainHandler.BaseAdminHandler):
+    def get(self):
+        admin_user = get_admin_user()
+        if not admin_user: return self.abort(500, detail='User not in database')
+        if not admin_user.approveAccess:
+            return self.abort(401, detail='User does not have permission to download attendees csv.')
+
+
+        data = memcache.get('hackers')
+        if not data:
+            hackers = Attendee.search_database({'isRegistered':True})
+            data = {}
+            data['hackers'] = []
+            for hacker in hackers:
+                data['hackers'].append({ 'nameFirst':hacker.nameFirst,
+                                         'nameLast':hacker.nameLast,
+                                         'email':hacker.email,
+                                         'gender':hacker.gender if hacker.gender == 'Male' or hacker.gender == 'Female' else 'Other',
+                                         'school':hacker.school,
+                                         'year':hacker.year,
+                                         'linkedin':hacker.linkedin,
+                                         'github':hacker.github,
+                                         'shirt':hacker.shirt,
+                                         'food':'None' if not hacker.food else ', '.join(hacker.food.split(',')),
+                                         'projectType':hacker.projectType,
+                                         'registrationTime':hacker.registrationTime.strftime('%x %X'),
+                                         'resume':hacker.resume,
+                                         'isApproved':hacker.isApproved,
+                                         'userId':hacker.userId})
+
+            if not memcache.add('hackers', data, time=constants.MEMCACHE_TIMEOUT):
+                logging.error('Memcache set failed.')
+
+        stats = memcache.get_stats()
+        logging.info('Hackers:: Cache Hits:%s  Cache Misses:%s' % (stats['hits'], stats['misses']))
+
+
+        dt = datetime.datetime.now().strftime("%Y-%m-%d-%H:%M")
+        self.response.headers['Content-Type'] = 'text/csv'
+        self.response.headers['Content-Disposition'] = 'attachment;filename=' + dt + '-attendees.csv'
+
+        hackers = data['hackers']
+
+        writer = csv.writer(self.response.out)
+        writer.writerow(constants.CSV_HEADINGS)
+        for h in hackers:
+            writer.writerow([ h['nameFirst'],
+                              h['nameLast'],
+                              h['email'],
+                              h['gender'],
+                              h['school'],
+                              h['year'],
+                              h['linkedin'],
+                              h['github'],
+                              h['shirt'],
+                              h['food'],
+                              h['projectType'],
+                              h['registrationTime'],
+                              h['resume'],
+                              h['isApproved'],
+                              h['userId'] ])
+        return

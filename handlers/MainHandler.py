@@ -50,7 +50,8 @@ class BaseAdminHandler(Handler):
         if admin_user:
             is_admin = True
         elif email in constants.ADMIN_EMAILS:
-            Admin.add({'email':user.email(), 'googleUser':user, 'approveAccess':True, 'fullAccess':True})
+            parent = Admin.get_default_event_parent_key()
+            Admin(parent=parent, email=user.email(), googleUser=user, approveAccess=True, fullAccess=True).put()
             is_admin = True
         elif domain == 'hackillinois.org':
             parent = Admin.get_default_event_parent_key()

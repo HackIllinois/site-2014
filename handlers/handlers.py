@@ -50,6 +50,7 @@ handlers = [
     RedirectRoute('/admin/profile/<userId>/edit', handler=AdminHandler.AdminEditProfileHandler, name='AdminEditProfile', strict_slash=True),
     RedirectRoute('/admin/manager', handler=AdminHandler.AdminManagerHandler, name='AdminManager', strict_slash=True),
     RedirectRoute('/admin/manager/accesscontrol', handler=AdminHandler.AdminAccessControlHandler, name='AdminAccessControl', strict_slash=True),
+    RedirectRoute('/admin/export', handler=AdminHandler.AdminExportHandler, name='AdminExport', strict_slash=True),
 
     RedirectRoute('/admin/tests', handler=TestAllHandler, name='TestAll', strict_slash=True),
     RedirectRoute('/admin/testsjs', handler=TestAllJsHandler, name='TestAllJs', strict_slash=True),
