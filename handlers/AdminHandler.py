@@ -1,5 +1,5 @@
 import MainHandler
-import cgi, urllib, logging, re, datetime, csv
+import cgi, urllib, logging, re, datetime, csv, cStringIO
 from db.Attendee import Attendee
 from db.Admin import Admin
 from db import constants
@@ -470,8 +470,9 @@ class AdminExportHandler(MainHandler.BaseAdminHandler):
         self.response.headers['Content-Disposition'] = 'attachment;filename=' + dt + '-attendees.csv'
 
         hackers = data['hackers']
+        output = cStringIO.StringIO()
 
-        writer = csv.writer(self.response.out)
+        writer = csv.writer(output)
         writer.writerow(constants.CSV_HEADINGS)
         for h in hackers:
             writer.writerow([ h['nameFirst'],
@@ -489,4 +490,6 @@ class AdminExportHandler(MainHandler.BaseAdminHandler):
                               '/admin/resume?userId='+h['userId'],
                               h['isApproved'],
                               h['userId'] ])
+        self.write(output.getvalue())
+        output.close()
         return
