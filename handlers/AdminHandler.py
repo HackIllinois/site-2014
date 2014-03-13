@@ -175,7 +175,6 @@ class AdminApproveHandler(MainHandler.BaseAdminHandler):
                                          'food':'None' if not hacker.food else ', '.join(hacker.food.split(',')),
                                          'projectType':hacker.projectType,
                                          'registrationTime':hacker.registrationTime.strftime('%x %X'),
-                                         'resume':hacker.resume,
                                          'isApproved':hacker.isApproved,
                                          'userId':hacker.userId})
 
@@ -185,7 +184,8 @@ class AdminApproveHandler(MainHandler.BaseAdminHandler):
         stats = memcache.get_stats()
         logging.info('Hackers:: Cache Hits:%s  Cache Misses:%s' % (stats['hits'], stats['misses']))
 
-        self.render("approve.html", data=data, approveAccess=admin_user.approveAccess, fullAccess=admin_user.fullAccess)
+        # self.render("approve.html", data=data, approveAccess=admin_user.approveAccess, fullAccess=admin_user.fullAccess)
+        self.render("summary.html", data=data, approveAccess=admin_user.approveAccess, fullAccess=admin_user.fullAccess)
 
     def post(self):
         userId = str(urllib.unquote(self.request.get('userId')))
