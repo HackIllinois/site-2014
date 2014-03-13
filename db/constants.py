@@ -176,6 +176,7 @@ TEST_SITE_URLS = [
     '/admin/resume',
     '/admin/applycount',
     '/admin/schoolcount',
+    '/admin/manager',
 
     # '/logout',
 

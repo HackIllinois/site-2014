@@ -48,6 +48,8 @@ handlers = [
     RedirectRoute('/admin/schoolcount', handler=AdminHandler.AdminSchoolCountHandler, name='AdminSchoolCount', strict_slash=True),
     RedirectRoute('/admin/profile/<userId>', handler=AdminHandler.AdminProfileHandler, name='AdminProfile', strict_slash=True),
     RedirectRoute('/admin/profile/<userId>/edit', handler=AdminHandler.AdminEditProfileHandler, name='AdminEditProfile', strict_slash=True),
+    RedirectRoute('/admin/manager', handler=AdminHandler.AdminManagerHandler, name='AdminManager', strict_slash=True),
+    RedirectRoute('/admin/manager/accesscontrol', handler=AdminHandler.AdminAccessControlHandler, name='AdminAccessControl', strict_slash=True),
 
     RedirectRoute('/admin/tests', handler=TestAllHandler, name='TestAll', strict_slash=True),
     RedirectRoute('/admin/testsjs', handler=TestAllJsHandler, name='TestAllJs', strict_slash=True),

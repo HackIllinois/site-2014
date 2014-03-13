@@ -387,3 +387,39 @@ class AdminEditProfileHandler(MainHandler.BaseAdminHandler):
         userId = str(urllib.unquote(userId))
         db_user = Attendee.search_database({'userId':userId}).get()
         return self.write(db_user.email)
+
+
+class AdminManagerHandler(MainHandler.BaseAdminHandler):
+    def get(self):
+        admin_user = get_admin_user()
+        if not admin_user: return self.abort(500, detail='User not in database')
+
+        db_admins = Admin.search_database({})
+        admins = [ {'email':admin.email, 'approveAccess':admin.approveAccess, 'fullAccess':admin.fullAccess} for admin in db_admins ]
+        data = {'admins':admins}
+        return self.render('admin_manager.html', data=data, approveAccess=admin_user.approveAccess, fullAccess=admin_user.fullAccess)
+
+
+class AdminAccessControlHandler(MainHandler.BaseAdminHandler):
+    def post(self):
+        admin_user = get_admin_user()
+        if not admin_user: return self.abort(500, detail='User not in database')
+        if not admin_user.fullAccess:
+            return self.abort(401, detail='User does not have permission to edit admin permissions.')
+
+        email = str(urllib.unquote(self.request.get('email')))
+        accessControl = self.request.get('accessControl')
+        approveAccess = accessControl == 'approve'
+        fullAccess = accessControl == 'full'
+
+        db_user = Admin.search_database({'email': email}).get()
+        if not db_user:
+            Admin.add({'approveAccess':(approveAccess or fullAccess),
+                       'fullAccess':fullAccess,
+                       'email': email})
+        else:
+            Admin.update_search({'approveAccess':(approveAccess or fullAccess),
+                                 'fullAccess':fullAccess},
+                                {'email': email})
+
+        return self.redirect('/admin/manager')
