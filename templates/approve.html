@@ -173,7 +173,7 @@
                                 <td name="tproject" class="c11 project">{{ h.projectType }}</td>
                                 <td name="ttime" class="c12 time">{{ h.registrationTime }}</td>
                                 <td class="c13">{% if h.resume %}<a href='/admin/resume?userId={{ h.userId }}'>Resume</a>{% endif %}</td>
-                                <td class="c14 approved"><button type="submit" class="btn btn-primary approve-btn">Approve!</button></td>
+                                <td class="c14 approved"><button type="submit" class="btn btn-primary approve-btn">Approve</button></td>
                             </tr>
 							{% endif %}
                             {% endfor %}
@@ -194,7 +194,7 @@
                                 <td name="tproject" class="c11 project">{{ h.projectType }}</td>
                                 <td name="ttime" class="c12 time">{{ h.registrationTime }}</td>
                                 <td class="c13">{% if h.resume %}<a href='/admin/resume?userId={{ h.userId }}'>Resume</a>{% endif %}</td>
-                                <td class="c14 approved"><button type="submit" class="btn btn-primary approve-btn" disabled="disabled">Un-Approve</button></td>
+                                <td class="c14 approved"><button type="submit" class="btn btn-primary approve-btn" style="border-color:red; background-color:red;">Un-Approve</button></td>
                             </tr>
 							{% endif %}
                             {% endfor %}
@@ -387,16 +387,24 @@
                 var itemfName = $(this).closest('tr').find('.fname').text();
                 var itemlName = $(this).closest('tr').find('.lname').text();
                 var itemuserId = $(this).closest('tr')[0].id;
-				
-                var r = confirm("Approve " + itemfName + " " + itemlName + "?");
+				var approve =  $(this)[0].innerHTML;
+                var r = confirm(approve + " " + itemfName + " " + itemlName + "?");
                 if (r == true) {
-                    $.post("/admin/approve", {"id": itemuserId});
-					// var itemId = $(this).closest('tr').find('.id').text();
-                    // hackerList.remove('id', itemId);
-                    $(this)[0].disabled = true;
+					if(approve == "Approve"){
+						$.post("/admin/approve", {"id": itemuserId, "approve":"True"});
+						$(this)[0].innerHTML = "Un-Approve";
+						$(this).css({ 'background-color': 'red', 'border-color': 'red' });
+					}
+					else{
+					    $.post("/admin/approve", {"id": itemuserId, "approve":"False"});
+						$(this)[0].innerHTML = "Approve";
+						$(this).css({ 'background-color': 'blue', 'border-color': 'blue' });
+					}
                 }
             });
         }
+		
+		
 
         $(document).ready(function() {
             hackerList.sort('approved');
