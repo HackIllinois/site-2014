@@ -1,5 +1,5 @@
 {% extends "base/admin_base.html" %}
-{% set active_page = "hackers" %}
+{% set active_page = "approve" %}
 
 {% block head %}
     <style type="text/css">
@@ -157,7 +157,7 @@
                         </thead>
                         <tbody class="list">
                             {% for h in data.hackers %}
-							{% if h.isApproved != True%}
+							{% if not h.isApproved%}
                             <tr id="{{ h.userId }}" name="hackerData">
                                 <td class="id" style="display:none;">{{ loop.index }}</td>
                                 <td name="tfirstName" class="c1 fname" onclick="document.location='/admin/profile/{{ h.userId }}';">{{ h.nameFirst }}</td>
@@ -173,12 +173,12 @@
                                 <td name="tproject" class="c11 project">{{ h.projectType }}</td>
                                 <td name="ttime" class="c12 time">{{ h.registrationTime }}</td>
                                 <td class="c13">{% if h.resume %}<a href='/admin/resume?userId={{ h.userId }}'>Resume</a>{% endif %}</td>
-                                <td class="c14 approved"><button type="submit" class="btn btn-primary approve-btn">Approve</button></td>
+                                <td class="c14 approved"><button class="btn btn-primary approve-btn">Approve</button></td>
                             </tr>
 							{% endif %}
                             {% endfor %}
                             {% for h in data.hackers %}
-							{% if h.isApproved == True%}
+							{% if h.isApproved%}
                             <tr id="{{ h.userId }}" name="hackerData">
                                 <td class="id" style="display:none;">{{ loop.index }}</td>
                                 <td name="tfirstName" class="c1 fname" onclick="document.location='/admin/profile/{{ h.userId }}';">{{ h.nameFirst }}</td>
@@ -194,7 +194,7 @@
                                 <td name="tproject" class="c11 project">{{ h.projectType }}</td>
                                 <td name="ttime" class="c12 time">{{ h.registrationTime }}</td>
                                 <td class="c13">{% if h.resume %}<a href='/admin/resume?userId={{ h.userId }}'>Resume</a>{% endif %}</td>
-                                <td class="c14 approved"><button type="submit" class="btn btn-primary approve-btn" style="border-color:red; background-color:red;">Un-Approve</button></td>
+                                <td class="c14 approved"><button class="btn btn-warning approve-btn">Un-Approve</button></td>
                             </tr>
 							{% endif %}
                             {% endfor %}
@@ -380,31 +380,27 @@
 			}
 		}
 
-        var approveBtns = $('.approve-btn');
-
         function applyBtnCallbacks() {
-            approveBtns.click(function() {
+            $('.approve-btn').click(function() {
                 var itemfName = $(this).closest('tr').find('.fname').text();
                 var itemlName = $(this).closest('tr').find('.lname').text();
                 var itemuserId = $(this).closest('tr')[0].id;
-				var approve =  $(this)[0].innerHTML;
+				var approve = $(this).html();
                 var r = confirm(approve + " " + itemfName + " " + itemlName + "?");
                 if (r == true) {
 					if(approve == "Approve"){
-						$.post("/admin/approve", {"id": itemuserId, "approve":"True"});
-						$(this)[0].innerHTML = "Un-Approve";
-						$(this).css({ 'background-color': 'red', 'border-color': 'red' });
+						$.post("/admin/approve", {"userId": itemuserId, "isApproved":"True"});
+						$(this).html("Un-Approve");
+						$(this).removeClass("btn-primary").addClass("btn-warning");
 					}
 					else{
-					    $.post("/admin/approve", {"id": itemuserId, "approve":"False"});
-						$(this)[0].innerHTML = "Approve";
-						$(this).css({ 'background-color': 'blue', 'border-color': 'blue' });
+					    $.post("/admin/approve", {"userId": itemuserId, "isApproved":"False"});
+						$(this).html("Approve");
+						$(this).removeClass("btn-warning").addClass("btn-primary");
 					}
                 }
             });
-        }
-		
-		
+        };
 
         $(document).ready(function() {
             hackerList.sort('approved');

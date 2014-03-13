@@ -20,7 +20,7 @@
         <div class="table-responsive">
         <table class="table table-bordered" id="tests">
             <thead>
-                <tr>
+                <tr class="success">
                     <th>URL</th>
                     <th>Status</th>
                 </tr>
@@ -54,6 +54,9 @@ $(document).ready(function() {
         }).fail(function() {
             row.addClass("danger");
             res.html("boo :(");
+            $("#tests thead tr").each(function() {
+                $(this).attr("class", "danger");
+            });
         });
     });
 });

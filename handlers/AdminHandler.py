@@ -188,16 +188,19 @@ class AdminApproveHandler(MainHandler.BaseAdminHandler):
         self.render("approve.html", data=data, approveAccess=admin_user.approveAccess, fullAccess=admin_user.fullAccess)
 
     def post(self):
-        userid = str(self.request.get('id'))
-        user = Attendee.search_database({'userId':userid}).get()
+        userId = str(urllib.unquote(self.request.get('userId')))
+        user = Attendee.search_database({'userId':userId}).get()
         if not user:
-           # TODO: redirect to error handler
-            return self.write('ERROR')
-        x = {}
+            return self.abort(500, detail='User not in database')
 
-		# TODO: Change this
-        x['isApproved'] = (str(self.request.get('approve')) == 'True')
-        success = Attendee.update_search(x, {'userId':userid})
+        x = {}
+        x['isApproved'] = str(self.request.get('isApproved')) == "True"
+        success = Attendee.update_search(x, {'userId':userId})
+
+        # Delete memcache key so /admin/approve is updated
+        memcache.delete('hackers')
+
+        return self.write(str(success))
 
 
 class AdminStatsHandler(MainHandler.BaseAdminHandler):
