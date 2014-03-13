@@ -416,7 +416,7 @@ button:focus {
 	max-height: 50px;
 }
 
-.niksun, .goldmansachs, .oso {
+.niksun, .goldmansachs {
 	width: 10%;
 }
 
@@ -454,6 +454,9 @@ button:focus {
 .pwc {
 	width: 5%;
 	min-height: 0;
+}
+.ge {
+	width: 15%;
 }
 
 .sponsor-shoutout-CTA {
@@ -526,6 +529,9 @@ div.main-content {
 	}
 	.sparkio {
 		width: 10%;
+	}
+	.ge {
+		width: 25%;
 	}
 }
 
