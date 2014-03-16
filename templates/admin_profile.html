@@ -17,11 +17,13 @@
     {{ data.nameFirst }} {{ data.nameLast }}
     {% if data.isApproved %}
     <small class="status">&nbsp;&nbsp;is approved</small>
-    <button class="btn btn-warning approve-btn">Un-Approve</button>
+    <button class="btn btn-danger approve-btn">Un-Approve</button>
     {% else %}
     <small class="status">&nbsp;&nbsp;is not approved</small>
-    <button class="btn btn-primary approve-btn">Approve</button>
+    <button class="btn btn-success approve-btn">Approve</button>
     {% endif %}
+	<button class="btn btn-primary edit-btn">Edit</button>
+	<button class="btn btn-warning cancle-edit-btn" style="display:none">Cancle Edit</button>
 </h1>
 <div class="table-responsive">
     <table class="table">
@@ -33,57 +35,125 @@
         </thead>
         <tbody>
 			<tr>
-                <td class="pull-right">Name:</td>
-                <td class="name">{{ data.nameFirst }} {{ data.nameLast }}</td>
+                <td class="pull-right">First Name:</td>
+                <td id="nameFirst" name="nameFirst">{{ data.nameFirst }}</td>
+				<td id="nameFirstEdit" name="nameFirstEdit" style="display:none"><input id="nameFirstInput" name="nameFirstInput"></input></td>
+            </tr>
+			<tr>
+                <td class="pull-right">Last Name:</td>
+                <td id="nameLast" name="nameLast">{{ data.nameLast }}</td>
+				<td id="nameLastEdit" name="nameLastEdit" style="display:none"><input id="nameLastInput" name="nameLastInput"></input></td>
             </tr>
             <tr>
                 <td class="pull-right">Email:</td>
-                <td>{{ data.email }}</td>
+                <td name="email">{{ data.email }}</td>
             </tr>
             <tr>
                 <td class="pull-right">Gender:</td>
-                <td>{{ data.gender }}</td>
+				<td id="gender" name="gender">{{ data.gender }}</td>
+				<td id="genderEdit" name="genderEdit" style="display:none">
+				<select id="genderInput" name="genderInput">
+				{% if data.gender not in data.genders %}
+					<option>{{ data.gender }}</option>
+				{% endif %}
+				{% for g in data.genders %}
+                    <option>{{ g }}</option>
+                {% endfor %}
+				</select>
+				</td>
             </tr>
             <tr>
                 <td class="pull-right">School:</td>
-                <td>{{ data.school }}</td>
+                <td id="school" name="school">{{ data.school }}</td>
+				<td id="schoolEdit" name="schoolEdit" style="display:none">
+				<select id="schoolInput" name="schoolInput">
+				{% if data.school not in data.schools %}
+					<option>{{ data.school }}</option>
+				{% endif %}
+				{% for s in data.schools %}
+                    <option>{{ s }}</option>
+                {% endfor %}
+				</select>
+				</td>
             </tr>
             <tr>
                 <td class="pull-right">Year:</td>
-                <td>{{ data.year }}</td>
+                <td id="year" name="year">{{ data.year }}</td>
+				<td id="yearEdit" name="yearEdit" style="display:none">
+				<select id="yearInput" name="yearInput">
+				{% if data.year not in data.years %}
+					<option>{{ data.year }}</option>
+				{% endif %}
+				{% for y in data.years %}
+                    <option>{{ y }}</option>
+                {% endfor %}
+				</select>
+				</td>
             </tr>
             <tr>
                 <td class="pull-right">Resume:</td>
-                <td>{% if data.resume %}<a href='/admin/resume?userId={{ data.userId }}'>Resume</a>{% endif %}</td>
-            </tr>
+                <td>
+				{% if data.resume %}<a href='/admin/resume?userId={{ data.userId }}'>Resume</a>{% endif %}
+			    <input id="resumeInput" name="resumeInput" style="display:none" type="file" accept="application/pdf">					
+				</td>
+			</tr>
             <tr>
                 <td class="pull-right">LinkedIn:</td>
-                <td>{{ data.linkedin }}</td>
+				<td id="linkedin" name="linkedin">{{ data.linkedin }}</td>
+				<td id="linkedinEdit" name="linkedinEdit" style="display:none"><input id="linkedinInput" name="linkedinInput"></input></td>
             </tr>
             <tr>
-                <td class="pull-right">Github:</td>
-                <td>{{ data.github }}</td>
+				<td class="pull-right">Github:</td>
+				<td id="github" name="github">{{ data.github }}</td>
+				<td id="githubEdit" name="githubEdit" style="display:none"><input id="githubInput" name="githubInput"></input></td>
             </tr>
             <tr>
                 <td class="pull-right">Shirt Size:</td>
-                <td>{{ data.shirt }}</td>
+                <td id="shirt" name="shirt">{{ data.shirt }}</td>
+				<td id="shirtEdit" name="shirtEdit" style="display:none">
+				<select id="shirtInput" name="shirtInput">
+				{% if data.shirt not in data.shirts %}
+					<option>{{ data.shirt }}</option>
+				{% endif %}
+				{% for s in data.shirts %}
+                    <option>{{ s }}</option>
+                {% endfor %}
+				</select>
+				</td>
             </tr>
             <tr>
-                <td class="pull-right">Dietary Restrictions:</td>
-                <td>{{ data.food }}</td>
-                    <p>{{ data.foodInfo }}</p>
-            </tr>
+                <td class="pull-right">Dietary Restrictions:<span id="foodSpecific"{% if not data.foodInfo  %}style="display:none"{% endif %}><br>Specific:</span></td>
+                <td id="food" name="food"><span id="foodList" name="foodList">{{ data.food }}</span><br><span id="foodInfo" name="foodInfo"> {{ data.foodInfo }}</span></td>
+				<td id="foodEdit" name="foodEdit" style="display:none">
+			    {% for f in data.foods %}    
+                   	<input type="checkbox" id="foodCheck" name="foodCheck" value="{{ f }}" {% if f in data.food %} checked {% endif %}/>{{ f }}</br>
+                {% endfor %}
+				<input id="foodInfoInput" name="foodInfoInput"></input>
+				</td>
+			</tr>
             <tr>
                 <td class="pull-right">Project Type:</td>
-                <td>{{ data.projectType }}</td>
+                <td id="projectType" name="projectType">{{ data.projectType }}</td>
+				<td id="projectTypeEdit" name="projectTypeEdit" style="display:none">
+				<select id="projectTypeInput" name="projectTypeInput">
+				{% if data.projectType not in data.projects %}
+					<option>{{ data.projectType }}</option>
+				{% endif %}
+				{% for p in data.projects %}
+                    <option>{{ p }}</option>
+                {% endfor %}
+				</select>
+				</td>
             </tr>
             <tr>
-                <td class="pull-right">Experience:</td>
-                <td>{{ data.experience }}</td>
+				<td class="pull-right">Experience:</td>
+				<td id="experience" name="experience">{{ data.experience }}</td>
+				<td id="experienceEdit" name="experienceEdit" style="display:none"><textarea id="experienceInput" name="experienceInput"></textarea></td>
             </tr>
             <tr>
                 <td class="pull-right">Team Members:</td>
-                <td>{{ data.teamMembers }}</td>
+				<td id="teamMembers" name="teamMembers">{{ data.teamMembers }}</td>
+				<td id="teamMembersEdit" name="teamMembersEdit" style="display:none"><textarea id="teamMembersInput" name="teamMembersInput"></textarea></td>
             </tr>
         </tbody>
     </table>
@@ -133,20 +203,133 @@
 					$.post("/admin/approve", {"userId": itemuserId, "isApproved":"True"});
 					$(this).html("Un-Approve");
                     $('.status').html("&nbsp;&nbsp;is approved");
-                    $(this).removeClass("btn-primary").addClass("btn-warning");
+                    $(this).removeClass("btn-success").addClass("btn-danger");
 				}
 				else{
 				    $.post("/admin/approve", {"userId": itemuserId, "isApproved":"False"});
                     $(this).html("Approve");
                     $('.status').html("&nbsp;&nbsp;is not approved");
-					$(this).removeClass("btn-warning").addClass("btn-primary");
+					$(this).removeClass("btn-danger").addClass("btn-success");
 				}
             }
         });
     };
+	
+	function editBtnCallbacks() {
+        $('.edit-btn').click(function() {
+			var approve = $(this).html();
+			if(approve == "Edit"){
+				$(this).html("Confirm Edit");
+				
+				var editElements = ["nameFirst", "nameLast", "linkedin", "github", "experience", "team", "gender", "school", "shirt", "year", "projectType", "food"];
+				for(var x = 0; x < editElements.length; x++)
+				{
+					$("#" + editElements[x]).css("display","none");
+					$("#" + editElements[x] + "Edit").css("display","table-cell");//Not for foodInfo
+					$("#" + editElements[x] + "Input").val($("#" + editElements[x]).html());
+				}
+				$("#foodInfoInput".val($("#foodInfo").html()));
+				
+				$("#resumeInput").css("display","table-cell");
+				$("#foodSpecific").css("display","block");
+				var foodChecks = document.getElementsByName("foodCheck");
+				var foodList = $("#foodList").html();
+				for(var x = 0; x < foodChecks.length; x++)
+				{
+					if(foodList.indexOf(foodChecks[x].value) != -1)
+					{
+						foodChecks[x].checked = true;
+					}
+					else{
+						foodChecks[x].checked = false;
+					}
+				}
+				
+				$(".cancle-edit-btn").css("display","inline");
+			}
+			else{
+				var itemuserId = $(".id").text();
+				var data = {};
+				var edit_fields = ['nameFirst', 'nameLast', 'gender', 'school', 'year', 'experience', 'linkedin', 'github', 'teamMembers', 'shirt', 'projectType', 'foodInfo']
+				for(var x = 0; x < edit_fields.length; x ++)
+				{
+					data[edit_fields[x]] = $("#" + edit_fields[x] + "Input").val();
+				}
+				var foodChecks = document.getElementsByName("foodCheck");
+				var food = "";
+				for(var x = 0; x < foodChecks.length; x++)
+				{
+					if(foodChecks[x].checked)
+					{
+						food = food + "," + foodChecks[x].value;
+					}
+				}
+				data['food'] = food.substring(1,food.length);
+				$.post("/admin/profile/" + itemuserId, data, function(data){
+					if(data == "Edit Complete")
+					{
+						alert(data);
+						$(".edit-btn").html("Edit");
+						$(".cancle-edit-btn").css("display","none");
 
+						var editElements = ["nameFirst", "nameLast", "linkedin", "github", "experience", "team", "gender", "school", "shirt", "year", "projectType", "food"];
+						for(var x = 0; x < editElements.length; x++)
+						{
+							$("#" + editElements[x]).css("display","table-cell");
+							$("#" + editElements[x] + "Edit").css("display","none");//Not for foodInfo
+							$("#" + editElements[x]).html($("#" + editElements[x] + "Input").val())
+						}
+						$("#foodInfo").html($("#foodInfoInput").val());
+						
+						$("#resumeInput").css("display","none");
+						
+						var foodChecks = document.getElementsByName("foodCheck");
+						var food = "";
+						for(var x = 0; x < foodChecks.length; x++)
+						{
+							if(foodChecks[x].checked){
+								food = food + foodChecks[x].value + ",";
+							}
+						}
+						$("#foodList").html( food.substring(0,food.length-1));
+					
+						$("#foodSpecific").css("display","block");
+						if($("#foodInfoInput").val() == ''){
+							$("#foodSpecific").css("display","none");
+						}
+						$("#foodInfo").val($("#foodInfoInput").val());
+					}
+					else{
+						alert(data);
+					}
+				});
+			}
+        });
+    };
+
+	function cancleEditBtnCallbacks() {
+        $('.cancle-edit-btn').click(function() {
+				$(this).css("display","none");
+				$('.edit-btn').html("Edit");
+				var editElements = ["nameFirst", "nameLast", "linkedin", "github", "experience", "team", "gender", "school", "shirt", "year", "projectType", "food", "foodInfo"];
+				for(var x = 0; x < editElements.length; x++)
+				{
+					$("#" + editElements[x]).css("display","table-cell");
+					$("#" + editElements[x] + "Edit").css("display","none");//Not for foodInfo
+				}
+				
+				$("#resumeInput").css("display","none");
+				if($("#foodInfoInput").html() != "")
+				{
+					$("#foodSpecific").css("display","none");
+				}
+        });
+    };
+	
     $(document).ready(function() {
         applyBtnCallbacks();
+		editBtnCallbacks()
+		cancleEditBtnCallbacks()
     });
 </script>
 {% endblock scripts%}
