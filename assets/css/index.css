@@ -416,7 +416,7 @@ button:focus {
 	max-height: 50px;
 }
 
-.niksun, .goldmansachs, .oso {
+.niksun, .goldmansachs {
 	width: 10%;
 }
 
@@ -444,9 +444,6 @@ button:focus {
 	width: 20%;
 }
 
-.mashery {
-	width: 10%;
-}
 .sparkio {
 	width: 5%;
 	min-width: 0;
@@ -454,6 +451,9 @@ button:focus {
 .pwc {
 	width: 5%;
 	min-height: 0;
+}
+.ge {
+	width: 10%;
 }
 
 .sponsor-shoutout-CTA {
@@ -504,7 +504,7 @@ div.main-content {
 	margin-top: 10px;
 	}
 	.niksun, .answers, .oso {
-	width: 20%;
+	width: 26%;
 	}
 	.goldmansachs {
 		width: 20%;
@@ -526,6 +526,12 @@ div.main-content {
 	}
 	.sparkio {
 		width: 10%;
+	}
+	.ge {
+		width: 25%;
+	}
+	.epic {
+		width: 20%;
 	}
 }
 

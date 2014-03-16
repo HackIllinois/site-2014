@@ -1,6 +1,7 @@
 import MainHandler
-import cgi, urllib, logging, re, datetime
+import cgi, urllib, logging, re, datetime, csv, cStringIO
 from db.Attendee import Attendee
+from db.Admin import Admin
 from db import constants
 from google.appengine.api import users
 from google.appengine.ext import blobstore
@@ -10,9 +11,89 @@ from collections import defaultdict
 from google.appengine.api import memcache
 
 
+def get_admin_user():
+    user = users.get_current_user()
+    if not user: return None
+    admin_user = Admin.search_database({'email': user.email()}).get()
+    if not admin_user: return None
+    return admin_user
+
+
+def get_hackers_memecache():
+    data = memcache.get('hackers')
+    if not data:
+        hackers = Attendee.search_database({'isRegistered':True})
+        data = []
+        for hacker in hackers:
+            data.append({ 'nameFirst':hacker.nameFirst,
+                          'nameLast':hacker.nameLast,
+                          'email':hacker.email,
+                          'gender':hacker.gender if hacker.gender == 'Male' or hacker.gender == 'Female' else 'Other',
+                          'school':hacker.school,
+                          'year':hacker.year,
+                          'linkedin':hacker.linkedin,
+                          'github':hacker.github,
+                          'shirt':hacker.shirt,
+                          'food':'None' if not hacker.food else ', '.join(hacker.food.split(',')),
+                          'projectType':hacker.projectType,
+                          'resume':hacker.resume,
+                          'registrationTime':hacker.registrationTime.strftime('%x %X'),
+                          'isApproved':hacker.isApproved,
+                          'userId':hacker.userId})
+
+        if not memcache.add('hackers', data, time=constants.MEMCACHE_TIMEOUT):
+            logging.error('Memcache set failed.')
+
+    stats = memcache.get_stats()
+    logging.info('Hackers:: Cache Hits:%s  Cache Misses:%s' % (stats['hits'], stats['misses']))
+
+    return data
+
+
+def get_hackers_csv_memcache(base_url):
+    csv_string = memcache.get('hackers_csv')
+    if not csv_string:
+        hackers = get_hackers_memecache()
+        output = cStringIO.StringIO()
+        writer = csv.writer(output)
+
+        fields = ['nameFirst','nameLast','email',
+                  'gender','school','year','linkedin',
+                  'github','shirt','food','projectType',
+                  'registrationTime','isApproved','userId']
+
+        writer.writerow(constants.CSV_HEADINGS)
+        for h in hackers:
+            row = []
+            for f in fields:
+                if f in h and h[f] is not None:
+                    row.append(h[f])
+                else:
+                    row.append('')
+            if 'resume' in h and h['resume'] is not None:
+                row.append(base_url + '/admin/resume?userId='+h['userId'])
+            else:
+                row.append('')
+
+            writer.writerow(row)
+
+        csv_string = output.getvalue()
+        output.close()
+
+        if not memcache.add('hackers_csv', csv_string, time=constants.MEMCACHE_TIMEOUT):
+            logging.error('Memcache set failed.')
+
+    stats = memcache.get_stats()
+    logging.info('Hackers CSV:: Cache Hits:%s  Cache Misses:%s' % (stats['hits'], stats['misses']))
+
+    return csv_string
+
+
 class AdminHandler(MainHandler.BaseAdminHandler):
     def get(self):
-        return self.render('admin.html', data={})
+        admin_user = get_admin_user()
+        if not admin_user: return self.abort(500, detail='User not in database')
+        return self.render('admin.html', data={}, approveAccess=admin_user.approveAccess, fullAccess=admin_user.fullAccess)
 
 
 class AdminXkcdHandler(MainHandler.BaseAdminHandler):
@@ -59,6 +140,9 @@ class AdminSchoolCountHandler(MainHandler.BaseAdminHandler):
 
 class AdminBasicStatsHandler(MainHandler.BaseAdminHandler):
     def get(self):
+        admin_user = get_admin_user()
+        if not admin_user: return self.abort(500, detail='User not in database')
+
         data = memcache.get('basic_stats')
 
         if not data:
@@ -107,11 +191,16 @@ class AdminBasicStatsHandler(MainHandler.BaseAdminHandler):
         stats = memcache.get_stats()
         logging.info('Basic Stats:: Cache Hits:%s  Cache Misses:%s' % (stats['hits'], stats['misses']))
 
-        return self.render('basic_stats.html', data=data)
+        return self.render('basic_stats.html', data=data, approveAccess=admin_user.approveAccess, fullAccess=admin_user.fullAccess)
 
 
 class AdminResumeHandler(MainHandler.BaseAdminHandler, blobstore_handlers.BlobstoreDownloadHandler):
     def get(self):
+        admin_user = get_admin_user()
+        if not admin_user: return self.abort(500, detail='User not in database')
+        if not admin_user.approveAccess:
+            return self.abort(401, detail='User does not have permission to view attendee resumes.')
+
         userId = str(urllib.unquote(self.request.get('userId')))
         db_user = Attendee.search_database({'userId':userId}).get()
         if not db_user:
@@ -134,62 +223,38 @@ class AdminResumeHandler(MainHandler.BaseAdminHandler, blobstore_handlers.Blobst
 
 class AdminApproveHandler(MainHandler.BaseAdminHandler):
     def get(self):
-        data = memcache.get('hackers')
+        admin_user = get_admin_user()
+        if not admin_user: return self.abort(500, detail='User not in database')
+        if not admin_user.approveAccess:
+            return self.abort(401, detail='User does not have permission to view attendees.')
 
-        if not data:
+        data = {}
+        data['hackers'] = get_hackers_memecache()
 
-            hackers = Attendee.search_database({'isRegistered':True})
-            data = {}
-            data['hackers'] = []
-            for hacker in hackers:
-                resume_link = None
-                if hacker.resume:
-                    name = hacker.resume.fileName
-                    # name = name if len(name)<=10 else name[0:7]+'...'
-                    resume_link = "<a href='/admin/resume?userId=%s'>%s</a>" % (hacker.userId, name)
-                    pass
-                else:
-                    resume_link = ''
+        # self.render("approve.html", data=data, approveAccess=admin_user.approveAccess, fullAccess=admin_user.fullAccess)
+        self.render("summary.html", data=data, approveAccess=admin_user.approveAccess, fullAccess=admin_user.fullAccess)
 
-                data['hackers'].append({ 'nameFirst':hacker.nameFirst,
-                                         'nameLast':hacker.nameLast,
-                                         'email':hacker.email,
-                                         'gender':hacker.gender if hacker.gender == 'Male' or hacker.gender == 'Female' else 'Other',
-                                         'school':hacker.school,
-                                         'year':hacker.year,
-                                         'linkedin':hacker.linkedin,
-                                         'github':hacker.github,
-                                         'shirt':hacker.shirt,
-                                         'food':'None' if not hacker.food else ', '.join(hacker.food.split(',')),
-                                         'projectType':hacker.projectType,
-                                         'registrationTime':hacker.registrationTime.strftime('%x %X'),
-                                         'resume':resume_link,
-                                         # 'approved':hacker.approved,
-                                         'approved':True,
-                                         'userId':hacker.userId})
+    def post(self):
+        userId = str(urllib.unquote(self.request.get('userId')))
+        user = Attendee.search_database({'userId':userId}).get()
+        if not user:
+            return self.abort(500, detail='User not in database')
 
-            if not memcache.add('hackers', data, time=constants.MEMCACHE_TIMEOUT):
-                logging.error('Memcache set failed.')
+        x = {}
+        x['isApproved'] = str(self.request.get('isApproved')) == "True"
+        success = Attendee.update_search(x, {'userId':userId})
 
-        stats = memcache.get_stats()
-        logging.info('Hackers:: Cache Hits:%s  Cache Misses:%s' % (stats['hits'], stats['misses']))
+        # Delete memcache key so /admin/approve is updated
+        memcache.delete('hackers')
 
-        # self.render("approve.html", data=data)
-        self.render("summary.html", data=data)
-
-    # def post(self):
-    #     userid = str(self.request.get('id'))
-    #     user = Attendee.search_database({'userId':userid}).get() #works now
-    #     if not user:
-    #        # TODO: redirect to error handler
-    #         return self.write('ERROR')
-    #     x = {}
-    #     x['approved'] = 'True'
-    #     success = Attendee.update_search(x, {'userId':userid})
+        return self.write(str(success))
 
 
 class AdminStatsHandler(MainHandler.BaseAdminHandler):
     def get(self):
+        admin_user = get_admin_user()
+        if not admin_user: return self.abort(500, detail='User not in database')
+
         schools = memcache.get('stats')
 
         if not schools:
@@ -333,11 +398,16 @@ class AdminStatsHandler(MainHandler.BaseAdminHandler):
         stats = memcache.get_stats()
         logging.info('Advanced Stats:: Cache Hits:%s  Cache Misses:%s' % (stats['hits'], stats['misses']))
 
-        self.render("stats.html", schools=schools)
+        self.render("stats.html", schools=schools, approveAccess=admin_user.approveAccess, fullAccess=admin_user.fullAccess)
 
 
 class AdminProfileHandler(MainHandler.BaseAdminHandler):
     def get(self, userId):
+        admin_user = get_admin_user()
+        if not admin_user: return self.abort(500, detail='User not in database')
+        if not admin_user.approveAccess:
+            return self.abort(401, detail='User does not have permission to view attendee profiles.')
+
         userId = str(urllib.unquote(userId))
         db_user = Attendee.search_database({'userId':userId}).get()
         # TODO: add sanity check for user exists
@@ -348,17 +418,14 @@ class AdminProfileHandler(MainHandler.BaseAdminHandler):
             'experience', 'linkedin', 'github', 'year',
             'gender', 'projectType', 'shirt', 'food',
             'foodInfo', 'teamMembers', 'registrationTime',
-            'userNickname', 'userEmail', 'userId', 'isApproved'
+            'userNickname', 'userEmail', 'userId', 'isApproved', 'resume'
         ]
 
         for field in text_fields:
             value = getattr(db_user, field) # Gets db_user.field using a string
             if value is not None: data[field] = value
 
-        if db_user.resume and db_user.resume.fileName:
-            data['resumeName'] = db_user.resume.fileName
-
-        return self.render("admin_profile.html", data=data)
+        return self.render("admin_profile.html", data=data, approveAccess=admin_user.approveAccess, fullAccess=admin_user.fullAccess)
 
 class AdminEditProfileHandler(MainHandler.BaseAdminHandler):
     def get(self, userId):
@@ -370,3 +437,53 @@ class AdminEditProfileHandler(MainHandler.BaseAdminHandler):
         userId = str(urllib.unquote(userId))
         db_user = Attendee.search_database({'userId':userId}).get()
         return self.write(db_user.email)
+
+
+class AdminManagerHandler(MainHandler.BaseAdminHandler):
+    def get(self):
+        admin_user = get_admin_user()
+        if not admin_user: return self.abort(500, detail='User not in database')
+
+        db_admins = Admin.search_database({})
+        admins = [ {'email':admin.email, 'approveAccess':admin.approveAccess, 'fullAccess':admin.fullAccess} for admin in db_admins ]
+        data = {'admins':admins}
+        return self.render('admin_manager.html', data=data, approveAccess=admin_user.approveAccess, fullAccess=admin_user.fullAccess)
+
+
+class AdminAccessControlHandler(MainHandler.BaseAdminHandler):
+    def post(self):
+        admin_user = get_admin_user()
+        if not admin_user: return self.abort(500, detail='User not in database')
+        if not admin_user.fullAccess:
+            return self.abort(401, detail='User does not have permission to edit admin permissions.')
+
+        email = str(urllib.unquote(self.request.get('email')))
+        accessControl = self.request.get('accessControl')
+        approveAccess = accessControl == 'approve'
+        fullAccess = accessControl == 'full'
+
+        db_user = Admin.search_database({'email': email}).get()
+        if not db_user:
+            Admin.add({'approveAccess':(approveAccess or fullAccess),
+                       'fullAccess':fullAccess,
+                       'email': email})
+        else:
+            Admin.update_search({'approveAccess':(approveAccess or fullAccess),
+                                 'fullAccess':fullAccess},
+                                {'email': email})
+
+        return self.redirect('/admin/manager')
+
+
+class AdminExportHandler(MainHandler.BaseAdminHandler):
+    def get(self):
+        admin_user = get_admin_user()
+        if not admin_user: return self.abort(500, detail='User not in database')
+        if not admin_user.approveAccess:
+            return self.abort(401, detail='User does not have permission to download attendees csv.')
+
+        dt = datetime.datetime.now().strftime("%Y-%m-%d-%H:%M")
+        self.response.headers['Content-Type'] = 'text/csv'
+        self.response.headers['Content-Disposition'] = 'attachment;filename=' + dt + '-attendees.csv'
+
+        return self.write(get_hackers_csv_memcache(self.request.application_url))

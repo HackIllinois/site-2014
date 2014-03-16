@@ -31,8 +31,8 @@
         .c10{width:7%;}
         .c11{width:9%;}
         .c12{width:7%;}
-        .c13{width:7%;}
-        .c14{width:7%;}
+        .c13{width:6%;}
+        .c14{width:8%;}
         .search-container {
             width: 14%;
             vertical-align: middle;
@@ -51,7 +51,15 @@
 
 
 {% block body %}
-    <h1 class="page-header">Hacker Summary<small>&nbsp;&nbsp;</small><small id="count"></small><small>&nbsp;people</small></h1>
+    <div class="row">
+        <div class="col-md-9">
+            <h1 class="page-header">Hacker Summary<small>&nbsp;&nbsp;</small><small id="count"></small><small>&nbsp;people</small></h1>
+        </div>
+        <div class="col-md-3">
+            <a href="/admin/export" role="button" class="btn btn-success btn-lg btn-block">Download All as CSV</a>
+        </div>
+    </div>
+
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
@@ -89,11 +97,12 @@
                         </thead>
                         <tbody class="list">
                             {% for h in data.hackers %}
-                            <tr id="{{ h.userId }}" onclick="document.location='/admin/profile/{{ h.userId }}';">
+                            {% if not h.isApproved%}
+                            <tr id="{{ h.userId }}">
                                 <td class="id" style="display:none;">{{ loop.index }}</td>
-                                <td class="c1 fname">{{ h.nameFirst }}</td>
-                                <td class="c2 lname">{{ h.nameLast }}</td>
-                                <td class="c3 email">{{ h.email }}</td>
+                                <td class="c1 fname" onclick="document.location='/admin/profile/{{ h.userId }}';">{{ h.nameFirst }}</td>
+                                <td class="c2 lname" onclick="document.location='/admin/profile/{{ h.userId }}';">{{ h.nameLast }}</td>
+                                <td class="c3 email" onclick="document.location='/admin/profile/{{ h.userId }}';">{{ h.email }}</td>
                                 <td name="tgender" class="c4 gender">{{ h.gender }}</td>
                                 <td name="tschool" class="c5 school">{{ h.school }}</td>
                                 <td name="tyear" class="c6 year">{{ h.year }}</td>
@@ -103,9 +112,31 @@
                                 <td name="tfood" class="c10 food">{{ h.food }}</td>
                                 <td name="tproject" class="c11 project">{{ h.projectType }}</td>
                                 <td name="ttime" class="c12 time">{{ h.registrationTime }}</td>
-                                <td class="c13">{{ h.resume|safe }}</td>
-                                <td class="c14 approved"><button type="button" class="btn btn-primary approve-btn invisible" {% if h.approved %}disabled="disabled"{% endif %}>Approve</button></td>
+                                <td class="c13">{% if h.resume %}<a href='/admin/resume?userId={{ h.userId }}'>Resume</a>{% endif %}</td>
+                                <td class="c14 approved"><button class="btn btn-primary approve-btn">Approve</button></td>
                             </tr>
+                            {% endif %}
+                            {% endfor %}
+                            {% for h in data.hackers %}
+                            {% if h.isApproved%}
+                            <tr id="{{ h.userId }}">
+                                <td class="id" style="display:none;">{{ loop.index }}</td>
+                                <td class="c1 fname" onclick="document.location='/admin/profile/{{ h.userId }}';">{{ h.nameFirst }}</td>
+                                <td class="c2 lname" onclick="document.location='/admin/profile/{{ h.userId }}';">{{ h.nameLast }}</td>
+                                <td class="c3 email" onclick="document.location='/admin/profile/{{ h.userId }}';">{{ h.email }}</td>
+                                <td name="tgender" class="c4 gender">{{ h.gender }}</td>
+                                <td name="tschool" class="c5 school">{{ h.school }}</td>
+                                <td name="tyear" class="c6 year">{{ h.year }}</td>
+                                <td name="tlinkedin" class="c7 linkedin">{{ h.linkedin }}</td>
+                                <td name="tgithub" class="c8 github">{{ h.github }}</td>
+                                <td name="tshirt" class="c9 shirt">{{ h.shirt }}</td>
+                                <td name="tfood" class="c10 food">{{ h.food }}</td>
+                                <td name="tproject" class="c11 project">{{ h.projectType }}</td>
+                                <td name="ttime" class="c12 time">{{ h.registrationTime }}</td>
+                                <td class="c13">{% if h.resume %}<a href='/admin/resume?userId={{ h.userId }}'>Resume</a>{% endif %}</td>
+                                <td class="c14 approved"><button class="btn btn-warning approve-btn">Un-Approve</button></td>
+                            </tr>
+                            {% endif %}
                             {% endfor %}
                         </tbody>
                     </table>
@@ -137,17 +168,40 @@
             for(j = 0; j < cells.length; j++) cells[j].style.display = mode;
         }
 
-        $(document).ready(function() {
-            hackerList.sort('time', { order: "desc" });
-            document.getElementById("count").innerHTML = hackerList.size();
-            hackerList.on('searchComplete', function(){document.getElementById("count").innerHTML = hackerList.matchingItems.length;});
+        function applyBtnCallbacks() {
+            $('.approve-btn').click(function() {
+                var itemfName = $(this).closest('tr').find('.fname').text();
+                var itemlName = $(this).closest('tr').find('.lname').text();
+                var itemuserId = $(this).closest('tr')[0].id;
+                var approve = $(this).html();
+                var r = confirm(approve + " " + itemfName + " " + itemlName + "?");
+                if (r == true) {
+                    if(approve == "Approve"){
+                        $.post("/admin/approve", {"userId": itemuserId, "isApproved":"True"});
+                        $(this).html("Un-Approve");
+                        $(this).removeClass("btn-primary").addClass("btn-warning");
+                    }
+                    else{
+                        $.post("/admin/approve", {"userId": itemuserId, "isApproved":"False"});
+                        $(this).html("Approve");
+                        $(this).removeClass("btn-warning").addClass("btn-primary");
+                    }
+                }
+            });
+        };
 
+        $(document).ready(function() {
             document.getElementById("c-gender").click();
             document.getElementById("c-linkedin").click();
             document.getElementById("c-github").click();
             document.getElementById("c-shirt").click();
             document.getElementById("c-food").click();
             document.getElementById("c-time").click();
+
+            applyBtnCallbacks();
+
+            document.getElementById("count").innerHTML = hackerList.size();
+            hackerList.on('searchComplete', function(){document.getElementById("count").innerHTML = hackerList.matchingItems.length;});
         });
     </script>
 {% endblock scripts%}

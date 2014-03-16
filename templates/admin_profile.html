@@ -13,7 +13,16 @@
 {% endblock head %}
 
 {% block body %}
-<h1 class="page-header">{{ data.nameFirst }} {{ data.nameLast }}<small>&nbsp;&nbsp;is {% if not data.isApproved %}not {% endif %}approved</small></h1>
+<h1 class="page-header">
+    {{ data.nameFirst }} {{ data.nameLast }}
+    {% if data.isApproved %}
+    <small class="status">&nbsp;&nbsp;is approved</small>
+    <button class="btn btn-warning approve-btn">Un-Approve</button>
+    {% else %}
+    <small class="status">&nbsp;&nbsp;is not approved</small>
+    <button class="btn btn-primary approve-btn">Approve</button>
+    {% endif %}
+</h1>
 <div class="table-responsive">
     <table class="table">
         <thead class="invisible">
@@ -23,6 +32,10 @@
             </tr>
         </thead>
         <tbody>
+			<tr>
+                <td class="pull-right">Name:</td>
+                <td class="name">{{ data.nameFirst }} {{ data.nameLast }}</td>
+            </tr>
             <tr>
                 <td class="pull-right">Email:</td>
                 <td>{{ data.email }}</td>
@@ -41,7 +54,7 @@
             </tr>
             <tr>
                 <td class="pull-right">Resume:</td>
-                <td>{% if data.resumeName %}<a href='/admin/resume?userId={{ data.userId }}'>{{ data.resumeName }}</a>{% endif %}</td>
+                <td>{% if data.resume %}<a href='/admin/resume?userId={{ data.userId }}'>Resume</a>{% endif %}</td>
             </tr>
             <tr>
                 <td class="pull-right">LinkedIn:</td>
@@ -99,7 +112,7 @@
             </tr>
             <tr>
                 <td class="pull-right">User ID:</td>
-                <td>{{ data.userId }}</td>
+                <td class="id" >{{ data.userId }}</td>
             </tr>
         </tbody>
     </table>
@@ -108,5 +121,32 @@
 
 
 {% block scripts %}
-<script type="text/javascript"></script>
+<script type="text/javascript">
+    function applyBtnCallbacks() {
+        $('.approve-btn').click(function() {
+            var itemName = $(".name").text();
+            var itemuserId = $(".id").text();
+			var approve = $(this).html();
+            var r = confirm(approve + " " + itemName + "?");
+            if (r == true) {
+				if(approve == "Approve"){
+					$.post("/admin/approve", {"userId": itemuserId, "isApproved":"True"});
+					$(this).html("Un-Approve");
+                    $('.status').html("&nbsp;&nbsp;is approved");
+                    $(this).removeClass("btn-primary").addClass("btn-warning");
+				}
+				else{
+				    $.post("/admin/approve", {"userId": itemuserId, "isApproved":"False"});
+                    $(this).html("Approve");
+                    $('.status').html("&nbsp;&nbsp;is not approved");
+					$(this).removeClass("btn-warning").addClass("btn-primary");
+				}
+            }
+        });
+    };
+
+    $(document).ready(function() {
+        applyBtnCallbacks();
+    });
+</script>
 {% endblock scripts%}

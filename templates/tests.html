@@ -1,0 +1,64 @@
+{% extends "base/admin_base.html" %}
+{% set active_page = "tests" %}
+
+{% block head %}
+<style type="text/css">
+    .page-header {
+        margin-top: 0;
+    }
+    .t-centered {
+        text-align: center;
+    }
+</style>
+{% endblock head %}
+
+
+{% block body %}
+<h1 class="page-header">URL Tests for {{ data.base }}</h1>
+<div class="row">
+    <div class="col-md-6">
+        <div class="table-responsive">
+        <table class="table table-bordered" id="tests">
+            <thead>
+                <tr class="success">
+                    <th>URL</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for e in data.extensions %}
+            <tr>
+                <td class="ext">{{ e }}</td>
+                <td class="result"></td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        </div>
+    </div>
+</div>
+{% endblock body %}
+
+
+{% block scripts %}
+<script type="text/javascript">
+$(document).ready(function() {
+    $("#tests tbody tr").each(function() {
+        var row = $(this);
+        var ext = $(this).find(".ext").html();
+        var res = $(this).find(".result");
+
+        $.get( ext, function() {
+            row.addClass("success");
+            res.html("yay :)");
+        }).fail(function() {
+            row.addClass("danger");
+            res.html("boo :(");
+            $("#tests thead tr").each(function() {
+                $(this).attr("class", "danger");
+            });
+        });
+    });
+});
+</script>
+{% endblock scripts%}

@@ -26,3 +26,5 @@ ROOM = {
 	            'Floor 4':[{}]
 	        }
 		}
+
+COMPANY_NAMES = ['Interactive Intelligence', 'IMO', 'pebble', 'Bloomberg', 'Groupon', 'Neustar', 'State Farm', 'Venmo', 'West Monroe', 'Tata Consultancy Services', 'Niksun', 'Answers', 'Goldman Sachs', 'Wolfram', 'John Deere', 'Trunk Club', 'Yahoo!', 'KCG', 'Dropbox', 'Google', 'Citadel', 'mailgun', 'OSO', 'Spot', 'Epic', 'Elelctric Imp', 'Octopart', 'Adrenaline', 'Sparkfun', 'rdio', 'Lob', 'Firebase', 'Illinois MakerLab', 'Microsoft', 'facebook', 'Intel', 'Mashery', 'namecheap', 'Andreessen Horowitz', 'Dwolla', 'twilio', 'Orbitz', 'Spark', 'Parrot', 'pwc']

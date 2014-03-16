@@ -1,0 +1,83 @@
+{% extends "base/admin_base.html" %}
+{% set active_page = "manager" %}
+
+{% block head %}
+<style type="text/css">
+    .page-header {
+        margin-top: 0;
+    }
+    .t-centered {
+        text-align: center;
+    }
+    .submit-button {
+        margin-left: 20px;
+    }
+</style>
+{% endblock head %}
+
+
+{% block body %}
+<h1 class="page-header">Manager</h1>
+
+<div class="acces-control">
+    <h2>Admin Access Control</h2>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="table-responsive">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Email</th>
+                            <th class="t-centered">Approve Access</th>
+                            <th class="t-centered">Full Access</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for a in data.admins %}
+                        <tr>
+                            <td>{{ a.email }}</td>
+                            <td class="t-centered {% if a.approveAccess %}info{% endif %}">{% if a.approveAccess %}X{% endif %}</td>
+                            <td class="t-centered {% if a.fullAccess %}info{% endif %}">{% if a.fullAccess %}X{% endif %}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <br>
+    <div class="row">
+        <div class="col-md-12">
+            <form class="form-inline" role="form" action="/admin/manager/accesscontrol" method="post">
+                <div class="form-group">
+                    <label class="sr-only" for="email1">Email Address</label>
+                    <input type="email" class="form-control" id="email1" name="email" placeholder="Email Address">
+                </div>
+
+                <div class="radio">
+                    <label class="radio-inline" for="radio1">
+                        <input type="radio" name="accessControl" id="radio1" value="general" checked> General Access
+                    </label>
+                    <label class="radio-inline" for="radio2">
+                        <input type="radio" name="accessControl" id="radio2" value="approve"> Approve Access
+                    </label>
+                    <label class="radio-inline" for="radio3">
+                        <input type="radio" name="accessControl" id="radio3" value="full"> Full Access
+                    </label>
+                </div>
+                <button type="submit" class="btn btn-primary submit-button">Submit</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock body %}
+
+
+{% block scripts %}
+<script type="text/javascript">
+$(document).ready(function() {
+});
+</script>
+{% endblock scripts%}

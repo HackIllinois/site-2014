@@ -5,6 +5,7 @@ import logging
 from google.appengine.api import users
 from db import constants
 from google.appengine.ext import ereporter
+from db.Admin import Admin
 
 template_dir = os.path.join(os.path.dirname(__file__), os.path.join(os.pardir, 'templates'))
 jinja_env = jinja2.Environment(loader = jinja2.FileSystemLoader(template_dir), autoescape = True)
@@ -32,7 +33,7 @@ class BaseAdminHandler(Handler):
     """
     This is for all /admin pages
     Overrides the dispatch method (called before get/post/etc.)
-    Sends 403 (forbidden) if user is not an admin
+    Sends 401 (Unauthorized) if user is not an admin
     Ref: http://webapp-improved.appspot.com/guide/handlers.html
     """
     def dispatch(self):
@@ -45,7 +46,16 @@ class BaseAdminHandler(Handler):
         email = user.email()
         domain = email.split('@')[1] if len(email.split('@')) == 2 else None # Sanity check
 
-        if domain == 'hackillinois.org' or email in constants.ADMIN_EMAILS:
+        admin_user = Admin.search_database({'email': user.email()}).get()
+        if admin_user:
+            is_admin = True
+        elif email in constants.ADMIN_EMAILS:
+            parent = Admin.get_default_event_parent_key()
+            Admin(parent=parent, email=user.email(), googleUser=user, approveAccess=True, fullAccess=True).put()
+            is_admin = True
+        elif domain == 'hackillinois.org':
+            parent = Admin.get_default_event_parent_key()
+            Admin(parent=parent, email=user.email(), googleUser=user).put()
             is_admin = True
 
         if is_admin:
@@ -56,6 +66,7 @@ class BaseAdminHandler(Handler):
         else:
             logging.info('%s attempted to access an admin page but was denied.', email)
             return self.abort(401)
+
 
 class BaseMobileHandler(Handler):
 
