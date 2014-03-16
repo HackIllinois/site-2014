@@ -3,6 +3,9 @@ import urllib, logging, re
 from db.Attendee import Attendee
 from db import constants
 from db.mobile import MobileConstants
+from db.mobile.Staff import Staff
+from db.mobile.CompanyRep import CompanyRep
+from db.mobile.Hacker import Hacker
 from google.appengine.api import users, memcache
 import json
 
@@ -158,7 +161,18 @@ class StaffHandler(MainHandler.BaseMobileHandler):
         @return The models of all the Staff for HackIllinois
     '''
     def get(self):
-        return self.write(json.dumps({'name':'Jacob', 'email':'cool@email.com', 'school':'U of I', 'year':'senior', 'homebase':'room #4', 'skills':'awesome'}))
+        if 'AuthName' in self.request.headers and self.request.headers['AuthName'] != 'test':
+            staffProfiles = Staff.search_database({})
+            listOfStaff = []
+            for staffProfile in staffProfiles:
+                _staff = {'name':staffProfile.name, 'email':staffProfile.email, 'school':staffProfile.school, 'year':staffProfile.year, 'skills':staffProfile.skills, 'homebase':staffProfile.homebase}
+
+        elif self.request.headers['AuthName'] == 'test':
+            return self.write(json.dumps([{'name':'Jacob', 'email':'cool@email.com', 'school':'U of I', 'year':'senior', 'homebase':'room #4', 'skills':'awesome'}, {'name':'Alex', 'email':'Alexcool@email.com', 'school':'U of I', 'year':'senior', 'homebase':'1109', 'skills':'awesome'}]))
+
+        else:
+            return self.write(json.dumps({'access':'No Access'}))    
+
 
 '''
         for example:
@@ -182,6 +196,21 @@ class HackersHandler(MainHandler.BaseMobileHandler):
         @return The models of all the Hackers attendeeing HackIllinois
     '''
     def get(self):
+        if 'AuthName' in self.request.headers and self.request.headers['AuthName'] != 'test':
+            hackerProfiles = Hacker.search_database({})
+            listOfHackers = []
+            for hackerProfile in hackerProfiles:
+                _hacker = {'name':hackerProfile.name, 'email':hackerProfile.email, 'school':hackerProfile.school, 'year':hackerProfile.year, 'skills':hackerProfile.skills, 'homebase':hackerProfile.homebase}
+                listOfHackers.append(_hacker)
+            return self.write(json.dumps(listOfHackers))
+
+        elif self.request.headers['AuthName'] == 'test':
+            return self.write(json.dumps([{'name':'Jacob', 'email':'cool@email.com', 'school':'U of I', 'year':'senior', 'homebase':'room #4', 'skills':'awesome'}, {'name':'Alex', 'email':'Alexcool@email.com', 'school':'U of I', 'year':'senior', 'homebase':'1109', 'skills':'awesome'}]))
+
+        else:
+            return self.write(json.dumps({'access':'No Access'}))    
+
+
         return self.write(json.dumps([{'name':'Jacob', 'email':'cool@email.com', 'school':'U of I', 'year':'senior', 'homebase':'room #4', 'skills':'awesome'}]))
 
 '''
@@ -199,10 +228,25 @@ class HackersHandler(MainHandler.BaseMobileHandler):
 class HackerHandler(MainHandler.BaseMobileHandler):
 
     def get(self):
-        return self.write(json.dumps({'name':'Jacob', 'email':'cool@email.com', 'school':'U of I', 'year':'senior', 'homebase':'room #4', 'skills':'awesome'}))
+        if 'AuthName' in self.request.headers and self.request.headers['AuthName'] != 'test':
+            hackerProfile = Hacker.search_database({'userId':self.request.headers['AuthName']}).get()
+            _hacker = {'name':hackerProfile.name, 'email':hackerProfile.email, 'school':hackerProfile.school, 'year':hackerProfile.year, 'skills':hackerProfile.skills, 'homebase':hackerProfile.homebase}
+            return self.write(json.dumps(_hacker))
+
+        elif self.request.headers['AuthName'] == 'test':
+            return self.write(json.dumps({'name':'Jacob', 'email':'email@gmail.com', 'school':'uiuc', 'year':'senior', 'skills':'none', 'homebase':'1105'}))
+
+        else:
+            return self.write(json.dumps({'access':'No Access'}))
 
     def Post(self):
-        pass
+        if 'AuthName' in self.request.headers and self.request.headers['AuthName'] != 'test':
+            updatedHackerProfile = self.request.POST.items()
+            updatedHackerProfileDict = {}
+            for _key,_value in updatedHackerProfile:
+                updatedHackerProfileDict[_key] = _value
+
+            Hacker.update_search(params, updatedHackerProfileDict)
 
 '''
         for example:
@@ -213,7 +257,6 @@ class HackerHandler(MainHandler.BaseMobileHandler):
                     job title: ,
                     skills: ,
                     events: ,
-                    office hours: ,
                     email/contact: ,
                 }
             ]
@@ -224,18 +267,34 @@ class CompaniesHandler(MainHandler.BaseMobileHandler):
 
     '''
 
-        @return The models of all the Companies attendeeing HackIllinois
+        @return The models of all the Companies attending HackIllinois
     '''
     def get(self):
-        return self.write(json.dumps(
-            {'Apple':
-                {'name':'Joe Smith',
-                 'company':'Apple',
-                 'job title':'iOS Developer',
-                 'skills':'cool things',
-                 'events':'other cool things',
-                 'office hours':'1:00 pm',
-                 'email/contact':'coolemail@apple.com'}}))
+        if 'AuthName' in self.request.headers and self.request.headers['AuthName'] != 'test':
+            companyProfiles = {}
+
+            for companyName in MobileConstants.COMPANY_NAMES:
+                companyProfiles[companyName] = []
+                companyProfile = CompanyRep.search_database({'company':companyName})
+                for _companyRep in companyProfile:
+                    companyRepProfile = {'email':_companyRep.email, 'company':_companyRep.company, 'jobTitle':_companyRep.jobTitle, 'skills':_companyRep.skills}
+                    _list = companyProfiles[companyName]
+                    _list.append(companyRepProfile)
+            return self.write(json.dumps(companyProfiles))
+
+        elif self.request.headers['AuthName'] == 'test':
+            companyProfiles = {}
+
+            for companyName in MobileConstants.COMPANY_NAMES:
+                companyProfiles[companyName] = []
+                companyProfile = CompanyRep.search_database({'company':companyName})
+                for _companyRep in companyProfile:
+                    companyRepProfile = {'email':_companyRep.email, 'company':_companyRep.company, 'jobTitle':_companyRep.jobTitle, 'skills':_companyRep.skills}
+                    companyProfiles[companyName].append(companyRepProfile)
+            return self.write(json.dumps(companyProfiles))
+
+        else:
+            return self.write(json.dumps({'access':'No Access'}))
 
 '''
 
@@ -257,5 +316,5 @@ class SkillsHandler(MainHandler.BaseMobileHandler):
     def get(self):
         return self.write(json.dumps(MobileConstants.SKILLS))
 
-    def put(self):
-        pass
+    # def put(self):
+    #     pass
