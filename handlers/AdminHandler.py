@@ -10,12 +10,83 @@ from google.appengine.api import urlfetch
 from collections import defaultdict
 from google.appengine.api import memcache
 
+
 def get_admin_user():
     user = users.get_current_user()
     if not user: return None
     admin_user = Admin.search_database({'email': user.email()}).get()
     if not admin_user: return None
     return admin_user
+
+
+def get_hackers_memecache():
+    data = memcache.get('hackers')
+    if not data:
+        hackers = Attendee.search_database({'isRegistered':True})
+        data = []
+        for hacker in hackers:
+            data.append({ 'nameFirst':hacker.nameFirst,
+                          'nameLast':hacker.nameLast,
+                          'email':hacker.email,
+                          'gender':hacker.gender if hacker.gender == 'Male' or hacker.gender == 'Female' else 'Other',
+                          'school':hacker.school,
+                          'year':hacker.year,
+                          'linkedin':hacker.linkedin,
+                          'github':hacker.github,
+                          'shirt':hacker.shirt,
+                          'food':'None' if not hacker.food else ', '.join(hacker.food.split(',')),
+                          'projectType':hacker.projectType,
+                          'resume':hacker.resume,
+                          'registrationTime':hacker.registrationTime.strftime('%x %X'),
+                          'isApproved':hacker.isApproved,
+                          'userId':hacker.userId})
+
+        if not memcache.add('hackers', data, time=constants.MEMCACHE_TIMEOUT):
+            logging.error('Memcache set failed.')
+
+    stats = memcache.get_stats()
+    logging.info('Hackers:: Cache Hits:%s  Cache Misses:%s' % (stats['hits'], stats['misses']))
+
+    return data
+
+
+def get_hackers_csv_memcache(base_url):
+    csv_string = memcache.get('hackers_csv')
+    if not csv_string:
+        hackers = get_hackers_memecache()
+        output = cStringIO.StringIO()
+        writer = csv.writer(output)
+
+        fields = ['nameFirst','nameLast','email',
+                  'gender','school','year','linkedin',
+                  'github','shirt','food','projectType',
+                  'registrationTime','isApproved','userId']
+
+        writer.writerow(constants.CSV_HEADINGS)
+        for h in hackers:
+            row = []
+            for f in fields:
+                if f in h and h[f] is not None:
+                    row.append(h[f])
+                else:
+                    row.append('')
+            if 'resume' in h and h['resume'] is not None:
+                row.append(base_url + '/admin/resume?userId='+h['userId'])
+            else:
+                row.append('')
+
+            writer.writerow(row)
+
+        csv_string = output.getvalue()
+        output.close()
+
+        if not memcache.add('hackers_csv', csv_string, time=constants.MEMCACHE_TIMEOUT):
+            logging.error('Memcache set failed.')
+
+    stats = memcache.get_stats()
+    logging.info('Hackers CSV:: Cache Hits:%s  Cache Misses:%s' % (stats['hits'], stats['misses']))
+
+    return csv_string
 
 
 class AdminHandler(MainHandler.BaseAdminHandler):
@@ -157,32 +228,8 @@ class AdminApproveHandler(MainHandler.BaseAdminHandler):
         if not admin_user.approveAccess:
             return self.abort(401, detail='User does not have permission to view attendees.')
 
-        data = memcache.get('hackers')
-        if not data:
-            hackers = Attendee.search_database({'isRegistered':True})
-            data = {}
-            data['hackers'] = []
-            for hacker in hackers:
-                data['hackers'].append({ 'nameFirst':hacker.nameFirst,
-                                         'nameLast':hacker.nameLast,
-                                         'email':hacker.email,
-                                         'gender':hacker.gender if hacker.gender == 'Male' or hacker.gender == 'Female' else 'Other',
-                                         'school':hacker.school,
-                                         'year':hacker.year,
-                                         'linkedin':hacker.linkedin,
-                                         'github':hacker.github,
-                                         'shirt':hacker.shirt,
-                                         'food':'None' if not hacker.food else ', '.join(hacker.food.split(',')),
-                                         'projectType':hacker.projectType,
-                                         'registrationTime':hacker.registrationTime.strftime('%x %X'),
-                                         'isApproved':hacker.isApproved,
-                                         'userId':hacker.userId})
-
-            if not memcache.add('hackers', data, time=constants.MEMCACHE_TIMEOUT):
-                logging.error('Memcache set failed.')
-
-        stats = memcache.get_stats()
-        logging.info('Hackers:: Cache Hits:%s  Cache Misses:%s' % (stats['hits'], stats['misses']))
+        data = {}
+        data['hackers'] = get_hackers_memecache()
 
         # self.render("approve.html", data=data, approveAccess=admin_user.approveAccess, fullAccess=admin_user.fullAccess)
         self.render("summary.html", data=data, approveAccess=admin_user.approveAccess, fullAccess=admin_user.fullAccess)
@@ -435,61 +482,8 @@ class AdminExportHandler(MainHandler.BaseAdminHandler):
         if not admin_user.approveAccess:
             return self.abort(401, detail='User does not have permission to download attendees csv.')
 
-
-        data = memcache.get('hackers')
-        if not data:
-            hackers = Attendee.search_database({'isRegistered':True})
-            data = {}
-            data['hackers'] = []
-            for hacker in hackers:
-                data['hackers'].append({ 'nameFirst':hacker.nameFirst,
-                                         'nameLast':hacker.nameLast,
-                                         'email':hacker.email,
-                                         'gender':hacker.gender if hacker.gender == 'Male' or hacker.gender == 'Female' else 'Other',
-                                         'school':hacker.school,
-                                         'year':hacker.year,
-                                         'linkedin':hacker.linkedin,
-                                         'github':hacker.github,
-                                         'shirt':hacker.shirt,
-                                         'food':'None' if not hacker.food else ', '.join(hacker.food.split(',')),
-                                         'projectType':hacker.projectType,
-                                         'registrationTime':hacker.registrationTime.strftime('%x %X'),
-                                         'resume':hacker.resume,
-                                         'isApproved':hacker.isApproved,
-                                         'userId':hacker.userId})
-
-            if not memcache.add('hackers', data, time=constants.MEMCACHE_TIMEOUT):
-                logging.error('Memcache set failed.')
-
-        stats = memcache.get_stats()
-        logging.info('Hackers:: Cache Hits:%s  Cache Misses:%s' % (stats['hits'], stats['misses']))
-
-
         dt = datetime.datetime.now().strftime("%Y-%m-%d-%H:%M")
         self.response.headers['Content-Type'] = 'text/csv'
         self.response.headers['Content-Disposition'] = 'attachment;filename=' + dt + '-attendees.csv'
 
-        hackers = data['hackers']
-        output = cStringIO.StringIO()
-
-        writer = csv.writer(output)
-        writer.writerow(constants.CSV_HEADINGS)
-        for h in hackers:
-            writer.writerow([ h['nameFirst'],
-                              h['nameLast'],
-                              h['email'],
-                              h['gender'],
-                              h['school'],
-                              h['year'],
-                              h['linkedin'],
-                              h['github'],
-                              h['shirt'],
-                              h['food'],
-                              h['projectType'],
-                              h['registrationTime'],
-                              '/admin/resume?userId='+h['userId'],
-                              h['isApproved'],
-                              h['userId'] ])
-        self.write(output.getvalue())
-        output.close()
-        return
+        return self.write(get_hackers_csv_memcache(self.request.application_url))
