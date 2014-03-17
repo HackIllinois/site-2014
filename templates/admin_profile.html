@@ -13,6 +13,7 @@
 {% endblock head %}
 
 {% block body %}
+
 <h1 class="page-header">
     {{ data.nameFirst }} {{ data.nameLast }}
     {% if data.isApproved %}
@@ -25,6 +26,7 @@
 	<button class="btn btn-primary edit-btn">Edit</button>
 	<button class="btn btn-warning cancle-edit-btn" style="display:none">Cancle Edit</button>
 </h1>
+
 <div class="table-responsive">
     <table class="table">
         <thead class="invisible">
@@ -37,12 +39,16 @@
 			<tr>
                 <td class="pull-right">First Name:</td>
                 <td id="nameFirst" name="nameFirst">{{ data.nameFirst }}</td>
-				<td id="nameFirstEdit" name="nameFirstEdit" style="display:none"><input id="nameFirstInput" name="nameFirstInput"></input></td>
+				<td id="nameFirstEdit" name="nameFirstEdit" style="display:none">
+					<input id="nameFirstInput" name="nameFirstInput"></input>
+				</td>
             </tr>
 			<tr>
                 <td class="pull-right">Last Name:</td>
                 <td id="nameLast" name="nameLast">{{ data.nameLast }}</td>
-				<td id="nameLastEdit" name="nameLastEdit" style="display:none"><input id="nameLastInput" name="nameLastInput"></input></td>
+				<td id="nameLastEdit" name="nameLastEdit" style="display:none">
+					<input id="nameLastInput" name="nameLastInput"></input>
+				</td>
             </tr>
             <tr>
                 <td class="pull-right">Email:</td>
@@ -52,112 +58,126 @@
                 <td class="pull-right">Gender:</td>
 				<td id="gender" name="gender">{{ data.gender }}</td>
 				<td id="genderEdit" name="genderEdit" style="display:none">
-				<select id="genderInput" name="genderInput">
-				{% if data.gender not in data.genders %}
-					<option>{{ data.gender }}</option>
-				{% endif %}
-				{% for g in data.genders %}
-                    <option>{{ g }}</option>
-                {% endfor %}
-				</select>
+					<select id="genderInput" name="genderInput">
+					{% if data.gender not in data.genders %}
+						<option>{{ data.gender }}</option>
+					{% endif %}
+					{% for g in data.genders %}
+						<option>{{ g }}</option>
+					{% endfor %}
+					</select>
 				</td>
             </tr>
             <tr>
                 <td class="pull-right">School:</td>
                 <td id="school" name="school">{{ data.school }}</td>
 				<td id="schoolEdit" name="schoolEdit" style="display:none">
-				<select id="schoolInput" name="schoolInput">
-				{% if data.school not in data.schools %}
-					<option>{{ data.school }}</option>
-				{% endif %}
-				{% for s in data.schools %}
-                    <option>{{ s }}</option>
-                {% endfor %}
-				</select>
+					<select id="schoolInput" name="schoolInput">
+					{% if data.school not in data.schools %}
+						<option>{{ data.school }}</option>
+					{% endif %}
+					{% for s in data.schools %}
+						<option>{{ s }}</option>
+					{% endfor %}
+					</select>
 				</td>
             </tr>
             <tr>
                 <td class="pull-right">Year:</td>
                 <td id="year" name="year">{{ data.year }}</td>
 				<td id="yearEdit" name="yearEdit" style="display:none">
-				<select id="yearInput" name="yearInput">
-				{% if data.year not in data.years %}
-					<option>{{ data.year }}</option>
-				{% endif %}
-				{% for y in data.years %}
-                    <option>{{ y }}</option>
-                {% endfor %}
-				</select>
+					<select id="yearInput" name="yearInput">
+					{% if data.year not in data.years %}
+						<option>{{ data.year }}</option>
+					{% endif %}
+					{% for y in data.years %}
+						<option>{{ y }}</option>
+					{% endfor %}
+					</select>
 				</td>
             </tr>
             <tr>
                 <td class="pull-right">Resume:</td>
-                <td>
-				{% if data.resume %}<a href='/admin/resume?userId={{ data.userId }}'>Resume</a>{% endif %}
-			    <input id="resumeInput" name="resumeInput" style="display:none" type="file" accept="application/pdf">					
+                <td>{% if data.resume %}<a href='/admin/resume?userId={{ data.userId }}'>Resume</a>{% endif %}
+					<!--<input id="resumeInput" name="resumeInput" type="file" accept="application/pdf"> -->
 				</td>
 			</tr>
             <tr>
                 <td class="pull-right">LinkedIn:</td>
 				<td id="linkedin" name="linkedin">{{ data.linkedin }}</td>
-				<td id="linkedinEdit" name="linkedinEdit" style="display:none"><input id="linkedinInput" name="linkedinInput"></input></td>
+				<td id="linkedinEdit" name="linkedinEdit" style="display:none">
+					<input id="linkedinInput" name="linkedinInput"></input>
+				</td>
             </tr>
             <tr>
 				<td class="pull-right">Github:</td>
 				<td id="github" name="github">{{ data.github }}</td>
-				<td id="githubEdit" name="githubEdit" style="display:none"><input id="githubInput" name="githubInput"></input></td>
+				<td id="githubEdit" name="githubEdit" style="display:none">
+					<input id="githubInput" name="githubInput"></input>
+				</td>
             </tr>
             <tr>
                 <td class="pull-right">Shirt Size:</td>
                 <td id="shirt" name="shirt">{{ data.shirt }}</td>
 				<td id="shirtEdit" name="shirtEdit" style="display:none">
-				<select id="shirtInput" name="shirtInput">
-				{% if data.shirt not in data.shirts %}
-					<option>{{ data.shirt }}</option>
-				{% endif %}
-				{% for s in data.shirts %}
-                    <option>{{ s }}</option>
-                {% endfor %}
-				</select>
+					<select id="shirtInput" name="shirtInput">
+					{% if data.shirt not in data.shirts %}
+						<option>{{ data.shirt }}</option>
+					{% endif %}
+					{% for s in data.shirts %}
+						<option>{{ s }}</option>
+					{% endfor %}
+					</select>
 				</td>
             </tr>
             <tr>
-                <td class="pull-right">Dietary Restrictions:<span id="foodSpecific"{% if not data.foodInfo  %}style="display:none"{% endif %}><br>Specific:</span></td>
-                <td id="food" name="food"><span id="foodList" name="foodList">{{ data.food }}</span><br><span id="foodInfo" name="foodInfo"> {{ data.foodInfo }}</span></td>
+                <td class="pull-right">Dietary Restrictions:</td>
+				<td id="food" name="food">{{ data.food }}</td>
 				<td id="foodEdit" name="foodEdit" style="display:none">
-			    {% for f in data.foods %}    
-                   	<input type="checkbox" id="foodCheck" name="foodCheck" value="{{ f }}" {% if f in data.food %} checked {% endif %}/>{{ f }}</br>
-                {% endfor %}
-				<input id="foodInfoInput" name="foodInfoInput"></input>
+					{% for f in data.foods %}
+						<input type="checkbox" id="foodCheck" name="foodCheck" value="{{ f }}" {% if f in data.food %} checked {% endif %}/>{{ f }}</br>
+					{% endfor %}
+				</td>
+			</tr>
+			<tr>
+                <td class="pull-right">Dietary Restrictions Specific:</td>
+				<td id="foodInfo" name="foodInfo">{{ data.foodInfo }}</td>
+				<td id="foodInfoEdit" name="foodInfoEdit" style="display:none">
+					<input id="foodInfoInput" name="foodInfoInput"></input>
 				</td>
 			</tr>
             <tr>
                 <td class="pull-right">Project Type:</td>
                 <td id="projectType" name="projectType">{{ data.projectType }}</td>
 				<td id="projectTypeEdit" name="projectTypeEdit" style="display:none">
-				<select id="projectTypeInput" name="projectTypeInput">
-				{% if data.projectType not in data.projects %}
-					<option>{{ data.projectType }}</option>
-				{% endif %}
-				{% for p in data.projects %}
-                    <option>{{ p }}</option>
-                {% endfor %}
-				</select>
+					<select id="projectTypeInput" name="projectTypeInput">
+					{% if data.projectType not in data.projects %}
+						<option>{{ data.projectType }}</option>
+					{% endif %}
+					{% for p in data.projects %}
+						<option>{{ p }}</option>
+					{% endfor %}
+					</select>
 				</td>
             </tr>
             <tr>
 				<td class="pull-right">Experience:</td>
 				<td id="experience" name="experience">{{ data.experience }}</td>
-				<td id="experienceEdit" name="experienceEdit" style="display:none"><textarea id="experienceInput" name="experienceInput"></textarea></td>
+				<td id="experienceEdit" name="experienceEdit" style="display:none">
+					<textarea id="experienceInput" name="experienceInput"></textarea>
+				</td>
             </tr>
             <tr>
                 <td class="pull-right">Team Members:</td>
 				<td id="teamMembers" name="teamMembers">{{ data.teamMembers }}</td>
-				<td id="teamMembersEdit" name="teamMembersEdit" style="display:none"><textarea id="teamMembersInput" name="teamMembersInput"></textarea></td>
+				<td id="teamMembersEdit" name="teamMembersEdit" style="display:none">
+					<textarea id="teamMembersInput" name="teamMembersInput"></textarea>
+				</td>
             </tr>
         </tbody>
     </table>
-<div>
+</div>
+
 <h2>Systems Data</h2>
 <div class="table-responsive">
     <table class="table">
@@ -182,7 +202,7 @@
             </tr>
             <tr>
                 <td class="pull-right">User ID:</td>
-                <td class="id" >{{ data.userId }}</td>
+                <td id="id" >{{ data.userId }}</td>
             </tr>
         </tbody>
     </table>
@@ -194,19 +214,19 @@
 <script type="text/javascript">
     function applyBtnCallbacks() {
         $('.approve-btn').click(function() {
-            var itemName = $(".name").text();
-            var itemuserId = $(".id").text();
+            var attendeeName = $("#nameFirst").text() + " " + $("#nameLast").text() ;
+            var attendeeId = $("#id").text();
 			var approve = $(this).html();
-            var r = confirm(approve + " " + itemName + "?");
+            var r = confirm(approve + " " + attendeeName + "?");
             if (r == true) {
 				if(approve == "Approve"){
-					$.post("/admin/approve", {"userId": itemuserId, "isApproved":"True"});
+					$.post("/admin/approve", {"userId": attendeeId, "isApproved":"True"});
 					$(this).html("Un-Approve");
                     $('.status').html("&nbsp;&nbsp;is approved");
                     $(this).removeClass("btn-success").addClass("btn-danger");
 				}
 				else{
-				    $.post("/admin/approve", {"userId": itemuserId, "isApproved":"False"});
+				    $.post("/admin/approve", {"userId": attendeeId, "isApproved":"False"});
                     $(this).html("Approve");
                     $('.status').html("&nbsp;&nbsp;is not approved");
 					$(this).removeClass("btn-danger").addClass("btn-success");
@@ -221,19 +241,19 @@
 			if(approve == "Edit"){
 				$(this).html("Confirm Edit");
 				
-				var editElements = ["nameFirst", "nameLast", "linkedin", "github", "experience", "team", "gender", "school", "shirt", "year", "projectType", "food"];
-				for(var x = 0; x < editElements.length; x++)
+				var edit_fields = ["nameFirst", "nameLast", "linkedin", "github", "experience", "team", "gender", "school", "shirt", "year", "projectType", "foodInfo", "teamMembers"];
+				for(var x = 0; x < edit_fields.length; x++)
 				{
-					$("#" + editElements[x]).css("display","none");
-					$("#" + editElements[x] + "Edit").css("display","table-cell");//Not for foodInfo
-					$("#" + editElements[x] + "Input").val($("#" + editElements[x]).html());
+					$("#" + edit_fields[x]).css("display","none");
+					$("#" + edit_fields[x] + "Edit").css("display","table-cell");//Not for foodInfo
+					$("#" + edit_fields[x] + "Input").val($("#" + edit_fields[x]).html());
 				}
-				$("#foodInfoInput".val($("#foodInfo").html()));
-				
 				$("#resumeInput").css("display","table-cell");
-				$("#foodSpecific").css("display","block");
+
+				$("#food").css("display","none");
+				$("#foodEdit").css("display","table-cell");
+				var foodList = $("#food").html();
 				var foodChecks = document.getElementsByName("foodCheck");
-				var foodList = $("#foodList").html();
 				for(var x = 0; x < foodChecks.length; x++)
 				{
 					if(foodList.indexOf(foodChecks[x].value) != -1)
@@ -248,9 +268,9 @@
 				$(".cancle-edit-btn").css("display","inline");
 			}
 			else{
-				var itemuserId = $(".id").text();
+				var itemuserId = $("#id").text();
 				var data = {};
-				var edit_fields = ['nameFirst', 'nameLast', 'gender', 'school', 'year', 'experience', 'linkedin', 'github', 'teamMembers', 'shirt', 'projectType', 'foodInfo']
+				var edit_fields = ["nameFirst", "nameLast", "linkedin", "github", "experience", "team", "gender", "school", "shirt", "year", "projectType", "foodInfo", "teamMembers"];
 				for(var x = 0; x < edit_fields.length; x ++)
 				{
 					data[edit_fields[x]] = $("#" + edit_fields[x] + "Input").val();
@@ -259,30 +279,36 @@
 				var food = "";
 				for(var x = 0; x < foodChecks.length; x++)
 				{
+					if(data['foodInfo'] != '' && foodChecks[x].value == "Other"){
+						foodChecks[x].checked = true;
+					}
 					if(foodChecks[x].checked)
 					{
 						food = food + "," + foodChecks[x].value;
 					}
 				}
-				data['food'] = food.substring(1,food.length);
-				$.post("/admin/profile/" + itemuserId, data, function(data){
-					if(data == "Edit Complete")
+				if(food != ""){
+					data['food'] = food.substring(1,food.length);
+				}
+				
+				$.post("/admin/profile/" + itemuserId, data, function(dataPost){
+					if(dataPost == "Edit Complete")
 					{
-						alert(data);
+						alert(dataPost);
 						$(".edit-btn").html("Edit");
 						$(".cancle-edit-btn").css("display","none");
 
-						var editElements = ["nameFirst", "nameLast", "linkedin", "github", "experience", "team", "gender", "school", "shirt", "year", "projectType", "food"];
-						for(var x = 0; x < editElements.length; x++)
+						var edit_fields = ["nameFirst", "nameLast", "linkedin", "github", "experience", "team", "gender", "school", "shirt", "year", "projectType", "foodInfo", "teamMembers"];
+						for(var x = 0; x < edit_fields.length; x++)
 						{
-							$("#" + editElements[x]).css("display","table-cell");
-							$("#" + editElements[x] + "Edit").css("display","none");//Not for foodInfo
-							$("#" + editElements[x]).html($("#" + editElements[x] + "Input").val())
+							$("#" + edit_fields[x]).css("display","table-cell");
+							$("#" + edit_fields[x] + "Edit").css("display","none");//Not for foodInfo
+							$("#" + edit_fields[x]).html(data[edit_fields[x]]);
 						}
-						$("#foodInfo").html($("#foodInfoInput").val());
+						//$("#resumeInput").css("display","none");
 						
-						$("#resumeInput").css("display","none");
-						
+						$("#food").css("display","table-cell");
+						$("#foodEdit").css("display","none");//Not for foodInfo
 						var foodChecks = document.getElementsByName("foodCheck");
 						var food = "";
 						for(var x = 0; x < foodChecks.length; x++)
@@ -291,18 +317,16 @@
 								food = food + foodChecks[x].value + ",";
 							}
 						}
-						$("#foodList").html( food.substring(0,food.length-1));
-					
-						$("#foodSpecific").css("display","block");
-						if($("#foodInfoInput").val() == ''){
-							$("#foodSpecific").css("display","none");
-						}
-						$("#foodInfo").val($("#foodInfoInput").val());
+						$("#food").html( food.substring(0,food.length-1));
+					}
+					else if(dataPost == "Error: Invalid Data: {'food-specific': 'Please provide your dietary restriction information.'}"){
+						alert(dataPost + "\n\n" + "Either uncheck \"Other\" in \"Dietary Restrictions\" or enter \"Dietary Restrictions Specific\"");
+						$("#foodInfoInput").focus();
 					}
 					else{
-						alert(data);
+						alert(dataPost);
 					}
-				});
+				})
 			}
         });
     };
@@ -311,18 +335,13 @@
         $('.cancle-edit-btn').click(function() {
 				$(this).css("display","none");
 				$('.edit-btn').html("Edit");
-				var editElements = ["nameFirst", "nameLast", "linkedin", "github", "experience", "team", "gender", "school", "shirt", "year", "projectType", "food", "foodInfo"];
-				for(var x = 0; x < editElements.length; x++)
+				var edit_fields = ["nameFirst", "nameLast", "linkedin", "github", "experience", "team", "gender", "school", "shirt", "year", "projectType", "food", "foodInfo", "teamMembers"];
+				for(var x = 0; x < edit_fields.length; x++)
 				{
-					$("#" + editElements[x]).css("display","table-cell");
-					$("#" + editElements[x] + "Edit").css("display","none");//Not for foodInfo
+					$("#" + edit_fields[x]).css("display","table-cell");
+					$("#" + edit_fields[x] + "Edit").css("display","none");
 				}
-				
 				$("#resumeInput").css("display","none");
-				if($("#foodInfoInput").html() != "")
-				{
-					$("#foodSpecific").css("display","none");
-				}
         });
     };
 	

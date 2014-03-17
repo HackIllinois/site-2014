@@ -446,13 +446,18 @@ class AdminProfileHandler(MainHandler.BaseAdminHandler, blobstore_handlers.Blobs
         x = {} # dictionary that will be used to create a new Attendee or update one
         errors = {} # Note: 1 error per field
         valid = True
-        
+		
         fields = ['nameFirst', 'nameLast', 'gender', 'school', 'year', 'experience',
             'linkedin', 'github', 'teamMembers', 'shirt', 'projectType', 'food', 'foodInfo']
         for field in fields:
             x[field] = self.request.get(field)
 		
-        file_info = self.get_file_infos(field_name='resumeInput')
+    #    foods = self.request.get_all('foodCheck')
+     #   x['food'] = ','.join(foods)
+        
+        """
+        # Get resume data
+        file_info = self.get_file_infos('resumeInput')
         if file_info and len(file_info) == 1:
             file_info = file_info[0]
             delete_file = False
@@ -489,13 +494,15 @@ class AdminProfileHandler(MainHandler.BaseAdminHandler, blobstore_handlers.Blobs
                                      creationTime=file_info.creation,
                                      fileName=file_info.filename,
                                      size=file_info.size,
-                                     gsObjectName=file_info.gs_object_name)
-
-        # Remove any empty fields from x
+                                     gsObjectName=file_info.gs_object_name)						 
+		"""
+			
+        # Replace any empty fields from x
+        all_fields = constants.ALL_FIELDS.append('teamMembers')#Remove once constants.ALL_FIELDS is updated
         for field in constants.ALL_FIELDS:
-            # This checks for None and '' and u''
+            # This checks for '' and u''
             if field in x and not x[field]:
-                del x[field]
+                x[field] = None	
 
 
 		# ---------- BEGIN VALIDATION ----------
@@ -505,13 +512,13 @@ class AdminProfileHandler(MainHandler.BaseAdminHandler, blobstore_handlers.Blobs
         if 'email' in req_fields:
             req_fields.remove('email')
         for field in req_fields:
-            if field not in x:
+            if field not in x or not x[field]:
                 logging.error(field)
                 errors[field] = constants.ERROR_MESSAGE_PREFIX + \
                                 constants.READABLE_REQUIRED_FIELDS[field] + \
                                 constants.ERROR_MESSAGE_SUFFIX
                 valid = False
-
+		
         # Check fields with specific values
         choose_one_fields = {
             'gender':constants.GENDERS, 'year':constants.YEARS,
@@ -546,7 +553,7 @@ class AdminProfileHandler(MainHandler.BaseAdminHandler, blobstore_handlers.Blobs
 
         # Create list of error messages separated by '$$$'
         x['errors'] = [ k + '$$$' + errors[k] for k in errors ]
-
+		
         # Logging based on validity and whether the user is registered already
         if valid:
             if db_user:  Attendee.update_search(x, {'userId':userId})
