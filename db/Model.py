@@ -32,12 +32,9 @@ class Model(ndb.Model):
         @param search: properties to search the database
         @return: whether or not the data was added to the database
 
-        ex: add(Attendee, {'nameFirst':'John', 'nameLast':'Doe', 'email':'doe1@illinois.edu', 'year':3})
-        Returns True if "doe1@illinois.edu" is not already in the database and data is successfully added
-        Returns False otherwise
+        ex: Attendee.f_add({'nameFirst':'John', 'nameLast':'Doe', 'email':'doe1@illinois.edu', 'year':3})
         OR
-        add(Attendee, {'nameFirst':'John', 'nameLast':'Doe', 'email':'doe1@illinois.edu', 'year':3}, {'email':'doe1@illinois.edu'})
-        Same result
+        Attendee.f_add({'nameFirst':'John', 'nameLast':'Doe', 'email':'doe1@illinois.edu', 'year':3}, {'email':'doe1@illinois.edu'})
         '''
 
         o = cls(parent=parent)
@@ -71,11 +68,11 @@ class Model(ndb.Model):
         @param search: properties to search the database
         @return: whether or not the data was added to the database
 
-        ex: add(Attendee, {'nameFirst':'John', 'nameLast':'Doe', 'email':'doe1@illinois.edu', 'year':3})
+        ex: Attendee.add({'nameFirst':'John', 'nameLast':'Doe', 'email':'doe1@illinois.edu', 'year':3})
         Returns True if "doe1@illinois.edu" is not already in the database and data is successfully added
         Returns False otherwise
         OR
-        add(Attendee, {'nameFirst':'John', 'nameLast':'Doe', 'email':'doe1@illinois.edu', 'year':3}, {'email':'doe1@illinois.edu'})
+        Attendee.add({'nameFirst':'John', 'nameLast':'Doe', 'email':'doe1@illinois.edu', 'year':3}, {'email':'doe1@illinois.edu'})
         Same result
         '''
         # logging.info("Model: Begining")
@@ -117,7 +114,7 @@ class Model(ndb.Model):
         @param search: the parameters to search with
         @return: nothing
 
-        ex: update_model(Attendee, {'email':'doe1@illinois.edu', 'year':3})
+        ex: Attendee.update_model({'email':'doe1@illinois.edu', 'year':3})
         '''
         #These functions need to be changed to delete all references a model ex. an Attendee in a Team
         m = cls.search_database(search).get()
@@ -134,13 +131,13 @@ class Model(ndb.Model):
         @param key: key to delete
         @return: nothing
 
-        ex: update_model(Attendee, key)
+        ex: Attendee.update_model(key)
         '''
         #These functions need to be changed to delete all references a model ex. an Attendee in a Team
         key.delete()
 
     @classmethod
-    def update_search(cls, data, search = {}):
+    def update_search(cls, data, search={}):
         '''
         Updates a model in the database
         WILL override data if already there
@@ -150,7 +147,7 @@ class Model(ndb.Model):
         @param search: the parameters to search with
         @return: whether or not the data was found in the database and updated
 
-        ex: update_model(Attendee, {'nameFirst':'John', 'nameLast':'Doe'}, {'email':'doe1@illinois.edu', 'year':3})
+        ex: Attendee.update_model({'nameFirst':'John', 'nameLast':'Doe'}, {'email':'doe1@illinois.edu', 'year':3})
         '''
         if(search == {}):
             try:
@@ -180,7 +177,7 @@ class Model(ndb.Model):
         @param key: key of model
         @return: whether or not the data was updated
 
-        ex: update_model(Attendee, {'nameFirst':'John', 'nameLast':'Doe'}, key)
+        ex: Attendee.update_model({'nameFirst':'John', 'nameLast':'Doe'}, key)
         '''
         u = key.get()
         for p in data:
@@ -199,7 +196,7 @@ class Model(ndb.Model):
         @param search: the parameters to search with
         @return: nothing
 
-        ex: update_model(Attendee, {'nameFirst':'John', 'nameLast':'Doe'}, {'email':'doe1@illinois.edu', 'year':3})
+        ex: Attendee.update_model({'nameFirst':'John', 'nameLast':'Doe'}, {'email':'doe1@illinois.edu', 'year':3})
         '''
         if not cls.add(data, search):
             cls.update(data, search)
@@ -214,7 +211,7 @@ class Model(ndb.Model):
         @param search: the data used to search the database
         @return: True if the data is in the database, False otherwise
 
-        ex: in_database(Attendee, {'email':'doe1@illinois.edu'})
+        ex: Attendee.in_database({'email':'doe1@illinois.edu'})
         Returns True if "doe1@illinois.edu" is already in the database
         Returns False otherwise
         '''
@@ -234,30 +231,11 @@ class Model(ndb.Model):
         @perfect_match: True = every argument matches : False = one argument matches
         @return: iterator of models
 
-        ex: search_database(Attendee, {'email':'doe1@illinois.edu'})
+        ex: Attendee.search_database({'email':'doe1@illinois.edu'})
         '''
-        if search == {}:
-            return cls.gql("")
-        q = "WHERE "
-        if perfect_match:
-            ao = " AND "
-        else:
-            ao = " OR "
-        for param in search:
-            if type(search[param]) is str:
-                q += param + " = '" + search[param] + "'" + ao
-            else:
-                q += param + " = " + str(search[param]) + ao
-            # q += param + " = '" + search[param] + "'" + ao
+        if search is None: search = {}
 
-        q = q[:-len(ao)]
-        # This is terrible terrible code. We can fix by moving off GQL :P
-        if cls._automaticallyAddEventAsAncestor:
-            q += " AND ANCESTOR IS :1"
-            return cls.gql(q, cls.get_default_event_parent_key())
-        else:
-            #untested
-            return ndb.transactional(lambda: cls.gql(q))
-
-
-
+        q = cls.query(ancestor=cls.get_default_event_parent_key())
+        for k in search:
+            q = q.filter(getattr(cls, k) == search[k])
+        return q
