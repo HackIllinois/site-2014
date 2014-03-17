@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale = 1.0, maximum-scale=1.0, user-scalable=no">
+        <meta name="author" content="HackIllinois Staff">
+        <meta name="description" content="Imagine. Learn. Launch. Join us for a 36-hour hackathon at the University of Illinois at Urbana-Champaign. April 11-13, 2014.">
+
+        <title>HackIllinois</title>
+
+        <link rel="stylesheet" type="text/css" href="/css/reset.css">
+        <link rel='stylesheet' type='text/css' href='http://fonts.googleapis.com/css?family=Open+Sans:400,700'>
+        <link rel='stylesheet' type='text/css' href='http://fonts.googleapis.com/css?family=Lato:700'>
+        <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
+        <link rel="icon" type="image/ico" href="/favicon.ico">
+        
+        <link rel="stylesheet" type="text/css" href="/css/index.css">
+        <link rel="stylesheet" type="text/css" href="/lib/bootstrap/css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="/lib/selectize/css/selectize.bootstrap3.css">
+        <link rel="stylesheet" type="text/css" href="/css/apply.css">
+
+        <meta property="og:title" content="HackIllinois">
+        <meta property="og:url" content="http://www.hackillinois.org">
+        <meta property="og:type" content="website">
+        <meta property="og:site_name" content="HackIllinois">
+        <meta property="og:description" content="Imagine. Learn. Launch. Join us for a 36-hour hackathon at the University of Illinois at Urbana-Champaign. April 11-13, 2014.">
+        <meta property="og:image" content="http://www.hackillinois.org/img/og_logo_astro.png">
+
+        <meta property="fb:app_id" content="198636480343619">
+        <meta property="fb:admins" content="1105870286">
+
+        <meta name="twitter:card" content="summary">
+        <meta name="twitter:site" content="@HackIllinois">
+        <meta name="twitter:title" content="HackIllinois">
+        <meta name="twitter:description" content="Imagine. Learn. Launch. Join us for a 36-hour hackathon at the University of Illinois at Urbana-Champaign. April 11-13, 2014.">
+        <meta name="twitter:creator" content="@HackIllinois">
+        <meta name="twitter:image:src" content="http://www.hackillinois.org/img/og_logo_astro.jpg">
+        <meta name="twitter:domain" content="http://www.hackillinois.org">
+
+        <!-- Google Analytics Tracking -->
+        <script>
+          (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+          (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+          })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+          ga('create', 'UA-46010489-1', 'hackillinois.org');
+          ga('send', 'pageview');
+        </script>
+    </head>
+
+    <body>
+        <div class="wrapper bg-stars">
+            <div class="const">
+                <img class="constellations" src="/img/constellations.png">
+            </div>
+            <div class="container">
+                <a href="/">
+                    <img class="logo-main-svg header img-responsive center-block" src="/img/hackillinois_logo.svg"/>
+                </a>
+
+                <h2 class="info-text t-centered">{{ data.title }}</h2>
+                
+                <div style="" class="regform-container">
+                    <form id="application" class="form-horizontal" role="form" action="/apply/rsvp" method="post">
+                        <div class="form-group">
+                            <div class="col-sm-3 hidden-xs"><label for="micro1" class="pull-right">Microcontrollers</label></div>
+                            <div class="col-sm-3 visible-xs"><label for="micro1">Microcontrollers</label></div>
+                            <div class="controls col-sm-9">
+                                <label class="checkbox-inline micro1-options" for="micro1-0">
+                                    <input type="checkbox" name="micro1" id="micro1-0" value="arduinos"/> Arduinos
+                                </label>
+                                <label class="checkbox-inline micro1-options" for="micro1-1">
+                                    <input type="checkbox" name="micro1" id="micro1-1" value="pi"/> Raspberry Pi
+                                </label>
+                                <label class="checkbox-inline micro1-options" for="micro1-2">
+                                    <input type="checkbox" name="micro1" id="micro1-2" value="other"/> Other
+                                </label>
+                                <span class="help-block no-bottom-margin">Note that you will need to return these items by the end of the event. Cables are included.</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-3 hidden-xs"><label for="micro2" class="pull-right">Microcontrollers</label></div>
+                            <div class="col-sm-3 visible-xs"><label for="micro2">Microcontrollers</label></div>
+                            <div class="controls col-sm-9">
+                                <label class="checkbox-inline micro2-options" for="micro2-0">
+                                    <input type="checkbox" name="micro2" id="micro2-0" value="imp"/> Electric Imp Dev Kit
+                                </label>
+                                <label class="checkbox-inline micro2-options" for="micro2-1">
+                                    <input type="checkbox" name="micro2" id="micro2-1" value="spark"/> Spark.io
+                                </label>
+                                <span class="help-block no-bottom-margin">You will be able to keep these.</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-3 hidden-xs"><label for="lab" class="pull-right">Lab Equipment</label></div>
+                            <div class="col-sm-3 visible-xs"><label for="lab">Lab Equipment</label></div>
+                            <div class="controls col-sm-9">
+                                <label class="checkbox-inline lab-options" for="lab-0">
+                                    <input type="checkbox" name="lab" id="lab-0" value="power"/> Power Supplies
+                                </label>
+                                <label class="checkbox-inline lab-options" for="lab-1">
+                                    <input type="checkbox" name="lab" id="lab-1" value="oscilloscopes"/> Oscilloscopes
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-3 hidden-xs"><label for="more" class="pull-right">Anything Else?</label></div>
+                            <div class="col-sm-3 visible-xs"><label for="more">Anything Else?</label></div>
+                            <div class="controls col-sm-9">
+                                <textarea class="form-control" id="more" name="more" rows="5"></textarea>
+                                <span class="help-block no-bottom-margin">If you are looking for specific parts, please include links.</span>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+        <script src="/lib/selectize/js/standalone/selectize.min.js"></script>
+        <script src="/lib/bootstrap/js/bootstrap.min.js"></script>
+        <script src="/js/easing.min.js"></script>
+        <script src="/js/apply-ui.js"></script>
+        <script src="/js/apply.js"></script>
+    </body>
+</html>

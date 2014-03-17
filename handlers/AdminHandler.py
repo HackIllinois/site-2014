@@ -14,6 +14,7 @@ from google.appengine.api import memcache
 
 
 def get_admin_user():
+    """Returns the database Admin model for the current logged-in user"""
     user = users.get_current_user()
     if not user: return None
     admin_user = Admin.search_database({'email': user.email()}).get()
@@ -22,6 +23,7 @@ def get_admin_user():
 
 
 def get_hackers_memecache():
+    """Gets the 'hackers' key from the memcache and updates the memcache if the key is not in the memcache"""
     data = memcache.get('hackers')
     if not data:
         hackers = Attendee.search_database({'isRegistered':True})
@@ -53,6 +55,7 @@ def get_hackers_memecache():
 
 
 def get_hackers_csv_memcache(base_url):
+    """Gets the 'hackers_csv' key from the memcache and updates the memcache if the key is not in the memcache"""
     csv_string = memcache.get('hackers_csv')
     if not csv_string:
         hackers = get_hackers_memecache()
@@ -425,10 +428,10 @@ class AdminProfileHandler(MainHandler.BaseAdminHandler, blobstore_handlers.Blobs
         for field in text_fields:
             value = getattr(db_user, field) # Gets db_user.field using a string
             if value is not None: data[field] = value
-			
+            
         if db_user.resume and db_user.resume.fileName:
             data['hasResume'] = True
-			
+            
         lists = {
             'genders':constants.GENDERS, 'years':constants.YEARS, 'shirts':constants.SHIRTS,
             'foods':constants.FOODS, 'projects':constants.PROJECTS, 'schools':constants.SCHOOLS
@@ -438,20 +441,20 @@ class AdminProfileHandler(MainHandler.BaseAdminHandler, blobstore_handlers.Blobs
 
         return self.render("admin_profile.html", data=data, approveAccess=admin_user.approveAccess, fullAccess=admin_user.fullAccess)
     
-	
-	
+    
+    
     def post(self, userId):
         
         db_user = Attendee.search_database({'userId':userId}).get()
         x = {} # dictionary that will be used to create a new Attendee or update one
         errors = {} # Note: 1 error per field
         valid = True
-		
+        
         fields = ['nameFirst', 'nameLast', 'gender', 'school', 'year', 'experience',
             'linkedin', 'github', 'teamMembers', 'shirt', 'projectType', 'food', 'foodInfo']
         for field in fields:
             x[field] = self.request.get(field)
-		
+        
     #    foods = self.request.get_all('foodCheck')
      #   x['food'] = ','.join(foods)
         
@@ -494,18 +497,18 @@ class AdminProfileHandler(MainHandler.BaseAdminHandler, blobstore_handlers.Blobs
                                      creationTime=file_info.creation,
                                      fileName=file_info.filename,
                                      size=file_info.size,
-                                     gsObjectName=file_info.gs_object_name)						 
-		"""
-			
+                                     gsObjectName=file_info.gs_object_name)                      
+        """
+            
         # Replace any empty fields from x
         all_fields = constants.ALL_FIELDS.append('teamMembers')#Remove once constants.ALL_FIELDS is updated
         for field in constants.ALL_FIELDS:
             # This checks for '' and u''
             if field in x and not x[field]:
-                x[field] = None	
+                x[field] = None 
 
 
-		# ---------- BEGIN VALIDATION ----------
+        # ---------- BEGIN VALIDATION ----------
 
         # Check required fields filled in
         req_fields = constants.REQUIRED_FIELDS
@@ -518,7 +521,7 @@ class AdminProfileHandler(MainHandler.BaseAdminHandler, blobstore_handlers.Blobs
                                 constants.READABLE_REQUIRED_FIELDS[field] + \
                                 constants.ERROR_MESSAGE_SUFFIX
                 valid = False
-		
+        
         # Check fields with specific values
         choose_one_fields = {
             'gender':constants.GENDERS, 'year':constants.YEARS,
@@ -553,7 +556,7 @@ class AdminProfileHandler(MainHandler.BaseAdminHandler, blobstore_handlers.Blobs
 
         # Create list of error messages separated by '$$$'
         x['errors'] = [ k + '$$$' + errors[k] for k in errors ]
-		
+        
         # Logging based on validity and whether the user is registered already
         if valid:
             if db_user:  Attendee.update_search(x, {'userId':userId})

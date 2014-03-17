@@ -8,6 +8,7 @@ from SponsorHandler import SponsorDownloadHandler
 from LogoutHandler import LogoutHandler
 from MGTHandler import MGTHandler, ParticlesHandler
 from TestAllHandler import TestAllHandler, TestAllJsHandler
+from RsvpHandler import RsvpHandler
 import ApplyHandler
 import MentorHandler
 import SubpageHandlers
@@ -26,6 +27,7 @@ handlers = [
     RedirectRoute('/apply/schoollist', handler=ApplyHandler.SchoolListHandler, name='SchoolList', strict_slash=True),
     RedirectRoute('/apply/myresume', handler=ApplyHandler.MyResumeHandler, name='MyResume', strict_slash=True),
     RedirectRoute('/apply/uploadurl', handler=ApplyHandler.UploadURLHandler, name='UploadURL', strict_slash=True),
+    RedirectRoute('/apply/rsvp', handler=RsvpHandler, name='Rsvp', strict_slash=True),
 
     RedirectRoute('/mentor', handler=MentorHandler.RenderHandler, name='Mentor', strict_slash=True),
 
