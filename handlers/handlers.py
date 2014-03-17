@@ -9,6 +9,7 @@ from LogoutHandler import LogoutHandler
 from MGTHandler import MGTHandler, ParticlesHandler
 from TestAllHandler import TestAllHandler, TestAllJsHandler
 import ApplyHandler
+import MentorHandler
 import SubpageHandlers
 import AdminHandler
 import MobileHandler
@@ -25,6 +26,8 @@ handlers = [
     RedirectRoute('/apply/schoollist', handler=ApplyHandler.SchoolListHandler, name='SchoolList', strict_slash=True),
     RedirectRoute('/apply/myresume', handler=ApplyHandler.MyResumeHandler, name='MyResume', strict_slash=True),
     RedirectRoute('/apply/uploadurl', handler=ApplyHandler.UploadURLHandler, name='UploadURL', strict_slash=True),
+
+    RedirectRoute('/mentor', handler=MentorHandler.RenderHandler, name='Mentor', strict_slash=True),
 
     RedirectRoute('/applycount', handler=ApplyCountHandler, name='ApplyCount', strict_slash=True),
 
