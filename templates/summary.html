@@ -1,5 +1,5 @@
 {% extends "base/admin_base.html" %}
-{% set active_page = "hackers" %}
+{% set active_page = "approve" %}
 
 {% block head %}
     <style type="text/css">
@@ -19,7 +19,7 @@
             overflow: visible;
             word-wrap:break-word;
         }
-        .c1{width:7%;}
+        /*.c1{width:7%;}
         .c2{width:7%;}
         .c3{width:12%;}
         .c4{width:5%;}
@@ -32,9 +32,9 @@
         .c11{width:9%;}
         .c12{width:7%;}
         .c13{width:6%;}
-        .c14{width:8%;}
+        .c14{width:8%;}*/
         .search-container {
-            width: 14%;
+            /*width: 14%;*/
             vertical-align: middle;
         }
         .t-centered {
@@ -65,15 +65,15 @@
             <div class="col-md-12">
                 <form name="tcol" onsubmit="return false">
                     <label>Show columns:&nbsp;&nbsp;</label>
-                    <input id="c-gender" type=checkbox name="gender" onclick="toggleVis(this.name)" checked> Gender&nbsp;&nbsp;
+                    <!-- <input id="c-gender" type=checkbox name="gender" onclick="toggleVis(this.name)" checked> Gender&nbsp;&nbsp; -->
                     <input id="c-school" type=checkbox name="school" onclick="toggleVis(this.name)" checked> School&nbsp;&nbsp;
-                    <input id="c-year" type=checkbox name="year" onclick="toggleVis(this.name)" checked> Year&nbsp;&nbsp;
+                    <!-- <input id="c-year" type=checkbox name="year" onclick="toggleVis(this.name)" checked> Year&nbsp;&nbsp; -->
                     <input id="c-linkedin" type=checkbox name="linkedin" onclick="toggleVis(this.name)" checked> LinkedIn&nbsp;&nbsp;
                     <input id="c-github" type=checkbox name="github" onclick="toggleVis(this.name)" checked> Github&nbsp;&nbsp;
-                    <input id="c-shirt" type=checkbox name="shirt" onclick="toggleVis(this.name)" checked> Shirt&nbsp;&nbsp;
-                    <input id="c-food" type=checkbox name="food" onclick="toggleVis(this.name)" checked> Dietary Restrictions&nbsp;&nbsp;
+                    <!-- <input id="c-shirt" type=checkbox name="shirt" onclick="toggleVis(this.name)" checked> Shirt&nbsp;&nbsp; -->
+                    <!-- <input id="c-food" type=checkbox name="food" onclick="toggleVis(this.name)" checked> Dietary Restrictions&nbsp;&nbsp; -->
                     <input id="c-project" type=checkbox name="project" onclick="toggleVis(this.name)" checked> Project Type&nbsp;&nbsp;
-                    <input id="c-time" type=checkbox name="time" onclick="toggleVis(this.name)" checked> Registered&nbsp;&nbsp;
+                    <!-- <input id="c-time" type=checkbox name="time" onclick="toggleVis(this.name)" checked> Registered&nbsp;&nbsp; -->
                 </form>
                 <div id="hackers" class="table-responsive">
                     <table id="usertable" class="table table-bordered table-hover">
@@ -81,16 +81,16 @@
                             <tr>
                                 <th class="c1 sort" data-sort="fname">First Name</th>
                                 <th class="c2 sort" data-sort="lname">Last Name</th>
-                                <th class="c3 sort" data-sort="email">Email</th>
-                                <th name="tgender" class="c4 sort" data-sort="gender">Gender</th>
+                                <!-- <th class="c3 sort" data-sort="email">Email</th> -->
+                                <!-- <th name="tgender" class="c4 sort" data-sort="gender">Gender</th> -->
                                 <th name="tschool" class="c5 sort" data-sort="school">School</th>
-                                <th name="tyear" class="c6 sort" data-sort="year">Year</th>
+                                <!-- <th name="tyear" class="c6 sort" data-sort="year">Year</th> -->
                                 <th name="tlinkedin" class="c7 sort" data-sort="linkedin">LinkedIn</th>
                                 <th name="tgithub" class="c8 sort" data-sort="github">Github</th>
-                                <th name="tshirt" class="c9 sort" data-sort="shirt">Shirt Size</th>
-                                <th name="tfood" class="c10 sort" data-sort="food">Dietary Restrictions</th>
+                                <!-- <th name="tshirt" class="c9 sort" data-sort="shirt">Shirt Size</th> -->
+                                <!-- <th name="tfood" class="c10 sort" data-sort="food">Dietary Restrictions</th> -->
                                 <th name="tproject" class="c11 sort" data-sort="project">Project Type</th>
-                                <th name="ttime" class="c12 sort" data-sort="time">Registered</th>
+                                <!-- <th name="ttime" class="c12 sort" data-sort="time">Registered</th> -->
                                 <!-- <th class="c13">Resume</th> -->
                                 <th class="search-container" colspan="2"><input type="text" class="search" placeholder="Search hackers" autofocus/></th>
                             </tr>
@@ -102,16 +102,16 @@
                                 <td class="id" style="display:none;">{{ loop.index }}</td>
                                 <td class="c1 fname" onclick="document.location='/admin/profile/{{ h.userId }}';">{{ h.nameFirst }}</td>
                                 <td class="c2 lname" onclick="document.location='/admin/profile/{{ h.userId }}';">{{ h.nameLast }}</td>
-                                <td class="c3 email" onclick="document.location='/admin/profile/{{ h.userId }}';">{{ h.email }}</td>
-                                <td name="tgender" class="c4 gender">{{ h.gender }}</td>
-                                <td name="tschool" class="c5 school">{{ h.school }}</td>
-                                <td name="tyear" class="c6 year">{{ h.year }}</td>
+                                <!-- <td class="c3 email" onclick="document.location='/admin/profile/{{ h.userId }}';">{{ h.email }}</td> -->
+                                <!-- <td name="tgender" class="c4 gender">{{ h.gender }}</td> -->
+                                <td name="tschool" class="c5 school" onclick="document.location='/admin/approve/{{ h.school }}';">{{ h.school }}</td>
+                                <!-- <td name="tyear" class="c6 year">{{ h.year }}</td> -->
                                 <td name="tlinkedin" class="c7 linkedin">{{ h.linkedin }}</td>
                                 <td name="tgithub" class="c8 github">{{ h.github }}</td>
-                                <td name="tshirt" class="c9 shirt">{{ h.shirt }}</td>
-                                <td name="tfood" class="c10 food">{{ h.food }}</td>
+                                <!-- <td name="tshirt" class="c9 shirt">{{ h.shirt }}</td> -->
+                                <!-- <td name="tfood" class="c10 food">{{ h.food }}</td> -->
                                 <td name="tproject" class="c11 project">{{ h.projectType }}</td>
-                                <td name="ttime" class="c12 time">{{ h.registrationTime }}</td>
+                                <!-- <td name="ttime" class="c12 time">{{ h.registrationTime }}</td> -->
                                 <td class="c13">{% if h.resume %}<a href='/admin/resume?userId={{ h.userId }}'>Resume</a>{% endif %}</td>
                                 <td class="c14 approved"><button class="btn btn-success approve-btn">Approve</button></td>
                             </tr>
@@ -123,16 +123,16 @@
                                 <td class="id" style="display:none;">{{ loop.index }}</td>
                                 <td class="c1 fname" onclick="document.location='/admin/profile/{{ h.userId }}';">{{ h.nameFirst }}</td>
                                 <td class="c2 lname" onclick="document.location='/admin/profile/{{ h.userId }}';">{{ h.nameLast }}</td>
-                                <td class="c3 email" onclick="document.location='/admin/profile/{{ h.userId }}';">{{ h.email }}</td>
-                                <td name="tgender" class="c4 gender">{{ h.gender }}</td>
-                                <td name="tschool" class="c5 school">{{ h.school }}</td>
-                                <td name="tyear" class="c6 year">{{ h.year }}</td>
+                                <!-- <td class="c3 email" onclick="document.location='/admin/profile/{{ h.userId }}';">{{ h.email }}</td> -->
+                                <!-- <td name="tgender" class="c4 gender">{{ h.gender }}</td> -->
+                                <td name="tschool" class="c5 school" onclick="document.location='/admin/approve/{{ h.school }}';">{{ h.school }}</td>
+                                <!-- <td name="tyear" class="c6 year">{{ h.year }}</td> -->
                                 <td name="tlinkedin" class="c7 linkedin">{{ h.linkedin }}</td>
                                 <td name="tgithub" class="c8 github">{{ h.github }}</td>
-                                <td name="tshirt" class="c9 shirt">{{ h.shirt }}</td>
-                                <td name="tfood" class="c10 food">{{ h.food }}</td>
+                                <!-- <td name="tshirt" class="c9 shirt">{{ h.shirt }}</td> -->
+                                <!-- <td name="tfood" class="c10 food">{{ h.food }}</td> -->
                                 <td name="tproject" class="c11 project">{{ h.projectType }}</td>
-                                <td name="ttime" class="c12 time">{{ h.registrationTime }}</td>
+                                <!-- <td name="ttime" class="c12 time">{{ h.registrationTime }}</td> -->
                                 <td class="c13">{% if h.resume %}<a href='/admin/resume?userId={{ h.userId }}'>Resume</a>{% endif %}</td>
                                 <td class="c14 approved"><button class="btn btn-danger approve-btn">Un-Approve</button></td>
                             </tr>
@@ -140,6 +140,7 @@
                             {% endfor %}
                         </tbody>
                     </table>
+                    <ul class="pagination"></ul>
                 </div>
             </div>
         </div>
@@ -149,10 +150,21 @@
 
 {% block scripts %}
     <script src="//cdnjs.cloudflare.com/ajax/libs/list.js/1.1.0/list.min.js"></script>
+    <script src="/js/list.pagination.min.js"></script>
     <script type="text/javascript">
+        var paginationOptions = {
+            name: "pagination",
+            paginationClass: "pagination",
+            innerWindow: 2,
+            outerWindow: 1
+        };
         var options = {
-            valueNames: [ 'id', 'fname', 'lname', 'email', 'gender', 'school', 'year', 'linkedin', 'github', 'shirt', 'food', 'project', 'time' ],
-            page: 1000
+            // valueNames: [ 'id', 'fname', 'lname', 'email', 'gender', 'school', 'year', 'linkedin', 'github', 'shirt', 'food', 'project', 'time' ],
+            valueNames: [ 'id', 'fname', 'lname', 'school', 'linkedin', 'github', 'project' ],
+            page: 20,
+            plugins: [
+                ListPagination(paginationOptions)
+            ]
         };
 
         var hackerList = new List('hackers', options);
@@ -191,12 +203,12 @@
         };
 
         $(document).ready(function() {
-            document.getElementById("c-gender").click();
-            document.getElementById("c-linkedin").click();
-            document.getElementById("c-github").click();
-            document.getElementById("c-shirt").click();
-            document.getElementById("c-food").click();
-            document.getElementById("c-time").click();
+            // document.getElementById("c-gender").click();
+            // document.getElementById("c-linkedin").click();
+            // document.getElementById("c-github").click();
+            // document.getElementById("c-shirt").click();
+            // document.getElementById("c-food").click();
+            // document.getElementById("c-time").click();
 
             applyBtnCallbacks();
 

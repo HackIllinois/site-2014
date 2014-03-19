@@ -2,7 +2,6 @@ from google.appengine.ext import ndb
 import constants
 from Resume import Resume
 from Model import Model
-from google.appengine.ext.db import BadValueError
 
 class Attendee(Model):
     # This is the workaround for the strong consistency

@@ -1,7 +1,6 @@
 from google.appengine.ext import ndb
 import constants
 from Model import Model
-from google.appengine.ext.db import BadValueError
 
 class Sponsor(Model):
     companyName = ndb.StringProperty(required=True)
@@ -10,6 +9,7 @@ class Sponsor(Model):
     initialId = ndb.StringProperty()
     initialLogin = ndb.BooleanProperty()
     userId = ndb.StringProperty()
+    googleUser = ndb.UserProperty()
 
     @classmethod
     def new(cls, data):

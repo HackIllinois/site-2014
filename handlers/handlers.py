@@ -46,6 +46,7 @@ handlers = [
     RedirectRoute('/admin', handler=AdminHandler.AdminHandler, name='Admin', strict_slash=True),
     RedirectRoute('/admin/xkcd', handler=AdminHandler.AdminXkcdHandler, name='AdminXkcd', strict_slash=True),
     RedirectRoute('/admin/approve', handler=AdminHandler.AdminApproveHandler, name='AdminApprove', strict_slash=True),
+    RedirectRoute('/admin/approve/<school>', handler=AdminHandler.AdminApproveSchoolHandler, name='AdminApproveSchool', strict_slash=True),
     RedirectRoute('/admin/stats', handler=AdminHandler.AdminStatsHandler, name='AdminStats', strict_slash=True),
     RedirectRoute('/admin/basicstats', handler=AdminHandler.AdminBasicStatsHandler, name='AdminBasicStats', strict_slash=True),
     RedirectRoute('/admin/resume', handler=AdminHandler.AdminResumeHandler, name='AdminResume', strict_slash=True),
