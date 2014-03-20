@@ -10,6 +10,7 @@ from MGTHandler import MGTHandler, ParticlesHandler
 from TestAllHandler import TestAllHandler, TestAllJsHandler
 import ApplyHandler
 import MentorHandler
+import SkillsHandler
 import SubpageHandlers
 import AdminHandler
 import MobileHandler
@@ -28,6 +29,8 @@ handlers = [
     RedirectRoute('/apply/uploadurl', handler=ApplyHandler.UploadURLHandler, name='UploadURL', strict_slash=True),
 
     RedirectRoute('/mentor', handler=MentorHandler.RenderHandler, name='Mentor', strict_slash=True),
+
+    RedirectRoute('/skills', handler=SkillsHandler.RenderHandler, name='Skills', strict_slash=True),
 
     RedirectRoute('/applycount', handler=ApplyCountHandler, name='ApplyCount', strict_slash=True),
 

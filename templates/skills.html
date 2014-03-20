@@ -1,0 +1,136 @@
+{% extends "base/base.html" %}
+
+{% block head %}
+<link rel="stylesheet" type="text/css" href="/css/index.css">
+<link rel="stylesheet" type="text/css" href="/lib/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="/lib/selectize/css/selectize.bootstrap3.css">
+<link rel="stylesheet" type="text/css" href="/css/apply.css">
+{% endblock head %}
+
+{% block body %}
+<div class="wrapper bg-stars">
+	<div class="const">
+		<img class="constellations" src="/img/constellations.png">
+	</div>
+	<div class="container">
+	    <a href="/">
+	        <img class="logo-main-svg header img-responsive center-block" src="/img/hackillinois_logo.svg"/>
+	    </a>
+
+    	<h2 class="info-text t-centered">{{ data.title }}</h2>
+
+		<div>
+			<p class="loggedin">Add skills and tags by separating them with a comma and space like this:
+				<code>Parse, XCode, iOS</code>	
+			</p>
+		</div>
+
+		<div class="field-missing">
+			<p class="errormessages">
+				Whoops! Looks like you missed a required field or two.
+			</p>
+		</div>
+		<div style="" class="regform-container">
+			<form id="application" class="form-horizontal" role="form" action="" method="post" enctype="multipart/form-data">
+				<!-- Text input-->
+				<div class="form-group">
+					<label class="control-label col-sm-3" for="name">Name<span class="reqd"> *</span></label>
+					<div class="controls col-sm-9">
+
+						<div class="row">
+							<div class="col-xs-6">
+								<input class="{% if data.errors.nameFirst %}errorborders{% endif %} form-control" id="nameFirst" name="nameFirst" type="text" placeholder="First Name" required="required" value="{{ data.nameFirst }}" onclick="this.select();">
+							</div>
+							<div class="col-xs-6">
+								<input class="{% if data.errors.nameLast %}errorborders{% endif %} form-control" id="nameLast" name="nameLast" type="text" placeholder="Last Name" required="required" value="{{ data.nameLast }}" onclick="this.select();">
+							</div>
+						</div>
+
+						{% if data.errors.nameFirst or data.errors.nameLast %}
+						<div class="row">
+							<div class="col-xs-6 errormessages">
+							   {{ data.errors.nameFirst }}
+							</div>
+							<div class="col-xs-6 errormessages">
+							   {{ data.errors.nameLast }}
+							</div>
+						</div>
+						{% endif %}
+
+					</div>
+				</div>
+
+				<!-- Text input-->
+				<div class="form-group">
+
+					<label class="control-label col-sm-3" for="email">Skill Keywords<span class="reqd"> *</span></label>
+
+					<div class="controls col-sm-9">
+						<input class="{% if data.errors.email %}errorborders{% endif %} form-control" id="email" name="email" type="email" placeholder="Email Address" required="required" value="{{ data.email }}" onclick="this.select();">
+					    <div class="errormessages">{{ data.errors.email }}</div>
+					</div>
+				</div>
+
+				<!-- Text input-->
+				<div class="form-group">
+
+					<label class="control-label col-sm-3" for="Job Title">Skill Tags 1<span class="reqd"> *</span></label>
+
+					<div class="controls col-sm-9">
+						<input class="{% if data.errors.jobTitle %}errorborders{% endif %} form-control" id="email" name="email" type="email" placeholder="Skill Tags 1" required="required" value="{{ data.jobTitle }}" onclick="this.select();">
+					    <div class="errormessages">{{ data.errors.email }}</div>
+					</div>
+				</div>
+
+								<div class="form-group">
+
+					<label class="control-label col-sm-3" for="Job Title">Skill Tags 2<span class="reqd"> *</span></label>
+
+					<div class="controls col-sm-9">
+						<input class="{% if data.errors.jobTitle %}errorborders{% endif %} form-control" id="email" name="email" type="email" placeholder="Skill Tags 2" required="required" value="{{ data.jobTitle }}" onclick="this.select();">
+					    <div class="errormessages">{{ data.errors.email }}</div>
+					</div>
+				</div>
+
+								<div class="form-group">
+
+					<label class="control-label col-sm-3" for="Job Title">Skill Tags 3<span class="reqd"> *</span></label>
+
+					<div class="controls col-sm-9">
+						<input class="{% if data.errors.jobTitle %}errorborders{% endif %} form-control" id="email" name="email" type="email" placeholder="Skill Tags 3" required="required" value="{{ data.jobTitle }}" onclick="this.select();">
+					    <div class="errormessages">{{ data.errors.email }}</div>
+					</div>
+				</div>
+
+
+				<div class="form-group" style="">
+					<label class="control-label col-sm-3 sr-only"></label>
+					<div class="controls col-sm-9">
+						<button type="submit" id="application-submit" class="btn btn-primary btn-lg pull-left footer btn-hackil" style="width: 100%">Submit</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+
+<div class="launch-container">
+	<div class="launch-setup">
+		<div class="launch-craft">
+			<img class="rocket-ship" src="/img/rocket/spaceship_nodock2x.png">
+			<img class="rocket-plume" src="/img/rocket/plume2x.png">
+		</div>
+		<img class="launch-pad" src="/img/rocket/dock2x.png">
+		<!--img class="rocket-ship rocket-small" src="img/rocket/spaceship_nodock2x.png">
+		<img class="rocket-ship rocket-small" src="img/rocket/dock2x.png"-->
+	</div>
+</div>
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<!--script src="/lib/selectize/js/standalone/selectize.min.js"></script-->
+<script src="/lib/bootstrap/js/bootstrap.min.js"></script>
+<script src="/js/easing.min.js"></script>
+<script src="/js/apply-ui.js"></script>
+<script src="/js/apply.js"></script>
+{% endblock body %}
