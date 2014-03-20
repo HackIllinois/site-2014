@@ -7,6 +7,7 @@ class RenderHandler(MainHandler.Handler):
         SkillsData = {} #adding dummy data for now, please change this
         SkillsData['errors'] = ""
 
+        
         SkillsData['skillsList'] = ""
         SkillsData['skillsTags1'] = ""
         SkillsData['skillsTags2'] = ""
