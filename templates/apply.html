@@ -30,6 +30,7 @@
 		</div>
 		<div style="" class="regform-container">
 			<form id="application" class="form-horizontal" role="form" action="{{ data.uploadUrl }}" method="post" enctype="multipart/form-data">
+
 				<!-- Text input-->
 				<div class="form-group">
 					<label class="control-label col-sm-3" for="name">Name<span class="reqd"> *</span></label>
@@ -244,6 +245,26 @@
                         </span>
                         <div class="errormessages">
                             {{ data.errors.teamMembers }}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group new-fields-inner">
+                    <label class="control-label col-sm-3" for="travel">Travel Arrangements<span class="reqd"> *</span></label>
+                    <div class="controls col-sm-9">
+                        <div>
+                            {% for g in data.travelArrangements %}
+                            <label class="radio-inline" for="travel-{{ loop.index0 }}">
+                                <input type="radio" name="travel" id="travel-{{ loop.index0 }}" value="{{ g.name }}" required="required" {% if g.checked %}checked{% endif %}>
+                                {{ g.name }}
+                            </label>
+                            {% endfor %}
+                        </div>
+                        <span class="help-block no-bottom-margin">
+                            Bus routes will be provided by us.
+                        </span>
+                        <div class="errormessages">
+                            {{ data.errors.travel }}
                         </div>
                     </div>
                 </div>

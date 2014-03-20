@@ -9,6 +9,8 @@ from LogoutHandler import LogoutHandler
 from MGTHandler import MGTHandler, ParticlesHandler
 from TestAllHandler import TestAllHandler, TestAllJsHandler
 import ApplyHandler
+import MentorHandler
+import SkillsHandler
 import SubpageHandlers
 import AdminHandler
 import MobileHandler
@@ -19,12 +21,17 @@ handlers = [
     RedirectRoute('/emailbackup', handler=EmailBackupHandler, name='EmailBackup', strict_slash=True),
 
     RedirectRoute('/apply', handler=ApplyHandler.ApplyHandler, name='Apply', strict_slash=True),
+    RedirectRoute('/apply/update', handler=ApplyHandler.ApplyUpdateHandler, name='ApplyUpdate', strict_slash=True),
     RedirectRoute('/apply/complete', handler=ApplyHandler.ApplyCompleteHandler, name='ApplyComplete', strict_slash=True),
     RedirectRoute('/apply/updated', handler=ApplyHandler.UpdateCompleteHandler, name='UpdateComplete', strict_slash=True),
     RedirectRoute('/apply/schoolcheck', handler=ApplyHandler.SchoolCheckHandler, name='SchoolCheck', strict_slash=True),
     RedirectRoute('/apply/schoollist', handler=ApplyHandler.SchoolListHandler, name='SchoolList', strict_slash=True),
     RedirectRoute('/apply/myresume', handler=ApplyHandler.MyResumeHandler, name='MyResume', strict_slash=True),
     RedirectRoute('/apply/uploadurl', handler=ApplyHandler.UploadURLHandler, name='UploadURL', strict_slash=True),
+
+    RedirectRoute('/mentor', handler=MentorHandler.RenderHandler, name='Mentor', strict_slash=True),
+
+    RedirectRoute('/skills', handler=SkillsHandler.RenderHandler, name='Skills', strict_slash=True),
 
     RedirectRoute('/applycount', handler=ApplyCountHandler, name='ApplyCount', strict_slash=True),
 

@@ -18,7 +18,6 @@ class Sponsor(Model):
     pictureURL = ndb.TextProperty(default='')
     name = ndb.StringProperty(default='', required=True)
 
-
     @classmethod
     def new(cls, data):
         sponsor = cls()

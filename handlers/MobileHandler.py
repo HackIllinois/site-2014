@@ -24,16 +24,17 @@ class MapsHandler(MainHandler.BaseMobileHandler):
 class SupportTypeHandler(MainHandler.BaseMobileHandler):
 
     def get(self):
+        
         return self.write(json.dumps(MobileConstants.SUPPORT_TYPE))
 
 
-class EmergencyHandler(MainHandler.BaseMobileHandler):
+# class EmergencyHandler(MainHandler.BaseMobileHandler):
 
-    def get(self):
-        return self.write(json.dumps([{'announcement':'first emergency announcement of HackIllinois'}]))
+#     def get(self):
+#         return self.write(json.dumps([{'announcement':'first emergency announcement of HackIllinois'}]))
 
-    def put(self):
-        pass
+#     def put(self):
+#         pass
 
 
 class NewsfeedHandler(MainHandler.BaseMobileHandler):
