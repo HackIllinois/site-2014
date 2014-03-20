@@ -19,6 +19,8 @@ class Attendee(Model):
     # .nickname(), .email(), .user_id()
     googleUser = ndb.UserProperty()
 
+    travel = ndb.StringProperty(choices=constants.TRAVEL_ARRANGEMENTS + [''], default='')
+
     nameFirst = ndb.StringProperty()
     nameLast = ndb.StringProperty()
     email = ndb.StringProperty()

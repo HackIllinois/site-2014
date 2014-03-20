@@ -13,6 +13,8 @@ function validateApplication() {
         return false;
     } else if (!$("input[name='shirt']:checked").val()) {
         return false;
+    } else if (!$("input[name='travel']:checked").val()) {
+        return false;
     } else return true;
 
 }

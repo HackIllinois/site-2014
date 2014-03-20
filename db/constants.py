@@ -17,8 +17,8 @@ UPDATE_COMPLETE_MESSAGE = 'Thanks for updating your application!<br>To keep in t
 ERROR_MESSAGE_PREFIX = 'Please provide '
 ERROR_MESSAGE_SUFFIX = '.'
 
-ALL_FIELDS = ['nameFirst', 'nameLast', 'email', 'gender', 'school', 'year', 'resume', 'linkedin', 'github', 'shirt', 'food', 'foodInfo', 'projectType', 'experience', 'termsOfService']
-REQUIRED_FIELDS = ['nameFirst', 'nameLast', 'email', 'gender', 'school', 'year', 'shirt', 'experience']
+ALL_FIELDS = ['nameFirst', 'nameLast', 'email', 'gender', 'school', 'year', 'resume', 'linkedin', 'github', 'shirt', 'food', 'foodInfo', 'projectType', 'experience', 'termsOfService', 'travel']
+REQUIRED_FIELDS = ['nameFirst', 'nameLast', 'email', 'gender', 'school', 'year', 'shirt', 'experience', 'travel']
 
 # This should have *ALL* fields in REQUIRED_FIELDS *EXCEPT* for 'termsOfService'
 READABLE_REQUIRED_FIELDS = {'nameFirst':'your first name',
@@ -29,7 +29,8 @@ READABLE_REQUIRED_FIELDS = {'nameFirst':'your first name',
                             'year':'your year in school',
                             'shirt':'your T-shirt size',
                             'experience':'your past experience',
-                            'projectType':'your project type'}
+                            'projectType':'your project type',
+                            'travel':'your travel arrangements'}
 
 READABLE_FIELDS = {'food':'your dietary restrictions',
                    'food-info':'your dietary restriction information'}
@@ -52,6 +53,7 @@ YEARS = ['Freshman','Sophomore','Junior','Senior','Grad','HS']
 SHIRTS = ['XS','S','M','L','XL','XXL']
 FOODS = ['Vegetarian','Vegan','Gluten Free','Lactose Free', 'Other']
 PROJECTS = ['Software Hack','Hardware Hack','Unsure']
+TRAVEL_ARRANGEMENTS = ['Bus','Driving','Flying','Other']
 
 RESUME_MAX_SIZE = 2097152 # in Bytes = 2 mb
 
