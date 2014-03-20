@@ -1,7 +1,9 @@
 SKILLS = {
 			'Programming Languages':[],
-			'Framework and API':[],
-			'Design and non-technical':[]
+			'Framework':[], 
+			'API':[],
+			'Design':[],
+			'non-technical':[]
 		 }
 
 SUPPORT_TYPE = {

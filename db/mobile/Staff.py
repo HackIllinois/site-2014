@@ -14,6 +14,10 @@ class Staff(Model):
     year = ndb.TextProperty()
     homebase = ndb.TextProperty()
     skills = ndb.JsonProperty()
+    status = ndb.TextProperty()
+
+    # Not sure how this will be used yet
+    pushNotificationToken = ndb.StringProperty()
 
     @classmethod
     def new(cls, data):

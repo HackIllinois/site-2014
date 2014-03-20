@@ -26,6 +26,14 @@ class Attendee(Model):
     school = ndb.StringProperty()
     year = ndb.StringProperty(choices=constants.YEARS + [''], default='')
 
+    # these vairables are needed for mobile
+    skills = ndb.JsonProperty(default=[''])
+    homebase = ndb.TextProperty(default='')
+    pictureURL = ndb.TextProperty(default='')
+    status = ndb.TextProperty(default='')
+    # Not sure how this will be used yet
+    pushNotificationToken = ndb.StringProperty(default='')
+
     experience = ndb.TextProperty() # unlimited length, not indexed
     resume = ndb.StructuredProperty(Resume)
     linkedin = ndb.StringProperty()

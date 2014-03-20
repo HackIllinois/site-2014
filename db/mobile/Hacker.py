@@ -15,6 +15,11 @@ class Hacker(Model):
     year = ndb.TextProperty()
     skills = ndb.JsonProperty()
     homebase = ndb.TextProperty()
+    pictureURL = ndb.TextProperty()
+    status = ndb.TextProperty()
+
+    # Not sure how this will be used yet
+    pushNotificationToken = ndb.StringProperty()
 
     @classmethod
     def new(cls, data):

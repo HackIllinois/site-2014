@@ -3,122 +3,39 @@ import urllib, logging, re
 from db.Attendee import Attendee
 from db import constants
 from db.mobile import MobileConstants
-from db.mobile.Staff import Staff
-from db.mobile.CompanyRep import CompanyRep
-from db.mobile.Hacker import Hacker
+from db.Sponsor import Sponsor
+from db.Admin import Admin
 from google.appengine.api import users, memcache
 import json
 
-'''
 
-    for example:
-        [
-            {
-                event name: ,
-                description: ,
-                location: ,
-                time: ,
-
-            }
-        ]
-
-    Note:
-'''
 class ScheduleHandler(MainHandler.BaseMobileHandler):
 
-    '''
-        Get the current schedule of HackIllinois
-            for example:
-
-        @return the schedule of HackIllinois
-    '''
     def get(self):
         return self.write(json.dumps([{'event name':'First Event' ,'description':'Blast Off' ,'location':'room #1' ,'time':'12:00pm'}]))
 
-'''
 
-    Note:
-'''
 class MapsHandler(MainHandler.BaseMobileHandler):
 
-    '''
-
-        @return A dictionary of each location and the value is a dictionary of floors and a list of rooms on each floor
-            for example:
-                {
-                    "Siebel":{
-                        "1":["Ground Zero", "Space Station"]
-                    },
-                    "DCL":{
-                        "1":["Galaxy"]
-                    }
-                }
-    '''
     def get(self):
         return self.write(json.dumps(MobileConstants.ROOM))
 
-'''
 
-
-    Note:
-'''
 class SupportTypeHandler(MainHandler.BaseMobileHandler):
 
-    '''
-
-        @return The list of Support Types
-            for example:
-                {
-                    "General":[events schedule, rules, comments/suggestions],
-                    "Requests":[food & drinks, medical, equipment, other],
-                    "Technical":[WIFI, power, locked out, other]
-                }
-    '''
     def get(self):
         return self.write(json.dumps(MobileConstants.SUPPORT_TYPE))
 
-'''
 
-    for example:
-        [
-            {
-                announcement:
-            }
-        ]
-
-    Note:
-'''
 class EmergencyHandler(MainHandler.BaseMobileHandler):
 
-    '''
-
-
-        @return Emergency Messages
-    '''
     def get(self):
         return self.write(json.dumps([{'announcement':'first emergency announcement of HackIllinois'}]))
 
-    '''
-        Update an Emergency Message
-
-        @return Success or Fail (for now)
-    '''
     def put(self):
         pass
 
-'''
 
-    for example:
-        [
-            {
-                event name: ,
-                location: ,
-                time:
-            }
-        ]
-
-    Note:
-'''
 class NewsfeedHandler(MainHandler.BaseMobileHandler):
 
     '''
@@ -135,178 +52,110 @@ class NewsfeedHandler(MainHandler.BaseMobileHandler):
 
         @return Success or fail (for now)
     '''
-#    def put(self):
-#        pass
+   def put(self):
+       pass
 
-'''
-
-    Note:
-'''
 class StaffHandler(MainHandler.BaseMobileHandler):
 
-    '''
-
-        for example:
-            [
-                {
-                    name: ,
-                    email: ,
-                    school: ,
-                    year: ,
-                    homebase: ,
-                    skills: ,
-                }
-            ]
-
-        @return The models of all the Staff for HackIllinois
-    '''
     def get(self):
-        if 'AuthName' in self.request.headers and self.request.headers['AuthName'] != 'test':
+        if self.request.headers['AuthName'] == 'test':
+            return self.write(json.dumps([{'name':'Jacob', 'email':'cool@email.com', 'school':'U of I', 'year':'senior', 'homebase':'room #4', 'skills':'awesome', 'pictureURL':'url.com', 'status':'available'}, {'name':'Alex', 'email':'Alexcool@email.com', 'school':'U of I', 'year':'senior', 'homebase':'1109', 'skills':'awesome', 'pictureURL':'url.com', 'status':'available'}]))
+
+        elif 'AuthName' in self.request.headers:
             staffProfiles = Staff.search_database({})
             listOfStaff = []
             for staffProfile in staffProfiles:
-                _staff = {'name':staffProfile.name, 'email':staffProfile.email, 'school':staffProfile.school, 'year':staffProfile.year, 'skills':staffProfile.skills, 'homebase':staffProfile.homebase}
-
-        elif self.request.headers['AuthName'] == 'test':
-            return self.write(json.dumps([{'name':'Jacob', 'email':'cool@email.com', 'school':'U of I', 'year':'senior', 'homebase':'room #4', 'skills':'awesome'}, {'name':'Alex', 'email':'Alexcool@email.com', 'school':'U of I', 'year':'senior', 'homebase':'1109', 'skills':'awesome'}]))
+                _staff = {'name':staffProfile.name, 'email':staffProfile.email, 'school':staffProfile.school, 'year':staffProfile.year, 'skills':staffProfile.skills, 'homebase':staffProfile.homebase, 'pictureURL':staffProfile.pictureURL, 'status':staffProfile.status}
 
         else:
-            return self.write(json.dumps({'access':'No Access'}))    
+            return self.write()    
 
 
-'''
-        for example:
-            [
-                {
-                    name: ,
-                    email: ,
-                    school: ,
-                    year: ,
-                    skills: ,
-                    homebase: ,
-                }
-            ]
-
-    Note:
-'''
 class HackersHandler(MainHandler.BaseMobileHandler):
 
-    '''
-
-        @return The models of all the Hackers attendeeing HackIllinois
-    '''
     def get(self):
-        if 'AuthName' in self.request.headers and self.request.headers['AuthName'] != 'test':
-            hackerProfiles = Hacker.search_database({})
+        if self.request.headers['AuthName'] == 'test':
+            return self.write(json.dumps([{'name':'Jacob', 'email':'cool@email.com', 'school':'U of I', 'year':'senior', 'homebase':'room #4', 'skills':'awesome', 'pictureURL':'url.com', 'status':'available'}, {'name':'Alex', 'email':'Alexcool@email.com', 'school':'U of I', 'year':'senior', 'homebase':'1109', 'skills':'awesome', 'pictureURL':'url.com', 'status':'available'}]))
+        elif 'AuthName' in self.request.headers:
+            hackerProfiles = Attendee.search_database({})
             listOfHackers = []
             for hackerProfile in hackerProfiles:
-                _hacker = {'name':hackerProfile.name, 'email':hackerProfile.email, 'school':hackerProfile.school, 'year':hackerProfile.year, 'skills':hackerProfile.skills, 'homebase':hackerProfile.homebase}
+                _hacker = {'name':hackerProfile.name, 'email':hackerProfile.email, 'school':hackerProfile.school, 'year':hackerProfile.year, 'skills':hackerProfile.skills, 'homebase':hackerProfile.homebase, 'pictureURL':hackerProfile.pictureURL, 'status':hackerProfile.status}
                 listOfHackers.append(_hacker)
             return self.write(json.dumps(listOfHackers))
 
-        elif self.request.headers['AuthName'] == 'test':
-            return self.write(json.dumps([{'name':'Jacob', 'email':'cool@email.com', 'school':'U of I', 'year':'senior', 'homebase':'room #4', 'skills':'awesome'}, {'name':'Alex', 'email':'Alexcool@email.com', 'school':'U of I', 'year':'senior', 'homebase':'1109', 'skills':'awesome'}]))
-
         else:
-            return self.write(json.dumps({'access':'No Access'}))    
+            return self.write()    
+        
 
-
-        return self.write(json.dumps([{'name':'Jacob', 'email':'cool@email.com', 'school':'U of I', 'year':'senior', 'homebase':'room #4', 'skills':'awesome'}]))
-
-'''
-        for example:
-            {
-                name: ,
-                email: ,
-                school: ,
-                year: ,
-                skills: ,
-                homebase: ,
-            }
-
-'''
 class HackerHandler(MainHandler.BaseMobileHandler):
 
     def get(self):
-        if 'AuthName' in self.request.headers and self.request.headers['AuthName'] != 'test':
-            hackerProfile = Hacker.search_database({'userId':self.request.headers['AuthName']}).get()
-            _hacker = {'name':hackerProfile.name, 'email':hackerProfile.email, 'school':hackerProfile.school, 'year':hackerProfile.year, 'skills':hackerProfile.skills, 'homebase':hackerProfile.homebase}
-            return self.write(json.dumps(_hacker))
+        if self.request.headers['AuthName'] == 'test':
+            return self.write(json.dumps({'name':'Jacob', 'email':'email@gmail.com', 'school':'uiuc', 'year':'senior', 'skills':'none', 'homebase':'1105', 'pictureURL':'url.com', 'status':'available'}))
 
-        elif self.request.headers['AuthName'] == 'test':
-            return self.write(json.dumps({'name':'Jacob', 'email':'email@gmail.com', 'school':'uiuc', 'year':'senior', 'skills':'none', 'homebase':'1105'}))
+        elif 'AuthName' in self.request.headers:
+            if hackerProfile = Attendee.search_database({'userId':self.request.headers['AuthName']}).get()
+                _hacker = {'name':hackerProfile.name, 'email':hackerProfile.email, 'school':hackerProfile.school, 'year':hackerProfile.year, 'skills':hackerProfile.skills, 'homebase':hackerProfile.homebase, 'type':'hacker', 'pictureURL':hackerProfile.pictureURL, 'status':hackerProfile.status}
+                return self.write(json.dumps(_hacker))
+            elif staffProfile = Admin.search_database({'userId':self.request.headers['AuthName']}).get():
+                _staff = {'name':staffProfile.name, 'email':staffProfile.email, 'school':staffProfile.school, 'year':staffProfile.year, 'skills':staffProfile.skills, 'homebase':staffProfile.homebase, 'type':'staff', 'pictureURL':staffProfile.pictureURL, 'status':staffProfile.status}
+                return self.write(json.dumps(_staff))
+            elif companyProfile = Sponsor.search_database({'userId':self.request.headers['AuthName']}).get():
+                _companySponsor = {'name':_companySponsor.name, 'email':companyProfile.email, 'company':companyProfile.companyName, 'jobTitle':companyProfile.jobTitle, 'skills':companyProfile.skills, 'type':'company', 'pictureURL':companyProfile.pictureURL, 'status':companyProfile.status}
+                return self.write(json.dumps(_companySponsor))
+            else:
+                return self.write()
 
         else:
-            return self.write(json.dumps({'access':'No Access'}))
+            return self.write()
 
     def Post(self):
         if 'AuthName' in self.request.headers and self.request.headers['AuthName'] != 'test':
-            updatedHackerProfile = self.request.POST.items()
-            updatedHackerProfileDict = {}
-            for _key,_value in updatedHackerProfile:
-                updatedHackerProfileDict[_key] = _value
+            updatedProfile = self.request.POST.items()
+            updatedProfileDict = {}
+            for _key,_value in updatedProfile:
+                if _key != 'type':
+                    updatedProfileDict[_key] = _value
 
-            Hacker.update_search(params, updatedHackerProfileDict)
+            if updatedProfile['type'] == 'hacker':
+                Attendee.update_search(updatedProfileDict, {'userId':self.request.headers['AuthName']})
+            elif updatedProfile['type'] == 'staff':
+                Admin.update_search(updatedProfileDict, {'userId':self.request.headers['AuthName']})
+            elif updatedProfile['type'] == 'company':
+                Sponsor.update_search(updatedProfileDict, {'userId':self.request.headers['AuthName']})
 
-'''
-        for example:
-            [
-                company name: {
-                    name: ,
-                    company: ,
-                    job title: ,
-                    skills: ,
-                    events: ,
-                    email/contact: ,
-                }
-            ]
 
-    Note:
-'''
 class CompaniesHandler(MainHandler.BaseMobileHandler):
 
-    '''
-
-        @return The models of all the Companies attending HackIllinois
-    '''
     def get(self):
-        if 'AuthName' in self.request.headers and self.request.headers['AuthName'] != 'test':
+        if self.request.headers['AuthName'] == 'test':
             companyProfiles = {}
 
             for companyName in MobileConstants.COMPANY_NAMES:
                 companyProfiles[companyName] = []
-                companyProfile = CompanyRep.search_database({'company':companyName})
+                companyProfile = Sponsor.search_database({'companyName':companyName})
                 for _companyRep in companyProfile:
-                    companyRepProfile = {'email':_companyRep.email, 'company':_companyRep.company, 'jobTitle':_companyRep.jobTitle, 'skills':_companyRep.skills}
+                    companyRepProfile = {'email':_companyRep.email, 'company':_companyRep.company, 'jobTitle':_companyRep.jobTitle, 'skills':_companyRep.skills, 'pictureURL':_companyRep.pictureURL, 'status':_companyRep.status}
+                    companyProfiles[companyName].append(companyRepProfile)
+            return self.write(json.dumps(companyProfiles))
+
+        elif 'AuthName' in self.request.headers:
+            companyProfiles = {}
+
+            for companyName in MobileConstants.COMPANY_NAMES:
+                companyProfiles[companyName] = []
+                companyProfile = Sponsor.search_database({'companyName':companyName})
+                for _companyRep in companyProfile:
+                    companyRepProfile = {'email':_companyRep.email, 'company':_companyRep.company, 'jobTitle':_companyRep.jobTitle, 'skills':_companyRep.skills, 'pictureURL':_companyRep.pictureURL, 'status':_companyRep.status}
                     _list = companyProfiles[companyName]
                     _list.append(companyRepProfile)
             return self.write(json.dumps(companyProfiles))
 
-        elif self.request.headers['AuthName'] == 'test':
-            companyProfiles = {}
-
-            for companyName in MobileConstants.COMPANY_NAMES:
-                companyProfiles[companyName] = []
-                companyProfile = CompanyRep.search_database({'company':companyName})
-                for _companyRep in companyProfile:
-                    companyRepProfile = {'email':_companyRep.email, 'company':_companyRep.company, 'jobTitle':_companyRep.jobTitle, 'skills':_companyRep.skills}
-                    companyProfiles[companyName].append(companyRepProfile)
-            return self.write(json.dumps(companyProfiles))
-
         else:
-            return self.write(json.dumps({'access':'No Access'}))
+            return self.write()
 
-'''
 
-    for example:
-        [
-            skill1,
-            skill2,
-            skill3,
-        ]
-
-    Note:
-'''
 class SkillsHandler(MainHandler.BaseMobileHandler):
 
     '''
@@ -315,6 +164,3 @@ class SkillsHandler(MainHandler.BaseMobileHandler):
     '''
     def get(self):
         return self.write(json.dumps(MobileConstants.SKILLS))
-
-    # def put(self):
-    #     pass

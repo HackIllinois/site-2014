@@ -8,6 +8,16 @@ class Admin(Model):
     email = ndb.StringProperty()
     googleUser = ndb.UserProperty()
 
+    # these vairables are needed for mobile
+    userId = ndb.StringProperty(default='')
+    name = ndb.StringProperty(default='')
+    school = ndb.TextProperty(default='')
+    year = ndb.TextProperty(default='')
+    homebase = ndb.TextProperty(default='')
+    skills = ndb.JsonProperty(default=[''])
+    status = ndb.TextProperty(default='')
+
+
     # For people who have access to approve and disapprove attendees
     approveAccess = ndb.BooleanProperty(default=False)
 

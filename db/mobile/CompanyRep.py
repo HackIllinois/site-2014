@@ -11,6 +11,7 @@ class CompanyRep(Model):
 
     jobTitle = ndb.TextProperty()
     skills = ndb.JsonProperty()
+    status = ndb.TextProperty()
 
     @classmethod
     def new(cls, data):
