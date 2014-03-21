@@ -4,7 +4,7 @@ import urllib
 import httplib2
 from redis import Redis
 from rq import Queue
-from worker_functions import *
+#from worker_functions import *
 
 METADATA_SERVER = 'http://metadata/computeMetadata/v1/instance/service-accounts'
 SERVICE_ACCOUNT = '1024924889757-4v2l726h9pjjt2eksakqcgm5frhqso7u.apps.googleusercontent.com'
@@ -17,10 +17,10 @@ access_token = ''
 Google Cloud Storage API to list buckets for the desired project."""
 
 def main():
-	if getToken()
-		#getData()
-	else
-		echo "Token Error"
+	if getToken():
+		getData()
+	else:
+		print "Token Error"
 
 
 def getToken():
