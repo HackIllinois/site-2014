@@ -39,6 +39,7 @@ def getData():
     # Construct the request to Google
     # Needs to be updated to the cloud datastore api
     query = "SELECT * FROM Task"
+    http = httplib2.Http()
     resp, content = http.request('https://www.googleapis.com/datastore/v1beta2/datasets/hackillinois/runQuery', \
                                   method='POST', \
                                   body='{ "gqlQuery": {"queryString": "'+query+'","allowLiteral": true}}', \
