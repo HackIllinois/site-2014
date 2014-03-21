@@ -281,6 +281,9 @@
                                 <option {% if b.selected %}selected{% endif %}>{{ b.name }}</option>
                                 {% endfor %}
                             </select>
+                            <div class="errormessages">
+                                {{ data.errors.busRoute }}
+                            </div>
                         </div>
                     </div>
                 </div>

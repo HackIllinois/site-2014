@@ -55,7 +55,7 @@ div.new-fields-inner {
                             </div>
 
                             <span class="help-block no-bottom-margin">
-                                Unfortunataly we cannot provide reimbursment for personal travel arrangements.
+                                Unfortunately we cannot provide reimbursment for personal travel arrangements.
                                 For more information, please see <a class="rules-link" href="/travel" target="_blank">our travel page</a>.
                             </span>
                             <div class="errormessages">
@@ -74,6 +74,9 @@ div.new-fields-inner {
                                     <option {% if b.selected %}selected{% endif %}>{{ b.name }}</option>
                                     {% endfor %}
                                 </select>
+                                <div class="errormessages">
+                                    {{ data.errors.busRoute }}
+                                </div>
                             </div>
                         </div>
                     </div>
