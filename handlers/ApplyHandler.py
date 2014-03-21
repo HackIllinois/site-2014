@@ -206,7 +206,7 @@ class ApplyHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandle
                                 constants.ERROR_MESSAGE_SUFFIX
                 valid = False
 
-        if x['travel'] == constants.TRAVEL_ARRANGEMENTS[0]:
+        if 'travel' in x and x['travel'] == constants.TRAVEL_ARRANGEMENTS[0]:
             if 'busRoute' not in x or x['busRoute'] == '':
                 errors['busRoute'] = constants.ERROR_MESSAGE_PREFIX + \
                                      'Bus Route' + \
