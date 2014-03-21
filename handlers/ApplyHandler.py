@@ -1,3 +1,4 @@
+
 import urllib
 import logging
 import re
@@ -31,6 +32,8 @@ class ApplyHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandle
         }
         for l, options in lists.iteritems(): data[l] = [ {'name':n, 'checked':False} for n in options ]
 
+        data['busRoutes'] = [ {'name':n, 'selected':False} for n in constants.BUS_ROUTES ]
+
         data['title'] = constants.APPLY_TITLE
         data['hasResume'] = False
 
@@ -59,7 +62,7 @@ class ApplyHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandle
             choose_one_fields = {
                 'gender':('genders','checked'), 'year':('years','checked'),
                 'shirt':('shirts','checked'), 'projectType':('projects','selected'),
-                'travel':('travelArrangements','checked')
+                'travel':('travelArrangements','checked'), 'busRoute':('busRoutes','selected')
             }
             for field, conn in choose_one_fields.iteritems():
                 value = getattr(db_user, field)
@@ -108,7 +111,7 @@ class ApplyHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandle
         # Get data from form
         fields = [
             'nameFirst', 'nameLast', 'email', 'gender', 'school', 'year', 'experience',
-            'linkedin', 'github', 'teamMembers', 'shirt', 'projectType', 'travel'
+            'linkedin', 'github', 'teamMembers', 'shirt', 'projectType', 'travel', 'busRoute'
         ]
         for field in fields:
            x[field] = self.request.get(field)
@@ -201,6 +204,13 @@ class ApplyHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandle
                 errors[field] = constants.ERROR_MESSAGE_PREFIX + \
                                 constants.READABLE_REQUIRED_FIELDS[field] + \
                                 constants.ERROR_MESSAGE_SUFFIX
+                valid = False
+
+        if 'travel' in x and x['travel'] == constants.TRAVEL_ARRANGEMENTS[0]:
+            if 'busRoute' not in x or x['busRoute'] == '':
+                errors['busRoute'] = constants.ERROR_MESSAGE_PREFIX + \
+                                     'Bus Route' + \
+                                     constants.ERROR_MESSAGE_SUFFIX
                 valid = False
 
         if 'food' in x and x['food']:
@@ -273,6 +283,8 @@ class ApplyUpdateHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUpload
         }
         for l, options in lists.iteritems(): data[l] = [ {'name':n, 'checked':False} for n in options ]
 
+        data['busRoutes'] = [ {'name':n, 'selected':False} for n in constants.BUS_ROUTES ]
+
         data['title'] = constants.APPLY_TITLE
         data['hasResume'] = False
 
@@ -301,7 +313,7 @@ class ApplyUpdateHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUpload
             choose_one_fields = {
                 'gender':('genders','checked'), 'year':('years','checked'),
                 'shirt':('shirts','checked'), 'projectType':('projects','selected'),
-                'travel':('travelArrangements','checked')
+                'travel':('travelArrangements','checked'), 'busRoute':('busRoutes','selected')
             }
             for field, conn in choose_one_fields.iteritems():
                 value = getattr(db_user, field)
@@ -350,7 +362,7 @@ class ApplyUpdateHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUpload
         # Get data from form
         fields = [
             'nameFirst', 'nameLast', 'email', 'gender', 'school', 'year', 'experience',
-            'linkedin', 'github', 'teamMembers', 'shirt', 'projectType', 'travel'
+            'linkedin', 'github', 'teamMembers', 'shirt', 'projectType', 'travel', 'busRoute'
         ]
         for field in fields:
            x[field] = self.request.get(field)
@@ -443,6 +455,13 @@ class ApplyUpdateHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUpload
                 errors[field] = constants.ERROR_MESSAGE_PREFIX + \
                                 constants.READABLE_REQUIRED_FIELDS[field] + \
                                 constants.ERROR_MESSAGE_SUFFIX
+                valid = False
+
+        if 'travel' in x and x['travel'] == constants.TRAVEL_ARRANGEMENTS[0]:
+            if 'busRoute' not in x or x['busRoute'] == '':
+                errors['busRoute'] = constants.ERROR_MESSAGE_PREFIX + \
+                                     'Bus Route' + \
+                                     constants.ERROR_MESSAGE_SUFFIX
                 valid = False
 
         if 'food' in x and x['food']:

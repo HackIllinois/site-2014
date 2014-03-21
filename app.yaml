@@ -57,11 +57,11 @@ handlers:
   static_files: assets/docs/special_sponsorship/HackIllinois VC.pdf
   upload: assets/docs/special_sponsorship/HackIllinois VC\.pdf
 
-- url: /apply*
+- url: /apply.*
   script: main.app
   login: required
 
-- url: /admin*
+- url: /admin.*
   script: main.app
   login: required
 

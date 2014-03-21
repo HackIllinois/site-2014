@@ -487,3 +487,13 @@ class AdminExportHandler(MainHandler.BaseAdminHandler):
         self.response.headers['Content-Disposition'] = 'attachment;filename=' + dt + '-attendees.csv'
 
         return self.write(get_hackers_csv_memcache(self.request.application_url))
+
+
+class AdminSkillsHandler(MainHandler.BaseAdminHandler):
+    def get(self):
+        return self.write("Not yet implemented.")
+
+
+class AdminMentorsHandler(MainHandler.BaseAdminHandler):
+    def get(self):
+        return self.write("Not yet implemented.")

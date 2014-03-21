@@ -29,10 +29,6 @@ handlers = [
     RedirectRoute('/apply/myresume', handler=ApplyHandler.MyResumeHandler, name='MyResume', strict_slash=True),
     RedirectRoute('/apply/uploadurl', handler=ApplyHandler.UploadURLHandler, name='UploadURL', strict_slash=True),
 
-    RedirectRoute('/mentor', handler=MentorHandler.RenderHandler, name='Mentor', strict_slash=True),
-
-    RedirectRoute('/skills', handler=SkillsHandler.RenderHandler, name='Skills', strict_slash=True),
-
     RedirectRoute('/applycount', handler=ApplyCountHandler, name='ApplyCount', strict_slash=True),
 
     RedirectRoute('/rules', handler=SubpageHandlers.RulesHandler, name='Rules', strict_slash=True),
@@ -58,6 +54,8 @@ handlers = [
     RedirectRoute('/admin/manager', handler=AdminHandler.AdminManagerHandler, name='AdminManager', strict_slash=True),
     RedirectRoute('/admin/manager/accesscontrol', handler=AdminHandler.AdminAccessControlHandler, name='AdminAccessControl', strict_slash=True),
     RedirectRoute('/admin/export', handler=AdminHandler.AdminExportHandler, name='AdminExport', strict_slash=True),
+    # RedirectRoute('/admin/mentors', handler=AdminHandler.AdminMentorsHandler, name='AdminMentors', strict_slash=True),
+    # RedirectRoute('/admin/skills', handler=AdminHandler.AdminSkillsHandler, name='AdminSkills', strict_slash=True),
 
     RedirectRoute('/admin/tests', handler=TestAllHandler, name='TestAll', strict_slash=True),
     RedirectRoute('/admin/testsjs', handler=TestAllJsHandler, name='TestAllJs', strict_slash=True),
