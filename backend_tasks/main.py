@@ -20,7 +20,7 @@ def main():
 	if getToken():
 		getData()
 	else:
-		echo "Token Error"
+		print "Token Error"
 
 
 def getToken():
