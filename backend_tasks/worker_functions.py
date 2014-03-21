@@ -17,7 +17,7 @@ def toZip(name, directory):
     list = os.listdir(directory)
  
     for entity in list:
-        each&nbsp;= os.path.join(directory,entity)
+        each = os.path.join(directory,entity)
  
         if os.path.isfile(each):
             print each
