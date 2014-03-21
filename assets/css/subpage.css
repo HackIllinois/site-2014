@@ -374,6 +374,11 @@ and (max-width: 800px) {
 }
 
 
-/* reset.css breaks <strong> */
+/* reset.css breaks the stuff below, so let's fix it! */
 strong, strong * { font-weight: bold !important; }
 em, em * { font-style: italic !important; }
+
+ul {
+	list-style-type: disc !important;
+	padding-left: 25px;
+}
