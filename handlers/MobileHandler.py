@@ -103,7 +103,7 @@ class PersonHandler(MainHandler.BaseMobileHandler):
         elif 'key' in params:
             profile = params['key'].get()
             for hackerProfile in profile:
-                hackerProfile = {'name':hackerProfile.name, 'email':hackerProfile.email, 'school':hackerProfile.school, 'year':hackerProfile.year, 'skills':hackerProfile.skills, 'homebase':hackerProfile.homebase, 'picture_url':hackerProfile.pictureURL, 'status':hackerProfile.status, 'database_key':hackerProfile.key ,'time':_companyRep.updatedTime}
+                hackerProfile = [{'name':hackerProfile.name, 'email':hackerProfile.email, 'school':hackerProfile.school, 'year':hackerProfile.year, 'skills':hackerProfile.skills, 'homebase':hackerProfile.homebase, 'picture_url':hackerProfile.pictureURL, 'status':hackerProfile.status, 'database_key':hackerProfile.key ,'time':_companyRep.updatedTime}]
                 return self.write(json.dumps(hackerProfile))
 
     def post(self):
@@ -157,4 +157,4 @@ class LoginHandler(MainHandler.BaseMobileHandler):
         elif companyProfile:
             profile = {'email':_companyRep.email, 'company':_companyRep.company, 'job_title':_companyRep.jobTitle, 'skills':_companyRep.skills, 'picture_url':_companyRep.pictureURL, 'status':_companyRep.status, 'database_key':_companyRep.key , 'time':_companyRep.updatedTime}
 
-        self.write(json.dumps(profile))
+        self.write(json.dumps([profile]))
