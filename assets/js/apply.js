@@ -140,7 +140,7 @@ function setupSubmitHandler() {
 
 function setupBusRoutes() {
     if ($('#travel-0').is(':checked')){
-        $('#bus-routes').removeClass("hidden")
+        $('#bus-routes').removeClass("hidden");
     }
 
     $("input[name='travel']").change(function(){
