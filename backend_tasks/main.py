@@ -7,7 +7,7 @@ from rq import Queue
 #from worker_functions import *
 
 METADATA_SERVER = 'http://metadata/computeMetadata/v1/instance/service-accounts'
-SERVICE_ACCOUNT = '1024924889757-4v2l726h9pjjt2eksakqcgm5frhqso7u.apps.googleusercontent.com'
+SERVICE_ACCOUNT = 'default'
 GOOGLE_STORAGE_PROJECT_NUMBER = '1024924889757'
 #'x-goog-project-id': GOOGLE_STORAGE_PROJECT_NUMBER
 
