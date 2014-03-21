@@ -143,7 +143,7 @@ class SkillsHandler(MainHandler.BaseMobileHandler):
 class LoginHandler(MainHandler.BaseMobileHandler):
     def get(self):
         user = users.get_current_user()
-        if not user: return self.abort(500, detail='User not in database')
+        if not user: return self.write(json.dumps({'error message':'No user'}))
 
         hackerProfile = Attendee.search_database({'userId':user.user_id()}).get()
         staffProfile = Admin.search_database({'userId':user.user_id()}).get()
