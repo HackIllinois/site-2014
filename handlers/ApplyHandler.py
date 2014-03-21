@@ -1,3 +1,4 @@
+
 import urllib
 import logging
 import re
@@ -203,6 +204,13 @@ class ApplyHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandle
                 errors[field] = constants.ERROR_MESSAGE_PREFIX + \
                                 constants.READABLE_REQUIRED_FIELDS[field] + \
                                 constants.ERROR_MESSAGE_SUFFIX
+                valid = False
+
+        if x['travel'] == constants.TRAVEL_ARRANGEMENTS[0]:
+            if 'busRoute' not in x or x['busRoute'] == '':
+                errors['busRoute'] = constants.ERROR_MESSAGE_PREFIX + \
+                                     'Bus Route' + \
+                                     constants.ERROR_MESSAGE_SUFFIX
                 valid = False
 
         if 'food' in x and x['food']:
@@ -447,6 +455,13 @@ class ApplyUpdateHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUpload
                 errors[field] = constants.ERROR_MESSAGE_PREFIX + \
                                 constants.READABLE_REQUIRED_FIELDS[field] + \
                                 constants.ERROR_MESSAGE_SUFFIX
+                valid = False
+
+        if x['travel'] == constants.TRAVEL_ARRANGEMENTS[0]:
+            if 'busRoute' not in x or x['busRoute'] == '':
+                errors['busRoute'] = constants.ERROR_MESSAGE_PREFIX + \
+                                     'Bus Route' + \
+                                     constants.ERROR_MESSAGE_SUFFIX
                 valid = False
 
         if 'food' in x and x['food']:
