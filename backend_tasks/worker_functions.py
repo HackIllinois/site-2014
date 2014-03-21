@@ -19,7 +19,7 @@ def toZip(name, directory):
     for entity in list:
         each&nbsp;= os.path.join(directory,entity)
  
-        if&nbsp;os.path.isfile(each):
+        if os.path.isfile(each):
             print each
             zippedHelp.write(each,zipfile.ZIP_DEFLATED)
         else:
