@@ -43,6 +43,19 @@ CSV_HEADINGS = ['First Name','Last Name','Email',
                 'Registration Time','Is Approved',
                 'User ID','Resume']
 
+BUS_ROUTES = [
+    'Purdue',
+    'Iowa St -> Grinnel -> Iowa',
+    'Depaul -> Northwestern -> UIC',
+    'IIT -> UChicago',
+    'Michigan Tech -> Wisconsin',
+    'Indiana -> Rose Hulman',
+    'Missouri -> WashU',
+    'Case Western -> Kent -> OSU',
+    'Indiana -> Rose Hulman',
+    'University of Michigan Ann-Arbor'
+]
+
 # The below array is for more descriptive error messages. @Mattato pls fix.
 # READABLE_REQUIRED_FIELDS = ['First Name','Last Name','E-mail','Gender','School','Year in School','T-shirt size','past experience', 'Please accept the Terms of Service']
 
@@ -53,7 +66,7 @@ YEARS = ['Freshman','Sophomore','Junior','Senior','Grad','HS']
 SHIRTS = ['XS','S','M','L','XL','XXL']
 FOODS = ['Vegetarian','Vegan','Gluten Free','Lactose Free', 'Other']
 PROJECTS = ['Software Hack','Hardware Hack','Unsure']
-TRAVEL_ARRANGEMENTS = ['Bus','Driving','Flying','Other']
+TRAVEL_ARRANGEMENTS = ['I would like to ride a HackIllinois bus','I will provide my own transportation','I am already in Urbana-Champaign, IL']
 
 RESUME_MAX_SIZE = 2097152 # in Bytes = 2 mb
 

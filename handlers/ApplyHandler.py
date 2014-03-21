@@ -31,6 +31,8 @@ class ApplyHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandle
         }
         for l, options in lists.iteritems(): data[l] = [ {'name':n, 'checked':False} for n in options ]
 
+        data['busRoutes'] = [ {'name':n, 'selected':False} for n in constants.BUS_ROUTES ]
+
         data['title'] = constants.APPLY_TITLE
         data['hasResume'] = False
 
@@ -59,7 +61,7 @@ class ApplyHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandle
             choose_one_fields = {
                 'gender':('genders','checked'), 'year':('years','checked'),
                 'shirt':('shirts','checked'), 'projectType':('projects','selected'),
-                'travel':('travelArrangements','checked')
+                'travel':('travelArrangements','checked'), 'busRoute':('busRoutes','selected')
             }
             for field, conn in choose_one_fields.iteritems():
                 value = getattr(db_user, field)
@@ -108,7 +110,7 @@ class ApplyHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandle
         # Get data from form
         fields = [
             'nameFirst', 'nameLast', 'email', 'gender', 'school', 'year', 'experience',
-            'linkedin', 'github', 'teamMembers', 'shirt', 'projectType', 'travel'
+            'linkedin', 'github', 'teamMembers', 'shirt', 'projectType', 'travel', 'busRoute'
         ]
         for field in fields:
            x[field] = self.request.get(field)
@@ -273,6 +275,8 @@ class ApplyUpdateHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUpload
         }
         for l, options in lists.iteritems(): data[l] = [ {'name':n, 'checked':False} for n in options ]
 
+        data['busRoutes'] = [ {'name':n, 'selected':False} for n in constants.BUS_ROUTES ]
+
         data['title'] = constants.APPLY_TITLE
         data['hasResume'] = False
 
@@ -301,7 +305,7 @@ class ApplyUpdateHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUpload
             choose_one_fields = {
                 'gender':('genders','checked'), 'year':('years','checked'),
                 'shirt':('shirts','checked'), 'projectType':('projects','selected'),
-                'travel':('travelArrangements','checked')
+                'travel':('travelArrangements','checked'), 'busRoute':('busRoutes','selected')
             }
             for field, conn in choose_one_fields.iteritems():
                 value = getattr(db_user, field)
@@ -350,7 +354,7 @@ class ApplyUpdateHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUpload
         # Get data from form
         fields = [
             'nameFirst', 'nameLast', 'email', 'gender', 'school', 'year', 'experience',
-            'linkedin', 'github', 'teamMembers', 'shirt', 'projectType', 'travel'
+            'linkedin', 'github', 'teamMembers', 'shirt', 'projectType', 'travel', 'busRoute'
         ]
         for field in fields:
            x[field] = self.request.get(field)

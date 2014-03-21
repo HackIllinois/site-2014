@@ -20,6 +20,7 @@ class Attendee(Model):
     googleUser = ndb.UserProperty()
 
     travel = ndb.StringProperty(choices=constants.TRAVEL_ARRANGEMENTS + [''], default='')
+    busRoute = ndb.StringProperty(choices=constants.BUS_ROUTES + [''], default='')
 
     nameFirst = ndb.StringProperty()
     nameLast = ndb.StringProperty()
