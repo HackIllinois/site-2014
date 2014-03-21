@@ -17,7 +17,7 @@ access_token = ''
 Google Cloud Storage API to list buckets for the desired project."""
 
 def main():
-	if getToken()
+	if getToken():
 		getData()
 	else
 		echo "Token Error"
