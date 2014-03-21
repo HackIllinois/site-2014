@@ -6,6 +6,8 @@ from google.appengine.api import users
 from db import constants
 from google.appengine.ext import ereporter
 from db.Admin import Admin
+from db.Attendee import Attendee
+from db.Sponsor import Sponsor
 
 template_dir = os.path.join(os.path.dirname(__file__), os.path.join(os.pardir, 'templates'))
 jinja_env = jinja2.Environment(loader = jinja2.FileSystemLoader(template_dir), autoescape = True)
@@ -71,15 +73,20 @@ class BaseAdminHandler(Handler):
 class BaseMobileHandler(Handler):
 
     def dispatch(self):
-        if 'AuthName' in self.request.headers:
-            userId = self.request.headers['AuthName']
-        else:
-            userId = None
-
-        if userId == 'test':
-            super(BaseMobileHandler, self).dispatch()
-        elif userId:
-            db_user = Attendee.search_database({'userId':userId}).get()
-            super(BaseMobileHandler, self).dispath()
-        else:
-            return self.write('Did not pass userId')
+        # if 'AuthName' in self.request.headers:
+            # userId = self.request.headers['AuthName']
+            # if userId == 'test':
+        super(BaseMobileHandler, self).dispatch()
+            # else:
+            #     # TODO: Cache Attendee, Admin, Sponsor here
+            #     # db_userAttendee = Attendee.search_database({'userId':userId}).get()
+            #     # if db_user == None:
+            #     #     super(BaseMobileHandler, self).dispath()
+            #     # elif (db_user = Admin.search_database({'userId':userId}).get()) == None:
+            #     #     super(BaseMobileHandler, self).dispath()
+            #     # elif (db_user = Sponsor.search_database({'userId':userId}).get()) == None:
+            #     #     super(BaseMobileHandler, self).dispath()
+            #     # else:
+            #         return self.abort(401)
+        # else:
+        #     return self.abort(401)

@@ -14,3 +14,6 @@ class RenderHandler(MainHandler.Handler):
         SkillsData['skillsTags3'] = ""
         self.render("skills.html", data=SkillsData)
 
+    def post(self):
+    	print('post')
+

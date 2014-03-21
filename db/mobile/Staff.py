@@ -1,25 +1,30 @@
 from google.appengine.ext import ndb
-from Model import Model
-import constants
+from db.Model import Model
+from db import constants
 
 class Staff(Model):
     Model._automatically_add_event_as_ancestor()
 
     email = ndb.StringProperty()
     googleUser = ndb.UserProperty()
+    userId = ndb.StringProperty()
 
-    # For people who have access to approve and disapprove attendees
-    approveAccess = ndb.BooleanProperty(default=False)
+    name = ndb.StringProperty()
+    school = ndb.TextProperty()
+    year = ndb.TextProperty()
+    homebase = ndb.TextProperty()
+    skills = ndb.JsonProperty()
+    status = ndb.TextProperty()
 
-    # Only Systems-Core and Matthew have this
-    fullAccess = ndb.BooleanProperty(default=False)
+    # Not sure how this will be used yet
+    pushNotificationToken = ndb.StringProperty()
 
     @classmethod
     def new(cls, data):
-        admin = cls()
+        staff = cls()
         for k in data:
-            setattr(admin, k, data[k])
-        return admin
+            setattr(staff, k, data[k])
+        return staff
 
     @classmethod
     def unique_properties(cls):

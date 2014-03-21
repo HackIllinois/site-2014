@@ -3,119 +3,25 @@ import urllib, logging, re
 from db.Attendee import Attendee
 from db import constants
 from db.mobile import MobileConstants
+from db.Sponsor import Sponsor
+from db.Admin import Admin
 from google.appengine.api import users, memcache
 import json
+import time
 
-'''
 
-    for example:
-        [
-            {
-                event name: ,
-                description: ,
-                location: ,
-                time: ,
-
-            }
-        ]
-
-    Note:
-'''
 class ScheduleHandler(MainHandler.BaseMobileHandler):
 
-    '''
-        Get the current schedule of HackIllinois
-            for example:
-
-        @return the schedule of HackIllinois
-    '''
     def get(self):
         return self.write(json.dumps([{'event name':'First Event' ,'description':'Blast Off' ,'location':'room #1' ,'time':'12:00pm'}]))
 
-'''
 
-    Note:
-'''
-class MapsHandler(MainHandler.BaseMobileHandler):
+class SupportHandler(MainHandler.BaseMobileHandler):
 
-    '''
-
-        @return A dictionary of each location and the value is a dictionary of floors and a list of rooms on each floor
-            for example:
-                {
-                    "Siebel":{
-                        "1":["Ground Zero", "Space Station"]
-                    },
-                    "DCL":{
-                        "1":["Galaxy"]
-                    }
-                }
-    '''
     def get(self):
-        return self.write(json.dumps(MobileConstants.ROOM))
-
-'''
+        return self.write(json.dumps(MobileConstants.SUPPORT))
 
 
-    Note:
-'''
-class SupportTypeHandler(MainHandler.BaseMobileHandler):
-
-    '''
-
-        @return The list of Support Types
-            for example:
-                {
-                    "General":[events schedule, rules, comments/suggestions],
-                    "Requests":[food & drinks, medical, equipment, other],
-                    "Technical":[WIFI, power, locked out, other]
-                }
-    '''
-    def get(self):
-        return self.write(json.dumps(MobileConstants.SUPPORT_TYPE))
-
-'''
-
-    for example:
-        [
-            {
-                announcement:
-            }
-        ]
-
-    Note:
-'''
-class EmergencyHandler(MainHandler.BaseMobileHandler):
-
-    '''
-
-
-        @return Emergency Messages
-    '''
-    def get(self):
-        return self.write(json.dumps([{'announcement':'first emergency announcement of HackIllinois'}]))
-
-    '''
-        Update an Emergency Message
-
-        @return Success or Fail (for now)
-    '''
-    def put(self):
-        pass
-
-'''
-
-    for example:
-        [
-            {
-                event name: ,
-                location: ,
-                time:
-            }
-        ]
-
-    Note:
-'''
 class NewsfeedHandler(MainHandler.BaseMobileHandler):
 
     '''
@@ -127,127 +33,104 @@ class NewsfeedHandler(MainHandler.BaseMobileHandler):
     def get(self):
         return self.write(json.dumps([{'event name':'first event of HackIllinois' ,'location':'room #1' ,'time':'1:00pm'}]))
 
-    '''
-        Add an item to the news feed. Only Admin/Staff will be able to use this functionality.
-
-        @return Success or fail (for now)
-    '''
-#    def put(self):
-#        pass
-
-'''
-
-    Note:
-'''
 class StaffHandler(MainHandler.BaseMobileHandler):
 
-    '''
-
-        for example:
-            [
-                {
-                    name: ,
-                    email: ,
-                    school: ,
-                    year: ,
-                    homebase: ,
-                    skills: ,
-                }
-            ]
-
-        @return The models of all the Staff for HackIllinois
-    '''
     def get(self):
-        return self.write(json.dumps({'name':'Jacob', 'email':'cool@email.com', 'school':'U of I', 'year':'senior', 'homebase':'room #4', 'skills':'awesome'}))
+        if self.request.headers['AuthName'] == 'test':
+            return self.write(json.dumps([{'name':'Jacob', 'email':'cool@email.com', 'school':'U of I', 'year':'senior', 'homebase':'room #4', 'skills':'awesome', 'pictureURL':'url.com', 'status':'available'}, {'name':'Alex', 'email':'Alexcool@email.com', 'school':'U of I', 'year':'senior', 'homebase':'1109', 'skills':'awesome', 'pictureURL':'url.com', 'status':'available'}]))
 
-'''
-        for example:
-            [
-                {
-                    name: ,
-                    email: ,
-                    school: ,
-                    year: ,
-                    skills: ,
-                    homebase: ,
-                }
-            ]
+        elif 'AuthName' in self.request.headers:
+            staffProfiles = Staff.search_database({})
+            listOfStaff = []
+            for staffProfile in staffProfiles:
+                _staff = {'name':staffProfile.name, 'email':staffProfile.email, 'school':staffProfile.school, 'year':staffProfile.year, 'skills':staffProfile.skills, 'homebase':staffProfile.homebase, 'pictureURL':staffProfile.pictureURL, 'status':staffProfile.status}
 
-    Note:
-'''
+        else:
+            return self.write()    
+
+
 class HackersHandler(MainHandler.BaseMobileHandler):
 
-    '''
-
-        @return The models of all the Hackers attendeeing HackIllinois
-    '''
     def get(self):
-        return self.write(json.dumps([{'name':'Jacob', 'email':'cool@email.com', 'school':'U of I', 'year':'senior', 'homebase':'room #4', 'skills':'awesome'}]))
+        if self.request.headers['AuthName'] == 'test':
+            return self.write(json.dumps([{'name':'Jacob', 'email':'cool@email.com', 'school':'U of I', 'year':'senior', 'homebase':'room #4', 'skills':'awesome', 'pictureURL':'url.com', 'status':'available'}, {'name':'Alex', 'email':'Alexcool@email.com', 'school':'U of I', 'year':'senior', 'homebase':'1109', 'skills':'awesome', 'pictureURL':'url.com', 'status':'available'}]))
+        elif 'AuthName' in self.request.headers:
+            hackerProfiles = Attendee.search_database({})
+            listOfHackers = []
+            for hackerProfile in hackerProfiles:
+                _hacker = {'name':hackerProfile.name, 'email':hackerProfile.email, 'school':hackerProfile.school, 'year':hackerProfile.year, 'skills':hackerProfile.skills, 'homebase':hackerProfile.homebase, 'pictureURL':hackerProfile.pictureURL, 'status':hackerProfile.status}
+                listOfHackers.append(_hacker)
+            return self.write(json.dumps(listOfHackers))
 
-'''
-        for example:
-            {
-                name: ,
-                email: ,
-                school: ,
-                year: ,
-                skills: ,
-                homebase: ,
-            }
+        else:
+            return self.write()    
+        
 
-'''
-class HackerHandler(MainHandler.BaseMobileHandler):
+class PersonHandler(MainHandler.BaseMobileHandler):
 
     def get(self):
-        return self.write(json.dumps({'name':'Jacob', 'email':'cool@email.com', 'school':'U of I', 'year':'senior', 'homebase':'room #4', 'skills':'awesome'}))
+        params = self.request.POST.items()
 
-    def Post(self):
-        pass
+        if 'type' in params:
+            if 'staff' == params['type']:
+                staffProfiles = Staff.search_database({})
+                listOfStaff = []
+                for staffProfile in staffProfiles:
+                    if params['last_updated'] >= staffProfile.updatedTime:
+                        _staff = {'name':staffProfile.name, 'email':staffProfile.email, 'school':staffProfile.school, 'year':staffProfile.year, 'skills':staffProfile.skills, 'homebase':staffProfile.homebase, 'picture_url':staffProfile.pictureURL, 'status':staffProfile.status, 'database_key':staffProfile.key , 'time':_companyRep.updatedTime}
+            
+            if 'mentor' in params['type']:
+                companyProfiles = {}
 
-'''
-        for example:
-            [
-                company name: {
-                    name: ,
-                    company: ,
-                    job title: ,
-                    skills: ,
-                    events: ,
-                    office hours: ,
-                    email/contact: ,
-                }
-            ]
+                for companyName in MobileConstants.COMPANY_NAMES:
+                    companyProfiles[companyName] = []
+                    companyProfile = Sponsor.search_database({'companyName':companyName})
+                    for _companyRep in companyProfile:
+                        if params['last_updated'] >= _companyRep.updatedTime:
+                            companyRepProfile = {'email':_companyRep.email, 'company':_companyRep.company, 'job_title':_companyRep.jobTitle, 'skills':_companyRep.skills, 'picture_url':_companyRep.pictureURL, 'status':_companyRep.status, 'database_key':_companyRep.key , 'time':_companyRep.updatedTime}
+                            companyProfiles[companyName].append(companyRepProfile)
+                return self.write(json.dumps(companyProfiles))
 
-    Note:
-'''
-class CompaniesHandler(MainHandler.BaseMobileHandler):
+            # add search by accepting flag
+            if 'hacker' in params['type']:
+                hackerProfiles = Attendee.search_database({})
+                listOfHackers = []
+                for hackerProfile in hackerProfiles:
+                    if params['last_updated'] >= hackerProfile.updatedTime:
+                        _hacker = {'name':hackerProfile.name, 'email':hackerProfile.email, 'school':hackerProfile.school, 'year':hackerProfile.year, 'skills':hackerProfile.skills, 'homebase':hackerProfile.homebase, 'picture_url':hackerProfile.pictureURL, 'status':hackerProfile.status, 'database_key':hackerProfile.key ,'time':_companyRep.updatedTime}
+                        listOfHackers.append(_hacker)
+                return self.write(json.dumps(listOfHackers))
+        elif 'key' in params:
+            profile = params['key'].get()
+            for hackerProfile in profile:
+                hackerProfile = {'name':hackerProfile.name, 'email':hackerProfile.email, 'school':hackerProfile.school, 'year':hackerProfile.year, 'skills':hackerProfile.skills, 'homebase':hackerProfile.homebase, 'picture_url':hackerProfile.pictureURL, 'status':hackerProfile.status, 'database_key':hackerProfile.key ,'time':_companyRep.updatedTime}
+                return self.write(json.dumps(hackerProfile))
 
-    '''
+    def post(self):
+        user = users.get_current_user()
+        params = self.request.POST.items()
 
-        @return The models of all the Companies attendeeing HackIllinois
-    '''
-    def get(self):
-        return self.write(json.dumps(
-            {'Apple':
-                {'name':'Joe Smith',
-                 'company':'Apple',
-                 'job title':'iOS Developer',
-                 'skills':'cool things',
-                 'events':'other cool things',
-                 'office hours':'1:00 pm',
-                 'email/contact':'coolemail@apple.com'}}))
+        updatedProfileDict = {}
+        for _key,_value in updatedProfile:
+            updatedProfileDict[_key] = _value
 
-'''
+        if user:
+            hackerProfile = Attendee.search_database({'userId':user.user_id()}).get()
+            staffProfile = Admin.search_database({'userId':user.user_id()}).get()
+            companyProfile = Sponsor.search_database({'userId':user.user_id()}).get()
 
-    for example:
-        [
-            skill1,
-            skill2,
-            skill3,
-        ]
+            if hackerProfile:
+                Attendee.update_search(updatedProfileDict, {'userId':user.user_id()})
+            elif staffProfile:
+                Admin.update_search(updatedProfileDict, {'userId':user.user_id()})
+            elif companyProfile:
+                Sponsor.update_search(updatedProfileDict, {'userId':user.user_id()})
+            
+            return self.abort(200, detail='Updated Profile')
+        else:
+            return self.abort(500, detail='No user')
 
-    Note:
-'''
+
 class SkillsHandler(MainHandler.BaseMobileHandler):
 
     '''
@@ -257,5 +140,21 @@ class SkillsHandler(MainHandler.BaseMobileHandler):
     def get(self):
         return self.write(json.dumps(MobileConstants.SKILLS))
 
-    def put(self):
-        pass
+class LoginHandler(MainHandler.BaseMobileHandler):
+    def get(self):
+        user = users.get_current_user()
+        if not user: return self.abort(500, detail='User not in database')
+
+        hackerProfile = Attendee.search_database({'userId':user.user_id()}).get()
+        staffProfile = Admin.search_database({'userId':user.user_id()}).get()
+        companyProfile = Sponsor.search_database({'userId':user.user_id()}).get()
+        profile = {}
+        
+        if hackerProfile:
+            profile = {'name':hackerProfile.name, 'email':hackerProfile.email, 'school':hackerProfile.school, 'year':hackerProfile.year, 'skills':hackerProfile.skills, 'homebase':hackerProfile.homebase, 'picture_url':hackerProfile.pictureURL, 'status':hackerProfile.status, 'database_key':hackerProfile.key ,'time':_companyRep.updatedTime}
+        elif staffProfile:
+            profile = {'name':staffProfile.name, 'email':staffProfile.email, 'school':staffProfile.school, 'year':staffProfile.year, 'skills':staffProfile.skills, 'homebase':staffProfile.homebase, 'picture_url':staffProfile.pictureURL, 'status':staffProfile.status, 'database_key':staffProfile.key , 'time':_companyRep.updatedTime}
+        elif companyProfile:
+            profile = {'email':_companyRep.email, 'company':_companyRep.company, 'job_title':_companyRep.jobTitle, 'skills':_companyRep.skills, 'picture_url':_companyRep.pictureURL, 'status':_companyRep.status, 'database_key':_companyRep.key , 'time':_companyRep.updatedTime}
+
+        self.write(json.dumps(profile))
