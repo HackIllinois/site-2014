@@ -19,7 +19,7 @@ Google Cloud Storage API to list buckets for the desired project."""
 def main():
 	if getToken():
 		getData()
-	else
+	else:
 		echo "Token Error"
 
 
