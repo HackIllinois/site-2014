@@ -138,6 +138,21 @@ function setupSubmitHandler() {
     });
 }
 
+function setupBusRoutes() {
+    if ($('#travel-0').is(':checked')){
+        $('#bus-routes').removeClass("hidden")
+    }
+
+    $("input[name='travel']").change(function(){
+        if ($('#travel-0').is(':checked')){
+            $('#bus-routes').removeClass("hidden");
+        }
+        else {
+            $('#bus-routes').addClass("hidden");
+        }
+    });
+}
+
 /**
  * Initialize/setup
  */
@@ -147,6 +162,7 @@ $(document).ready(function() {
     possiblySelectFirstField();
     setupSchoolInputField();
     setupSubmitHandler();
+    setupBusRoutes();
 });
 
 })();
