@@ -1,0 +1,4 @@
+These files are for a compute engine instance used to process computationally heavy backend tasks, such as selectively zipping resume's. It uses a Redis worker queue that watches the Task table within the cloud datastore.
+
+main.py - runner and talks to the database
+worker_functions.py - functions that are run within workers from Redis and Rq
