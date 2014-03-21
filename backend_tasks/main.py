@@ -4,25 +4,42 @@ import urllib
 import httplib2
 from redis import Redis
 from rq import Queue
+import googledatastore as datastore
+from googledatastore.helper import *
 #from worker_functions import *
 
-METADATA_SERVER = 'http://metadata/computeMetadata/v1/instance/service-accounts'
-SERVICE_ACCOUNT = 'default'
-GOOGLE_STORAGE_PROJECT_NUMBER = '1024924889757'
+#METADATA_SERVER = 'http://metadata/computeMetadata/v1/instance/service-accounts'
+#SERVICE_ACCOUNT = 'default'
+#GOOGLE_STORAGE_PROJECT_NUMBER = '1024924889757'
 #'x-goog-project-id': GOOGLE_STORAGE_PROJECT_NUMBER
 
-access_token = ''
+#access_token = ''
 
 """This script grabs a token from the metadata server, and queries the
 Google Cloud Storage API to list buckets for the desired project."""
 
 def main():
-	if getToken():
-		getData()
-	else:
-		print "Token Error"
+  datastore.set_options(dataset='hackillinois')
+	print getData()
+
+def getData():
+  req = datastore.RunQueryRequest()
+  q = req.query
+  set_kind(q, kind='Task')
+  set_composite_filter(q.filter,
+                     datastore.CompositeFilter.AND,
+                     set_property_filter(
+                         datastore.Filter(),
+                         'complete', datastore.PropertyFilter.EQUAL, False))
+  resp = datastore.run_query(req)
+  result = []
+  for r in resp.batch.entity_result
+    # key, jobFunction, data
+    result.insert([r.entity.key, r.entity.property[0].value.string_value,r.entity.property[1].value.boolean_value])
+  return result
 
 
+"""
 def getToken():
   token_uri = '%s/%s/token' % (METADATA_SERVER, SERVICE_ACCOUNT)
   http = httplib2.Http()
@@ -49,6 +66,7 @@ def getData():
        print content
     else:
        print resp.status
+"""
 
 if __name__ == '__main__':
   main()
