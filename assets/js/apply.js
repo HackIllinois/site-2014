@@ -142,6 +142,9 @@ function setupBusRoutes() {
     if ($('#travel-0').is(':checked')){
         $('#bus-routes').removeClass("hidden")
     }
+    else {
+        $('#bus-routes').addClass("hidden");
+    }
 
     $("input[name='travel']").change(function(){
         if ($('#travel-0').is(':checked')){
