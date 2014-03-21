@@ -7,8 +7,9 @@ from rq import Queue
 from worker_functions import *
 
 METADATA_SERVER = 'http://metadata/computeMetadata/v1/instance/service-accounts'
-SERVICE_ACCOUNT = 'default'
-GOOGLE_STORAGE_PROJECT_NUMBER = 'YOUR_GOOGLE_STORAGE_PROJECT_NUMBER'
+SERVICE_ACCOUNT = '1024924889757-4v2l726h9pjjt2eksakqcgm5frhqso7u.apps.googleusercontent.com'
+GOOGLE_STORAGE_PROJECT_NUMBER = '1024924889757'
+#'x-goog-project-id': GOOGLE_STORAGE_PROJECT_NUMBER
 
 access_token = ''
 
@@ -37,11 +38,11 @@ def getToken():
 def getData():
     # Construct the request to Google
     # Needs to be updated to the cloud datastore api
-    resp, content = http.request('https://storage.googleapis.com', \
-                                  body=None, \
-                                  headers={'Authorization': 'OAuth ' + access_token, \
-                                           'x-goog-api-version': '2', \
-                                           'x-goog-project-id': GOOGLE_STORAGE_PROJECT_NUMBER })
+    query = "SELECT * FROM Task"
+    resp, content = http.request('https://www.googleapis.com/datastore/v1beta2/datasets/hackillinois/runQuery', \
+                                  method='POST', \
+                                  body='{ "gqlQuery": {"queryString": "'+query+'","allowLiteral": true}}', \
+                                  headers={'Authorization': 'OAuth ' + access_token})
 
     if resp.status == 200:
        print content
