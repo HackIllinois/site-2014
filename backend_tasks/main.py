@@ -20,7 +20,7 @@ Google Cloud Storage API to list buckets for the desired project."""
 
 def main():
   datastore.set_options(dataset='hackillinois')
-	res = getData()
+  res = getData()
   print res
 
 def getData():
