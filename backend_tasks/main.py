@@ -43,7 +43,7 @@ def getData():
     resp, content = http.request('https://www.googleapis.com/datastore/v1beta2/datasets/hackillinois/runQuery', \
                                   method='POST', \
                                   body='{ "gqlQuery": {"queryString": "'+query+'","allowLiteral": true}}', \
-                                  headers={'Authorization': 'OAuth ' + access_token})
+                                  headers={'Authorization': 'Bearer ' + access_token})
 
     if resp.status == 200:
        print content
