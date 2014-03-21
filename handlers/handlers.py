@@ -63,13 +63,9 @@ handlers = [
     RedirectRoute('/admin/testsjs', handler=TestAllJsHandler, name='TestAllJs', strict_slash=True),
 
     RedirectRoute('/mobile/schedule', handler=MobileHandler.ScheduleHandler, name='MobileSchedule', strict_slash=True),
-    # RedirectRoute('/mobile/maps', handler=MobileHandler.MapsHandler, name='MobileMaps', strict_slash=True),
-    RedirectRoute('/mobile/support', handler=MobileHandler.SupportTypeHandler, name='MobileSupportType', strict_slash=True),
+    RedirectRoute('/mobile/support', handler=MobileHandler.SupportHandler, name='MobileSupportType', strict_slash=True),
     RedirectRoute('/mobile/newsfeed', handler=MobileHandler.NewsfeedHandler, name='MobileNewsfeed', strict_slash=True),
-    # RedirectRoute('/mobile/person/staff', handler=MobileHandler.StaffHandler, name='MobileStaff', strict_slash=True),
-    # RedirectRoute('/mobile/person/hackers', handler=MobileHandler.HackersHandler, name='MobileHackers', strict_slash=True),
-    RedirectRoute('/mobile/people', handler=MobileHandler.HackerHandler, name='MobileHacker', strict_slash=True),
-    # RedirectRoute('/mobile/person/companies', handler=MobileHandler.CompaniesHandler, name='MobileCompanies', strict_slash=True),
+    RedirectRoute('/mobile/person', handler=MobileHandler.PersonHandler, name='MobileHacker', strict_slash=True),
     RedirectRoute('/mobile/skills', handler=MobileHandler.SkillsHandler, name='MobileSkills', strict_slash=True),
     RedirectRoute('/mobile/login', handler=MobileHandler.LoginHandler, name='MobileLogin', strict_slash=True),
 

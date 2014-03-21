@@ -17,6 +17,7 @@ class Sponsor(Model):
     status = ndb.TextProperty(default='')
     pictureURL = ndb.TextProperty(default='')
     name = ndb.StringProperty(default='', required=True)
+    updatedTime = ndb.StringProperty(default='')
 
     @classmethod
     def new(cls, data):

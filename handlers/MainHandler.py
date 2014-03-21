@@ -73,19 +73,20 @@ class BaseAdminHandler(Handler):
 class BaseMobileHandler(Handler):
 
     def dispatch(self):
-        if 'AuthName' in self.request.headers:
-            userId = self.request.headers['AuthName']
-            if userId == 'test':
-                super(BaseMobileHandler, self).dispatch()
-            else:
-                # TODO: Cache Attendee, Admin, Sponsor here
-                if db_user = Attendee.search_database({'userId':userId}).get():
-                    super(BaseMobileHandler, self).dispath()
-                elif db_user = Admin.search_database({'userId':userId}).get():
-                    super(BaseMobileHandler, self).dispath()
-                elif db_user = Sponsor.search_database({'userId':userId}).get():
-                    super(BaseMobileHandler, self).dispath()
-                else:
-                    return self.write()
-        else:
-            return self.write()
+        # if 'AuthName' in self.request.headers:
+            # userId = self.request.headers['AuthName']
+            # if userId == 'test':
+        super(BaseMobileHandler, self).dispatch()
+            # else:
+            #     # TODO: Cache Attendee, Admin, Sponsor here
+            #     # db_userAttendee = Attendee.search_database({'userId':userId}).get()
+            #     # if db_user == None:
+            #     #     super(BaseMobileHandler, self).dispath()
+            #     # elif (db_user = Admin.search_database({'userId':userId}).get()) == None:
+            #     #     super(BaseMobileHandler, self).dispath()
+            #     # elif (db_user = Sponsor.search_database({'userId':userId}).get()) == None:
+            #     #     super(BaseMobileHandler, self).dispath()
+            #     # else:
+            #         return self.abort(401)
+        # else:
+        #     return self.abort(401)
