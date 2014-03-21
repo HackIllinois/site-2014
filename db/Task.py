@@ -8,7 +8,8 @@ class Task(Model):
     jobFunction = ndb.StringProperty(required=True)
     complete = ndb.BooleanProperty(default=False)
     data = ndb.JsonProperty(default='[]')
-    creationTime = ndb.DateTimeProperty()
+    creationTime = ndb.DateTimeProperty(auto_now_add=True)
+    completeTime = ndb.DateTimeProperty()
     errorMessages = ndb.TextProperty()
 
     @classmethod
