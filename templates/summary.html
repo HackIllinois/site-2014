@@ -77,6 +77,7 @@
                     <!--<input id="c-food" type=checkbox name="food" onclick="toggleVis(this.name)"> <label id="lfood">Dietary Restrictions</label>&nbsp;&nbsp;-->
                     <input id="c-project" type=checkbox name="project" onclick="toggleVis(this.name)" checked> <label id="lproject">Dietary Restrictions</label>&nbsp;&nbsp;
                     <!--<input id="c-time" type=checkbox name="time" onclick="toggleVis(this.name)"> <label id="ltime">Registered</label>&nbsp;&nbsp;-->
+					<input id="c-resume" type=checkbox name="resume" onclick="toggleVis(this.name)" checked> <label id="lresume">Resume</label>&nbsp;&nbsp;
                 </form>
                 <div id="hackers" class="table-responsive">
                     <table id="usertable" class="table table-bordered table-hover">
@@ -132,6 +133,11 @@
 									</form>
 								</td>
 								<!--<td class="c12" name="ttime"></td>-->
+								<td class="c13" name="tresume">
+									<form name="search_resume">
+										<input type=checkbox name="Has Resume" onclick="searchHackers()"> Has Resume
+									</form>
+								</td>
 								
 
 							</tr>
@@ -149,7 +155,8 @@
                                 <!-- <th name="tfood" class="c10 sort" data-sort="food">Dietary Restrictions</th> -->
                                 <th name="tproject" class="c11 sort" data-sort="project">Project Type</th>
                                 <!-- <th name="ttime" class="c12 sort" data-sort="time">Registered</th> -->
-                                <!-- <th class="c13">Resume</th> -->
+                                <th name="tresume" class="c13">Resume</th>
+								<th class="c14"></th>
                             </tr>
                         </thead>
                         <tbody class="list">
@@ -169,7 +176,7 @@
                                 <!-- <td name="tfood" class="c10 food">{{ h.food }}</td> -->
                                 <td name="tproject" class="c11 project">{{ h.projectType }}</td>
                                 <!-- <td name="ttime" class="c12 time">{{ h.registrationTime }}</td> -->
-                                <td class="c13">{% if h.resume %}<a href='/admin/resume?userId={{ h.userId }}'>Resume</a>{% endif %}</td>
+                                <td name="tresume" class="c13 resume">{% if h.resume %}<a href='/admin/resume?userId={{ h.userId }}'>Resume</a>{% endif %}</td>
                                 <td class="c14 approved"><button class="btn btn-success approve-btn">Approve</button></td>
                             </tr>
                             {% endif %}
@@ -190,7 +197,7 @@
                                 <!-- <td name="tfood" class="c10 food">{{ h.food }}</td> -->
                                 <td name="tproject" class="c11 project">{{ h.projectType }}</td>
                                 <!-- <td name="ttime" class="c12 time">{{ h.registrationTime }}</td> -->
-                                <td class="c13">{% if h.resume %}<a href='/admin/resume?userId={{ h.userId }}'>Resume</a>{% endif %}</td>
+                                <td name="tresume" class="c13 resume">{% if h.resume %}<a href='/admin/resume?userId={{ h.userId }}'>Resume</a>{% endif %}</td>
                                 <td class="c14 approved"><button class="btn btn-danger approve-btn">Un-Approve</button></td>
                             </tr>
                             {% endif %}
@@ -243,6 +250,16 @@
 				for(i = 0; i < search_btn.length; i++)
 				{
 					if(!search_btn[i].checked)
+					{
+						is_filtered = true;
+					}
+				}
+			}
+			if(btn.name == "resume"){
+				search_btn = document.forms['search_' + btn.name].elements;
+				for(i = 0; i < search_btn.length; i++)
+				{
+					if(!search_btn[i].checked == false)
 					{
 						is_filtered = true;
 					}
@@ -319,7 +336,7 @@
 				var hacker_linkedin = rows[j].cells['tlinkedin'].innerHTML;
 				var hacker_github = rows[j].cells['tgithub'].innerHTML;
 				var hacker_project = rows[j].cells['tproject'].innerHTML;
-				
+				var hacker_resume = rows[j].cells['tresume'].innerHTML;
 				if(hacker_name.toUpperCase().indexOf(search_name.toUpperCase()) == -1)
 				{
 					hide = true;
@@ -333,6 +350,10 @@
 					hide = true;
 				}
 				if(hacker_github.toUpperCase().indexOf(search_github.toUpperCase()) == -1)
+				{
+					hide = true;
+				}
+				if(hacker_resume == "" && document.getElementsByName('Has Resume')[0].checked)
 				{
 					hide = true;
 				}
