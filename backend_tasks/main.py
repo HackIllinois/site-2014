@@ -2,8 +2,6 @@
 import json
 import urllib
 import httplib2
-import StringIO
-import boto
 import os
 from redis import Redis
 from rq import Queue
@@ -11,12 +9,10 @@ import googledatastore as datastore
 from googledatastore.helper import *
 #from worker_functions import *
 
-#METADATA_SERVER = 'http://metadata/computeMetadata/v1/instance/service-accounts'
-#SERVICE_ACCOUNT = 'default'
-#GOOGLE_STORAGE_PROJECT_NUMBER = '1024924889757'
-#'x-goog-project-id': GOOGLE_STORAGE_PROJECT_NUMBER
-#access_token = ''
-
+METADATA_SERVER = 'http://metadata/computeMetadata/v1/instance/service-accounts'
+SERVICE_ACCOUNT = 'default'
+GOOGLE_STORAGE_PROJECT_NUMBER = '1024924889757'
+access_token = ''
 # URI scheme for Google Cloud Storage.
 GOOGLE_STORAGE = 'gs'
 # URI scheme for accessing local files.
@@ -54,28 +50,29 @@ def enqueue(tasks):
                timeout=30)
 
 def downloadAllResumes():
-  uri = boto.storage_uri(BUCKET, GOOGLE_STORAGE)
-  dest_dir = '/var/hackillinois/'
-  for filename in uri.get_bucket():
-    src_uri = boto.storage_uri(BUCKET + '/' + filename, GOOGLE_STORAGE)
+  if getToken():"""
+    uri = boto.storage_uri(BUCKET, GOOGLE_STORAGE)
+    dest_dir = '/var/hackillinois/'
+    for filename in uri.get_bucket():
+      src_uri = boto.storage_uri(BUCKET + '/' + filename, GOOGLE_STORAGE)
 
-  # Create a file-like object for holding the object contents.
-  object_contents = StringIO.StringIO()
+    # Create a file-like object for holding the object contents.
+    object_contents = StringIO.StringIO()
 
-  # The unintuitively-named get_file() doesn't return the object
-  # contents; instead, it actually writes the contents to
-  # object_contents.
-  src_uri.get_key().get_file(object_contents)
+    # The unintuitively-named get_file() doesn't return the object
+    # contents; instead, it actually writes the contents to
+    # object_contents.
+    src_uri.get_key().get_file(object_contents)
 
-  local_dst_uri = boto.storage_uri(
-      os.path.join(dest_dir, filename), LOCAL_FILE)
+    local_dst_uri = boto.storage_uri(
+        os.path.join(dest_dir, filename), LOCAL_FILE)
 
-  for dst_uri in (local_dst_uri, bucket_dst_uri):
-    object_contents.seek(0)
-    dst_uri.new_key().set_contents_from_file(object_contents)
-  object_contents.close()
+    for dst_uri in (local_dst_uri, bucket_dst_uri):
+      object_contents.seek(0)
+      dst_uri.new_key().set_contents_from_file(object_contents)
+    object_contents.close()"""
 
-"""
+
 def getToken():
   token_uri = '%s/%s/token' % (METADATA_SERVER, SERVICE_ACCOUNT)
   http = httplib2.Http()
@@ -90,19 +87,25 @@ def getToken():
 
 def getData():
     # Construct the request to Google
-    # Needs to be updated to the cloud datastore api
-    query = "SELECT * FROM Task"
     http = httplib2.Http()
-    resp, content = http.request('https://www.googleapis.com/datastore/v1beta2/datasets/hackillinois/runQuery', \
-                                  method='POST', \
-                                  body='{ "gqlQuery": {"queryString": "'+query+'","allowLiteral": true}}', \
-                                  headers={'Authorization': 'Bearer ' + access_token})
-
+    resp, content = http.request('https://storage.googleapis.com/hackillinois', \
+                                  body=None, \
+                                  headers={'Authorization': 'OAuth ' + access_token, \
+                                           'x-goog-api-version': '2', \
+                                           'x-goog-project-id': GOOGLE_STORAGE_PROJECT_NUMBER })
     if resp.status == 200:
-       print content
+      #download here
+      #content = xml2py.parse(content)
+      for item in #content.ListBucketResult.Contents:
+        if item.Size > 0:
+          resp, content = http.request('https://storage.googleapis.com/hackillinois/'+item.Key, \
+                                    body=None, \
+                                    headers={'Authorization': 'OAuth ' + access_token, \
+                                             'x-goog-api-version': '2', \
+                                             'x-goog-project-id': GOOGLE_STORAGE_PROJECT_NUMBER })
     else:
        print resp.status
-"""
+
 
 if __name__ == '__main__':
   main()
