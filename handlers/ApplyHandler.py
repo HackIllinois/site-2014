@@ -25,11 +25,8 @@ class ApplyHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandle
 
         # This check was added once we closed applicaitons
         # The check does not allow a new user to register, and instead redirects to a page that states that applications are closed
-        if not db_user:
-            return self.render( "simple_message.html",
-                                header=constants.APPLICATION_CLOSED_HEADER,
-                                message=constants.APPLICATION_CLOSED_MESSAGE,
-                                showSocial=True )
+        if db_user is None or (db_user is not None and (db_user.isRegistered == False)):
+            return self.redirect('/apply/closed')
 
         data = {}
         data['errors'] = {} # Needed for template to render
@@ -107,11 +104,17 @@ class ApplyHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandle
         user = users.get_current_user()
         if not user: return self.abort(500, detail='User not logged in')
 
+        db_user = Attendee.search_database({'userId':user.user_id()}).get()
+
+        # This check was added once we closed applicaitons
+        # The check does not allow a new user to register, and instead redirects to a page that states that applications are closed
+        if db_user is None or (db_user is not None and (db_user.isRegistered == False)):
+            return self.redirect('/apply/closed')
+
         # Initialization
         x = {} # dictionary that will be used to create a new Attendee or update one
         errors = {} # Note: 1 error per field
         valid = True
-        db_user = Attendee.search_database({'userId':user.user_id()}).get()
 
         # Save user information
         # https://developers.google.com/appengine/docs/python/users/userclass
@@ -296,6 +299,14 @@ class UpdateCompleteHandler(MainHandler.Handler):
         return self.render( "simple_message.html",
                             header=constants.UPDATE_COMPLETE_HEADER,
                             message=constants.UPDATE_COMPLETE_MESSAGE,
+                            showSocial=True )
+
+
+class ApplicationsClosedHandler(MainHandler.Handler):
+    def get(self):
+        return self.render( "simple_message.html",
+                            header=constants.APPLICATION_CLOSED_HEADER,
+                            message=constants.APPLICATION_CLOSED_MESSAGE,
                             showSocial=True )
 
 
