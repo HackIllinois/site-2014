@@ -15,7 +15,7 @@ UPDATE_COMPLETE_HEADER = 'Application Updated!'
 UPDATE_COMPLETE_MESSAGE = 'Thanks for updating your application!<br>To keep in touch, follow us on Facebook and Twitter.<br>Also, don\'t forget to RSVP to the <a href="https://www.facebook.com/events/285744431573053" target="_blank" style="color: #ef3e36">Facebook event</a>!'
 
 APPLICATION_CLOSED_HEADER = 'Applications Are Closed'
-APPLICATION_CLOSED_MESSAGE = 'I\'m sorry but applicaitons for HackIllinois have closed as of March 21st at midnight.<br>Please try again next year. Happy Hacking!<br><br>If you have alredy registered, please <a href="/logout?redirect=/apply/update" style="color: #ef3e36">Logout</a> and Login with the account you used to register.'
+APPLICATION_CLOSED_MESSAGE = 'We\'re sorry, but applications for HackIllinois closed on March 21st.<br>Please try again next time, and happy hacking!<br><br>If you have already registered, please <a href="/logout?redirect=/apply/update" style="color: #ef3e36">logout</a> and login with the account you used to register.'
 
 ERROR_MESSAGE_PREFIX = 'Please provide '
 ERROR_MESSAGE_SUFFIX = '.'
