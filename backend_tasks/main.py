@@ -33,10 +33,10 @@ def getData():
                          datastore.Filter(),
                          'complete', datastore.PropertyFilter.EQUAL, False))
   resp = datastore.run_query(req)
-  result = Set([])
+  result = []
   for r in resp.batch.entity_result:
     # key, jobFunction, data
-    result.add([r.entity.key, r.entity.property[0].value.string_value,r.entity.property[1].value.boolean_value])
+    result.append([r.entity.key, r.entity.property[0].value.string_value,r.entity.property[1].value.boolean_value])
   return result
 
 
