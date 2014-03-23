@@ -13,7 +13,13 @@ function validateApplication() {
         return false;
     } else if (!$("input[name='shirt']:checked").val()) {
         return false;
-    } else return true;
+    } else if (!$("input[name='travel']:checked").val()) {
+        return false;
+    } else if ($("input[name='travel']:checked").val().indexOf('bus') != -1 && $("select[name='busRoute'] option:selected").text().indexOf("select") != -1) {
+        return false;
+    } else {
+        return true;
+    }
 
 }
 

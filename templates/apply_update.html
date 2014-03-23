@@ -1,0 +1,350 @@
+{% extends "base/base.html" %}
+
+{% block head %}
+<link rel="stylesheet" type="text/css" href="/css/index.css">
+<link rel="stylesheet" type="text/css" href="/lib/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="/lib/selectize/css/selectize.bootstrap3.css">
+<link rel="stylesheet" type="text/css" href="/css/apply.css">
+<style type="text/css">
+div.new-fields {
+    border: 0;
+    border-radius: 5px;
+    box-shadow: 0 0 5px 1px #ef3e36;
+}
+div.new-fields-inner {
+    padding-bottom: 7px;
+}
+</style>
+{% endblock head %}
+
+{% block body %}
+<div class="wrapper bg-stars">
+    <div class="const">
+        <img class="constellations" src="/img/constellations.png">
+    </div>
+    <div class="container">
+        <a href="/">
+            <img class="logo-main-svg header img-responsive center-block" src="/img/hackillinois_logo.svg"/>
+        </a>
+
+        <h2 class="info-text t-centered">{{ data.title }}</h2>
+
+        <div>
+            <p class="loggedin">Hello {{ data.username }}! <a class="rules-link" href="{{ data.logoutUrl }}">Not you</a>?</p>
+        </div>
+
+        <div class="field-missing">
+            <p class="errormessages">
+                Whoops! Looks like you missed a required field or two.
+            </p>
+        </div>
+        <div style="" class="regform-container">
+            <form id="application" class="form-horizontal" role="form" action="{{ data.uploadUrl }}" method="post" enctype="multipart/form-data">
+
+                <div class="new-fields">
+                    <div class="form-group">
+                        <label class="control-label col-sm-3" for="travel">Travel Arrangements<span class="reqd"> *</span></label>
+                        <div class="controls col-sm-9">
+                            <div>
+                                {% for g in data.travelArrangements %}
+                                <label class="radio" for="travel-{{ loop.index0 }}">
+                                    <input type="radio" name="travel" id="travel-{{ loop.index0 }}" value="{{ g.name }}" required="required" {% if g.checked %}checked{% endif %}>
+                                    {{ g.name }}
+                                </label>
+                                {% endfor %}
+                            </div>
+
+                            <span class="help-block no-bottom-margin">
+                                Unfortunately we cannot provide reimbursment for personal travel arrangements.
+                                For more information, please see <a class="rules-link" href="/travel" target="_blank">our travel page</a>.
+                            </span>
+                            <div class="errormessages">
+                                {{ data.errors.travel }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="" id="bus-routes">
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="busRoute">Bus Route<span class="reqd"> *</span></label>
+                            <div class="controls col-sm-9">
+                                <select name="busRoute" class="form-control" required="required">
+                                    <option value="">Please select</option>
+                                    {% for b in data.busRoutes %}
+                                    <option {% if b.selected %}selected{% endif %}>{{ b.name }}</option>
+                                    {% endfor %}
+                                </select>
+                                <div class="errormessages">
+                                    {{ data.errors.busRoute }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Textarea -->
+                    <div class="form-group new-fields-inner">
+                        <label class="control-label col-sm-3" for="teamMembers">Team Members<br>(Emails)</label>
+                        <div class="controls col-sm-9">
+                            <textarea class="{% if data.errors.teamMembers %}errorborders{% endif %} form-control" id="teamMembers" name="teamMembers" rows="3">{{ data.teamMembers }}</textarea>
+                            <span class="help-block no-bottom-margin">
+                                List anyone that you would like to work with.
+                            </span>
+                            <div class="errormessages">
+                                {{ data.errors.teamMembers }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Text input-->
+                <div class="form-group">
+                    <label class="control-label col-sm-3" for="name">Name<span class="reqd"> *</span></label>
+                    <div class="controls col-sm-9">
+
+                        <div class="row">
+                            <div class="col-xs-6">
+                                <input class="{% if data.errors.nameFirst %}errorborders{% endif %} form-control" id="nameFirst" name="nameFirst" type="text" placeholder="First Name" required="required" value="{{ data.nameFirst }}" onclick="this.select();">
+                            </div>
+                            <div class="col-xs-6">
+                                <input class="{% if data.errors.nameLast %}errorborders{% endif %} form-control" id="nameLast" name="nameLast" type="text" placeholder="Last Name" required="required" value="{{ data.nameLast }}" onclick="this.select();">
+                            </div>
+                        </div>
+
+                        {% if data.errors.nameFirst or data.errors.nameLast %}
+                        <div class="row">
+                            <div class="col-xs-6 errormessages">
+                               {{ data.errors.nameFirst }}
+                            </div>
+                            <div class="col-xs-6 errormessages">
+                               {{ data.errors.nameLast }}
+                            </div>
+                        </div>
+                        {% endif %}
+
+                    </div>
+                </div>
+
+                <!-- Text input-->
+                <div class="form-group">
+
+                    <label class="control-label col-sm-3" for="email">Email<span class="reqd"> *</span></label>
+
+                    <div class="controls col-sm-9">
+                        <input class="{% if data.errors.email %}errorborders{% endif %} form-control" id="email" name="email" type="email" placeholder="Email Address" required="required" value="{{ data.email }}" onclick="this.select();">
+                        <div class="errormessages">{{ data.errors.email }}</div>
+                    </div>
+                </div>
+
+                <!-- Multiple Radios (inline) -->
+                <div class="form-group">
+                    <label class="control-label col-sm-3" for="gender">Gender<span class="reqd"> *</span></label>
+                    <div class="controls col-sm-9">
+                  <div>
+                     {% for g in data.genders %}
+                        <label class="radio-inline" for="gender-{{ loop.index0 }}">
+                            <input type="radio" name="gender" id="gender-{{ loop.index0 }}" value="{{ g.name }}" required="required" {% if g.checked %}checked{% endif %}>
+                            {{ g.name }}
+                        </label>
+                     {% endfor %}
+                   </div>
+                   <div class="errormessages">
+                     {{ data.errors.gender }}
+                   </div>
+                    </div>
+                </div>
+
+                <!-- Select Basic -->
+                <div class="form-group">
+                    <label class="control-label col-sm-3" for="school">School<span class="reqd"> *</span></label>
+                    <div class="controls col-sm-9">
+                        <div>
+                           <input class="{% if data.errors.school %}errorborders{% endif %} form-control" id="school" type="text" name="school" required="required" placeholder="School Name"  value="{{ data.school }}" style="color:black">
+                       </div>
+                       <div class="errormessages">
+                     {{ data.errors.school }}
+                  </div>
+                    </div>
+                </div>
+
+                <!-- Multiple Radios -->
+                <div class="form-group">
+                    <label class="control-label col-sm-3" for="year">Year in School<span class="reqd"> *</span></label>
+                    <div class="controls col-sm-9">
+
+                  {% for y in data.years %}
+                        <label class="radio-inline" for="year-{{ loop.index0 }}">
+                            <input type="radio" name="year" id="year-{{ loop.index0 }}" value="{{ y.name }}" required="required" {% if y.checked %}checked{% endif %}>
+                            {{ y.name }}
+                        </label>
+                  {% endfor %}
+
+                 <div class="errormessages">
+                     {{ data.errors.year }}
+                  </div>
+                    </div>
+                </div>
+
+
+                <!-- File Button -->
+                <div class="form-group">
+                    <label class="control-label col-sm-3" for="resume">Resume</label>
+                    <div class="controls col-sm-9">
+                        {% if data.hasResume %}<a href="/apply/myresume" class="view-resume" target="_blank">View Uploaded Resume</a><br> {% endif %}
+                        <input id="resume" name="resume" type="file" accept="application/pdf">
+
+                        <span id="resume-prompt" class="help-block {%if data.errors.resume %}errormessages{% endif %}">
+                           {%if data.errors.resume %}
+                           <div class="errormessages">
+                              {{ data.errors.resume }}
+                          </div>
+                           {% else %}
+                              {% if not data.hasResume %}Please upload{% endif %}{% if data.hasResume %}Update{% endif %} your resume (optional).
+                           {% endif %}
+                        </span>
+
+                    </div>
+                </div>
+
+                <!-- Text input-->
+                <div class="form-group">
+                    <label class="control-label col-sm-3" for="linkedin">LinkedIn</label>
+                    <div class="controls col-sm-9">
+                        <div class="input-group">
+                        <span class="input-group-addon">https://linkedin.com/in/</span>
+                        <input id="linkedin" name="linkedin" type="text" placeholder="LinkedIn profile URL" class="form-control" value="{{ data.linkedin }}" onclick="this.select();">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Prepended text-->
+                <div class="form-group">
+                    <label class="control-label col-sm-3" for="github">Github Username</label>
+                    <div class="controls col-sm-9">
+                        <div class="input-group">
+                            <span class="input-group-addon">https://github.com/</span>
+                            <input id="github" name="github" class="form-control" placeholder="Username" type="text" value="{{ data.github }}" onclick="this.select();">
+                        </div>
+
+                    </div>
+                </div>
+
+
+                <!-- Multiple Radios (inline) -->
+                <div class="form-group">
+                    <label class="control-label col-sm-3" for="shirt">Shirt Size<span class="reqd"> *</span></label>
+                    <div class="controls col-sm-9 errorborders">
+                  {% for s in data.shirts %}
+                     <label class="radio-inline" for="shirt-{{ loop.index0 }}">
+                        <input type="radio" name="shirt" id="shirt-{{ loop.index0 }}" value="{{ s.name }}" required="required" {% if s.checked %}checked{% endif %}>
+                        {{ s.name }}
+                     </label>
+                     {% endfor %}
+
+                  <div class="errormessages">
+                     {{ data.errors.shirt }}
+                  </div>
+
+                    </div>
+                </div>
+
+                <!-- Multiple Checks (inline) -->
+                <div class="form-group">
+                    <label class="control-label col-sm-3 launcher-btn" for="food">Dietary Restrictions</label>
+                    <div class="controls col-sm-9">
+
+                  {% for f in data.foods %}
+                     <label class="food-options" for="food-{{ loop.index0 }}">
+                        <input type="checkbox" name="food" id="food-{{ loop.index0 }}" value="{{ f.name }}" {% if f.checked %}checked{% endif %}/>
+                        {{ f.name }}
+                     </label>
+                  {% endfor %}
+                        <textarea id="foodInfo" name="foodInfo" class="form-control" rows="3" placeholder="Need special food arrangements? Let us know!">{{ data.foodInfo }}</textarea>
+
+                       <div class="errormessages">
+                     {{ data.errors.food }}
+                  </div>
+
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-sm-3" for="project-type">Project Type<span class="reqd"> *</span></label>
+                    <div class="controls col-sm-9">
+                        <select name="projectType" class="{% if data.errors.projectType %}errorborders{% endif %}" >
+                     {% for p in data.projects %}
+                        <option {% if p.selected %}selected=""{% endif %}>{{ p.name }}</option>
+                     {% endfor %}
+                        </select>
+                        <span class="help-block no-bottom-margin">What might you want to work on? It's okay if this changes!</span>
+
+                        <div class="errormessages">
+                     {{ data.errors.projectType }}
+                  </div>
+                    </div>
+                </div>
+
+                <!-- Textarea -->
+                <div class="form-group">
+                    <label class="control-label col-sm-3" for="experience">Previous Experience<span class="reqd"> *</span></label>
+                    <div class="controls col-sm-9">
+
+                  <textarea class="{% if data.errors.experience %}errorborders{% endif %} form-control" id="experience" name="experience" rows="5" required="required">{{data.experience}}</textarea>
+                        <span class="help-block no-bottom-margin">Have you participated in other hackathons? Won any awards? Done any cool projects?
+                        <br>
+                        (If not, that's okay! We're just curious)</span>
+
+                        <div class="errormessages">
+                     {{ data.errors.experience }}
+                  </div>
+
+                    </div>
+                </div>
+
+                <!-- Multiple Checkboxes (inline) -->
+                <div class="form-group">
+                    <label class="control-label col-sm-3 sr-only" for="termsOfService">Agree to terms of service</label>
+                    <div class="controls col-sm-9">
+                        <label class="checkbox" for="termsOfService-0">
+
+                            <input type="checkbox" name="termsOfService" id="termsOfService-0" value="True" required="required" {% if data.termsOfService %}checked{% endif %} {% if data.isUpdatingApplication %} disabled {% endif %}>
+                            I will follow the HackIllinois
+                            <a class="rules-link" href="/rules" target = "_blank">rules</a>, and comply with the
+                            <a class="rules-link" href="/code-of-conduct" target="_blank" >code of conduct</a>.
+                        </label>
+
+                        <div class="errormessages">
+                     {{ data.errors.termsOfService }}
+                  </div>
+
+                    </div>
+                </div>
+                <div class="form-group" style="">
+                    <label class="control-label col-sm-3 sr-only"></label>
+                    <div class="controls col-sm-9">
+                        <button type="submit" id="application-submit" class="btn btn-primary btn-lg pull-left footer btn-hackil" style="width: 100%">{% if data.isUpdatingApplication %}Update{% else %}Launch{% endif %} Application</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="launch-container">
+    <div class="launch-setup">
+        <div class="launch-craft">
+            <img class="rocket-ship" src="/img/rocket/spaceship_nodock2x.png">
+            <img class="rocket-plume" src="/img/rocket/plume2x.png">
+        </div>
+        <img class="launch-pad" src="/img/rocket/dock2x.png">
+        <!--img class="rocket-ship rocket-small" src="img/rocket/spaceship_nodock2x.png">
+        <img class="rocket-ship rocket-small" src="img/rocket/dock2x.png"-->
+    </div>
+</div>
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<!--script src="/js/jquery.min.js"></script-->
+<script src="/lib/selectize/js/standalone/selectize.min.js"></script>
+<script src="/lib/bootstrap/js/bootstrap.min.js"></script>
+<script src="/js/easing.min.js"></script>
+<script src="/js/apply-ui.js"></script>
+<script src="/js/apply.js"></script>
+{% endblock body %}

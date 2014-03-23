@@ -2,7 +2,7 @@ import os
 import jinja2
 import webapp2
 from google.appengine.ext import ereporter
-
+from db.Attendee import Attendee
 
 template_dir = os.path.join(os.path.dirname(__file__), os.path.join(os.pardir, 'templates'))
 jinja_env = jinja2.Environment(loader = jinja2.FileSystemLoader(template_dir), autoescape = True)

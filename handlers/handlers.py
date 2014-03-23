@@ -10,6 +10,7 @@ from MGTHandler import MGTHandler, ParticlesHandler
 from RsvpHandler import RsvpHandler
 import ApplyHandler
 import MentorHandler
+import SkillsHandler
 import SubpageHandlers
 import AdminHandlers
 import MobileHandler
@@ -20,7 +21,9 @@ handlers = [
     RedirectRoute('/emailbackup', handler=EmailBackupHandler, name='EmailBackup', strict_slash=True),
 
     RedirectRoute('/apply', handler=ApplyHandler.ApplyHandler, name='Apply', strict_slash=True),
+    RedirectRoute('/apply/update', handler=ApplyHandler.ApplyHandler, name='ApplyUpdate', strict_slash=True),
     RedirectRoute('/apply/complete', handler=ApplyHandler.ApplyCompleteHandler, name='ApplyComplete', strict_slash=True),
+    RedirectRoute('/apply/closed', handler=ApplyHandler.ApplicationsClosedHandler, name='ApplicationsClosed', strict_slash=True),
     RedirectRoute('/apply/updated', handler=ApplyHandler.UpdateCompleteHandler, name='UpdateComplete', strict_slash=True),
     RedirectRoute('/apply/schoolcheck', handler=ApplyHandler.SchoolCheckHandler, name='SchoolCheck', strict_slash=True),
     RedirectRoute('/apply/schoollist', handler=ApplyHandler.SchoolListHandler, name='SchoolList', strict_slash=True),
@@ -56,20 +59,19 @@ handlers = [
     RedirectRoute('/admin/manager', handler=AdminHandlers.ManagerHandler.ManagerHandler, name='AdminManager', strict_slash=True),
     RedirectRoute('/admin/manager/accesscontrol', handler=AdminHandlers.AccessControlHandler.AccessControlHandler, name='AdminAccessControl', strict_slash=True),
     RedirectRoute('/admin/export', handler=AdminHandlers.ExportHandler.ExportHandler, name='AdminExport', strict_slash=True),
+    # RedirectRoute('/admin/mentors', handler=AdminHandler.AdminMentorsHandler, name='AdminMentors', strict_slash=True),
+    # RedirectRoute('/admin/skills', handler=AdminHandler.AdminSkillsHandler, name='AdminSkills', strict_slash=True),
+
 
     RedirectRoute('/admin/tests', handler=AdminHandlers.TestAllHandler.TestAllHandler, name='TestAll', strict_slash=True),
     RedirectRoute('/admin/testsjs', handler=AdminHandlers.TestAllHandler.TestAllJsHandler, name='TestAllJs', strict_slash=True),
 
     RedirectRoute('/mobile/schedule', handler=MobileHandler.ScheduleHandler, name='MobileSchedule', strict_slash=True),
-    RedirectRoute('/mobile/maps', handler=MobileHandler.MapsHandler, name='MobileMaps', strict_slash=True),
-    RedirectRoute('/mobile/support/types', handler=MobileHandler.SupportTypeHandler, name='MobileSupportType', strict_slash=True),
-    RedirectRoute('/mobile/messages/emergency', handler=MobileHandler.EmergencyHandler, name='MobileEmergency', strict_slash=True),
-    RedirectRoute('/mobile/messages/newsfeed', handler=MobileHandler.NewsfeedHandler, name='MobileNewsfeed', strict_slash=True),
-    RedirectRoute('/mobile/people/staff', handler=MobileHandler.StaffHandler, name='MobileStaff', strict_slash=True),
-    RedirectRoute('/mobile/people/hackers', handler=MobileHandler.HackersHandler, name='MobileHackers', strict_slash=True),
-    RedirectRoute('/mobile/people/hacker/<userId>', handler=MobileHandler.HackerHandler, name='MobileHacker', strict_slash=True),
-    RedirectRoute('/mobile/companies', handler=MobileHandler.CompaniesHandler, name='MobileCompanies', strict_slash=True),
+    RedirectRoute('/mobile/support', handler=MobileHandler.SupportHandler, name='MobileSupportType', strict_slash=True),
+    RedirectRoute('/mobile/newsfeed', handler=MobileHandler.NewsfeedHandler, name='MobileNewsfeed', strict_slash=True),
+    RedirectRoute('/mobile/person', handler=MobileHandler.PersonHandler, name='MobileHacker', strict_slash=True),
     RedirectRoute('/mobile/skills', handler=MobileHandler.SkillsHandler, name='MobileSkills', strict_slash=True),
+    RedirectRoute('/mobile/login', handler=MobileHandler.LoginHandler, name='MobileLogin', strict_slash=True),
 
     RedirectRoute('/logout', handler=LogoutHandler, name='Logout', strict_slash=True),
 

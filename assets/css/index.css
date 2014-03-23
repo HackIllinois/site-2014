@@ -165,7 +165,7 @@ a.apply-btn {
 	max-width: 254px;
 	width: 100%;
 	cursor: pointer;
-	padding: 10px 110px;
+	padding: 10px 55px;
 	-moz-border-radius: 3px;
 	-webkit-border-radius: 3px;
 	border: none;
@@ -438,6 +438,10 @@ button:focus {
 
 .firebase {
 	width: 17%;
+}
+
+.etsy {
+	width: 10%;
 }
 
 .makerlab {

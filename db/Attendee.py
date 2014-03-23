@@ -18,12 +18,25 @@ class Attendee(Model):
     # .nickname(), .email(), .user_id()
     googleUser = ndb.UserProperty()
 
+    travel = ndb.StringProperty(choices=constants.TRAVEL_ARRANGEMENTS + [''], default='')
+    busRoute = ndb.StringProperty(choices=constants.BUS_ROUTES + [''], default='')
+
     nameFirst = ndb.StringProperty()
     nameLast = ndb.StringProperty()
     email = ndb.StringProperty()
     gender = ndb.StringProperty(choices=constants.GENDERS + [''], default='')
     school = ndb.StringProperty()
     year = ndb.StringProperty(choices=constants.YEARS + [''], default='')
+
+    # these vairables are needed for mobile
+    skills = ndb.JsonProperty(default=[''])
+    homebase = ndb.TextProperty(default='')
+    pictureURL = ndb.TextProperty(default='')
+    status = ndb.TextProperty(default='')
+    updatedTime = ndb.StringProperty(default='')
+
+    # Not sure how this will be used yet
+    pushNotificationToken = ndb.StringProperty(default='')
 
     experience = ndb.TextProperty() # unlimited length, not indexed
     resume = ndb.StructuredProperty(Resume)

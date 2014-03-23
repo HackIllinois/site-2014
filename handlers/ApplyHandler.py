@@ -15,8 +15,18 @@ from google.appengine.ext.webapp import blobstore_handlers
 
 class ApplyHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandler):
     def get(self):
+        update = str(self.request.path) == '/apply/update'
+
         user = users.get_current_user()
         if not user: return self.abort(500, detail='User not logged in')
+
+        # Check if user is in our database
+        db_user = Attendee.search_database({'userId': user.user_id()}).get()
+
+        # This check was added once we closed applicaitons
+        # The check does not allow a new user to register, and instead redirects to a page that states that applications are closed
+        if db_user is None or (db_user is not None and (db_user.isRegistered == False)):
+            return self.redirect('/apply/closed')
 
         data = {}
         data['errors'] = {} # Needed for template to render
@@ -27,15 +37,15 @@ class ApplyHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandle
 
         lists = {
             'genders':constants.GENDERS, 'years':constants.YEARS, 'shirts':constants.SHIRTS,
-            'foods':constants.FOODS, 'projects':constants.PROJECTS
+            'foods':constants.FOODS, 'projects':constants.PROJECTS, 'travelArrangements':constants.TRAVEL_ARRANGEMENTS
         }
         for l, options in lists.iteritems(): data[l] = [ {'name':n, 'checked':False} for n in options ]
+
+        data['busRoutes'] = [ {'name':n, 'selected':False} for n in constants.BUS_ROUTES ]
 
         data['title'] = constants.APPLY_TITLE
         data['hasResume'] = False
 
-        # Check if user is in our database
-        db_user = Attendee.search_database({'userId': user.user_id()}).get()
         if db_user:
             if db_user.isRegistered:
                 data['isUpdatingApplication'] = True
@@ -58,7 +68,8 @@ class ApplyHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandle
 
             choose_one_fields = {
                 'gender':('genders','checked'), 'year':('years','checked'),
-                'shirt':('shirts','checked'), 'projectType':('projects','selected')
+                'shirt':('shirts','checked'), 'projectType':('projects','selected'),
+                'travel':('travelArrangements','checked'), 'busRoute':('busRoutes','selected')
             }
             for field, conn in choose_one_fields.iteritems():
                 value = getattr(db_user, field)
@@ -80,18 +91,30 @@ class ApplyHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandle
             if db_user.termsOfService:
                 data['termsOfService'] = True
 
-        data['uploadUrl'] = blobstore.create_upload_url('/apply', gs_bucket_name=constants.BUCKET)
-        self.render("apply.html", data=data)
+        if update:
+            data['uploadUrl'] = blobstore.create_upload_url('/apply/update', gs_bucket_name=constants.BUCKET)
+            return self.render("apply_update.html", data=data)
+        else:
+            data['uploadUrl'] = blobstore.create_upload_url('/apply', gs_bucket_name=constants.BUCKET)
+            return self.render("apply.html", data=data)
 
     def post(self):
+        update = str(self.request.path) == '/apply/update'
+
         user = users.get_current_user()
         if not user: return self.abort(500, detail='User not logged in')
+
+        db_user = Attendee.search_database({'userId':user.user_id()}).get()
+
+        # This check was added once we closed applicaitons
+        # The check does not allow a new user to register, and instead redirects to a page that states that applications are closed
+        if db_user is None or (db_user is not None and (db_user.isRegistered == False)):
+            return self.redirect('/apply/closed')
 
         # Initialization
         x = {} # dictionary that will be used to create a new Attendee or update one
         errors = {} # Note: 1 error per field
         valid = True
-        db_user = Attendee.search_database({'userId':user.user_id()}).get()
 
         # Save user information
         # https://developers.google.com/appengine/docs/python/users/userclass
@@ -107,7 +130,7 @@ class ApplyHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandle
         # Get data from form
         fields = [
             'nameFirst', 'nameLast', 'email', 'gender', 'school', 'year', 'experience',
-            'linkedin', 'github', 'teamMembers', 'shirt', 'projectType'
+            'linkedin', 'github', 'teamMembers', 'shirt', 'projectType', 'travel', 'busRoute'
         ]
         for field in fields:
            x[field] = self.request.get(field)
@@ -192,13 +215,21 @@ class ApplyHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandle
         # Check fields with specific values
         choose_one_fields = {
             'gender':constants.GENDERS, 'year':constants.YEARS,
-            'shirt':constants.SHIRTS, 'projectType':constants.PROJECTS
+            'shirt':constants.SHIRTS, 'projectType':constants.PROJECTS,
+            'travel':constants.TRAVEL_ARRANGEMENTS
         }
         for field in choose_one_fields:
             if field in x and x[field] not in choose_one_fields[field]:
                 errors[field] = constants.ERROR_MESSAGE_PREFIX + \
                                 constants.READABLE_REQUIRED_FIELDS[field] + \
                                 constants.ERROR_MESSAGE_SUFFIX
+                valid = False
+
+        if 'travel' in x and x['travel'] == constants.TRAVEL_ARRANGEMENTS[0]:
+            if 'busRoute' not in x or x['busRoute'] == '':
+                errors['busRoute'] = constants.ERROR_MESSAGE_PREFIX + \
+                                     'Bus Route' + \
+                                     constants.ERROR_MESSAGE_SUFFIX
                 valid = False
 
         if 'food' in x and x['food']:
@@ -238,7 +269,10 @@ class ApplyHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandle
             logging.info(log_str)
             logging.info(str(x))
         else:
-            redir = '/apply'
+            if update:
+                redir = '/apply/update'
+            else:
+                redir = '/apply'
             logging.info('User with email %s submitted an invalid form', x['email'])
             logging.info(str(errors))
 
@@ -265,6 +299,14 @@ class UpdateCompleteHandler(MainHandler.Handler):
         return self.render( "simple_message.html",
                             header=constants.UPDATE_COMPLETE_HEADER,
                             message=constants.UPDATE_COMPLETE_MESSAGE,
+                            showSocial=True )
+
+
+class ApplicationsClosedHandler(MainHandler.Handler):
+    def get(self):
+        return self.render( "simple_message.html",
+                            header=constants.APPLICATION_CLOSED_HEADER,
+                            message=constants.APPLICATION_CLOSED_MESSAGE,
                             showSocial=True )
 
 
