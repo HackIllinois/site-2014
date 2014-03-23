@@ -1,5 +1,6 @@
 import MainAdminHandler
 from db.Attendee import Attendee
+from db import constants
 
 from google.appengine.api import memcache
 

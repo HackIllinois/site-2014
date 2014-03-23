@@ -183,6 +183,10 @@ TEST_SITE_URLS = [
     '/admin/applycount',
     '/admin/schoolcount',
     '/admin/manager',
+    '/admin/export',
+
+    # '/admin/approve/<school>',
+    # '/admin/profile/<userId>',
 
     # '/logout',
 

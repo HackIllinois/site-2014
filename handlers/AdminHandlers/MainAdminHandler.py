@@ -49,7 +49,7 @@ class BaseAdminHandler(MainHandler.Handler):
             logging.info('%s attempted to access an admin page but was denied.', email)
             return self.abort(401)
 
-    def get_admin_user():
+    def get_admin_user(self):
         """Returns the database Admin model for the current logged-in user"""
         user = users.get_current_user()
         if not user: return None
@@ -57,7 +57,7 @@ class BaseAdminHandler(MainHandler.Handler):
         if not admin_user: return None
         return admin_user
 
-    def set_hackers_memcache():
+    def set_hackers_memcache(self):
         """Sets the 'hackers' key in the memcache"""
         hackers = Attendee.search_database({'isRegistered':True})
         data = []
@@ -83,52 +83,13 @@ class BaseAdminHandler(MainHandler.Handler):
 
         return data
 
-    def get_hackers_memecache():
+    def get_hackers_memecache(self):
         """Gets the 'hackers' key from the memcache and updates the memcache if the key is not in the memcache"""
         data = memcache.get('hackers')
         if not data:
-            data = set_hackers_memcache()
+            data = self.set_hackers_memcache()
 
         stats = memcache.get_stats()
         logging.info('Hackers:: Cache Hits:%s  Cache Misses:%s' % (stats['hits'], stats['misses']))
 
         return data
-
-    def get_hackers_csv_memcache(base_url):
-        """Gets the 'hackers_csv' key from the memcache and updates the memcache if the key is not in the memcache"""
-        csv_string = memcache.get('hackers_csv')
-        if not csv_string:
-            hackers = get_hackers_memecache()
-            output = cStringIO.StringIO()
-            writer = csv.writer(output)
-
-            fields = ['nameFirst','nameLast','email',
-                      'gender','school','year','linkedin',
-                      'github','shirt','food','projectType',
-                      'registrationTime','isApproved','userId']
-
-            writer.writerow(constants.CSV_HEADINGS)
-            for h in hackers:
-                row = []
-                for f in fields:
-                    if f in h and h[f] is not None:
-                        row.append(h[f])
-                    else:
-                        row.append('')
-                if 'resume' in h and h['resume'] is not None:
-                    row.append(base_url + '/admin/resume?userId='+h['userId'])
-                else:
-                    row.append('')
-
-                writer.writerow(row)
-
-            csv_string = output.getvalue()
-            output.close()
-
-            if not memcache.add('hackers_csv', csv_string, time=constants.MEMCACHE_TIMEOUT):
-                logging.error('Memcache set failed.')
-
-        stats = memcache.get_stats()
-        logging.info('Hackers CSV:: Cache Hits:%s  Cache Misses:%s' % (stats['hits'], stats['misses']))
-
-        return csv_string
