@@ -3,6 +3,7 @@ import ApplyCountHandler
 import ApproveHandler
 import ApproveSchoolHandler
 import BasicStatsHandler
+import BusRouteStatsHandler
 import ExportHandler
 import IndexHandler
 import ManagerHandler

@@ -52,6 +52,7 @@ handlers = [
     RedirectRoute('/admin/approve/<school>', handler=AdminHandlers.ApproveSchoolHandler.ApproveSchoolHandler, name='AdminApproveSchool', strict_slash=True),
     RedirectRoute('/admin/stats', handler=AdminHandlers.StatsHandler.StatsHandler, name='AdminStats', strict_slash=True),
     RedirectRoute('/admin/basicstats', handler=AdminHandlers.BasicStatsHandler.BasicStatsHandler, name='AdminBasicStats', strict_slash=True),
+    RedirectRoute('/admin/busstats', handler=AdminHandlers.BusRouteStatsHandler.BusRouteStatsHandler, name='AdminBusStats', strict_slash=True),
     RedirectRoute('/admin/resume', handler=AdminHandlers.ResumeHandler.ResumeHandler, name='AdminResume', strict_slash=True),
     RedirectRoute('/admin/applycount', handler=AdminHandlers.ApplyCountHandler.ApplyCountHandler, name='AdminApplyCount', strict_slash=True),
     RedirectRoute('/admin/schoolcount', handler=AdminHandlers.SchoolCountHandler.SchoolCountHandler, name='AdminSchoolCount', strict_slash=True),

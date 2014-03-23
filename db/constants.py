@@ -69,7 +69,11 @@ YEARS = ['Freshman','Sophomore','Junior','Senior','Grad','HS']
 SHIRTS = ['XS','S','M','L','XL','XXL']
 FOODS = ['Vegetarian','Vegan','Gluten Free','Lactose Free', 'Other']
 PROJECTS = ['Software Hack','Hardware Hack','Unsure']
-TRAVEL_ARRANGEMENTS = ['I would like to ride a HackIllinois bus','I will provide my own transportation','I am already in Urbana-Champaign, IL']
+
+TRAVEL_RIDE_BUS = 'I would like to ride a HackIllinois bus'
+TRAVEL_PROVIDE_OWN_TRANSIT = 'I will provide my own transportation'
+TRAVEL_ALREADY_AT_UIUC = 'I am already in Urbana-Champaign, IL'
+TRAVEL_ARRANGEMENTS = [TRAVEL_RIDE_BUS, TRAVEL_PROVIDE_OWN_TRANSIT, TRAVEL_ALREADY_AT_UIUC]
 
 RESUME_MAX_SIZE = 2097152 # in Bytes = 2 mb
 
