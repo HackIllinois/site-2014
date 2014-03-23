@@ -7,12 +7,11 @@ from TropoHandler import TropoHandler
 from SponsorHandler import SponsorDownloadHandler
 from LogoutHandler import LogoutHandler
 from MGTHandler import MGTHandler, ParticlesHandler
-from TestAllHandler import TestAllHandler, TestAllJsHandler
 from RsvpHandler import RsvpHandler
 import ApplyHandler
 import MentorHandler
 import SubpageHandlers
-import AdminHandler
+import Admin
 import MobileHandler
 import ErrorHandlers
 
@@ -43,22 +42,22 @@ handlers = [
 
     RedirectRoute('/sponsor/download', handler=SponsorDownloadHandler, name='SponsorDownload', strict_slash=True),
 
-    RedirectRoute('/admin', handler=AdminHandler.AdminHandler, name='Admin', strict_slash=True),
-    RedirectRoute('/admin/xkcd', handler=AdminHandler.AdminXkcdHandler, name='AdminXkcd', strict_slash=True),
-    RedirectRoute('/admin/approve', handler=AdminHandler.AdminApproveHandler, name='AdminApprove', strict_slash=True),
-    RedirectRoute('/admin/approve/<school>', handler=AdminHandler.AdminApproveSchoolHandler, name='AdminApproveSchool', strict_slash=True),
-    RedirectRoute('/admin/stats', handler=AdminHandler.AdminStatsHandler, name='AdminStats', strict_slash=True),
-    RedirectRoute('/admin/basicstats', handler=AdminHandler.AdminBasicStatsHandler, name='AdminBasicStats', strict_slash=True),
-    RedirectRoute('/admin/resume', handler=AdminHandler.AdminResumeHandler, name='AdminResume', strict_slash=True),
-    RedirectRoute('/admin/applycount', handler=AdminHandler.AdminApplyCountHandler, name='AdminApplyCount', strict_slash=True),
-    RedirectRoute('/admin/schoolcount', handler=AdminHandler.AdminSchoolCountHandler, name='AdminSchoolCount', strict_slash=True),
-    RedirectRoute('/admin/profile/<userId>', handler=AdminHandler.AdminProfileHandler, name='AdminProfile', strict_slash=True),
-    RedirectRoute('/admin/manager', handler=AdminHandler.AdminManagerHandler, name='AdminManager', strict_slash=True),
-    RedirectRoute('/admin/manager/accesscontrol', handler=AdminHandler.AdminAccessControlHandler, name='AdminAccessControl', strict_slash=True),
-    RedirectRoute('/admin/export', handler=AdminHandler.AdminExportHandler, name='AdminExport', strict_slash=True),
+    RedirectRoute('/admin', handler=Admin.IndexHandler.IndexHandler, name='AdminIndex', strict_slash=True),
+    RedirectRoute('/admin/xkcd', handler=Admin.XkcdHandler.XkcdHandler, name='AdminXkcd', strict_slash=True),
+    RedirectRoute('/admin/approve', handler=Admin.ApproveHandler.ApproveHandler, name='AdminApprove', strict_slash=True),
+    RedirectRoute('/admin/approve/<school>', handler=Admin.ApproveSchoolHandler.ApproveSchoolHandler, name='AdminApproveSchool', strict_slash=True),
+    RedirectRoute('/admin/stats', handler=Admin.StatsHandler.StatsHandler, name='AdminStats', strict_slash=True),
+    RedirectRoute('/admin/basicstats', handler=Admin.BasicStatsHandler.BasicStatsHandler, name='AdminBasicStats', strict_slash=True),
+    RedirectRoute('/admin/resume', handler=Admin.ResumeHandler.ResumeHandler, name='AdminResume', strict_slash=True),
+    RedirectRoute('/admin/applycount', handler=Admin.ApplyCountHandler.ApplyCountHandler, name='AdminApplyCount', strict_slash=True),
+    RedirectRoute('/admin/schoolcount', handler=Admin.SchoolCountHandler.SchoolCountHandler, name='AdminSchoolCount', strict_slash=True),
+    RedirectRoute('/admin/profile/<userId>', handler=Admin.ProfileHandler.ProfileHandler, name='AdminProfile', strict_slash=True),
+    RedirectRoute('/admin/manager', handler=Admin.ManagerHandler.ManagerHandler, name='AdminManager', strict_slash=True),
+    RedirectRoute('/admin/manager/accesscontrol', handler=Admin.AccessControlHandler.AccessControlHandler, name='AdminAccessControl', strict_slash=True),
+    RedirectRoute('/admin/export', handler=Admin.ExportHandler.ExportHandler, name='AdminExport', strict_slash=True),
 
-    RedirectRoute('/admin/tests', handler=TestAllHandler, name='TestAll', strict_slash=True),
-    RedirectRoute('/admin/testsjs', handler=TestAllJsHandler, name='TestAllJs', strict_slash=True),
+    RedirectRoute('/admin/tests', handler=Admin.TestAllHandler.TestAllHandler, name='TestAll', strict_slash=True),
+    RedirectRoute('/admin/testsjs', handler=Admin.TestAllHandler.TestAllJsHandler, name='TestAllJs', strict_slash=True),
 
     RedirectRoute('/mobile/schedule', handler=MobileHandler.ScheduleHandler, name='MobileSchedule', strict_slash=True),
     RedirectRoute('/mobile/maps', handler=MobileHandler.MapsHandler, name='MobileMaps', strict_slash=True),
