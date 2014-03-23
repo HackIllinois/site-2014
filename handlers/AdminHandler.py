@@ -145,8 +145,8 @@ class AdminBasicStatsHandler(MainHandler.BaseAdminHandler):
 
         data = memcache.get('basic_stats')
 
-        if not data:
-            fields = {'Schools':'school', 'Genders':'gender', 'Years':'year', 'Shirts':'shirt', 'Diets':'food', 'Projects':'projectType'}
+        if not data or True:
+            fields = {'Schools':'school', 'Genders':'gender', 'Years':'year', 'Shirts':'shirt', 'Diets':'food', 'Projects':'projectType', 'Transit': 'travel'}
             resume = 'Resume'
 
             count = 0
