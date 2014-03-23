@@ -42,6 +42,7 @@ handlers = [
 
     RedirectRoute('/sponsor/download', handler=SponsorDownloadHandler, name='SponsorDownload', strict_slash=True),
 
+    # If you create a new file in AdminHandlers, make sure to add it to AdminHandlers/__init__.py
     RedirectRoute('/admin', handler=AdminHandlers.IndexHandler.IndexHandler, name='AdminIndex', strict_slash=True),
     RedirectRoute('/admin/xkcd', handler=AdminHandlers.XkcdHandler.XkcdHandler, name='AdminXkcd', strict_slash=True),
     RedirectRoute('/admin/approve', handler=AdminHandlers.ApproveHandler.ApproveHandler, name='AdminApprove', strict_slash=True),
