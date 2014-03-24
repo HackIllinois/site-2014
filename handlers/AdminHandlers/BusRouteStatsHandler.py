@@ -52,7 +52,7 @@ class BusRouteStatsHandler(MainAdminHandler.BaseAdminHandler):
                 },
                 {
                     'routeName': 'Case Western Reserve -> Kent State -> Ohio State',
-                    'schools': ['Case Western Reserve University', 'kent state university', 'Kent state university', 'Kent State University', 'Kent State University', 'Ohio State University'],
+                    'schools': ['Case Western Reserve University', 'kent state university', 'Kent state university', 'Kent State University', 'Ohio State University'],
                     'riderCount': 0,
                 },
                 {

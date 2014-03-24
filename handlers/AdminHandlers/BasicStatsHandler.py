@@ -17,12 +17,14 @@ class BasicStatsHandler(MainAdminHandler.BaseAdminHandler):
         if not data or True:
             fields = {'Schools':'school', 'Genders':'gender', 'Years':'year', 'Shirts':'shirt', 'Diets':'food', 'Projects':'projectType', 'Travel':'travel'}
             resume = 'Resume'
+            team = 'Team'
 
             count = 0
             collected = {}
             for f in fields:
                 collected[f] = defaultdict(int)
             collected[resume] = defaultdict(int)
+            collected[team] = defaultdict(int)
 
             hackers = Attendee.search_database({'isRegistered':True})
             for hacker in hackers:
@@ -34,6 +36,11 @@ class BasicStatsHandler(MainAdminHandler.BaseAdminHandler):
                     collected[resume]['Has Resume'] += 1
                 else:
                     collected[resume]['No Resume'] += 1
+
+                if hacker.teamMembers:
+                    collected[team]['Has Team Info'] += 1
+                else:
+                    collected[team]['No Team Info'] += 1
 
             data = {}
 
