@@ -13,7 +13,7 @@ class BusRouteStatsHandler(MainAdminHandler.BaseAdminHandler):
 
         data = memcache.get('bus_route_stats')
 
-        if not data or True:
+        if not data:
             bus_routes = [
                 {
                     'routeName': 'Purdue',
