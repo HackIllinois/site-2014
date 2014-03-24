@@ -26,13 +26,13 @@ class BusRouteStatsHandler(MainAdminHandler.BaseAdminHandler):
                     'riderCount': 0,
                 },
                 {
-                    'routeName': 'Depaul -> Northwestern -> University of Illinois Chicago',
-                    'schools': ['Depaul University', 'Northwestern University', 'University of Illinois - Chicago', 'university of illinois at chicago'],
+                    'routeName': 'Northwestern -> University of Chicago',
+                    'schools': ['Northwestern University', 'University of Chicago'],
                     'riderCount': 0,
                 },
                 {
-                    'routeName': 'Illinois Institute of Technology -> University of Chicago',
-                    'schools': ['Illinois Institute of Technology', 'University of Chicago'],
+                    'routeName': 'Illinois Institute of Technology -> University of Illinois Chicago -> Depaul',
+                    'schools': ['Illinois Institute of Technology', 'Depaul University', 'University of Illinois - Chicago', 'university of illinois at chicago'],
                     'riderCount': 0,
                 },
                 {
@@ -71,8 +71,6 @@ class BusRouteStatsHandler(MainAdminHandler.BaseAdminHandler):
                     else:
                         school_to_routes[school].append(bus_route)
 
-            purdue = {}
-
             # Count the riders
             hackers = Attendee.search_database({'isRegistered':True})
             for hacker in hackers:
@@ -82,13 +80,6 @@ class BusRouteStatsHandler(MainAdminHandler.BaseAdminHandler):
                     for route in school_to_routes[hacker.school]:
                         route['riderCount'] += 1
 
-                if 'Purdue' in hacker.school:
-                    if hacker.travel in purdue:
-                        purdue[hacker.travel] += 1
-                    else:
-                        purdue[hacker.travel] = 1
-
-            print purdue
             data = bus_routes
 
             if not memcache.add('bus_route_stats', data, time=constants.MEMCACHE_TIMEOUT):
