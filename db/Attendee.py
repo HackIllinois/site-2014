@@ -33,7 +33,7 @@ class Attendee(Model):
     homebase = ndb.TextProperty(default='')
     pictureURL = ndb.TextProperty(default='')
     status = ndb.TextProperty(default='')
-    updatedTime = ndb.StringProperty(default='')
+    updatedTime = ndb.IntegerProperty(default=0)
 
     # Not sure how this will be used yet
     pushNotificationToken = ndb.StringProperty(default='')

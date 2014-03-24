@@ -1,4 +1,5 @@
 import AccessControlHandler
+import AddingSkillsHandler
 import ApplyCountHandler
 import ApproveHandler
 import ApproveSchoolHandler
