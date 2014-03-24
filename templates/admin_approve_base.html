@@ -1,0 +1,55 @@
+{% extends "base/admin_base.html" %}
+{% set active_page = "approve" %}
+
+{% block head %}
+    <style type="text/css">
+        .page-header {
+            margin-top: 0;
+        }
+        .t-centered {
+            text-align: center;
+        }
+        .dropdown_button {
+            margin-bottom: 20px;
+        }
+    </style>
+{% endblock head %}
+
+
+{% block body %}
+    <div class="row">
+        <div class="col-md-9">
+            <h1 class="page-header">Hacker Summary<small>&nbsp;&nbsp;</small><small id="count">{{ data.num_people }}</small><small>&nbsp;people</small></h1>
+        </div>
+        <div class="col-md-3">
+            <a href="/admin/export" role="button" class="btn btn-success btn-lg btn-block">Download All as CSV</a>
+        </div>
+    </div>
+
+    <div class="row dropdown_button">
+        <div class="col-md-12">
+            <!-- Single button -->
+            <div class="btn-group">
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                    {{ data.dropdown_button_text }} <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" role="menu">
+                    {% for c in data.categories %}
+                    <li role="presentation"><a role="menuitem" href="{{ c.link }}">{{ c.text }}</a></li>
+                    {% endfor %}
+                    <li role="presentation" class="divider"></li>
+                    <li role="presentation" class="dropdown-header">Bus Routes</li>
+                    {% for r in data.routes %}
+                    <li role="presentation"><a role="menuitem" href="{{ r.link }}">{{ r.text }}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    {% block approve_table %}{% endblock approve_table %}
+
+{% endblock body %}
+
+
+{% block scripts %}{% endblock scripts%}

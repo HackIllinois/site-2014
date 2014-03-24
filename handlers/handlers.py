@@ -48,8 +48,11 @@ handlers = [
     # If you create a new file in AdminHandlers, make sure to add it to AdminHandlers/__init__.py
     RedirectRoute('/admin', handler=AdminHandlers.IndexHandler.IndexHandler, name='AdminIndex', strict_slash=True),
     RedirectRoute('/admin/xkcd', handler=AdminHandlers.XkcdHandler.XkcdHandler, name='AdminXkcd', strict_slash=True),
-    RedirectRoute('/admin/approve', handler=AdminHandlers.ApproveHandler.ApproveHandler, name='AdminApprove', strict_slash=True),
-    RedirectRoute('/admin/approve/<school>', handler=AdminHandlers.ApproveSchoolHandler.ApproveSchoolHandler, name='AdminApproveSchool', strict_slash=True),
+    # RedirectRoute('/admin/approve', handler=AdminHandlers.ApproveHandler.ApproveHandler, name='AdminApprove', strict_slash=True),
+    # RedirectRoute('/admin/approve/<school>', handler=AdminHandlers.ApproveSchoolHandler.ApproveSchoolHandler, name='AdminApproveSchool', strict_slash=True),
+    RedirectRoute('/admin/approve/bus/<route>', handler=AdminHandlers.ApproveHandlers.ApproveRouteHandler, name='AdminApproveRoute', strict_slash=True),
+    RedirectRoute('/admin/approve/<category>', handler=AdminHandlers.ApproveHandlers.ApproveCategoryHandler, name='AdminApproveCategory', strict_slash=True),
+    RedirectRoute('/admin/approve', handler=AdminHandlers.ApproveHandlers.ApproveBaseHandler, name='AdminApprove', strict_slash=True),
     RedirectRoute('/admin/stats', handler=AdminHandlers.StatsHandler.StatsHandler, name='AdminStats', strict_slash=True),
     RedirectRoute('/admin/basicstats', handler=AdminHandlers.BasicStatsHandler.BasicStatsHandler, name='AdminBasicStats', strict_slash=True),
     RedirectRoute('/admin/busstats', handler=AdminHandlers.BusRouteStatsHandler.BusRouteStatsHandler, name='AdminBusStats', strict_slash=True),

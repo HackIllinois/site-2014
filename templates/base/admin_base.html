@@ -140,7 +140,6 @@
                 </div>
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav navbar-right">
-                        <li><p id="total-count" class="navbar-text"></p></li>
 
                         {% for href, caption in navigation_topbar %}
                         <li><a href="{{ href|e }}">{{ caption|e }}</a></li>
@@ -184,13 +183,6 @@
 
         <script src="https://code.jquery.com/jquery.js"></script>
         <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
-        <script>
-            $(document).ready(function() {
-                $.get( "/admin/applycount", function( data ) {
-                    $("#total-count").html(data + " people registered");
-                });
-            });
-        </script>
 
         {% block scripts %}{% endblock %}
 

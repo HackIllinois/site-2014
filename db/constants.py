@@ -4,6 +4,7 @@ BUCKET = 'hackillinois'
 
 MEMCACHE_TIMEOUT = 10800 # seconds = 3 hours , once we close registration increase to 1 day
 MEMCACHE_COUNT_TIMEOUT = 900 # seconds = 15 min
+USE_ADMIN_MEMCACHE = False
 
 APPLY_TITLE = 'Application'
 PROFILE_TITLE = 'Profile'
@@ -46,6 +47,27 @@ CSV_HEADINGS = ['First Name','Last Name','Email',
                 'Registration Time','Is Approved',
                 'User ID','Resume']
 
+# The below array is for more descriptive error messages. @Mattato pls fix.
+# READABLE_REQUIRED_FIELDS = ['First Name','Last Name','E-mail','Gender','School','Year in School','T-shirt size','past experience', 'Please accept the Terms of Service']
+
+EMAIL_MATCH = r"^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$"
+
+GENDERS = ['Male','Female','Other', 'I choose not to specify']
+YEARS = ['Freshman','Sophomore','Junior','Senior','Grad','HS']
+SHIRTS = ['XS','S','M','L','XL','XXL']
+FOODS = ['Vegetarian','Vegan','Gluten Free','Lactose Free', 'Other']
+PROJECTS = ['Software Hack','Hardware Hack','Unsure']
+
+
+TRAVEL_RIDE_BUS = 'I would like to ride a HackIllinois bus'
+TRAVEL_PROVIDE_OWN_TRANSIT = 'I will provide my own transportation'
+TRAVEL_PROVIDE_OWN_TRANSIT_URL = 'self'
+TRAVEL_ALREADY_AT_UIUC = 'I am already in Urbana-Champaign, IL'
+TRAVEL_ALREADY_AT_UIUC_URL = 'uiuc'
+TRAVEL_NO_RESPONSE = 'I have not responded to this quesiton'
+TRAVEL_NO_RESPONSE_URL = 'none'
+TRAVEL_ARRANGEMENTS = [TRAVEL_RIDE_BUS, TRAVEL_PROVIDE_OWN_TRANSIT, TRAVEL_ALREADY_AT_UIUC]
+
 BUS_ROUTES = [
     'Purdue',
     'Iowa St -> Grinnel -> Iowa',
@@ -59,21 +81,6 @@ BUS_ROUTES = [
     'University of Michigan Ann-Arbor'
 ]
 
-# The below array is for more descriptive error messages. @Mattato pls fix.
-# READABLE_REQUIRED_FIELDS = ['First Name','Last Name','E-mail','Gender','School','Year in School','T-shirt size','past experience', 'Please accept the Terms of Service']
-
-EMAIL_MATCH = r"^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$"
-
-GENDERS = ['Male','Female','Other', 'I choose not to specify']
-YEARS = ['Freshman','Sophomore','Junior','Senior','Grad','HS']
-SHIRTS = ['XS','S','M','L','XL','XXL']
-FOODS = ['Vegetarian','Vegan','Gluten Free','Lactose Free', 'Other']
-PROJECTS = ['Software Hack','Hardware Hack','Unsure']
-
-TRAVEL_RIDE_BUS = 'I would like to ride a HackIllinois bus'
-TRAVEL_PROVIDE_OWN_TRANSIT = 'I will provide my own transportation'
-TRAVEL_ALREADY_AT_UIUC = 'I am already in Urbana-Champaign, IL'
-TRAVEL_ARRANGEMENTS = [TRAVEL_RIDE_BUS, TRAVEL_PROVIDE_OWN_TRANSIT, TRAVEL_ALREADY_AT_UIUC]
 
 RESUME_MAX_SIZE = 2097152 # in Bytes = 2 mb
 

@@ -1,11 +1,10 @@
-{% extends "base/admin_base.html" %}
+{% extends "admin_approve_base.html" %}
 {% set active_page = "approve" %}
 
 {% block head %}
+    {{ super() }}
+
     <style type="text/css">
-        .page-header {
-            margin-top: 0;
-        }
         table {
             table-layout: fixed;
         }
@@ -37,7 +36,7 @@
             /*width: 14%;*/
             vertical-align: middle;
         }
-		.width100 {
+        .width100 {
             width:100%;
         }
         .t-centered {
@@ -52,23 +51,13 @@
     </style>
 {% endblock head %}
 
-
-{% block body %}
-    <div class="row">
-        <div class="col-md-9">
-            <h1 class="page-header">Hacker Summary<small>&nbsp;&nbsp;</small><small id="count"></small><small>&nbsp;people</small></h1>
-        </div>
-        <div class="col-md-3">
-            <a href="/admin/export" role="button" class="btn btn-success btn-lg btn-block">Download All as CSV</a>
-        </div>
-    </div>
-
+{% block approve_table %}
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
                 <form name="tcol" onsubmit="return false">
                     <label>Show columns:&nbsp;&nbsp;</label>
-					<!--<input id="c-gender" type=checkbox name="gender" onclick="toggleVis(this.name)"> <label id="lgender">Gender</label>&nbsp;&nbsp;-->
+                    <!--<input id="c-gender" type=checkbox name="gender" onclick="toggleVis(this.name)"> <label id="lgender">Gender</label>&nbsp;&nbsp;-->
                     <input id="c-school" type=checkbox name="school" onclick="toggleVis(this.name)" checked> <label id="lschool">School</label>&nbsp;&nbsp;
                     <!--<input id="c-year" type=checkbox name="year" onclick="toggleVis(this.name)" checked> <label id="lyear">Year</label>&nbsp;&nbsp;-->
                     <input id="c-linkedin" type=checkbox name="linkedin" onclick="toggleVis(this.name)" checked> <label id="llinkedin">LinkedIn</label>&nbsp;&nbsp;
@@ -77,70 +66,70 @@
                     <!--<input id="c-food" type=checkbox name="food" onclick="toggleVis(this.name)"> <label id="lfood">Dietary Restrictions</label>&nbsp;&nbsp;-->
                     <input id="c-project" type=checkbox name="project" onclick="toggleVis(this.name)" checked> <label id="lproject">Dietary Restrictions</label>&nbsp;&nbsp;
                     <!--<input id="c-time" type=checkbox name="time" onclick="toggleVis(this.name)"> <label id="ltime">Registered</label>&nbsp;&nbsp;-->
-					<input id="c-resume" type=checkbox name="resume" onclick="toggleVis(this.name)" checked> <label id="lresume">Resume</label>&nbsp;&nbsp;
+                    <input id="c-resume" type=checkbox name="resume" onclick="toggleVis(this.name)" checked> <label id="lresume">Resume</label>&nbsp;&nbsp;
                 </form>
                 <div id="hackers" class="table-responsive">
                     <table id="usertable" class="table table-bordered table-hover">
-					     <thead>
-							<tr name="search_params">
+                         <thead>
+                            <tr name="search_params">
                                 <td class="search-name" colspan="2"><input id="search_name" type="text" class="width100" placeholder="Search Names" onchange="searchHackers()" /></td>
-								<!--<td class="c3"><input id="search_email" type="text" class="width100" placeholder="Search Email" onchange="searchHackers()"/></td>-->
-								<!--<td class="c4" name="tgender">
-									<form name="search_gender">
-										<input type=checkbox name="Male" onclick="searchHackers()" checked> Male<br>
-										<input type=checkbox name="Female" onclick="searchHackers()" checked> Female<br>
-										<input type=checkbox name="Other" onclick="searchHackers()" checked> Other
-										<!--"I chose not to specify" is being stored as "Other"
-									</form>
-								</td>-->
-								<td class="c5" name="tschool"><input id="search_school" type="text" class="width100" placeholder="Search School" onchange="searchHackers()"/></td>
-								<!--<td class="c6" name="tyear">
-									<form name="search_year">
-										<input type=checkbox name="Freshman" onclick="searchHackers()" checked> Freshman<br>
-										<input type=checkbox name="Sophomore" onclick="searchHackers()" checked> Sophomore<br>
-										<input type=checkbox name="Junior" onclick="searchHackers()" checked> Junior<br>
-										<input type=checkbox name="Senior" onclick="searchHackers()" checked> Senior<br>
-										<input type=checkbox name="Grad" onclick="searchHackers()" checked> Grad<br>
-										<input type=checkbox name="HS" onclick="searchHackers()" checked> HS
-									</form>
-								</td>-->
-								<td class="c7" name="tlinkedin"><input id="search_linkedin" type="text" class="width100" placeholder="Search LinkedIn" onchange="searchHackers()"/></td>
-								<td class="c8" name="tgithub"><input id="search_github" type="text" class="width100" placeholder="Search GitHub" onchange="searchHackers()"/></td>
-								<!--<td class="c9" name="tshirt">
-									<form name="search_shirt">
-										<input type=checkbox name="XS" onclick="searchHackers()" checked> XS<br>
-										<input type=checkbox name="S" onclick="searchHackers()" checked> S<br>
-										<input type=checkbox name="M" onclick="searchHackers()" checked> M<br>
-										<input type=checkbox name="L" onclick="searchHackers()" checked> L<br>
-										<input type=checkbox name="XL" onclick="searchHackers()" checked> XL<br>
-										<input type=checkbox name="XXL" onclick="searchHackers()" checked> XXL
-									</form>
-								</td>-->
-								<!--<td class="c10" name="tfood">
-									<form name="search_food">
-										<input type=checkbox name="Vegetarian" onclick="searchHackers()"> Vegetarian<br>
-										<input type=checkbox name="Vegan" onclick="searchHackers()"> Vegan<br>
-										<input type=checkbox name="Gluten Free" onclick="searchHackers()"> Gluten Free<br>
-										<input type=checkbox name="Lactose Free" onclick="searchHackers()"> Lactose Free<br>
-										<input type=checkbox name="Other" onclick="searchHackers()"> Other
-									</form>
-								</td>-->
-								<td class="c11" name="tproject">
-									<form name="search_project">
-										<input type=checkbox name="Software Hack" onclick="searchHackers()" checked> Software Hack<br>
-										<input type=checkbox name="Hardware Hack" onclick="searchHackers()" checked> Hardware Hack<br>
-										<input type=checkbox name="Unsure" onclick="searchHackers()" checked> Unsure
-									</form>
-								</td>
-								<!--<td class="c12" name="ttime"></td>-->
-								<td class="c13" name="tresume">
-									<form name="search_resume">
-										<input type=checkbox name="Has Resume" onclick="searchHackers()"> Has Resume
-									</form>
-								</td>
+                                <!--<td class="c3"><input id="search_email" type="text" class="width100" placeholder="Search Email" onchange="searchHackers()"/></td>-->
+                                <!--<td class="c4" name="tgender">
+                                    <form name="search_gender">
+                                        <input type=checkbox name="Male" onclick="searchHackers()" checked> Male<br>
+                                        <input type=checkbox name="Female" onclick="searchHackers()" checked> Female<br>
+                                        <input type=checkbox name="Other" onclick="searchHackers()" checked> Other
+                                        <!--"I chose not to specify" is being stored as "Other"
+                                    </form>
+                                </td>-->
+                                <td class="c5" name="tschool"><input id="search_school" type="text" class="width100" placeholder="Search School" onchange="searchHackers()"/></td>
+                                <!--<td class="c6" name="tyear">
+                                    <form name="search_year">
+                                        <input type=checkbox name="Freshman" onclick="searchHackers()" checked> Freshman<br>
+                                        <input type=checkbox name="Sophomore" onclick="searchHackers()" checked> Sophomore<br>
+                                        <input type=checkbox name="Junior" onclick="searchHackers()" checked> Junior<br>
+                                        <input type=checkbox name="Senior" onclick="searchHackers()" checked> Senior<br>
+                                        <input type=checkbox name="Grad" onclick="searchHackers()" checked> Grad<br>
+                                        <input type=checkbox name="HS" onclick="searchHackers()" checked> HS
+                                    </form>
+                                </td>-->
+                                <td class="c7" name="tlinkedin"><input id="search_linkedin" type="text" class="width100" placeholder="Search LinkedIn" onchange="searchHackers()"/></td>
+                                <td class="c8" name="tgithub"><input id="search_github" type="text" class="width100" placeholder="Search GitHub" onchange="searchHackers()"/></td>
+                                <!--<td class="c9" name="tshirt">
+                                    <form name="search_shirt">
+                                        <input type=checkbox name="XS" onclick="searchHackers()" checked> XS<br>
+                                        <input type=checkbox name="S" onclick="searchHackers()" checked> S<br>
+                                        <input type=checkbox name="M" onclick="searchHackers()" checked> M<br>
+                                        <input type=checkbox name="L" onclick="searchHackers()" checked> L<br>
+                                        <input type=checkbox name="XL" onclick="searchHackers()" checked> XL<br>
+                                        <input type=checkbox name="XXL" onclick="searchHackers()" checked> XXL
+                                    </form>
+                                </td>-->
+                                <!--<td class="c10" name="tfood">
+                                    <form name="search_food">
+                                        <input type=checkbox name="Vegetarian" onclick="searchHackers()"> Vegetarian<br>
+                                        <input type=checkbox name="Vegan" onclick="searchHackers()"> Vegan<br>
+                                        <input type=checkbox name="Gluten Free" onclick="searchHackers()"> Gluten Free<br>
+                                        <input type=checkbox name="Lactose Free" onclick="searchHackers()"> Lactose Free<br>
+                                        <input type=checkbox name="Other" onclick="searchHackers()"> Other
+                                    </form>
+                                </td>-->
+                                <td class="c11" name="tproject">
+                                    <form name="search_project">
+                                        <input type=checkbox name="Software Hack" onclick="searchHackers()" checked> Software Hack<br>
+                                        <input type=checkbox name="Hardware Hack" onclick="searchHackers()" checked> Hardware Hack<br>
+                                        <input type=checkbox name="Unsure" onclick="searchHackers()" checked> Unsure
+                                    </form>
+                                </td>
+                                <!--<td class="c12" name="ttime"></td>-->
+                                <td class="c13" name="tresume">
+                                    <form name="search_resume">
+                                        <input type=checkbox name="Has Resume" onclick="searchHackers()"> Has Resume
+                                    </form>
+                                </td>
 
 
-							</tr>
+                            </tr>
                         <thead>
                             <tr>
                                 <th class="c1 sort" data-sort="fname">First Name</th>
@@ -156,7 +145,7 @@
                                 <th name="tproject" class="c11 sort" data-sort="project">Project Type</th>
                                 <!-- <th name="ttime" class="c12 sort" data-sort="time">Registered</th> -->
                                 <th name="tresume" class="c13">Resume</th>
-								<th class="c14"></th>
+                                <th class="c14"></th>
                             </tr>
                         </thead>
                         <tbody class="list">
@@ -209,10 +198,11 @@
             </div>
         </div>
     </div>
-{% endblock body %}
-
+{% endblock approve_table %}
 
 {% block scripts %}
+    {{ super() }}
+
     <script src="//cdnjs.cloudflare.com/ajax/libs/list.js/1.1.0/list.min.js"></script>
     <script src="/js/list.pagination.min.js"></script>
     <script type="text/javascript">
@@ -237,61 +227,61 @@
         var showMode = 'table-cell';
         if (document.all) showMode='block';
 
-		function toggleVis(btn){
-			btn = document.forms['tcol'].elements[btn];
-			cells = document.getElementsByName('t' + btn.name);
-			mode = btn.checked ? showMode : 'none';
+        function toggleVis(btn){
+            btn = document.forms['tcol'].elements[btn];
+            cells = document.getElementsByName('t' + btn.name);
+            mode = btn.checked ? showMode : 'none';
 
-			for(j = 0; j < cells.length; j++) cells[j].style.display = mode;
+            for(j = 0; j < cells.length; j++) cells[j].style.display = mode;
 
             var is_filtered = false;
-			if(btn.name == "project"){
-				search_btn = document.forms['search_' + btn.name].elements;
-				for(i = 0; i < search_btn.length; i++)
-				{
-					if(!search_btn[i].checked)
-					{
-						is_filtered = true;
-					}
-				}
-			}
-			if(btn.name == "resume"){
-				search_btn = document.forms['search_' + btn.name].elements;
-				for(i = 0; i < search_btn.length; i++)
-				{
-					if(!search_btn[i].checked == false)
-					{
-						is_filtered = true;
-					}
-				}
-			}
-			else if(btn.name == "school" || btn.name == "github" || btn.name == "linkedin"){
-				search_btn = document.getElementById('search_' + btn.name).value;
-				if(search_btn != '')
-				{
-					is_filtered = true;
-				}
-			}
-			if(is_filtered && !btn.checked){
-				if(btn.name == "linkedin")
-				{
-					document.getElementById('l' + btn.name).innerHTML = "LinkedIn is filtering";
-				}
-				else{
-					document.getElementById('l' + btn.name).innerHTML = btn.name.replace(btn.name.charAt(0),btn.name.charAt(0).toUpperCase()) + " is filering";
-				}
-				document.getElementById('l' + btn.name).style.color = "red";
-			}
-			else{
-				if(btn.name == "linkedin")
-				{
-					document.getElementById('l' + btn.name).innerHTML = "LinkedIn";
-				}
-				else{
-					document.getElementById('l' + btn.name).innerHTML = btn.name.replace(btn.name.charAt(0),btn.name.charAt(0).toUpperCase());
-				}
-				document.getElementById('l' + btn.name).style.color = "black";
-			}
+            if(btn.name == "project"){
+                search_btn = document.forms['search_' + btn.name].elements;
+                for(i = 0; i < search_btn.length; i++)
+                {
+                    if(!search_btn[i].checked)
+                    {
+                        is_filtered = true;
+                    }
+                }
+            }
+            if(btn.name == "resume"){
+                search_btn = document.forms['search_' + btn.name].elements;
+                for(i = 0; i < search_btn.length; i++)
+                {
+                    if(!search_btn[i].checked == false)
+                    {
+                        is_filtered = true;
+                    }
+                }
+            }
+            else if(btn.name == "school" || btn.name == "github" || btn.name == "linkedin"){
+                search_btn = document.getElementById('search_' + btn.name).value;
+                if(search_btn != '')
+                {
+                    is_filtered = true;
+                }
+            }
+            if(is_filtered && !btn.checked){
+                if(btn.name == "linkedin")
+                {
+                    document.getElementById('l' + btn.name).innerHTML = "LinkedIn is filtering";
+                }
+                else{
+                    document.getElementById('l' + btn.name).innerHTML = btn.name.replace(btn.name.charAt(0),btn.name.charAt(0).toUpperCase()) + " is filering";
+                }
+                document.getElementById('l' + btn.name).style.color = "red";
+            }
+            else{
+                if(btn.name == "linkedin")
+                {
+                    document.getElementById('l' + btn.name).innerHTML = "LinkedIn";
+                }
+                else{
+                    document.getElementById('l' + btn.name).innerHTML = btn.name.replace(btn.name.charAt(0),btn.name.charAt(0).toUpperCase());
+                }
+                document.getElementById('l' + btn.name).style.color = "black";
+            }
         }
 
         function applyBtnCallbacks() {
@@ -316,66 +306,66 @@
             });
         };
 
-		function searchSchool(school_name){
-			document.getElementById('search_school').value = school_name;
-			searchHackers();
-		}
+        function searchSchool(school_name){
+            document.getElementById('search_school').value = school_name;
+            searchHackers();
+        }
 
-		function searchHackers(){
-			search_name = document.getElementById('search_name').value;
+        function searchHackers(){
+            search_name = document.getElementById('search_name').value;
             search_school = document.getElementById('search_school').value;
             search_linkedin = document.getElementById('search_linkedin').value;
             search_github = document.getElementById('search_github').value;
-			search_project = document.forms['search_project'].elements;
-			rows = document.getElementsByName('hackerData');
-			for(j = 0; j < rows.length; j++)
-			{
-				var hide = false;
-				var hacker_name = rows[j].cells['tfirstName'].innerHTML + " " + rows[j].cells['tlastName'].innerHTML;
-				var hacker_school = rows[j].cells['tschool'].innerHTML;
-				var hacker_linkedin = rows[j].cells['tlinkedin'].innerHTML;
-				var hacker_github = rows[j].cells['tgithub'].innerHTML;
-				var hacker_project = rows[j].cells['tproject'].innerHTML;
-				var hacker_resume = rows[j].cells['tresume'].innerHTML;
-				if(hacker_name.toUpperCase().indexOf(search_name.toUpperCase()) == -1)
-				{
-					hide = true;
-				}
-				if(hacker_school.toUpperCase().indexOf(search_school.toUpperCase()) == -1)
-				{
-					hide = true;
-				}
-				if(hacker_linkedin.toUpperCase().indexOf(search_linkedin.toUpperCase()) == -1)
-				{
-					hide = true;
-				}
-				if(hacker_github.toUpperCase().indexOf(search_github.toUpperCase()) == -1)
-				{
-					hide = true;
-				}
-				if(hacker_resume == "" && document.getElementsByName('Has Resume')[0].checked)
-				{
-					hide = true;
-				}
-				var hide_project = true;
-				for(i = 0; i < search_project.length; i++)
-				{
-					if(search_project[i].checked && (search_project[i].name == hacker_project))
-					{
-						hide_project = false;
-					}
-				}
-				hide = hide_project || hide;
-				if(hide)
-				{
-					rows[j].style.display = 'none';
-				}
-				else
-				{
-					rows[j].style.display = 'table-row';
-				}
-			}
-		}
+            search_project = document.forms['search_project'].elements;
+            rows = document.getElementsByName('hackerData');
+            for(j = 0; j < rows.length; j++)
+            {
+                var hide = false;
+                var hacker_name = rows[j].cells['tfirstName'].innerHTML + " " + rows[j].cells['tlastName'].innerHTML;
+                var hacker_school = rows[j].cells['tschool'].innerHTML;
+                var hacker_linkedin = rows[j].cells['tlinkedin'].innerHTML;
+                var hacker_github = rows[j].cells['tgithub'].innerHTML;
+                var hacker_project = rows[j].cells['tproject'].innerHTML;
+                var hacker_resume = rows[j].cells['tresume'].innerHTML;
+                if(hacker_name.toUpperCase().indexOf(search_name.toUpperCase()) == -1)
+                {
+                    hide = true;
+                }
+                if(hacker_school.toUpperCase().indexOf(search_school.toUpperCase()) == -1)
+                {
+                    hide = true;
+                }
+                if(hacker_linkedin.toUpperCase().indexOf(search_linkedin.toUpperCase()) == -1)
+                {
+                    hide = true;
+                }
+                if(hacker_github.toUpperCase().indexOf(search_github.toUpperCase()) == -1)
+                {
+                    hide = true;
+                }
+                if(hacker_resume == "" && document.getElementsByName('Has Resume')[0].checked)
+                {
+                    hide = true;
+                }
+                var hide_project = true;
+                for(i = 0; i < search_project.length; i++)
+                {
+                    if(search_project[i].checked && (search_project[i].name == hacker_project))
+                    {
+                        hide_project = false;
+                    }
+                }
+                hide = hide_project || hide;
+                if(hide)
+                {
+                    rows[j].style.display = 'none';
+                }
+                else
+                {
+                    rows[j].style.display = 'table-row';
+                }
+            }
+        }
 
         $(document).ready(function() {
             // document.getElementById("c-gender").click();
@@ -385,16 +375,16 @@
             // document.getElementById("c-food").click();
             // document.getElementById("c-time").click();
 
-            hackerList.sort('approved');
+            // hackerList.sort('approved');
             applyBtnCallbacks();
 
-            document.getElementById("count").innerHTML = hackerList.size();
-			var col = document.forms['tcol'].elements;
-			for(var i = 0; i < col.length; i++){
-				toggleVis(document.forms['tcol'].elements[i].name);
-			}
-			searchHackers()
-			hackerList.on('searchComplete', function(){document.getElementById("count").innerHTML = hackerList.matchingItems.length;});
+            $('#count').html(hackerList.size());
+            var col = document.forms['tcol'].elements;
+            for(var i = 0; i < col.length; i++){
+                toggleVis(document.forms['tcol'].elements[i].name);
+            }
+            searchHackers();
+            hackerList.on('searchComplete', function(){$('#count').html(hackerList.size());});
         });
     </script>
-{% endblock scripts%}
+{% endblock scripts %}

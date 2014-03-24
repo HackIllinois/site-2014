@@ -1,6 +1,7 @@
 import MainAdminHandler
 import urllib
 from db.Attendee import Attendee
+from db import constants
 
 from google.appengine.api import memcache
 
@@ -13,10 +14,11 @@ class ApproveHandler(MainAdminHandler.BaseAdminHandler):
             return self.abort(401, detail='User does not have permission to view attendees.')
 
         data = {}
-        data['hackers'] = self.get_hackers_memecache()
+        data['hackers'] = self.get_hackers_memecache(constants.USE_ADMIN_MEMCACHE)
 
         # self.render("approve.html", data=data, approveAccess=admin_user.approveAccess, fullAccess=admin_user.fullAccess)
-        self.render("summary.html", data=data, approveAccess=admin_user.approveAccess, fullAccess=admin_user.fullAccess)
+        # self.render("summary.html", data=data, approveAccess=admin_user.approveAccess, fullAccess=admin_user.fullAccess)
+        self.render("admin_approve_base.html", data=data, approveAccess=admin_user.approveAccess, fullAccess=admin_user.fullAccess)
 
     def post(self):
         userId = str(urllib.unquote(self.request.get('userId')))

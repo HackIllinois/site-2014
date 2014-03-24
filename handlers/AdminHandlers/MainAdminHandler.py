@@ -52,10 +52,33 @@ class BaseAdminHandler(MainHandler.Handler):
     def get_admin_user(self):
         """Returns the database Admin model for the current logged-in user"""
         user = users.get_current_user()
-        if not user: return None
+        if not user:
+            return None
         admin_user = Admin.search_database({'email': user.email()}).get()
-        if not admin_user: return None
+        if not admin_user:
+            return None
         return admin_user
+
+    def get_hackers_memecache(self, use_memcache=False):
+        """Gets the 'hackers' key from the memcache and updates the memcache if the key is not in the memcache"""
+        data = memcache.get('hackers')
+        if data is None or not use_memcache:
+            data = self.set_hackers_memcache()
+        return data
+
+    def get_apply_count_memcache(self, use_memcache=False):
+        """Gets the 'apply_count' key from memcache"""
+        cached_count = memcache.get('apply_count')
+        if cached_count is None or not use_memcache:
+            cached_count = self.set_apply_count_memcache()
+        return cached_count
+
+    def get_approve_count_memcache(self, use_memcache=False):
+        """Gets the 'approve_count' key from memcache"""
+        cached_count = memcache.get('approve_count')
+        if cached_count is None or not use_memcache:
+            cached_count = self.set_approve_count_memcache()
+        return cached_count
 
     def set_hackers_memcache(self):
         """Sets the 'hackers' key in the memcache"""
@@ -83,13 +106,18 @@ class BaseAdminHandler(MainHandler.Handler):
 
         return data
 
-    def get_hackers_memecache(self):
-        """Gets the 'hackers' key from the memcache and updates the memcache if the key is not in the memcache"""
-        data = memcache.get('hackers')
-        if not data:
-            data = self.set_hackers_memcache()
+    def set_apply_count_memcache(self):
+        """Sets the 'apply_count' key in memcache"""
+        q = Attendee.query(Attendee.isRegistered == True)
+        cached_count = q.count()
+        if not memcache.add('apply_count', cached_count, time=constants.MEMCACHE_COUNT_TIMEOUT):
+            logging.error('Memcache set failed.')
+        return cached_count
 
-        stats = memcache.get_stats()
-        logging.info('Hackers:: Cache Hits:%s  Cache Misses:%s' % (stats['hits'], stats['misses']))
-
-        return data
+    def set_approve_count_memcache(self):
+        """Sets the 'approve_count' key in memcache"""
+        q = Attendee.search_database({'isRegistered':True, 'isApproved':True})
+        cached_count = q.count()
+        if not memcache.add('approve_count', cached_count, time=constants.MEMCACHE_COUNT_TIMEOUT):
+            logging.error('Memcache set failed.')
+        return cached_count

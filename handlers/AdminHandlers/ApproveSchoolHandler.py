@@ -1,5 +1,6 @@
 import MainAdminHandler
 import urllib
+from db import constants
 
 class ApproveSchoolHandler(MainAdminHandler.BaseAdminHandler):
     def get(self, school):
@@ -12,7 +13,7 @@ class ApproveSchoolHandler(MainAdminHandler.BaseAdminHandler):
 
         data = {}
         data['hackers'] = []
-        hackers = self.get_hackers_memecache()
+        hackers = self.get_hackers_memecache(constants.USE_ADMIN_MEMCACHE)
         for h in hackers:
             if h['school'] == school:
                 data['hackers'].append(h)

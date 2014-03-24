@@ -25,8 +25,8 @@ class ApplyHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandle
 
         # This check was added once we closed applicaitons
         # The check does not allow a new user to register, and instead redirects to a page that states that applications are closed
-        if db_user is None or (db_user is not None and (db_user.isRegistered == False)):
-            return self.redirect('/apply/closed')
+#        if db_user is None or (db_user is not None and (db_user.isRegistered == False)):
+#            return self.redirect('/apply/closed')
 
         data = {}
         data['errors'] = {} # Needed for template to render
@@ -108,8 +108,8 @@ class ApplyHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandle
 
         # This check was added once we closed applicaitons
         # The check does not allow a new user to register, and instead redirects to a page that states that applications are closed
-        if db_user is None or (db_user is not None and (db_user.isRegistered == False)):
-            return self.redirect('/apply/closed')
+#        if db_user is None or (db_user is not None and (db_user.isRegistered == False)):
+#            return self.redirect('/apply/closed')
 
         # Initialization
         x = {} # dictionary that will be used to create a new Attendee or update one

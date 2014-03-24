@@ -19,11 +19,20 @@ class ExportHandler(MainAdminHandler.BaseAdminHandler):
         self.response.headers['Content-Type'] = 'text/csv'
         self.response.headers['Content-Disposition'] = 'attachment;filename=' + dt + '-attendees.csv'
 
-        return self.write(self.get_hackers_csv_memcache(self.request.application_url))
+        return self.write(self.get_hackers_csv_memcache(self.request.application_url, constants.USE_ADMIN_MEMCACHE))
 
+    def get_hackers_csv_memcache(self, base_url, use_memcache=False):
+        """Gets the 'hackers_csv' key from the memcache and updates the memcache if the key is not in the memcache"""
+        csv_string = memcache.get('hackers_csv')
+        if csv_string is None or not use_memcache:
+            csv_string = self.set_hackers_csv_memcache(base_url)
+
+        stats = memcache.get_stats()
+        logging.info('Hackers CSV:: Cache Hits:%s  Cache Misses:%s' % (stats['hits'], stats['misses']))
+        return csv_string
 
     def set_hackers_csv_memcache(self, base_url):
-        hackers = self.get_hackers_memecache()
+        hackers = self.get_hackers_memecache(constants.USE_ADMIN_MEMCACHE)
         output = cStringIO.StringIO()
         writer = csv.writer(output)
 
@@ -52,17 +61,5 @@ class ExportHandler(MainAdminHandler.BaseAdminHandler):
 
         if not memcache.add('hackers_csv', csv_string, time=constants.MEMCACHE_TIMEOUT):
             logging.error('Memcache set failed.')
-
-        return csv_string
-
-
-    def get_hackers_csv_memcache(self, base_url):
-        """Gets the 'hackers_csv' key from the memcache and updates the memcache if the key is not in the memcache"""
-        csv_string = memcache.get('hackers_csv')
-        if not csv_string:
-            csv_string = self.set_hackers_csv_memcache(base_url)
-
-        stats = memcache.get_stats()
-        logging.info('Hackers CSV:: Cache Hits:%s  Cache Misses:%s' % (stats['hits'], stats['misses']))
 
         return csv_string
