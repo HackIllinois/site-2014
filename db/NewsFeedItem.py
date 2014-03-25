@@ -4,14 +4,15 @@ from Model import Model
 from Room import Room
 from google.appengine.ext.db import BadValueError
 
-class Schedule(Model):
+class NewsFeedItem(Model):
 	Model._automatically_add_event_as_ancestor()
 
-	event_name = StringProperty()
-	description = TextProperty()
-	location = StructuredProperty(Room)
+	description = StringProperty()
 	time = IntegerProperty()
 	icon_url = TextProperty()
+	highlighted = JsonProperty() #[[range,color],[range,color]],
+	emergency = BooleanProperty()
+
 
 	@classmethod
 	def new(cls, data):
@@ -22,4 +23,4 @@ class Schedule(Model):
 
 	@classmethod
 	def unique_properties(cls):
-		return ['event_name']
+		return ['description']
