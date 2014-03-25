@@ -14,8 +14,10 @@ from google.appengine.ext.webapp import blobstore_handlers
 
 
 class ApplyHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandler):
-    def get(self):
-        update = str(self.request.path) == '/apply/update'
+    def get(self, unique_string=None):
+        path = str(self.request.path)
+
+        update = path == '/apply/update'
 
         user = users.get_current_user()
         if not user: return self.abort(500, detail='User not logged in')
@@ -98,7 +100,7 @@ class ApplyHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandle
             data['uploadUrl'] = blobstore.create_upload_url('/apply', gs_bucket_name=constants.BUCKET)
             return self.render("apply.html", data=data)
 
-    def post(self):
+    def post(self, unique_string):
         update = str(self.request.path) == '/apply/update'
 
         user = users.get_current_user()
