@@ -1,14 +1,16 @@
 from google.appengine.ext import ndb
 from Model import Model
 import constants
+import hashlib
 
 class Whitelist(Model):
     Model._automatically_add_event_as_ancestor()
 
-    uniqueString = ndb.StringProperty()
+    intendedRecipientEmail = ndb.StringProperty()
+    uniqueString = ndb.ComputedProperty(lambda self: hashlib.sha224(self.intendedRecipientEmail).hexdigest())
+
     enabled = ndb.BooleanProperty(default=True)
 
-    intendedRecipientEmail = ndb.StringProperty()
     userEmail = ndb.StringProperty()
     userId = ndb.StringProperty()
 
