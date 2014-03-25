@@ -33,7 +33,7 @@ class BasicStatsHandler(MainAdminHandler.BaseAdminHandler):
         for f in fields:
             collected[f] = defaultdict(int)
         collected[resume] = defaultdict(int)
-		collected[team] = defaultdict(int)
+        collected[team] = defaultdict(int)
 
         hackers = Attendee.search_database({'isRegistered':True})
         for hacker in hackers:
