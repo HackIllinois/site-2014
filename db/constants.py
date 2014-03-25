@@ -8,6 +8,7 @@ USE_ADMIN_MEMCACHE = False
 
 APPLY_TITLE = 'Application'
 PROFILE_TITLE = 'Profile'
+RSVP_TITLE = 'RSVP'
 
 APPLY_COMPLETE_HEADER = 'Application Complete!'
 APPLY_COMPLETE_MESSAGE = 'Thanks for applying! To keep in touch, follow us on Facebook and Twitter. Also, don\'t forget to RSVP to the <a href="https://www.facebook.com/events/285744431573053" target="_blank" style="color: #ef3e36">Facebook event</a>!'
