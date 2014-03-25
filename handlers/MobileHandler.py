@@ -28,7 +28,7 @@ def set_hacker_memcache():
                     'homebase':hackerProfile.homebase, 
                     'fb_url':hackerProfile.pictureURL, 
                     'status':hackerProfile.status, 
-                    'database_key':str(hackerProfile.key),
+                    'database_key':hackerProfile.email,
                     'time':hackerProfile.updatedTime, 
                     'type':'hacker'})
 
@@ -50,7 +50,7 @@ def set_staff_memcache():
                     'homebase':staff_profile.homebase, 
                     'fb_url':staff_profile.pictureURL, 
                     'status':staff_profile.status, 
-                    'database_key':str(staff_profile.key) , 
+                    'database_key':staff_profile.email, 
                     'time':staff_profile.updatedTime, 
                     'type':'staff'})
 
@@ -71,7 +71,7 @@ def set_mentor_memcache():
                     'skills':mentor_profile.skills, 
                     'fb_url':mentor_profile.pictureURL, 
                     'status':mentor_profile.status, 
-                    'database_key':str(mentor_profile.key) , 
+                    'database_key':mentor_profile.email, 
                     'time':mentor_profile.updatedTime, 
                     'type':'mentor'})
 
@@ -111,7 +111,7 @@ def get_people_memecache(table_key):
         all_data = memcache.get('mentor_mobile')
 
         if not all_data:
-            all_data set_mentor_memcache()
+            all_data = set_mentor_memcache()
 
     elif table_key == 'staff_mobile':
         all_data = memcache.get('staff_mobile')
@@ -192,7 +192,7 @@ class PersonHandler(MainHandler.BaseMobileHandler):
                         'homebase':staffProfile.homebase, 
                         'fb_url':staffProfile.pictureURL, 
                         'status':staffProfile.status, 
-                        'database_key':str(staffProfile.key) , 
+                        'database_key':staffProfile.email, 
                         'time':staffProfile.updatedTime, 
                         'type':'staff'}
                         listOfStaff.append(_staff)
@@ -207,7 +207,7 @@ class PersonHandler(MainHandler.BaseMobileHandler):
                             'homebase':staffProfile.homebase, 
                             'fb_url':staffProfile.pictureURL, 
                             'status':staffProfile.status, 
-                            'database_key':str(staffProfile.key) , 
+                            'database_key':staffProfile.email, 
                             'time':staffProfile.updatedTime, 
                             'type':'staff'}
                             listOfStaff.append(_staff)
@@ -227,7 +227,7 @@ class PersonHandler(MainHandler.BaseMobileHandler):
                             'skills':_companyRep.skills, 
                             'fb_url':_companyRep.pictureURL, 
                             'status':_companyRep.status, 
-                            'database_key':str(_companyRep.key) , 
+                            'database_key':_companyRep.email, 
                             'time':_companyRep.updatedTime, 
                             'type':'mentor'}
                             companyProfiles.append(companyRepProfile)
@@ -241,7 +241,7 @@ class PersonHandler(MainHandler.BaseMobileHandler):
                                 'skills':_companyRep.skills, 
                                 'fb_url':_companyRep.pictureURL, 
                                 'status':_companyRep.status, 
-                                'database_key':str(_companyRep.key) , 
+                                'database_key':_companyRep.email, 
                                 'time':_companyRep.updatedTime, 
                                 'type':'mentor'}
                                 companyProfiles.append(companyRepProfile)
@@ -258,8 +258,7 @@ class PersonHandler(MainHandler.BaseMobileHandler):
                         name = ''
                         if hackerProfile.nameFirst: name+=hackerProfile.nameFirst + ' '
                         if hackerProfile.nameLast: name+=hackerProfile.nameLast
-                        _hacker = 
-                            {'name':name, 
+                        _hacker = {'name':name, 
                             'email':hackerProfile.email, 
                             'school':hackerProfile.school, 
                             'year':hackerProfile.year, 
@@ -267,7 +266,7 @@ class PersonHandler(MainHandler.BaseMobileHandler):
                             'homebase':hackerProfile.homebase, 
                             'fb_url':hackerProfile.pictureURL, 
                             'status':hackerProfile.status, 
-                            'database_key':str(hackerProfile.key),
+                            'database_key':hackerProfile.email,
                             'time':hackerProfile.updatedTime, 
                             'type':'hacker'}
                         listOfHackers.append(_hacker)
@@ -277,8 +276,7 @@ class PersonHandler(MainHandler.BaseMobileHandler):
                             name = ''
                             if hackerProfile.nameFirst: name+=hackerProfile.nameFirst + ' '
                             if hackerProfile.nameLast: name+=hackerProfile.nameLast
-                            _hacker = 
-                            {'name':name, 
+                            _hacker = {'name':name, 
                             'email':hackerProfile.email, 
                             'school':hackerProfile.school, 
                             'year':hackerProfile.year, 
@@ -286,30 +284,65 @@ class PersonHandler(MainHandler.BaseMobileHandler):
                             'homebase':hackerProfile.homebase, 
                             'fb_url':hackerProfile.pictureURL, 
                             'status':hackerProfile.status, 
-                            'database_key':str(hackerProfile.key) ,
+                            'database_key':hackerProfile.email,
                             'time':hackerProfile.updatedTime, 
                             'type':'hacker'}
                             listOfHackers.append(_hacker)
                 return self.write(json.dumps(listOfHackers))
             
-            # TODO: need to revise and finish this function
             if 'key' == keyParams:
                 profile = params['key'].get()
-                for hackerProfile in profile:
-                    name = ''
-                    if hackerProfile.nameFirst: name+=hackerProfile.nameFirst + ' '
-                    if hackerProfile.nameLast: name+=hackerProfile.nameLast
-                    hackerProfile = [{'name':name, 
-                    'email':hackerProfile.email, 
-                    'school':hackerProfile.school, 
-                    'year':hackerProfile.year, 
-                    'skills':hackerProfile.skills, 
-                    'homebase':hackerProfile.homebase, 
-                    'picture_url':hackerProfile.pictureURL, 
-                    'status':hackerProfile.status, 
-                    'database_key':str(hackerProfile.key) ,
-                    'time':hackerProfile.updatedTime}]
-                    return self.write(json.dumps(hackerProfile))
+
+                hackerProfiles = get_people_memecache('hacker_mobile')
+                mentorProfiles = get_people_memecache('mentor_mobile')
+                staffProfiles = get_people_memecache('staff_mobile')
+
+                for hackerProfile in hackerProfiles:
+                    if hackerProfile.email == profile:
+                        name = ''
+                        if hackerProfile.nameFirst: name+=hackerProfile.nameFirst + ' '
+                        if hackerProfile.nameLast: name+=hackerProfile.nameLast
+                        hackerProfile = [{'name':name, 
+                        'email':hackerProfile.email, 
+                        'school':hackerProfile.school, 
+                        'year':hackerProfile.year, 
+                        'skills':hackerProfile.skills, 
+                        'homebase':hackerProfile.homebase, 
+                        'picture_url':hackerProfile.pictureURL, 
+                        'status':hackerProfile.status, 
+                        'database_key':hackerProfile.email,
+                        'time':hackerProfile.updatedTime}]
+                        return self.write(json.dumps(hackerProfile))
+
+                for mentorProfile in mentorProfiles:
+                    if mentorProfile.email == profile:
+                        companyRepProfile = [{'name':mentorProfile.name,
+                                'email':mentorProfile.email, 
+                                'company':mentorProfile.company, 
+                                'job_title':mentorProfile.jobTitle, 
+                                'skills':mentorProfile.skills, 
+                                'fb_url':mentorProfile.pictureURL, 
+                                'status':mentorProfile.status, 
+                                'database_key':mentorProfile.email, 
+                                'time':mentorProfile.updatedTime, 
+                                'type':'mentor'}]
+                        return self.write(json.dumps(companyRepProfile))
+
+                for staffProfile in staffProfiles:
+                    if staffProfile.email == profile:
+                        _staff = [{'name':staffProfile.name, 
+                            'email':staffProfile.email, 
+                            'school':staffProfile.school, 
+                            'year':staffProfile.year, 
+                            'skills':staffProfile.skills, 
+                            'homebase':staffProfile.homebase, 
+                            'fb_url':staffProfile.pictureURL, 
+                            'status':staffProfile.status, 
+                            'database_key':staffProfile.email, 
+                            'time':staffProfile.updatedTime, 
+                            'type':'staff'}]
+                        return self.write(json.dumps(_staff))
+
         else:
             #get all hacker models
             listOfHackers = []
@@ -328,7 +361,7 @@ class PersonHandler(MainHandler.BaseMobileHandler):
                     'homebase':hackerProfile.homebase, 
                     'fb_url':hackerProfile.pictureURL, 
                     'status':hackerProfile.status, 
-                    'database_key':str(hackerProfile.key) ,
+                    'database_key':hackerProfile.email,
                     'time':hackerProfile.updatedTime, 
                     'type':'hacker'}
                     listOfHackers.append(_hacker)
@@ -346,7 +379,7 @@ class PersonHandler(MainHandler.BaseMobileHandler):
                         'homebase':hackerProfile.homebase, 
                         'fb_url':hackerProfile.pictureURL, 
                         'status':hackerProfile.status, 
-                        'database_key':str(hackerProfile.key) ,
+                        'database_key':hackerProfile.email,
                         'time':hackerProfile.updatedTime, 
                         'type':'hacker'}
                         listOfHackers.append(_hacker)
@@ -365,7 +398,7 @@ class PersonHandler(MainHandler.BaseMobileHandler):
                     'homebase':staffProfile.homebase, 
                     'fb_url':staffProfile.pictureURL, 
                     'status':staffProfile.status, 
-                    'database_key':str(staffProfile.key) , 
+                    'database_key':staffProfile.email, 
                     'time':staffProfile.updatedTime, 
                     'type':'staff'}
                     listOfStaff.append(_staff)
@@ -380,7 +413,7 @@ class PersonHandler(MainHandler.BaseMobileHandler):
                         'homebase':staffProfile.homebase, 
                         'fb_url':staffProfile.pictureURL, 
                         'status':staffProfile.status, 
-                        'database_key':str(staffProfile.key) , 
+                        'database_key':staffProfile.email, 
                         'time':staffProfile.updatedTime, 
                         'type':'staff'}
                         listOfStaff.append(_staff)
@@ -399,7 +432,7 @@ class PersonHandler(MainHandler.BaseMobileHandler):
                         'skills':_companyRep.skills, 
                         'fb_url':_companyRep.pictureURL, 
                         'status':_companyRep.status, 
-                        'database_key':str(_companyRep.key) , 
+                        'database_key':_companyRep.email, 
                         'time':_companyRep.updatedTime, 
                         'type':'mentor'}
                         listOfMentors.append(companyRepProfile)
@@ -413,7 +446,7 @@ class PersonHandler(MainHandler.BaseMobileHandler):
                             'skills':_companyRep.skills, 
                             'fb_url':_companyRep.pictureURL, 
                             'status':_companyRep.status, 
-                            'database_key':str(_companyRep.key) , 
+                            'database_key':_companyRep.email, 
                             'time':_companyRep.updatedTime, 
                             'type':'mentor'}
                             listOfMentors.append(companyRepProfile)
