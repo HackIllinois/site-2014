@@ -12,8 +12,6 @@ from google.appengine.api import users
 from google.appengine.ext import blobstore
 from google.appengine.ext.webapp import blobstore_handlers
 
-
-
 class RsvpHandler(MainHandler.Handler):
     def get(self):
         user = users.get_current_user()
