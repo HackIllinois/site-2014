@@ -5,11 +5,15 @@ from Model import Model
 class Status(Model):
     Model._automatically_add_event_as_ancestor()
 
-    status = ndb.StringProperty(choices=constants.SHIRTS + [''], default='')
+    status = ndb.StringProperty(choices=constants.STATUSES, default='Not Approved')
+
+    approvedTime = ndb.DateTimeProperty()
+    waitlistedTime = ndb.DateTimeProperty()
+    rsvpTime = ndb.DateTimeProperty()
 
     @classmethod
     def new(cls, data):
-        model = cls()
+        status = cls()
         for k in data:
-            setattr(model, k, data[k])
-        return model
+            setattr(status, k, data[k])
+        return status

@@ -73,6 +73,13 @@ class BaseAdminHandler(MainHandler.Handler):
             cached_count = self.set_apply_count_memcache()
         return cached_count
 
+    def get_school_count_memcache(self, use_memcache=False):
+        """Gets the 'school_count' key from memcache"""
+        cached_count = memcache.get('school_count')
+        if cached_count is None or not use_memcache:
+            cached_count = self.set_school_count_memcache()
+        return cached_count
+
     def get_approve_count_memcache(self, use_memcache=False):
         """Gets the 'approve_count' key from memcache"""
         cached_count = memcache.get('approve_count')
@@ -118,6 +125,15 @@ class BaseAdminHandler(MainHandler.Handler):
         q = Attendee.query(Attendee.isRegistered == True)
         cached_count = q.count()
         if not memcache.add('apply_count', cached_count, time=constants.MEMCACHE_COUNT_TIMEOUT):
+            logging.error('Memcache set failed.')
+        return cached_count
+
+    def set_school_count_memcache(self):
+        """Sets the 'school_count' key in memcache"""
+        q = Attendee.query(Attendee.isRegistered == True, projection=[Attendee.school], distinct=True)
+        set_of_field = set([data.school for data in q])
+        cached_count = len(set_of_field)
+        if not memcache.add('school_count', cached_count, time=constants.MEMCACHE_COUNT_TIMEOUT):
             logging.error('Memcache set failed.')
         return cached_count
 
