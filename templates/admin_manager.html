@@ -48,6 +48,7 @@
     </div>
 
     <br>
+
     <div class="row">
         <div class="col-md-12">
             <form class="form-inline" role="form" action="/admin/manager/accesscontrol" method="post">
@@ -67,6 +68,62 @@
                         <input type="radio" name="accessControl" id="radio3" value="full"> Full Access
                     </label>
                 </div>
+                <button type="submit" class="btn btn-primary submit-button">Submit</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="whitelist-control">
+    <h2>Whitelist URL Control</h2>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="table-responsive">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Enabled</th>
+                            <th>URL</th>
+                            <th>Intended Recipient</th>
+                            <th>Creation Time</th>
+                            <th>Registration Email</th>
+                            <th>Registration Time</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for w in data.whitelists %}
+                        <tr class="{% if not w.enabled %}danger{% endif %}">
+                            <td>{% if w.enabled %}True{% else %}False{% endif %}</td>
+                            <td>{{ w.url }}</td>
+                            <td>{{ w.intendedRecipientEmail }}</td>
+                            <td>{{ w.creationTime }}</td>
+                            <td>{{ w.userEmail }}</td>
+                            <td>{{ w.registerTime }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <br>
+
+    <div class="row">
+        <div class="col-md-12">
+            <form class="form-inline" role="form" action="/admin/manager/whitelistcontrol" method="post">
+                <div class="form-group">
+                    <label class="sr-only" for="email1">Recipient Email</label>
+                    <input type="email" class="form-control" id="email1" name="email" placeholder="Recipient Email">
+                </div>
+
+                <div class="checkbox">
+                    <label class="checkbox-inline" for="checkbox1">
+                        <input type="checkbox" id="checkbox1" name="whitelistControl" value="True" checked> Enabled
+                    </label>
+                </div>
+
                 <button type="submit" class="btn btn-primary submit-button">Submit</button>
             </form>
         </div>

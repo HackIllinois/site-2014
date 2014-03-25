@@ -2,10 +2,12 @@ import urllib
 import logging
 import re
 import json
+from datetime import datetime
 
 import MainHandler
 
 from db.Attendee import Attendee
+from db.Whitelist import Whitelist
 from db.Resume import Resume
 from db import constants
 from google.appengine.api import users
@@ -14,19 +16,27 @@ from google.appengine.ext.webapp import blobstore_handlers
 
 
 class ApplyHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandler):
-    def get(self):
-        update = str(self.request.path) == '/apply/update'
+    def get(self, unique_string=None):
+        path = str(self.request.path)
+
+        update = path == '/apply/update'
+        whitelist = path.startswith('/apply/whitelist')
 
         user = users.get_current_user()
         if not user: return self.abort(500, detail='User not logged in')
 
         # Check if user is in our database
         db_user = Attendee.search_database({'userId': user.user_id()}).get()
+        db_whtlst = None
 
         # This check was added once we closed applicaitons
         # The check does not allow a new user to register, and instead redirects to a page that states that applications are closed
-#        if db_user is None or (db_user is not None and (db_user.isRegistered == False)):
-#            return self.redirect('/apply/closed')
+        if whitelist:
+            db_whtlst = Whitelist.search_database({'uniqueString': unique_string}).get()
+            if db_whtlst is None or (db_whtlst is not None and (db_whtlst.enabled == False)):
+                return self.redirect('/apply/closed')
+        elif db_user is None or (db_user is not None and (db_user.isRegistered == False)):
+            return self.redirect('/apply/closed')
 
         data = {}
         data['errors'] = {} # Needed for template to render
@@ -94,22 +104,33 @@ class ApplyHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandle
         if update:
             data['uploadUrl'] = blobstore.create_upload_url('/apply/update', gs_bucket_name=constants.BUCKET)
             return self.render("apply_update.html", data=data)
+        elif whitelist:
+            data['uploadUrl'] = blobstore.create_upload_url(path, gs_bucket_name=constants.BUCKET)
+            return self.render("apply.html", data=data)
         else:
             data['uploadUrl'] = blobstore.create_upload_url('/apply', gs_bucket_name=constants.BUCKET)
             return self.render("apply.html", data=data)
 
-    def post(self):
-        update = str(self.request.path) == '/apply/update'
+    def post(self, unique_string=None):
+        path = str(self.request.path)
+
+        update = path == '/apply/update'
+        whitelist = path.startswith('/apply/whitelist')
 
         user = users.get_current_user()
         if not user: return self.abort(500, detail='User not logged in')
 
         db_user = Attendee.search_database({'userId':user.user_id()}).get()
+        db_whtlst = None
 
         # This check was added once we closed applicaitons
         # The check does not allow a new user to register, and instead redirects to a page that states that applications are closed
-#        if db_user is None or (db_user is not None and (db_user.isRegistered == False)):
-#            return self.redirect('/apply/closed')
+        if whitelist:
+            db_whtlst = Whitelist.search_database({'uniqueString': unique_string}).get()
+            if db_whtlst is None or (db_whtlst is not None and (db_whtlst.enabled == False)):
+                return self.redirect('/apply/closed')
+        elif db_user is None or (db_user is not None and (db_user.isRegistered == False)):
+            return self.redirect('/apply/closed')
 
         # Initialization
         x = {} # dictionary that will be used to create a new Attendee or update one
@@ -266,11 +287,20 @@ class ApplyHandler(MainHandler.Handler, blobstore_handlers.BlobstoreUploadHandle
                 redir = '/apply/updated'
                 log_str = 'Updated profile of %s' % x['email']
 
+            if db_whtlst:
+                db_whtlst.enabled = False
+                db_whtlst.userEmail = x['userEmail']
+                db_whtlst.userId = x['userId']
+                db_whtlst.registerTime = datetime.now()
+                db_whtlst.put()
+
             logging.info(log_str)
             logging.info(str(x))
         else:
             if update:
                 redir = '/apply/update'
+            elif whitelist:
+                redir = path
             else:
                 redir = '/apply'
             logging.info('User with email %s submitted an invalid form', x['email'])
