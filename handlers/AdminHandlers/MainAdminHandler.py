@@ -80,6 +80,13 @@ class BaseAdminHandler(MainHandler.Handler):
             cached_count = self.set_approve_count_memcache()
         return cached_count
 
+    def get_query_all_memecache(self, cls, model_type, use_memcache=True):
+        key = 'query_all/' + model_type
+        data = memcache.get(key)
+        if data is None or not use_memcache:
+            data = self.set_query_all_memcache(cls, model_type)
+        return data
+
     def set_hackers_memcache(self):
         """Sets the 'hackers' key in the memcache"""
         hackers = Attendee.search_database({'isRegistered':True})
@@ -121,3 +128,15 @@ class BaseAdminHandler(MainHandler.Handler):
         if not memcache.add('approve_count', cached_count, time=constants.MEMCACHE_COUNT_TIMEOUT):
             logging.error('Memcache set failed.')
         return cached_count
+
+    def set_query_all_memecache(self, cls, model_type):
+        key = 'query_all/' + model_type
+        query = cls.search_database({})
+        data = []
+        for obj in query:
+            data.append(obj)
+
+        if not memcache.add(key, data, time=constants.MEMCACHE_TIMEOUT):
+            logging.error('Memcache set failed for <%s>.' % key)
+
+        return data

@@ -1,10 +1,18 @@
-{% extends "admin_approve_base.html" %}
+{% extends "base/admin_base.html" %}
 {% set active_page = "approve" %}
 
 {% block head %}
-    {{ super() }}
-
     <style type="text/css">
+        .page-header {
+            margin-top: 0;
+        }
+        .t-centered {
+            text-align: center;
+        }
+        .dropdown_button {
+            margin-bottom: 20px;
+        }
+
         table {
             table-layout: fixed;
         }
@@ -30,7 +38,41 @@
     </style>
 {% endblock head %}
 
-{% block approve_table %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-md-9">
+            <h1 class="page-header">Hacker Summary<small>&nbsp;&nbsp;</small><small id="count">{{ data.num_people }}</small><small>&nbsp;people</small></h1>
+        </div>
+        <div class="col-md-3">
+            <a href="/admin/export" role="button" class="btn btn-success btn-lg btn-block">Download All as CSV</a>
+        </div>
+    </div>
+
+    <div class="row dropdown_button">
+        <div class="col-md-12">
+            <!-- Single button -->
+            <div class="btn-group">
+                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                    {{ data.dropdown_button_text }}&nbsp;&nbsp;<span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" role="menu">
+                    <li role="presentation"><a role="menuitem" href="/admin/approve">Show all</a></li>
+                    <li role="presentation" class="divider"></li>
+                    <li role="presentation" class="dropdown-header">Categories</li>
+                    {% for c in data.categories %}
+                    <li role="presentation"><a role="menuitem" href="{{ c.link }}">{{ c.text }}</a></li>
+                    {% endfor %}
+                    <li role="presentation" class="divider"></li>
+                    <li role="presentation" class="dropdown-header">Bus Routes</li>
+                    {% for r in data.routes %}
+                    <li role="presentation"><a role="menuitem" href="{{ r.link }}">{{ r.text }}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+
 <div class="container-fluid">
 
 <div class="row toggle-columns">
@@ -60,12 +102,12 @@
                 <th name="tlinkedin"></th>
                 <th name="tgithub"  ></th>
                 <th name="tproject">
-                    <input type="checkbox" name="Software Hack" checked> Software Hack<br>
-                    <input type="checkbox" name="Hardware Hack" checked> Hardware Hack<br>
-                    <input type="checkbox" name="Unsure"        checked> Unsure
+                    <input type="checkbox" class="cproject" name="Software Hack" checked> Software Hack<br>
+                    <input type="checkbox" class="cproject" name="Hardware Hack" checked> Hardware Hack<br>
+                    <input type="checkbox" class="cproject" name="Unsure"        checked> Unsure
                 </th>
                 <th name="tresume">
-                    <input type="checkbox" name="Has Resume"> Has Resume
+                    <input type="checkbox" class="cresume" name="Has Resume"> Has Resume
                 </th>
                 <th></th>
             </tr>
@@ -105,11 +147,11 @@
 </div><!-- row -->
 
 </div><!-- container-fluid -->
-{% endblock approve_table %}
+
+{% endblock body %}
+
 
 {% block scripts %}
-    {{ super() }}
-
     <script src="//cdnjs.cloudflare.com/ajax/libs/list.js/1.1.0/list.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/list.pagination.js/0.1.0/list.pagination.min.js"></script>
     <script type="text/javascript">
@@ -121,7 +163,7 @@
         };
         var options = {
             // http://listjs.com/docs/options
-            valueNames: [ 'id', 'name', 'school' ],
+            valueNames: [ 'id', 'name', 'school', 'project', 'resume' ],
             indexAsync: true,
             page: 20,
             plugins: [
@@ -130,7 +172,7 @@
         };
         var hackerList = null;
 
-        function applyColToggle() {
+        function colToggleCallbacks() {
             $('.column-btn').click(function () {
                 name = $(this).find('input').attr('name')
                 if ($(this).hasClass('active')) {
@@ -161,15 +203,7 @@
             });
         }
 
-        function searchSchool(school_name) {
-            $('#search_school').val(school_name);
-        }
-
-        function searchValue(search, value) {
-            hackerList.search(search, [value]);
-        }
-
-        function applySearchCallbacks() {
+        function searchCallbacks() {
             $('#search_name').keyup(function() {
                 hackerList.search($('#search_name').val(), ['name']);
             });
@@ -178,20 +212,49 @@
             });
         }
 
-        $(document).ready(function () {
-            hackerList = new List('hackers', options);
-
-            applyBtnCallbacks();
-            applyColToggle();
-            applySearchCallbacks();
-
+        function schoolClickCallbacks() {
             $('.school').click(function () {
                 $('#search_school').val($(this).html());
                 hackerList.search($('#search_school').val(), ['school']);
             });
+        }
+
+        function checkBoxCallback() {
+            var project_checked = $('.cproject:checked').map(function () {
+                return $(this).attr('name');
+            }).get();
+            var resume_checked = $('.cresume').prop('checked');
+            hackerList.filter(function(item) {
+                var proj = item.values().project,
+                    res = item.values().resume;
+                if (resume_checked) {
+                    return res != null && res != '' && jQuery.inArray(proj, project_checked) != -1;
+                } else {
+                    return jQuery.inArray(proj, project_checked) != -1;
+                }
+            });
+        }
+
+        function projectCheckBoxCallbacks() {
+            $('.cproject').click(checkBoxCallback);
+        }
+
+        function resumeCheckBoxCallback() {
+            $('.cresume').click(checkBoxCallback);
+        }
+
+        $(document).ready(function () {
+            hackerList = new List('hackers', options);
+
+            applyBtnCallbacks();
+            colToggleCallbacks();
+            searchCallbacks();
+            schoolClickCallbacks();
+            projectCheckBoxCallbacks();
+            resumeCheckBoxCallback();
 
             $('#count').html(hackerList.size());
             hackerList.on('searchComplete', function(){$('#count').html(hackerList.size());});
         });
     </script>
-{% endblock scripts %}
+{% endblock scripts%}

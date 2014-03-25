@@ -60,6 +60,7 @@ PROJECTS = ['Software Hack','Hardware Hack','Unsure']
 
 
 TRAVEL_RIDE_BUS = 'I would like to ride a HackIllinois bus'
+TRAVEL_RIDE_BUS_URL = 'bus'
 TRAVEL_PROVIDE_OWN_TRANSIT = 'I will provide my own transportation'
 TRAVEL_PROVIDE_OWN_TRANSIT_URL = 'self'
 TRAVEL_ALREADY_AT_UIUC = 'I am already in Urbana-Champaign, IL'
@@ -81,6 +82,15 @@ BUS_ROUTES = [
     'University of Michigan Ann-Arbor'
 ]
 
+STATUSES = [
+    'Not Approved',
+    'Approved',
+    'Waitlisted',
+    'Awaiting Response',
+    'Rsvp Coming',
+    'Rsvp Not Coming',
+    'No Rsvp'
+]
 
 RESUME_MAX_SIZE = 2097152 # in Bytes = 2 mb
 
