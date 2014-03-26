@@ -9,7 +9,7 @@
         .t-centered {
             text-align: center;
         }
-        .dropdown_button {
+        .dropdown_buttons {
             margin-bottom: 20px;
         }
 
@@ -28,6 +28,9 @@
         }
         .width100 {
             width:100%;
+        }
+        .width50 {
+            width:50%;
         }
         .t-centered {
             text-align: center;
@@ -49,15 +52,30 @@
         </div>
     </div>
 
-    <div class="row dropdown_button">
+    <div class="row dropdown_buttons">
         <div class="col-md-12">
             <!-- Single button -->
             <div class="btn-group">
                 <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-                    {{ data.dropdown_button_text }}&nbsp;&nbsp;<span class="caret"></span>
+                    {{ data.status_dropdown_text }}&nbsp;&nbsp;<span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu" role="menu">
-                    <li role="presentation"><a role="menuitem" href="/admin/approve">Show all</a></li>
+                    <li role="presentation"><a role="menuitem" href="{{ data.all_status_link }}">Show all</a></li>
+                    <li role="presentation" class="divider"></li>
+                    <li role="presentation" class="dropdown-header">Statuses</li>
+                    {% for s in data.statuses %}
+                    <li role="presentation"><a role="menuitem" href="{{ s.link }}">{{ s.text }}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <!-- Single button -->
+            <div class="btn-group">
+                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                    {{ data.category_dropdown_text }}&nbsp;&nbsp;<span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" role="menu">
+                    <li role="presentation"><a role="menuitem" href="{{ data.all_category_link }}">Show all</a></li>
                     <li role="presentation" class="divider"></li>
                     <li role="presentation" class="dropdown-header">Categories</li>
                     {% for c in data.categories %}
@@ -110,6 +128,7 @@
                     <input type="checkbox" class="cresume" name="Has Resume"> Has Resume
                 </th>
                 <th></th>
+                <th></th>
             </tr>
             <tr>
                 <th name="tname"     class="sort" data-sort="name"   >Name</th>
@@ -118,7 +137,8 @@
                 <th name="tgithub"                                   >Github</th>
                 <th name="tproject"  class="sort" data-sort="project">Project Type</th>
                 <th name="tresume"                                   >Resume</th>
-                <th name="tapprove"                                  >Approve</th>
+                <th></th><!-- Button 1 -->
+                <th></th><!-- Button 2 -->
             </tr>
         </thead>
         <tbody class="list">
@@ -131,10 +151,18 @@
                 <td name="tgithub"   class="github"  >{{ h.github }}</td>
                 <td name="tproject"  class="project" >{{ h.projectType }}</td>
                 <td name="tresume"   class="resume"  >{% if h.resume %}<a href='/admin/resume?userId={{ h.userId }}'>Resume</a>{% endif %}</td>
-                {% if h.isApproved%}
-                <td name="tapprove"  class="approved"><button class="btn btn-danger approve-btn width100">Un-Approve</button></td>
+                {% if h.approvalStatus.status  == 'Not Approved' %}
+                <td><button class="btn btn-success status-btn width100">Approve</button></td>
+                <td><button class="btn btn-success status-btn width100">Waitlist</button></td>
+                {% elif h.approvalStatus.status  == 'Approved' %}
+                <td><button class="btn btn-danger status-btn width100">Un-Approve</button></td>
+                <td><button class="btn btn-success status-btn width100">Waitlist</button></td>
+                {% elif h.approvalStatus.status  == 'Waitlisted' %}
+                <td><button class="btn btn-success status-btn width100">Approve</button></td>
+                <td><button class="btn btn-danger status-btn width100">Un-Waitlist</button></td>
                 {% else %}
-                <td name="tapprove"  class="approved"><button class="btn btn-success approve-btn width100">Approve</button></td>
+                <td></td>
+                <td></td>
                 {% endif %}
             </tr>
             {% endfor %}
@@ -184,21 +212,28 @@
         }
 
         function applyBtnCallbacks() {
-            $('.approve-btn').click(function () {
-                var itemName = $(this).closest('tr').find('.name').text(),
-                    itemuserId = $(this).closest('tr')[0].id,
-                    approve = $(this).html(),
-                    r = confirm(approve + " " + itemName + "?");
+            $('.status-btn').click(function () {
+                var name = $(this).closest('tr').find('.name').text(),
+                    userId = $(this).closest('tr').get(0).id,
+                    // ['Waitlist','Approve','Un-Approve','Un-Waitlist']
+                    action = $(this).text(),
+                    r = confirm(action + " " + name + "?");
                 if (r == true) {
-                    if (approve == "Approve") {
-                        $.post("/admin/approve", {"userId": itemuserId, "isApproved": "True"});
-                        $(this).html("Un-Approve");
-                        $(this).removeClass("btn-success").addClass("btn-danger");
+                    var status = "";
+                    if (action == "Approve") {
+                        status = "Approved";
+                    } else if (action == "Un-Approve") {
+                        status = "Not Approved";
+                    } else if (action == "Waitlist") {
+                        status = "Waitlisted";
+                    } else if (action == "Un-Waitlist") {
+                        status = "Not Approved";
                     } else {
-                        $.post("/admin/approve", {"userId": itemuserId, "isApproved": "False"});
-                        $(this).html("Approve");
-                        $(this).removeClass("btn-danger").addClass("btn-success");
+                        return;
                     }
+                    $.post("/admin/approve", {"userId": userId, "status": status}, function(data) {
+                        location.reload();
+                    });
                 }
             });
         }
@@ -253,8 +288,8 @@
             projectCheckBoxCallbacks();
             resumeCheckBoxCallback();
 
-            $('#count').html(hackerList.size());
-            hackerList.on('searchComplete', function(){$('#count').html(hackerList.size());});
+            $('#count').html(hackerList.matchingItems.length);
+            hackerList.on('updated', function(){$('#count').html(hackerList.matchingItems.length);});
         });
     </script>
 {% endblock scripts%}

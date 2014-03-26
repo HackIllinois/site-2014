@@ -1,6 +1,5 @@
 import AccessControlHandler
 import ApplyCountHandler
-import ApproveHandler
 import ApproveHandlers
 import ApproveSchoolHandler
 import BasicStatsHandler

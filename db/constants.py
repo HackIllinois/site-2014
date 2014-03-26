@@ -60,14 +60,27 @@ PROJECTS = ['Software Hack','Hardware Hack','Unsure']
 
 
 TRAVEL_RIDE_BUS = 'I would like to ride a HackIllinois bus'
-TRAVEL_RIDE_BUS_URL = 'bus'
 TRAVEL_PROVIDE_OWN_TRANSIT = 'I will provide my own transportation'
-TRAVEL_PROVIDE_OWN_TRANSIT_URL = 'self'
 TRAVEL_ALREADY_AT_UIUC = 'I am already in Urbana-Champaign, IL'
-TRAVEL_ALREADY_AT_UIUC_URL = 'uiuc'
 TRAVEL_NO_RESPONSE = 'I have not responded to this quesiton'
-TRAVEL_NO_RESPONSE_URL = 'none'
 TRAVEL_ARRANGEMENTS = [TRAVEL_RIDE_BUS, TRAVEL_PROVIDE_OWN_TRANSIT, TRAVEL_ALREADY_AT_UIUC]
+
+STATUSES = [
+    'Not Approved',
+    'Approved',
+    'Waitlisted',
+    'Awaiting Response',
+    'Rsvp Coming',
+    'Rsvp Not Coming',
+    'No Rsvp'
+]
+
+CATEGORIES = [
+    TRAVEL_RIDE_BUS,
+    TRAVEL_PROVIDE_OWN_TRANSIT,
+    TRAVEL_ALREADY_AT_UIUC,
+    TRAVEL_NO_RESPONSE
+]
 
 BUS_ROUTES = [
     'Purdue',
@@ -80,16 +93,6 @@ BUS_ROUTES = [
     'Case Western -> Kent -> OSU',
     'Indiana -> Rose Hulman',
     'University of Michigan Ann-Arbor'
-]
-
-STATUSES = [
-    'Not Approved',
-    'Approved',
-    'Waitlisted',
-    'Awaiting Response',
-    'Rsvp Coming',
-    'Rsvp Not Coming',
-    'No Rsvp'
 ]
 
 RESUME_MAX_SIZE = 2097152 # in Bytes = 2 mb
