@@ -15,7 +15,6 @@ from google.appengine.ext.webapp import blobstore_handlers
 class RsvpHandler(MainHandler.Handler):
     def get(self):
         user = users.get_current_user()
-        user = users.get_current_user()
         if not user: return self.abort(500, detail='User not logged in')
 		
         db_user = Attendee.search_database({'userId': user.user_id()}).get()
