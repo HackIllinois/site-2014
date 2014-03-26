@@ -19,6 +19,9 @@ UPDATE_COMPLETE_MESSAGE = 'Thanks for updating your application!<br>To keep in t
 APPLICATION_CLOSED_HEADER = 'Applications Are Closed'
 APPLICATION_CLOSED_MESSAGE = 'We\'re sorry, but applications for HackIllinois closed on March 21st.<br>Please try again next time, and happy hacking!<br><br>If you have already registered, please <a href="/logout?redirect=/apply/update" style="color: #ef3e36">logout</a> and login with the account you used to register.'
 
+NOT_APPROVED_HEADER = 'Application Pending Review'
+NOT_APPROVED_MESSAGE = 'Your application is still being reviewed by our staff.<br>You will receive an email once your application has been reviewed.'
+
 ERROR_MESSAGE_PREFIX = 'Please provide '
 ERROR_MESSAGE_SUFFIX = '.'
 
@@ -46,7 +49,7 @@ CSV_HEADINGS = ['First Name','Last Name','Email',
                 'Gender','School','Year','LinkedIn',
                 'Github','Shirt','Food','Project Type',
                 'Registration Time','Is Approved',
-                'User ID','Resume']
+                'User ID','Resume','Status']
 
 # The below array is for more descriptive error messages. @Mattato pls fix.
 # READABLE_REQUIRED_FIELDS = ['First Name','Last Name','E-mail','Gender','School','Year in School','T-shirt size','past experience', 'Please accept the Terms of Service']
@@ -70,6 +73,19 @@ STATUSES = [
     'Not Approved',
     'Approved',
     'Waitlisted',
+    'Awaiting Response',
+    'Rsvp Coming',
+    'Rsvp Not Coming',
+    'No Rsvp'
+]
+
+APPROVE_STATUSES = [
+    'Not Approved',
+    'Approved',
+    'Waitlisted'
+]
+
+RSVP_STATUSES = [
     'Awaiting Response',
     'Rsvp Coming',
     'Rsvp Not Coming',

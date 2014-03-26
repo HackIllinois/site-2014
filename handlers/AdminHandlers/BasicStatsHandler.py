@@ -13,6 +13,7 @@ class BasicStatsHandler(MainAdminHandler.BaseAdminHandler):
         if not admin_user: return self.abort(500, detail='User not in database')
 
         data = self.get_basic_stats_memcache(constants.USE_ADMIN_MEMCACHE)
+        data['num_people'] = 10
         return self.render('basic_stats.html', data=data, approveAccess=admin_user.approveAccess, fullAccess=admin_user.fullAccess)
 
     def get_basic_stats_memcache(self, use_memcache=False):

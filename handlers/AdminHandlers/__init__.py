@@ -13,3 +13,5 @@ import SchoolCountHandler
 import StatsHandler
 import TestAllHandler
 import XkcdHandler
+import RsvpHandler
+import MarkSentEmailHandler

@@ -9,6 +9,7 @@ class Status(Model):
 
     approvedTime = ndb.DateTimeProperty()
     waitlistedTime = ndb.DateTimeProperty()
+    emailedTime = ndb.DateTimeProperty()
     rsvpTime = ndb.DateTimeProperty()
 
     @classmethod

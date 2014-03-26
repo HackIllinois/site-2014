@@ -7,7 +7,7 @@ from google.appengine.api import memcache
 import logging
 from datetime import datetime
 
-class ApproveHandler(MainAdminHandler.BaseAdminHandler):
+class RsvpHandler(MainAdminHandler.BaseAdminHandler):
     def get(self, status=None, category=None, route=None):
         admin_user = self.get_admin_user()
         if not admin_user:
@@ -17,10 +17,10 @@ class ApproveHandler(MainAdminHandler.BaseAdminHandler):
 
         if status is not None:
             status = str(urllib.unquote(status))
-            if status not in constants.APPROVE_STATUSES + ['a']:
+            if status not in constants.RSVP_STATUSES + ['b']:
                 return self.abort(404, detail='Status <%s> does not exist.' % status)
         else:
-            status = 'a'
+            status = 'b'
         if category is not None:
             category = str(urllib.unquote(category))
             if category not in constants.CATEGORIES:
@@ -47,24 +47,24 @@ class ApproveHandler(MainAdminHandler.BaseAdminHandler):
         data['category_dropdown_text'] = 'Select a Category' if category is None else category if route is None else route
 
         if category is None:
-            data['all_status_link'] = '/admin/approve'
+            data['all_status_link'] = '/admin/rsvp'
         else:
             if route is None:
-                data['all_status_link'] = '/admin/approve/a/'+category
+                data['all_status_link'] = '/admin/rsvp/b/'+category
             else:
-                data['all_status_link'] = '/admin/approve/a/'+category+'/'+route
+                data['all_status_link'] = '/admin/rsvp/b/'+category+'/'+route
 
         if status is None:
-            data['all_category_link'] = '/admin/approve'
+            data['all_category_link'] = '/admin/rsvp'
         else:
-            data['all_category_link'] = '/admin/approve/'+status
+            data['all_category_link'] = '/admin/rsvp/'+status
 
         data['all_status_link'] = urllib.quote(data['all_status_link'])
         data['all_category_link'] = urllib.quote(data['all_category_link'])
 
         data['statuses'] = []
-        for s in constants.APPROVE_STATUSES:
-            link = '/admin/approve/'+s
+        for s in constants.RSVP_STATUSES:
+            link = '/admin/rsvp/'+s
             if category:
                 if route: link += '/'+category+'/'+route
                 else: link += '/'+category
@@ -72,16 +72,16 @@ class ApproveHandler(MainAdminHandler.BaseAdminHandler):
 
         data['categories'] = []
         for c in constants.CATEGORIES:
-            link = '/admin/approve/'
+            link = '/admin/rsvp/'
             if status: link += status+'/'+c
-            else: link += 'a/'+c
+            else: link += 'b/'+c
             data['categories'].append({'text':c, 'link':urllib.quote(link)})
 
         data['routes'] = []
         for r in constants.BUS_ROUTES:
-            link = '/admin/approve/'
+            link = '/admin/rsvp/'
             if status: link += status+'/'+constants.TRAVEL_RIDE_BUS+'/'+r
-            else: link += 'a/'+constants.TRAVEL_RIDE_BUS+'/'+r
+            else: link += 'b/'+constants.TRAVEL_RIDE_BUS+'/'+r
             data['routes'].append({'text':r, 'link':urllib.quote(link)})
 
 
@@ -89,53 +89,19 @@ class ApproveHandler(MainAdminHandler.BaseAdminHandler):
 
         data['num_people'] = len(data['hackers'])
 
-        data['approveCount'] = 0
-        data['waitlistCount'] = 0
-        data['notapproveCount'] = 0
+        data['awaitCount'] = 0
+        data['comingCount'] = 0
+        data['notcomingCount'] = 0
+        data['noresponseCount'] = 0
         for h in data['hackers']:
             st = h['approvalStatus']['status']
-            if st == 'Approved':
-                data['approveCount'] += 1
-            elif st == 'Waitlisted':
-                data['waitlistCount'] += 1
-            elif st == 'Not Approved':
-                data['notapproveCount'] += 1
+            if st == 'Awaiting Response':
+                data['awaitCount'] += 1
+            elif st == 'Rsvp Coming':
+                data['comingCount'] += 1
+            elif st == 'Rsvp Not Coming':
+                data['notcomingCount'] += 1
+            elif st == 'No Rsvp':
+                data['noresponseCount'] += 1
 
-        return self.render("admin_approve.html", data=data, approveAccess=admin_user.approveAccess, fullAccess=admin_user.fullAccess)
-
-
-    def post(self):
-        admin_user = self.get_admin_user()
-        if not admin_user:
-            return self.abort(500, detail='User not in database')
-        if not admin_user.approveAccess:
-            return self.abort(401, detail='User does not have permission to view attendees.')
-
-        userId = str(urllib.unquote(self.request.get('userId')))
-        status = str(urllib.unquote(self.request.get('status')))
-
-        db_user = Attendee.search_database({'userId':userId}).get()
-        if not db_user:
-            return self.abort(500, detail='User not in database')
-
-        db_status = db_user.approvalStatus
-        if db_status:
-            if status == 'Approved':
-                db_user.approvalStatus.approvedTime = datetime.now()
-            elif status == 'Waitlisted':
-                db_user.approvalStatus.waitlistedTime = datetime.now()
-            db_user.approvalStatus.status = status
-        else:
-            if status == 'Approved':
-                db_user.approvalStatus = Status(status=status, approvedTime=datetime.now())
-            elif status == 'Waitlisted':
-                db_user.approvalStatus = Status(status=status, waitlistedTime=datetime.now())
-            else:
-                db_user.approvalStatus = Status(status=status)
-
-        db_user.put()
-
-        # Delete memcache key so /admin/approve is updated
-        # memcache.delete('hackers')
-
-        return self.write('success')
+        return self.render("admin_rsvp.html", data=data, approveAccess=admin_user.approveAccess, fullAccess=admin_user.fullAccess)

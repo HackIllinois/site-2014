@@ -17,7 +17,29 @@
 
 
 {% block body %}
-<h1 class="page-header">Hacker Stats<small>&nbsp;&nbsp;</small><small id="count">{{ data.numPeople }}</small><small>&nbsp;people</small></h1>
+<div class="row">
+    <div class="col-md-9">
+        <h1 class="page-header">Hacker Stats<small>&nbsp;&nbsp;</small><small id="count">{{ data.num_people }}</small><small>&nbsp;people</small></h1>
+    </div>
+    <!-- <div class="col-md-3"> -->
+        <div class="btn-group col-md-3">
+            <button type="button" class="btn btn-primary dropdown-toggle btn-block" data-toggle="dropdown">
+                <!-- {{ data.status_dropdown_text }}&nbsp;&nbsp;<span class="caret"></span> -->
+                Select One...&nbsp;&nbsp;<span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" role="menu">
+                <!-- {% for s in data.statuses %} -->
+                <!-- <li role="presentation"><a role="menuitem" href="{{ s.link }}">{{ s.text }}</a></li> -->
+                <!-- {% endfor %} -->
+                <li role="presentation"><a role="menuitem" href="#">All Hackers</a></li>
+                <li role="presentation"><a role="menuitem" href="#">Approved Hackers</a></li>
+                <li role="presentation"><a role="menuitem" href="#">Emailed Hackers</a></li>
+                <li role="presentation"><a role="menuitem" href="#">RSVP'd Hackers</a></li>
+            </ul>
+        </div>
+    <!-- </div> -->
+</div>
+
 <div class="container-fluid">
     {% for f in data.fields %}
     {% set column = loop.index0 % 2 %}
