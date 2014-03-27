@@ -21,17 +21,21 @@ class RsvpHandler(MainHandler.Handler):
 
         db_user = Attendee.search_database({'userId': user.user_id()}).get()
 
-      #   if db_user is None:
-		    # return self.redirect('/apply/closed')
+        """Disabled For testing purposes"""
 
-      #   if db_user.isRegistered == False:
-      #       return self.redirect('/apply/closed')
+        # if db_user is None:
+        #     return self.redirect('/apply/closed')
 
-      #   if db_user.approvalStatus is None:
-      #       return self.redirect('/apply/rsvp/pending')
+        # if db_user.isRegistered == False:
+        #     return self.redirect('/apply/closed')
 
-      #   if db_user.approvalStatus.status != 'Awaiting Response':
-      #       return self.redirect('/apply/rsvp/pending')
+        # if db_user.approvalStatus is None:
+        #     return self.redirect('/apply/rsvp/pending')
+
+        # if db_user.approvalStatus.status != 'Awaiting Response':
+        #     return self.redirect('/apply/rsvp/pending')
+
+        """Disabled For testing purposes"""
 
         data = {}
         data['title'] = constants.RSVP_TITLE
@@ -84,6 +88,8 @@ class RsvpHandler(MainHandler.Handler):
 
         db_user = Attendee.search_database({'userId':user.user_id()}).get()
 
+        """Disabled For testing purposes"""
+
         # if db_user is None:
         #     return self.redirect('/apply/closed')
 
@@ -95,6 +101,8 @@ class RsvpHandler(MainHandler.Handler):
 
         # if db_user.approvalStatus.status != 'Awaiting Response':
         #     return self.redirect('/apply/rsvp/pending')
+
+        """Disabled For testing purposes"""
 
         # Initialization
         x = {} # dictionary that will be used to create a new Attendee or update one
@@ -117,9 +125,9 @@ class RsvpHandler(MainHandler.Handler):
                 approvedTime=db_user.approvalStatus.approvedTime,
                 emailedTime=db_user.approvalStatus.emailedTime,
                 status = 'Rsvp Not Coming')
-         #foods = self.request.get_all('food')
-#        x['food'] = ','.join(foods)
- #       x[field] = self.request.get(field)
+        # foods = self.request.get_all('food')
+        # x['food'] = ','.join(foods)
+        # x[field] = self.request.get(field)
 
 
         x['approvalStatus'] = Status(rsvpTime=datetime.now(),
