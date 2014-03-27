@@ -25,22 +25,20 @@
 		<div style="" class="regform-container">
 			<form id="application" class="form-horizontal" role="form" action="{{ data.uploadUrl }}" method="post" enctype="multipart/form-data">
                 <div class="form-group">
-                    <label class="control-label col-sm-3 launcher-btn" for="micro1">Microcontrollers</label>
+				<label class="control-label col-sm-3" for="micro2">Microcontrollers</label>        
                     <div class="controls col-sm-9">
-                        <label class="checkbox-inline micro1-options" for="micro1-0">
-                            <input type="checkbox" name="micro1" id="micro1-0" value="arduinos"/> Arduinos
-                        </label>
-                        <label class="checkbox-inline micro1-options" for="micro1-1">
-                            <input type="checkbox" name="micro1" id="micro1-1" value="pi"/> Raspberry Pi
-                        </label>
-                        <label class="checkbox-inline micro1-options" for="micro1-2">
-                            <input type="checkbox" name="micro1" id="micro1-2" value="other"/> Other
-                        </label>
+					
+						{% for m1 in data.micro1 %}
+						<label class="micro1-options checkbox-inline" for="micro1-{{ loop.index0 }}">
+							<input type="checkbox" name="micro1" id="micro1-{{ loop.index0 }}" value="{{ m1.name }}" {% if m1.checked %}checked{% endif %}/>
+							{{ m1.name }}
+						</label>
+						{% endfor %}
                         <span class="help-block no-bottom-margin">Note that you will need to return these items by the end of the event. Cables are included.</span>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="control-label col-sm-3 launcher-btn" for="micro2">Microcontrollers</label>
+                    <label class="control-label col-sm-3" for="micro2">Microcontrollers</label>
                     <div class="controls col-sm-9">
                         <label class="checkbox-inline micro2-options" for="micro2-0">
                             <input type="checkbox" name="micro2" id="micro2-0" value="imp"/> Electric Imp Dev Kit
@@ -52,7 +50,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="control-label col-sm-3 launcher-btn" for="lab">Lab Equipment</label>
+                    <label class="control-label col-sm-3" for="lab">Lab Equipment</label>
                     <div class="controls col-sm-9">
                         <label class="checkbox-inline lab-options" for="lab-0">
                             <input type="checkbox" name="lab" id="lab-0" value="power"/> Power Supplies
@@ -62,15 +60,8 @@
                         </label>
                     </div>
                 </div>
-                <div class="form-group">
-                    <label class="control-label col-sm-3 launcher-btn" for="more">Anything Else?</label>
-                    <div class="controls col-sm-9">
-                        <textarea class="form-control" id="more" name="more" rows="5"></textarea>
-                        <span class="help-block no-bottom-margin">If you are looking for specific parts, please include links.</span>
-                    </div>
-                </div>
 				<div class="form-group">
-					<label class="control-label col-sm-3 launcher-btn" for="attend">Will you be attending Hackillinois?</label>
+					<label class="control-label col-sm-3" for="attend">Will you be attending Hackillinois?</label>
 					<div class="controls col-sm-9">
 						<label class="radio" for="attend">
 							<input type="radio" name="attend" id="attend-0" required="required">
@@ -83,6 +74,7 @@
 					</div>
 				</div>
 				<div class="form-group" style="">
+					<label class="control-label col-sm-3 sr-only"></label>
 					<div class="controls col-sm-9">
 						<button type="submit" id="rsvp-submit" class="btn btn-primary btn-lg pull-left footer btn-hackil submit-disabled" style="width:100%" disabled>Submit</button>
 					</div>
@@ -91,6 +83,18 @@
 		</div>
 	</div>
 </div>
+<div class="launch-container">
+	<div class="launch-setup">
+		<div class="launch-craft">
+			<img class="rocket-ship" src="/img/rocket/spaceship_nodock2x.png">
+			<img class="rocket-plume" src="/img/rocket/plume2x.png">
+		</div>
+		<img class="launch-pad" src="/img/rocket/dock2x.png">
+		<!--img class="rocket-ship rocket-small" src="img/rocket/spaceship_nodock2x.png">
+		<img class="rocket-ship rocket-small" src="img/rocket/dock2x.png"-->
+	</div>
+</div>
+
 
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 <!--script src="/js/jquery.min.js"></script-->
@@ -99,6 +103,7 @@
 <script src="/js/easing.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function () {
+
     $('#attend-0').on('click', function () {
             $('#rsvp-submit').removeAttr('disabled');
             $('#rsvp-submit').removeClass("submit-disabled");

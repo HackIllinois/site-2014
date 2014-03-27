@@ -24,6 +24,10 @@ class Attendee(Model):
 
     approvalStatus = ndb.StructuredProperty(Status, default=Status())
     groupNumber = ndb.IntegerProperty()
+	
+    micro1 = ndb.StringProperty()
+    micro2 = ndb.StringProperty()
+    labEquipment = ndb.StringProperty()
 
     nameFirst = ndb.StringProperty()
     nameLast = ndb.StringProperty()
