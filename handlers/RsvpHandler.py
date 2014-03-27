@@ -21,17 +21,21 @@ class RsvpHandler(MainHandler.Handler):
 
         db_user = Attendee.search_database({'userId': user.user_id()}).get()
 
-        if db_user is None:
-		    return self.redirect('/apply/closed')
+        """Disabled For testing purposes"""
 
-        if db_user.isRegistered == False:
-            return self.redirect('/apply/closed')
+        # if db_user is None:
+        #     return self.redirect('/apply/closed')
 
-        if db_user.approvalStatus is None:
-            return self.redirect('/apply/rsvp/pending')
+        # if db_user.isRegistered == False:
+        #     return self.redirect('/apply/closed')
 
-        if db_user.approvalStatus.status != 'Awaiting Response':
-            return self.redirect('/apply/rsvp/pending')
+        # if db_user.approvalStatus is None:
+        #     return self.redirect('/apply/rsvp/pending')
+
+        # if db_user.approvalStatus.status != 'Awaiting Response':
+        #     return self.redirect('/apply/rsvp/pending')
+
+        """Disabled For testing purposes"""
 
         data = {}
         data['title'] = constants.RSVP_TITLE
@@ -39,29 +43,40 @@ class RsvpHandler(MainHandler.Handler):
 
         data['username'] = db_user.userNickname
         data['email'] = db_user.email
-		
+
         lists = {
-            'micro1':constants.MICRO1, 'micro2':constants.MICRO2, 'labEquipment':constants.LABEQUIPMENT
+            'micro1':constants.MICRO1, 'micro2':constants.MICRO2, 'labEquipment':constants.LABEQUIPMENT,
+            'travelArrangements':constants.TRAVEL_ARRANGEMENTS
             }
-			
+
         for l, options in lists.iteritems(): data[l] = [ {'name':n, 'checked':False} for n in options ]
-        
+
+        data['busRoutes'] = [ {'name':n, 'selected':False} for n in constants.BUS_ROUTES ]
+
+        choose_one_fields = {
+            'travel':('travelArrangements','checked'), 'busRoute':('busRoutes','selected')
+            }
+
+        for field, conn in choose_one_fields.iteritems():
+            value = getattr(db_user, field)
+            if value:
+                for i in data[conn[0]]:
+                    if i['name'] == value:
+                        i[conn[1]] = True
+                        break
+
         # Multi-choice check box
-        micro1 = db_user.micro1
-        if micro1:
-            for i in data['micro1']:
-                if i['name'] in micro1: i['checked'] = True
+        choose_multiple_fields = {
+            'micro1':('micro1','checked'), 'micro2':('micro2','checked'), 'labEquipment':('labEquipment','checked')
+            }
 
-        micro2 = db_user.micro2
-        if micro2:
-            for i in data['micro2']:
-                if i['name'] in micro2: i['checked'] = True
+        for field, conn in choose_multiple_fields.iteritems():
+            value = getattr(db_user, field)
+            if value:
+                for i in data[conn[0]]:
+                    if i['name'] in value:
+                        i[conn[1]] = True
 
-        labEquipment = db_user.labEquipment
-        if labEquipment:
-            for i in data['labEquipment']:
-                if i['name'] in labEquipment: i['checked'] = True
-		
         data['uploadUrl'] = blobstore.create_upload_url('/apply/rsvp', gs_bucket_name=constants.BUCKET)
         data['logoutUrl'] = users.create_logout_url('/apply')
 
@@ -73,35 +88,55 @@ class RsvpHandler(MainHandler.Handler):
 
         db_user = Attendee.search_database({'userId':user.user_id()}).get()
 
-        # Login Page
-        if db_user is None:
-		    return self.redirect('/apply/closed')
+        """Disabled For testing purposes"""
 
-        if db_user is not None and (db_user.isRegistered == False):
-            return self.redirect('/apply/closed')
-			
-		#Not yet approved page
-        if db_user is not None and (db_user.isApproved == False):
-            return self.redirect('/apply/closed')
-			
+        # if db_user is None:
+        #     return self.redirect('/apply/closed')
+
+        # if db_user.isRegistered == False:
+        #     return self.redirect('/apply/closed')
+
+        # if db_user.approvalStatus is None:
+        #     return self.redirect('/apply/rsvp/pending')
+
+        # if db_user.approvalStatus.status != 'Awaiting Response':
+        #     return self.redirect('/apply/rsvp/pending')
+
+        """Disabled For testing purposes"""
+
         # Initialization
         x = {} # dictionary that will be used to create a new Attendee or update one
         errors = {} # Note: 1 error per field
         valid = True
-		
-        #foods = self.request.get_all('food')
-        #x['food'] = ','.join(foods)
-        
-        x['userId'] = user.user_id() 
-        x['approved'] = 'aaaaa'
+
+        x['userId'] = user.user_id()
+
+        isAttending = self.request.get("attend")
+        logging.error(isAttending)
+        if isAttending == "Yes":
+            x['approvalStatus'] = Status(rsvpTime=datetime.now(),
+                waitlistedTime=db_user.approvalStatus.waitlistedTime,
+                approvedTime=db_user.approvalStatus.approvedTime,
+                emailedTime=db_user.approvalStatus.emailedTime,
+                status = 'Rsvp Coming')
+        else:
+            x['approvalStatus'] = Status(rsvpTime=datetime.now(),
+                waitlistedTime=db_user.approvalStatus.waitlistedTime,
+                approvedTime=db_user.approvalStatus.approvedTime,
+                emailedTime=db_user.approvalStatus.emailedTime,
+                status = 'Rsvp Not Coming')
+        # foods = self.request.get_all('food')
+        # x['food'] = ','.join(foods)
+        # x[field] = self.request.get(field)
+
 
         x['approvalStatus'] = Status(rsvpTime=datetime.now(),
                                      waitlistedTime=db_user.approvalStatus.waitlistedTime,
                                      approvedTime=db_user.approvalStatus.approvedTime)
 
         Attendee.update_search(x, {'userId':x['userId']})
-        
-		
+
+
         pass
 
 class NotApprovedHandler(MainHandler.Handler):
