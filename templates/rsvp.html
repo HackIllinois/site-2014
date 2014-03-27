@@ -22,22 +22,24 @@
             <div class="container">
                 <form class="form-horizontal" role="form" action="/apply/rsvp" method="post">
                     <div class="form-group">
-                        <label class="control-label col-sm-4" for="attend">Will you be attending Hackillinois?</label>
-                        <div class="controls col-sm-8">
-                            <label class="radio-inline" for="attend-0">
-                                <input type="radio" name="attend" id="attend-0" value="yes" required>
+                        <label class="control-label col-sm-3" for="attend">Will you be attending Hackillinois?</label>
+                        <div class="controls col-sm-9">
+                            <label class="radio-inline" for="attend">
+                                <input type="radio" name="attend" id="attend-0" value="Yes" required="required">
                                 Yes!
                             </label>
-                            <label class="radio-inline" for="attend-1">
-                                <input type="radio" name="attend" id="attend-1" value="no" required>
+                            <label class="radio-inline" for="attend">
+                                <input type="radio" name="attend" id="attend-1" value="No" required="required">
                                 No, please release my spot.
                             </label>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label class="control-label col-sm-4" for="micro2">Microcontrollers</label>
-                        <div class="controls col-sm-8">
 
+                    <hr>
+
+                    <div class="form-group">
+                        <label class="control-label col-sm-3" for="micro1">Microcontrollers</label>
+                        <div class="controls col-sm-9">
                             {% for m1 in data.micro1 %}
                             <label class="micro1-options checkbox-inline" for="micro1-{{ loop.index0 }}">
                                 <input type="checkbox" name="micro1" id="micro1-{{ loop.index0 }}" value="{{ m1.name }}" {% if m1.checked %}checked{% endif %}/>
@@ -48,28 +50,70 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="control-label col-sm-4" for="micro2">Microcontrollers</label>
-                        <div class="controls col-sm-8">
-                            <label class="checkbox-inline micro2-options" for="micro2-0">
-                                <input type="checkbox" name="micro2" id="micro2-0" value="imp"/> Electric Imp Dev Kit
-                            </label>
-                            <label class="checkbox-inline micro2-options" for="micro2-1">
-                                <input type="checkbox" name="micro2" id="micro2-1" value="spark"/> Spark.io
-                            </label>
-                            <span class="help-block no-bottom-margin">You will be able to keep these.</span>
+                        <label class="control-label col-sm-3" for="micro2">Microcontrollers</label>
+                        <div class="controls col-sm-9">
+                        {% for m2 in data.micro2 %}
+                        <label class="micro2-options checkbox-inline" for="micro2-{{ loop.index0 }}">
+                        <input type="checkbox" name="micro2" id="micro2-{{ loop.index0 }}" value="{{ m2.name }}" {% if m2.checked %}checked{% endif %}/>
+                        {{ m2.name }}
+                        </label>
+                        {% endfor %}
+                        <span class="help-block no-bottom-margin">You will be able to keep these.</span>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="control-label col-sm-4" for="lab">Lab Equipment</label>
-                        <div class="controls col-sm-8">
-                            <label class="checkbox-inline lab-options" for="lab-0">
-                                <input type="checkbox" name="lab" id="lab-0" value="power"/> Power Supplies
-                            </label>
-                            <label class="checkbox-inline lab-options" for="lab-1">
-                                <input type="checkbox" name="lab" id="lab-1" value="oscilloscopes"/> Oscilloscopes
-                            </label>
+                        <label class="control-label col-sm-3" for="lab">Lab Equipment</label>
+                        <div class="controls col-sm-9">
+                        {% for l in data.labEquipment %}
+                        <label class="lab-options checkbox-inline" for="lab-{{ loop.index0 }}">
+                        <input type="checkbox" name="lab" id="lab-{{ loop.index0 }}" value="{{ l.name }}" {% if l.checked %}checked{% endif %}/>
+                        {{ l.name }}
+                        </label>
+                        {% endfor %}
                         </div>
                     </div>
+
+                    <hr>
+
+                    <div class="form-group">
+                        <label class="control-label col-sm-3" for="travel">Travel Arrangements<span class="reqd"> *</span></label>
+                        <div class="controls col-sm-9">
+                        <div>
+                        {% for tA in data.travelArrangements %}
+                        <label class="radio" for="travel-{{ loop.index0 }}">
+                        <input type="radio" name="travel" id="travel-{{ loop.index0 }}" value="{{ tA.name }}" required="required" {% if tA.checked %}checked{% endif %}>
+                        {{ tA.name }}
+                        </label>
+                        {% endfor %}
+                        </div>
+
+                        <span class="help-block no-bottom-margin">
+                        Unfortunataly we cannot provide reimbursment for personal travel arrangements.<br>
+                        For more information, please see <a class="rules-link" href="/travel" target="_blank">our travel page</a>.
+                        </span>
+                        <div class="errormessages">
+                        {{ data.errors.travel }}
+                        </div>
+                        </div>
+                    </div>
+
+                    <div class="" id="bus-routes">
+                        <div class="form-group">
+                        <label class="control-label col-sm-3" for="busRoute">Bus Route<span class="reqd"> *</span></label>
+                        <div class="controls col-sm-9">
+                        <select name="busRoute" class="form-control" required="required">
+                        <option value="">Please select</option>
+                        {% for b in data.busRoutes %}
+                        <option {% if b.selected %}selected{% endif %} value="{{ b.name }}">{{ b.name }}</option>
+                        {% endfor %}
+                        </select>
+                        <div class="errormessages">
+                        {{ data.errors.busRoute }}
+                        </div>
+                        </div>
+                        </div>
+                    </div>
+
                     <div class="form-group" style="">
                         <div class="col-sm-4"></div>
                         <label class="control-label sr-only"></label>
@@ -88,19 +132,9 @@
 
 {% block scripts %}
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<!--script src="/js/jquery.min.js"></script-->
 <script src="/lib/selectize/js/standalone/selectize.min.js"></script>
 <script src="/lib/bootstrap/js/bootstrap.min.js"></script>
 <script src="/js/easing.min.js"></script>
-<script type="text/javascript">
-$(document).ready(function () {
-    $('#attend-0').on('click', function () {
-        // $('#rsvp-submit').removeAttr('disabled');
-        // $('#rsvp-submit').removeClass("submit-disabled");
-    });
-    $('#attend-1').on('click', function () {
-        // $('#rsvp-submit').removeAttr('disabled');
-        // $('#rsvp-submit').removeClass("submit-disabled");
-    });
-});
-</script>
+<script src="/js/rsvp.js"></script>
 {% endblock %}
