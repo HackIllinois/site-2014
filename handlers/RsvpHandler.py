@@ -130,7 +130,7 @@ class RsvpHandler(MainHandler.Handler):
         # ---------- BEGIN VALIDATION ----------
 			
             for m1 in x['micro1'].split(','):
-                if m2 not in constants.MICRO1:
+                if m1 not in constants.MICRO1:
                     errors['micro1'] = "Invalid Microcontrollers"
                     valid = False
                     break
