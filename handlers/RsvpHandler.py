@@ -21,17 +21,17 @@ class RsvpHandler(MainHandler.Handler):
 
         db_user = Attendee.search_database({'userId': user.user_id()}).get()
 
-        if db_user is None:
-		    return self.redirect('/apply/closed')
+      #   if db_user is None:
+            # return self.redirect('/apply/closed')
 
-        if db_user.isRegistered == False:
-            return self.redirect('/apply/closed')
+      #   if db_user.isRegistered == False:
+      #       return self.redirect('/apply/closed')
 
-        if db_user.approvalStatus is None:
-            return self.redirect('/apply/rsvp/pending')
+      #   if db_user.approvalStatus is None:
+      #       return self.redirect('/apply/rsvp/pending')
 
-        if db_user.approvalStatus.status != 'Awaiting Response':
-            return self.redirect('/apply/rsvp/pending')
+      #   if db_user.approvalStatus.status != 'Awaiting Response':
+      #       return self.redirect('/apply/rsvp/pending')
 
         data = {}
         data['title'] = constants.RSVP_TITLE
@@ -39,13 +39,13 @@ class RsvpHandler(MainHandler.Handler):
 
         data['username'] = db_user.userNickname
         data['email'] = db_user.email
-		
+
         lists = {
             'micro1':constants.MICRO1, 'micro2':constants.MICRO2, 'labEquipment':constants.LABEQUIPMENT
             }
-			
+
         for l, options in lists.iteritems(): data[l] = [ {'name':n, 'checked':False} for n in options ]
-        
+
         # Multi-choice check box
         micro1 = db_user.micro1
         if micro1:
@@ -61,7 +61,7 @@ class RsvpHandler(MainHandler.Handler):
         if labEquipment:
             for i in data['labEquipment']:
                 if i['name'] in labEquipment: i['checked'] = True
-		
+
         data['uploadUrl'] = blobstore.create_upload_url('/apply/rsvp', gs_bucket_name=constants.BUCKET)
         data['logoutUrl'] = users.create_logout_url('/apply')
 
@@ -75,24 +75,24 @@ class RsvpHandler(MainHandler.Handler):
 
         # Login Page
         if db_user is None:
-		    return self.redirect('/apply/closed')
+            return self.redirect('/apply/closed')
 
         if db_user is not None and (db_user.isRegistered == False):
             return self.redirect('/apply/closed')
-			
-		#Not yet approved page
+
+        #Not yet approved page
         if db_user is not None and (db_user.isApproved == False):
             return self.redirect('/apply/closed')
-			
+
         # Initialization
         x = {} # dictionary that will be used to create a new Attendee or update one
         errors = {} # Note: 1 error per field
         valid = True
-		
+
         #foods = self.request.get_all('food')
         #x['food'] = ','.join(foods)
-        
-        x['userId'] = user.user_id() 
+
+        x['userId'] = user.user_id()
         x['approved'] = 'aaaaa'
 
         x['approvalStatus'] = Status(rsvpTime=datetime.now(),
@@ -100,8 +100,8 @@ class RsvpHandler(MainHandler.Handler):
                                      approvedTime=db_user.approvalStatus.approvedTime)
 
         Attendee.update_search(x, {'userId':x['userId']})
-        
-		
+
+
         pass
 
 class NotApprovedHandler(MainHandler.Handler):

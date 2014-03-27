@@ -1,117 +1,106 @@
-{% extends "base/base.html" %}
+{% extends "base/base2.html" %}
 
-{% block head %}
-<link rel="stylesheet" type="text/css" href="/css/index.css">
+{% block stylesheets %}
 <link rel="stylesheet" type="text/css" href="/lib/bootstrap/css/bootstrap.min.css">
 <link rel="stylesheet" type="text/css" href="/lib/selectize/css/selectize.bootstrap3.css">
-<link rel="stylesheet" type="text/css" href="/css/apply.css">
-{% endblock head %}
+<style type="text/css">
+    .header {
+        margin-top: 50px;
+    }
+</style>
+{% endblock stylesheets %}
 
-{% block body %}
-<div class="wrapper bg-stars">
-	<div class="const">
-		<img class="constellations" src="/img/constellations.png">
-	</div>
-	<div class="container">
-	    <a href="/">
-	        <img class="logo-main-svg header img-responsive center-block" src="/img/hackillinois_logo.svg"/>
-	    </a>
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="container header">
+                <a href="/"><img class="img-responsive center-block" src="/img/hackillinois_logo.svg"/></a>
+                <h2 class="text-center">{{ data.title }}</h2>
+                <p class="text-center">Hello {{ data.username }}! <a class="rules-link" href="{{ data.logoutUrl }}">Not you</a>?</p>
+            </div>
+            <div class="container">
+                <form class="form-horizontal" role="form" action="/apply/rsvp" method="post">
+                    <div class="form-group">
+                        <label class="control-label col-sm-4" for="attend">Will you be attending Hackillinois?</label>
+                        <div class="controls col-sm-8">
+                            <label class="radio-inline" for="attend-0">
+                                <input type="radio" name="attend" id="attend-0" value="yes" required>
+                                Yes!
+                            </label>
+                            <label class="radio-inline" for="attend-1">
+                                <input type="radio" name="attend" id="attend-1" value="no" required>
+                                No, please release my spot.
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-4" for="micro2">Microcontrollers</label>
+                        <div class="controls col-sm-8">
 
-    	<h2 class="info-text t-centered">{{ data.title }}</h2>
-
-		<div>
-			<p class="loggedin">Hello {{ data.username }}! <a class="rules-link" href="{{ data.logoutUrl }}">Not you</a>?</p>
-		</div>
-		<div style="" class="regform-container">
-			<form id="application" class="form-horizontal" role="form" action="{{ data.uploadUrl }}" method="post" enctype="multipart/form-data">
-                <div class="form-group">
-				<label class="control-label col-sm-3" for="micro2">Microcontrollers</label>        
-                    <div class="controls col-sm-9">
-					
-						{% for m1 in data.micro1 %}
-						<label class="micro1-options checkbox-inline" for="micro1-{{ loop.index0 }}">
-							<input type="checkbox" name="micro1" id="micro1-{{ loop.index0 }}" value="{{ m1.name }}" {% if m1.checked %}checked{% endif %}/>
-							{{ m1.name }}
-						</label>
-						{% endfor %}
-                        <span class="help-block no-bottom-margin">Note that you will need to return these items by the end of the event. Cables are included.</span>
+                            {% for m1 in data.micro1 %}
+                            <label class="micro1-options checkbox-inline" for="micro1-{{ loop.index0 }}">
+                                <input type="checkbox" name="micro1" id="micro1-{{ loop.index0 }}" value="{{ m1.name }}" {% if m1.checked %}checked{% endif %}/>
+                                {{ m1.name }}
+                            </label>
+                            {% endfor %}
+                            <span class="help-block no-bottom-margin">Note that you will need to return these items by the end of the event. Cables are included.</span>
+                        </div>
                     </div>
-                </div>
-                <div class="form-group">
-                    <label class="control-label col-sm-3" for="micro2">Microcontrollers</label>
-                    <div class="controls col-sm-9">
-                        <label class="checkbox-inline micro2-options" for="micro2-0">
-                            <input type="checkbox" name="micro2" id="micro2-0" value="imp"/> Electric Imp Dev Kit
-                        </label>
-                        <label class="checkbox-inline micro2-options" for="micro2-1">
-                            <input type="checkbox" name="micro2" id="micro2-1" value="spark"/> Spark.io
-                        </label>
-                        <span class="help-block no-bottom-margin">You will be able to keep these.</span>
+                    <div class="form-group">
+                        <label class="control-label col-sm-4" for="micro2">Microcontrollers</label>
+                        <div class="controls col-sm-8">
+                            <label class="checkbox-inline micro2-options" for="micro2-0">
+                                <input type="checkbox" name="micro2" id="micro2-0" value="imp"/> Electric Imp Dev Kit
+                            </label>
+                            <label class="checkbox-inline micro2-options" for="micro2-1">
+                                <input type="checkbox" name="micro2" id="micro2-1" value="spark"/> Spark.io
+                            </label>
+                            <span class="help-block no-bottom-margin">You will be able to keep these.</span>
+                        </div>
                     </div>
-                </div>
-                <div class="form-group">
-                    <label class="control-label col-sm-3" for="lab">Lab Equipment</label>
-                    <div class="controls col-sm-9">
-                        <label class="checkbox-inline lab-options" for="lab-0">
-                            <input type="checkbox" name="lab" id="lab-0" value="power"/> Power Supplies
-                        </label>
-                        <label class="checkbox-inline lab-options" for="lab-1">
-                            <input type="checkbox" name="lab" id="lab-1" value="oscilloscopes"/> Oscilloscopes
-                        </label>
+                    <div class="form-group">
+                        <label class="control-label col-sm-4" for="lab">Lab Equipment</label>
+                        <div class="controls col-sm-8">
+                            <label class="checkbox-inline lab-options" for="lab-0">
+                                <input type="checkbox" name="lab" id="lab-0" value="power"/> Power Supplies
+                            </label>
+                            <label class="checkbox-inline lab-options" for="lab-1">
+                                <input type="checkbox" name="lab" id="lab-1" value="oscilloscopes"/> Oscilloscopes
+                            </label>
+                        </div>
                     </div>
-                </div>
-				<div class="form-group">
-					<label class="control-label col-sm-3" for="attend">Will you be attending Hackillinois?</label>
-					<div class="controls col-sm-9">
-						<label class="radio" for="attend">
-							<input type="radio" name="attend" id="attend-0" required="required">
-							Yes!
-						</label>
-						<label class="radio" for="attend">
-							<input type="radio" name="attend" id="attend-1" required="required">
-							No, please release my spot.
-						</label>
-					</div>
-				</div>
-				<div class="form-group" style="">
-					<label class="control-label col-sm-3 sr-only"></label>
-					<div class="controls col-sm-9">
-						<button type="submit" id="rsvp-submit" class="btn btn-primary btn-lg pull-left footer btn-hackil submit-disabled" style="width:100%" disabled>Submit</button>
-					</div>
-				</div>
-			</form>
-		</div>
-	</div>
+                    <div class="form-group" style="">
+                        <div class="col-sm-4"></div>
+                        <label class="control-label sr-only"></label>
+                        <div class="controls col-sm-4">
+                            <button id="rsvp-submit" type="submit" class="btn btn-primary btn-lg btn-block">Submit</button>
+                        </div>
+                        <div class="col-sm-4"></div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
-<div class="launch-container">
-	<div class="launch-setup">
-		<div class="launch-craft">
-			<img class="rocket-ship" src="/img/rocket/spaceship_nodock2x.png">
-			<img class="rocket-plume" src="/img/rocket/plume2x.png">
-		</div>
-		<img class="launch-pad" src="/img/rocket/dock2x.png">
-		<!--img class="rocket-ship rocket-small" src="img/rocket/spaceship_nodock2x.png">
-		<img class="rocket-ship rocket-small" src="img/rocket/dock2x.png"-->
-	</div>
-</div>
+{% endblock content %}
 
 
+{% block scripts %}
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-<!--script src="/js/jquery.min.js"></script-->
 <script src="/lib/selectize/js/standalone/selectize.min.js"></script>
 <script src="/lib/bootstrap/js/bootstrap.min.js"></script>
 <script src="/js/easing.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function () {
-
     $('#attend-0').on('click', function () {
-            $('#rsvp-submit').removeAttr('disabled');
-            $('#rsvp-submit').removeClass("submit-disabled");
+        // $('#rsvp-submit').removeAttr('disabled');
+        // $('#rsvp-submit').removeClass("submit-disabled");
     });
     $('#attend-1').on('click', function () {
-            $('#rsvp-submit').removeAttr('disabled');
-            $('#rsvp-submit').removeClass("submit-disabled");
+        // $('#rsvp-submit').removeAttr('disabled');
+        // $('#rsvp-submit').removeClass("submit-disabled");
     });
 });
 </script>
-{% endblock body %}
+{% endblock %}
