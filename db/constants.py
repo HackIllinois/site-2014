@@ -62,8 +62,8 @@ SHIRTS = ['XS','S','M','L','XL','XXL']
 FOODS = ['Vegetarian','Vegan','Gluten Free','Lactose Free', 'Other']
 PROJECTS = ['Software Hack','Hardware Hack','Unsure']
 
-MICRO1 = ['Arduinos','Raspberry Pi']
-MICRO2 = ['Electric Imp Dev Kit','Spark Core']
+MICRO1 = [['Arduinos','http://www.arduino.cc/'],['Raspberry Pi','http://www.raspberrypi.org/']]
+MICRO2 = [['Electric Imp Dev Kit','http://www.electricimp.com/'],['Spark Core','https://www.spark.io/']]
 LABEQUIPMENT = ['Power Supplies','Oscilloscopes']
 
 TRAVEL_RIDE_BUS = 'I would like to ride a HackIllinois bus'

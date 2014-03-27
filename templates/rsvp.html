@@ -46,7 +46,7 @@
 						{% for m1 in data.micro1 %}
 						<label class="micro1-options checkbox-inline" for="micro1-{{ loop.index0 }}">
 							<input type="checkbox" name="micro1" id="micro1-{{ loop.index0 }}" value="{{ m1.name }}" {% if m1.checked %}checked{% endif %}/>
-							{{ m1.name }}
+							<a href="{{m1.link}}" target="_blank">{{ m1.name }}</a>
 						</label>
 						{% endfor %}
                         <span class="help-block no-bottom-margin">Note that you will need to return these items by the end of the event. Cables are included.</span>
@@ -58,7 +58,7 @@
 						{% for m2 in data.micro2 %}
 						<label class="micro2-options checkbox-inline" for="micro2-{{ loop.index0 }}">
 							<input type="checkbox" name="micro2" id="micro2-{{ loop.index0 }}" value="{{ m2.name }}" {% if m2.checked %}checked{% endif %}/>
-							{{ m2.name }}
+							<a href="{{m2.link}}" target="_blank">{{ m2.name }}</a>
 						</label>
 						{% endfor %}
                         <span class="help-block no-bottom-margin">You will be able to keep these.</span>

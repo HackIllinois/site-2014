@@ -45,12 +45,15 @@ class RsvpHandler(MainHandler.Handler):
         data['email'] = db_user.email
 
         lists = {
-            'micro1':constants.MICRO1, 'micro2':constants.MICRO2, 'labEquipment':constants.LABEQUIPMENT,
-            'travelArrangements':constants.TRAVEL_ARRANGEMENTS
+            'micro1':constants.MICRO1, 'micro2':constants.MICRO2
             }
 
-        for l, options in lists.iteritems(): data[l] = [ {'name':n, 'checked':False} for n in options ]
+        for l, options in lists.iteritems(): data[l] = [ {'name':n[0], 'checked':False, 'link':n[1]} for n in options]
 
+        data['labEquipment'] = [ {'name':n, 'checked':False} for n in constants.LABEQUIPMENT]
+		
+        data['travelArrangements'] = [ {'name':n, 'checked':False} for n in constants.TRAVEL_ARRANGEMENTS ]
+		
         data['busRoutes'] = [ {'name':n, 'selected':False} for n in constants.BUS_ROUTES ]
 
         choose_one_fields = {
