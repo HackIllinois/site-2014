@@ -1,140 +1,150 @@
-{% extends "base/base2.html" %}
+{% extends "base/base.html" %}
 
-{% block stylesheets %}
+{% block head %}
+<link rel="stylesheet" type="text/css" href="/css/index.css">
 <link rel="stylesheet" type="text/css" href="/lib/bootstrap/css/bootstrap.min.css">
 <link rel="stylesheet" type="text/css" href="/lib/selectize/css/selectize.bootstrap3.css">
-<style type="text/css">
-    .header {
-        margin-top: 50px;
-    }
-</style>
-{% endblock stylesheets %}
+<link rel="stylesheet" type="text/css" href="/css/apply.css">
+{% endblock head %}
 
-{% block content %}
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-md-12">
-            <div class="container header">
-                <a href="/"><img class="img-responsive center-block" src="/img/hackillinois_logo.svg"/></a>
-                <h2 class="text-center">{{ data.title }}</h2>
-                <p class="text-center">Hello {{ data.username }}! <a class="rules-link" href="{{ data.logoutUrl }}">Not you</a>?</p>
-            </div>
-            <div class="container">
-                <form class="form-horizontal" role="form" action="/apply/rsvp" method="post">
-                    <div class="form-group">
-                        <label class="control-label col-sm-4" for="attend">Will you be attending Hackillinois?</label>
-                        <div class="controls col-sm-8">
-                            <label class="radio-inline" for="attend">
-                                <input type="radio" name="attend" id="attend-0" value="Yes" required="required">
-                                Yes!
-                            </label>
-                            <label class="radio-inline" for="attend">
-                                <input type="radio" name="attend" id="attend-1" value="No" required="required">
-                                No, please release my spot.
-                            </label>
-                        </div>
+{% block body %}
+<div class="wrapper bg-stars">
+	<div class="const">
+		<img class="constellations" src="/img/constellations.png">
+	</div>
+	<div class="container">
+	    <a href="/">
+	        <img class="logo-main-svg header img-responsive center-block" src="/img/hackillinois_logo.svg"/>
+	    </a>
+
+    	<h2 class="info-text t-centered">{{ data.title }}</h2>
+
+		<div>
+			<p class="loggedin">Hello {{ data.username }}! <a class="rules-link" href="{{ data.logoutUrl }}">Not you</a>?</p>
+		</div>
+		<div style="" class="regform-container">
+			<form id="attendForm" class="form-horizontal" role="form" action="{{ data.uploadUrl }}" method="post" enctype="multipart/form-data">
+				<div class="form-group">
+					<label class="control-label col-sm-3" for="attend">Will you be attending Hackillinois?</label>
+					<div class="controls col-sm-9">
+						<label class="radio" for="attend">
+							<input type="radio" name="attend" id="attend-0" value="Yes" required="required">
+							Yes!
+						</label>
+						<label class="radio" for="attend">
+							<input type="radio" name="attend" id="attend-1" value="No" required="required">
+							No, please release my spot.
+						</label>
+					</div>
+				</div>
+				<span id="rsvp-form" style="display:none">
+				<hr>
+                <div class="form-group">
+				<label class="control-label col-sm-3" for="micro1">Microcontrollers</label>        
+                    <div class="controls col-sm-9">
+					
+						{% for m1 in data.micro1 %}
+						<label class="micro1-options checkbox-inline" for="micro1-{{ loop.index0 }}">
+							<input type="checkbox" name="micro1" id="micro1-{{ loop.index0 }}" value="{{ m1.name }}" {% if m1.checked %}checked{% endif %}/>
+							{{ m1.name }}
+						</label>
+						{% endfor %}
+                        <span class="help-block no-bottom-margin">Note that you will need to return these items by the end of the event. Cables are included.</span>
                     </div>
-
-                    <hr>
-
-                    <div class="form-group">
-                        <label class="control-label col-sm-4" for="micro1">Microcontrollers</label>
-                        <div class="controls col-sm-8">
-                            {% for m1 in data.micro1 %}
-                            <label class="micro1-options checkbox-inline" for="micro1-{{ loop.index0 }}">
-                                <input type="checkbox" name="micro1" id="micro1-{{ loop.index0 }}" value="{{ m1.name }}" {% if m1.checked %}checked{% endif %}/>
-                                {{ m1.name }}
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-3" for="micro2">Microcontrollers</label>
+                    <div class="controls col-sm-9">
+						{% for m2 in data.micro2 %}
+						<label class="micro2-options checkbox-inline" for="micro2-{{ loop.index0 }}">
+							<input type="checkbox" name="micro2" id="micro2-{{ loop.index0 }}" value="{{ m2.name }}" {% if m2.checked %}checked{% endif %}/>
+							{{ m2.name }}
+						</label>
+						{% endfor %}
+                        <span class="help-block no-bottom-margin">You will be able to keep these.</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-3" for="lab">Lab Equipment</label>
+                    <div class="controls col-sm-9">
+						{% for l in data.labEquipment %}
+						<label class="lab-options checkbox-inline" for="lab-{{ loop.index0 }}">
+							<input type="checkbox" name="labEquipment" id="lab-{{ loop.index0 }}" value="{{ l.name }}" {% if l.checked %}checked{% endif %}/>
+							{{ l.name }}
+						</label>
+						{% endfor %}
+                    </div>
+                </div>
+				<hr>			
+                <div class="form-group">
+                    <label class="control-label col-sm-3" for="travel">Travel Arrangements<span class="reqd"> *</span></label>
+                    <div class="controls col-sm-9">
+                        <div>
+                            {% for tA in data.travelArrangements %}
+                            <label class="radio" for="travel-{{ loop.index0 }}">
+                                <input type="radio" name="travel" id="travel-{{ loop.index0 }}" value="{{ tA.name }}" required="required" {% if tA.checked %}checked{% endif %}>
+                                {{ tA.name }}
                             </label>
                             {% endfor %}
-                            <span class="help-block no-bottom-margin">Note that you will need to return these items by the end of the event. Cables are included.</span>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label col-sm-4" for="micro2">Microcontrollers</label>
-                        <div class="controls col-sm-8">
-                            {% for m2 in data.micro2 %}
-                            <label class="micro2-options checkbox-inline" for="micro2-{{ loop.index0 }}">
-                                <input type="checkbox" name="micro2" id="micro2-{{ loop.index0 }}" value="{{ m2.name }}" {% if m2.checked %}checked{% endif %}/>
-                                {{ m2.name }}
-                            </label>
-                            {% endfor %}
-                            <span class="help-block no-bottom-margin">You will be able to keep these.</span>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label col-sm-4" for="lab">Lab Equipment</label>
-                        <div class="controls col-sm-8">
-                            {% for l in data.labEquipment %}
-                            <label class="lab-options checkbox-inline" for="lab-{{ loop.index0 }}">
-                                <input type="checkbox" name="lab" id="lab-{{ loop.index0 }}" value="{{ l.name }}" {% if l.checked %}checked{% endif %}/>
-                                {{ l.name }}
-                            </label>
-                            {% endfor %}
-                        </div>
-                    </div>
 
-                    <hr>
+                        <span class="help-block no-bottom-margin">
+                            Unfortunataly we cannot provide reimbursment for personal travel arrangements.<br>
+                            For more information, please see <a class="rules-link" href="/travel" target="_blank">our travel page</a>.
+                        </span>
+                        <div class="errormessages">
+                            {{ data.errors.travel }}
+                        </div>
+                    </div>
+                </div>
 
+                <div class="" id="bus-routes">
                     <div class="form-group">
-                        <label class="control-label col-sm-4" for="travel">Travel Arrangements<span class="reqd"> *</span></label>
-                            <div class="controls col-sm-8">
-                            <div>
-                                {% for tA in data.travelArrangements %}
-                                <label class="radio" for="travel-{{ loop.index0 }}">
-                                    <input type="radio" name="travel" id="travel-{{ loop.index0 }}" value="{{ tA.name }}" required="required" {% if tA.checked %}checked{% endif %}>
-                                    {{ tA.name }}
-                                </label>
+                        <label class="control-label col-sm-3" for="busRoute">Bus Route<span class="reqd"> *</span></label>
+                        <div class="controls col-sm-9">
+                            <select name="busRoute" class="form-control" required="required">
+                                <option value="">Please select</option>
+                                {% for b in data.busRoutes %}
+                                <option {% if b.selected %}selected{% endif %} value="{{ b.name }}">{{ b.name }}</option>
                                 {% endfor %}
-                            </div>
-
-                            <span class="help-block no-bottom-margin">
-                                Unfortunataly we cannot provide reimbursment for personal travel arrangements.<br>
-                                For more information, please see <a class="rules-link" href="/travel" target="_blank">our travel page</a>.
-                            </span>
+                            </select>
                             <div class="errormessages">
-                                {{ data.errors.travel }}
+                                {{ data.errors.busRoute }}
                             </div>
                         </div>
                     </div>
+                </div>
 
-                    <div class="" id="bus-routes">
-                        <div class="form-group">
-                            <label class="control-label col-sm-4" for="busRoute">Bus Route<span class="reqd"> *</span></label>
-                            <div class="controls col-sm-8">
-                                <select name="busRoute" class="form-control" required="required">
-                                    <option value="">Please select</option>
-                                    {% for b in data.busRoutes %}
-                                    <option {% if b.selected %}selected{% endif %} value="{{ b.name }}">{{ b.name }}</option>
-                                    {% endfor %}
-                                </select>
-                                <div class="errormessages">
-                                    {{ data.errors.busRoute }}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-group" style="">
-                        <div class="col-sm-4"></div>
-                        <label class="control-label sr-only"></label>
-                        <div class="controls col-sm-4">
-                            <button id="rsvp-submit" type="submit" class="btn btn-primary btn-lg btn-block">Submit</button>
-                        </div>
-                        <div class="col-sm-4"></div>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
+				</span>
+				<span id="rsvp-submit" style="display:none">
+				<div class="form-group" style="">
+					<label class="control-label col-sm-3 sr-only"></label>
+					<div class="controls col-sm-9">
+						<button type="submit" id="rsvp-submit-btn" class="btn btn-primary btn-lg pull-left footer btn-hackil submit-disabled" style="width:100%" disabled>Submit</button>
+					</div>
+				</div>
+				</span>
+			</form>
+		</div>
+	</div>
 </div>
-{% endblock content %}
+<div class="launch-container">
+	<div class="launch-setup">
+		<div class="launch-craft">
+			<img class="rocket-ship" src="/img/rocket/spaceship_nodock2x.png">
+			<img class="rocket-plume" src="/img/rocket/plume2x.png">
+		</div>
+		<img class="launch-pad" src="/img/rocket/dock2x.png">
+		<!--img class="rocket-ship rocket-small" src="img/rocket/spaceship_nodock2x.png">
+		<img class="rocket-ship rocket-small" src="img/rocket/dock2x.png"-->
+	</div>
+</div>
 
 
-{% block scripts %}
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 <!--script src="/js/jquery.min.js"></script-->
 <script src="/lib/selectize/js/standalone/selectize.min.js"></script>
 <script src="/lib/bootstrap/js/bootstrap.min.js"></script>
 <script src="/js/easing.min.js"></script>
 <script src="/js/rsvp.js"></script>
-{% endblock %}
+{% endblock body %}

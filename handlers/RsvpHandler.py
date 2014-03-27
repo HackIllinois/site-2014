@@ -112,32 +112,66 @@ class RsvpHandler(MainHandler.Handler):
         x['userId'] = user.user_id()
 
         isAttending = self.request.get("attend")
-        logging.error(isAttending)
+		
         if isAttending == "Yes":
             x['approvalStatus'] = Status(rsvpTime=datetime.now(),
                 waitlistedTime=db_user.approvalStatus.waitlistedTime,
                 approvedTime=db_user.approvalStatus.approvedTime,
                 emailedTime=db_user.approvalStatus.emailedTime,
                 status = 'Rsvp Coming')
+            categories = ['micro1', 'micro2', 'labEquipment']
+            for category in categories:
+                list = self.request.get_all(category)
+                x[category] = ','.join(list)
+
+			
+            x['travel'] = self.request.get('travel')
+            x['busRoute'] = self.request.get('busRoute')
+        # ---------- BEGIN VALIDATION ----------
+			
+            for m1 in x['micro1'].split(','):
+                if m2 not in constants.MICRO1:
+                    errors['micro1'] = "Invalid Microcontrollers"
+                    valid = False
+                    break
+            for m2 in x['micro2'].split(','):
+                if m2 not in constants.MICRO2:
+                    errors['micro2'] = "Invalid Microcontrollers"
+                    valid = False
+                    break
+            for l in x['labEquipment'].split(','):
+                if l not in constants.LABEQUIPMENT:
+                    errors['labEquipment'] = "Invalid Lab Equipment"
+                    valid = False
+                    break
+			
+            if x['travel'] or x['travel'] == constants.TRAVEL_NO_RESPONSE:
+               errors['travel'] = "Provide Travel Plans"
+               valid = False
+			   
+            if not x['travel'] and (x['travel'] not in constants.TRAVEL_ARRANGEMENTS):
+               errors['travel'] = "Invalid Travel Plans"
+               valid = False
+			
+            if x['travel'] == constants.TRAVEL_RIDE_BUS:
+                if ('busRoute' in x and x['busRoute']) or x['busRoute'] not in constatns.BUS_ROUTES:
+                    errors['busRoute'] = "Invalid Bus Route"
+                    valid = False
+			
+        # ---------- END VALIDATION ----------
+		
+			
         else:
             x['approvalStatus'] = Status(rsvpTime=datetime.now(),
                 waitlistedTime=db_user.approvalStatus.waitlistedTime,
                 approvedTime=db_user.approvalStatus.approvedTime,
                 emailedTime=db_user.approvalStatus.emailedTime,
                 status = 'Rsvp Not Coming')
-        # foods = self.request.get_all('food')
-        # x['food'] = ','.join(foods)
-        # x[field] = self.request.get(field)
-
-
-        x['approvalStatus'] = Status(rsvpTime=datetime.now(),
-                                     waitlistedTime=db_user.approvalStatus.waitlistedTime,
-                                     approvedTime=db_user.approvalStatus.approvedTime)
 
         Attendee.update_search(x, {'userId':x['userId']})
 
 
-        pass
+        return self.redirect("/apply")
 
 class NotApprovedHandler(MainHandler.Handler):
     def get(self):
