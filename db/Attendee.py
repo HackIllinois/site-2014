@@ -27,8 +27,7 @@ class Attendee(Model):
 	
     micro1 = ndb.StringProperty()
     micro2 = ndb.StringProperty()
-    lab = ndb.StringProperty()
-    additionalParts = ndb.TextProperty()
+    labEquipment = ndb.StringProperty()
 
     nameFirst = ndb.StringProperty()
     nameLast = ndb.StringProperty()

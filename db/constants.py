@@ -59,6 +59,9 @@ SHIRTS = ['XS','S','M','L','XL','XXL']
 FOODS = ['Vegetarian','Vegan','Gluten Free','Lactose Free', 'Other']
 PROJECTS = ['Software Hack','Hardware Hack','Unsure']
 
+MICRO1 = ['Arduinos','Raspberry Pi']
+MICRO2 = ['Electric Imp Dev Kit','Spark Core']
+LABEQUIPMENT = ['Power Supplies','Oscilloscopes']
 
 TRAVEL_RIDE_BUS = 'I would like to ride a HackIllinois bus'
 TRAVEL_PROVIDE_OWN_TRANSIT = 'I will provide my own transportation'
