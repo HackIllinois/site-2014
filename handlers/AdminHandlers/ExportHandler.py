@@ -18,7 +18,7 @@ class ExportHandler(MainAdminHandler.BaseAdminHandler):
 
         if status is not None:
             status = str(urllib.unquote(status))
-            if status not in constants.STATUSES + ['All']:
+            if status not in constants.STATUSES + ['All', 'a', 'b']:
                 return self.abort(404, detail='Status <%s> does not exist.' % status)
         if category is not None:
             category = str(urllib.unquote(category))
