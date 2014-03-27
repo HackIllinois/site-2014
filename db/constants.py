@@ -92,6 +92,12 @@ RSVP_STATUSES = [
     'No Rsvp'
 ]
 
+STATS_STATUSES = [
+    'approved',
+    'emailed',
+    'rsvpd'
+]
+
 CATEGORIES = [
     TRAVEL_RIDE_BUS,
     TRAVEL_PROVIDE_OWN_TRANSIT,

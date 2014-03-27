@@ -52,7 +52,6 @@ handlers = [
     RedirectRoute('/admin', handler=AdminHandlers.IndexHandler.IndexHandler, name='AdminIndex', strict_slash=True),
     RedirectRoute('/admin/xkcd', handler=AdminHandlers.XkcdHandler.XkcdHandler, name='AdminXkcd', strict_slash=True),
     RedirectRoute('/admin/stats', handler=AdminHandlers.StatsHandler.StatsHandler, name='AdminStats', strict_slash=True),
-    RedirectRoute('/admin/basicstats', handler=AdminHandlers.BasicStatsHandler.BasicStatsHandler, name='AdminBasicStats', strict_slash=True),
     RedirectRoute('/admin/busstats', handler=AdminHandlers.BusRouteStatsHandler.BusRouteStatsHandler, name='AdminBusStats', strict_slash=True),
     RedirectRoute('/admin/resume', handler=AdminHandlers.ResumeHandler.ResumeHandler, name='AdminResume', strict_slash=True),
     RedirectRoute('/admin/applycount', handler=AdminHandlers.ApplyCountHandler.ApplyCountHandler, name='AdminApplyCount', strict_slash=True),
@@ -62,6 +61,9 @@ handlers = [
     RedirectRoute('/admin/manager/accesscontrol', handler=AdminHandlers.AccessControlHandler.AccessControlHandler, name='AdminAccessControl', strict_slash=True),
     RedirectRoute('/admin/manager/whitelistcontrol', handler=AdminHandlers.ManagerHandler.WhitelistControlHandler, name='AdminWhitelistControl', strict_slash=True),
     RedirectRoute('/admin/send', handler=AdminHandlers.MarkSentEmailHandler.MarkSentEmailHandler, name='AdminMarkSentEmail', strict_slash=True),
+
+    RedirectRoute('/admin/basicstats',          handler=AdminHandlers.BasicStatsHandler.BasicStatsHandler, name='AdminBasicStats0', strict_slash=True),
+    RedirectRoute('/admin/basicstats/<status>', handler=AdminHandlers.BasicStatsHandler.BasicStatsHandler, name='AdminBasicStats1', strict_slash=True),
 
     RedirectRoute('/admin/export',                             handler=AdminHandlers.ExportHandler.ExportHandler, name='AdminExport0', strict_slash=True),
     RedirectRoute('/admin/export/<status>',                    handler=AdminHandlers.ExportHandler.ExportHandler, name='AdminExport1', strict_slash=True),

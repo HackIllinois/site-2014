@@ -39,6 +39,7 @@ class ProfileHandler(MainAdminHandler.BaseAdminHandler, blobstore_handlers.Blobs
         }
         for l, options in lists.iteritems(): data[l] = [ n for n in options ]
 
+        data['status'] = db_user.approvalStatus.status if db_user.approvalStatus is not None else None
 
         return self.render("admin_profile.html", data=data, approveAccess=admin_user.approveAccess, fullAccess=admin_user.fullAccess)
 

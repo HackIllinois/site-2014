@@ -16,15 +16,24 @@
 
 <h1 class="page-header">
     {{ data.nameFirst }} {{ data.nameLast }}
-    {% if data.isApproved %}
-    <small class="status">&nbsp;&nbsp;is approved</small>
-    <button class="btn btn-danger approve-btn">Un-Approve</button>
-    {% else %}
+
+    {% if data.status  == 'Not Approved' %}
     <small class="status">&nbsp;&nbsp;is not approved</small>
-    <button class="btn btn-success approve-btn">Approve</button>
+    <button class="btn btn-success status-btn">Approve</button>
+    <button class="btn btn-success status-btn">Waitlist</button>
+    {% elif data.status  == 'Approved' %}
+    <small class="status">&nbsp;&nbsp;is approved</small>
+    <button class="btn btn-danger status-btn">Un-Approve</button>
+    <button class="btn btn-success status-btn">Waitlist</button>
+    {% elif data.status  == 'Waitlisted' %}
+    <small class="status">&nbsp;&nbsp;is waitlisted</small>
+    <button class="btn btn-success status-btn">Approve</button>
+    <button class="btn btn-danger status-btn">Un-Waitlist</button>
+    {% else %}
     {% endif %}
-	<button class="btn btn-primary edit-btn">Edit</button>
-	<button class="btn btn-warning cancel-edit-btn" style="display:none">Cancel Edit</button>
+    <button class="btn btn-primary edit-btn hidden">Edit</button>
+    <button class="btn btn-warning cancel-edit-btn" style="display:none">Cancel Edit</button>
+
 </h1>
 
 <div class="table-responsive">
@@ -213,27 +222,30 @@
 {% block scripts %}
 <script type="text/javascript">
     function applyBtnCallbacks() {
-        $('.approve-btn').click(function() {
+        $('.status-btn').click(function() {
             var attendeeName = $("#nameFirst").text() + " " + $("#nameLast").text() ;
             var attendeeId = $("#id").text();
-			var approve = $(this).html();
-            var r = confirm(approve + " " + attendeeName + "?");
+			var action = $(this).text();
+            var r = confirm(action + " " + attendeeName + "?");
             if (r == true) {
-				if(approve == "Approve"){
-					$.post("/admin/approve", {"userId": attendeeId, "isApproved":"True"});
-					$(this).html("Un-Approve");
-                    $('.status').html("&nbsp;&nbsp;is approved");
-                    $(this).removeClass("btn-success").addClass("btn-danger");
-				}
-				else{
-				    $.post("/admin/approve", {"userId": attendeeId, "isApproved":"False"});
-                    $(this).html("Approve");
-                    $('.status').html("&nbsp;&nbsp;is not approved");
-					$(this).removeClass("btn-danger").addClass("btn-success");
-				}
+                var status = "";
+                if (action == "Approve") {
+                    status = "Approved";
+                } else if (action == "Un-Approve") {
+                    status = "Not Approved";
+                } else if (action == "Waitlist") {
+                    status = "Waitlisted";
+                } else if (action == "Un-Waitlist") {
+                    status = "Not Approved";
+                } else {
+                    return;
+                }
+                $.post("/admin/approve", {"userId": attendeeId, "status": status}, function(data) {
+                    location.reload();
+                });
             }
         });
-    };
+    }
 
 	function editBtnCallbacks() {
         $('.edit-btn').click(function() {
@@ -347,8 +359,8 @@
 
     $(document).ready(function() {
         applyBtnCallbacks();
-		editBtnCallbacks()
-		cancelEditBtnCallbacks()
+		editBtnCallbacks();
+		cancelEditBtnCallbacks();
     });
 </script>
 {% endblock scripts%}
