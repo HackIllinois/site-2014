@@ -15,3 +15,5 @@ import TestAllHandler
 import XkcdHandler
 import RsvpHandler
 import MarkSentEmailHandler
+
+import UpdateSchemaHandler
