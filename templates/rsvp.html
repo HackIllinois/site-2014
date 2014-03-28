@@ -22,6 +22,11 @@
 		<div>
 			<p class="loggedin">Hello {{ data.username }}! <a class="rules-link" href="{{ data.logoutUrl }}">Not you</a>?</p>
 		</div>
+		<div class="field-missing">
+			<p class="errormessages">
+				Whoops! Looks like you missed a required field or two.
+			</p>
+		</div>
 		<div style="" class="regform-container">
 			<form id="attendForm" class="form-horizontal" role="form" action="{{ data.uploadUrl }}" method="post" enctype="multipart/form-data">
 				<div class="form-group">
@@ -39,14 +44,20 @@
 				</div>
 				<span id="rsvp-form" style="display:none">
 				<hr>
-                <div class="form-group">
+				<div class="form-group">
+                    <label class="control-label col-sm-3"></label>
+					<div class="controls col-sm-9">
+						<span style="font-weight:bold;" class="help-block no-bottom-margin">Want to work with hardware? We've got plenty available! Let us know what you'd like to use, and we'll do our best to have it available. If you have any questions, email us at <a href="mailto:hardware@hackillinois.org" target="_blank" style="color:#ADD8E6">hardware@hackillinois.org</a></span>
+					</div>
+				</div>
+				<div class="form-group">
 				<label class="control-label col-sm-3" for="micro1">Microcontrollers</label>        
                     <div class="controls col-sm-9">
 					
 						{% for m1 in data.micro1 %}
 						<label class="micro1-options checkbox-inline" for="micro1-{{ loop.index0 }}">
 							<input type="checkbox" name="micro1" id="micro1-{{ loop.index0 }}" value="{{ m1.name }}" {% if m1.checked %}checked{% endif %}/>
-							<a href="{{m1.link}}" target="_blank">{{ m1.name }}</a>
+							<a href="{{m1.link}}" target="_blank" style="color:#ADD8E6">{{ m1.name }}</a>
 						</label>
 						{% endfor %}
                         <span class="help-block no-bottom-margin">Note that you will need to return these items by the end of the event. Cables are included.</span>
@@ -58,7 +69,7 @@
 						{% for m2 in data.micro2 %}
 						<label class="micro2-options checkbox-inline" for="micro2-{{ loop.index0 }}">
 							<input type="checkbox" name="micro2" id="micro2-{{ loop.index0 }}" value="{{ m2.name }}" {% if m2.checked %}checked{% endif %}/>
-							<a href="{{m2.link}}" target="_blank">{{ m2.name }}</a>
+							<a href="{{m2.link}}" target="_blank" style="color:#ADD8E6">{{ m2.name }}</a>
 						</label>
 						{% endfor %}
                         <span class="help-block no-bottom-margin">You will be able to keep these.</span>
@@ -75,7 +86,8 @@
 						{% endfor %}
                     </div>
                 </div>
-				<hr>			
+				<hr>
+			
                 <div class="form-group">
                     <label class="control-label col-sm-3" for="travel">Travel Arrangements<span class="reqd"> *</span></label>
                     <div class="controls col-sm-9">
@@ -89,12 +101,9 @@
                         </div>
 
                         <span class="help-block no-bottom-margin">
-                            Unfortunataly we cannot provide reimbursment for personal travel arrangements.<br>
-                            For more information, please see <a class="rules-link" href="/travel" target="_blank">our travel page</a>.
+                            Unfortunately we cannot provide reimbursement for personal travel arrangements. For more information, please see our travel page.
+							<a class="rules-link" href="/travel" target="_blank">our travel page</a>.
                         </span>
-                        <div class="errormessages">
-                            {{ data.errors.travel }}
-                        </div>
                     </div>
                 </div>
 
@@ -108,37 +117,24 @@
                                 <option {% if b.selected %}selected{% endif %} value="{{ b.name }}">{{ b.name }}</option>
                                 {% endfor %}
                             </select>
-                            <div class="errormessages">
-                                {{ data.errors.busRoute }}
-                            </div>
                         </div>
                     </div>
                 </div>
 
-				</span>
-				<span id="rsvp-submit" style="display:none">
-				<div class="form-group" style="">
-					<label class="control-label col-sm-3 sr-only"></label>
-					<div class="controls col-sm-9">
-						<button type="submit" id="rsvp-submit-btn" class="btn btn-primary btn-lg pull-left footer btn-hackil submit-disabled" style="width:100%" disabled>Submit</button>
-					</div>
+			</span>
+			<span id="rsvp-submit" style="display:none">
+			<div class="form-group" style="">
+				<label class="control-label col-sm-3 sr-only"></label>
+				<div class="controls col-sm-9">
+					<button id="rsvp-submit-btn" class="btn btn-primary btn-lg pull-left footer btn-hackil submit-disabled" style="width:100%" disabled>Submit</button>
 				</div>
-				</span>
+			</div>
+			</span>
 			</form>
 		</div>
 	</div>
 </div>
-<div class="launch-container">
-	<div class="launch-setup">
-		<div class="launch-craft">
-			<img class="rocket-ship" src="/img/rocket/spaceship_nodock2x.png">
-			<img class="rocket-plume" src="/img/rocket/plume2x.png">
-		</div>
-		<img class="launch-pad" src="/img/rocket/dock2x.png">
-		<!--img class="rocket-ship rocket-small" src="img/rocket/spaceship_nodock2x.png">
-		<img class="rocket-ship rocket-small" src="img/rocket/dock2x.png"-->
-	</div>
-</div>
+
 
 
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
