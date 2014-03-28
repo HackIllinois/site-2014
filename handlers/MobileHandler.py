@@ -82,7 +82,7 @@ def set_mentor_memcache():
 
 def set_all_mobile_memcache(hacker, mentor, staff):
     data = hacker+mentor+staff
-    if not memcache.add('all', data, time.constants.MEMCACHE_TIMEOUT):
+    if not memcache.add('all', data, time=constants.MEMCACHE_TIMEOUT):
         logging.error('Memcache set failed.')
 
     return data
@@ -95,11 +95,11 @@ def get_people_memecache(table_key):
     if table_key == 'all':
         all_data = memcache.get('all')
         if not all_data:
-            hacker = self.set_hacker_memcache()
-            mentor = self.set_mentor_memcache()
-            staff = self.set_staff_memcache()
+            hacker = set_hacker_memcache()
+            mentor = set_mentor_memcache()
+            staff = set_staff_memcache()
 
-            all_data = set_all_mobile_memcache()
+            all_data = set_all_mobile_memcache(hacker, mentor, staff)
 
     elif table_key == 'hacker_mobile':
         all_data = memcache.get('hacker_mobile')
@@ -179,279 +179,31 @@ class PersonHandler(MainHandler.BaseMobileHandler):
         
         if params:
             if 'staff' == params:
-                staffProfiles = get_people_memecache('staff_mobile')
-                listOfStaff = []
-                
-                if not time:
-                    for staffProfile in staffProfiles:
-                        _staff = {'name':staffProfile.name, 
-                        'email':staffProfile.email, 
-                        'school':staffProfile.school, 
-                        'year':staffProfile.year, 
-                        'skills':staffProfile.skills, 
-                        'homebase':staffProfile.homebase, 
-                        'fb_url':staffProfile.pictureURL, 
-                        'status':staffProfile.status, 
-                        'database_key':staffProfile.email, 
-                        'time':staffProfile.updatedTime, 
-                        'type':'staff'}
-                        listOfStaff.append(_staff)
-                else:
-                    for staffProfile in staffProfiles:
-                        if time >= staffProfile.updatedTime:
-                            _staff = {'name':staffProfile.name, 
-                            'email':staffProfile.email, 
-                            'school':staffProfile.school, 
-                            'year':staffProfile.year, 
-                            'skills':staffProfile.skills, 
-                            'homebase':staffProfile.homebase, 
-                            'fb_url':staffProfile.pictureURL, 
-                            'status':staffProfile.status, 
-                            'database_key':staffProfile.email, 
-                            'time':staffProfile.updatedTime, 
-                            'type':'staff'}
-                            listOfStaff.append(_staff)
+                listOfStaff = get_people_memecache('staff_mobile')
                 return self.write(json.dumps(listOfStaff))
             
             if 'mentor' == params:
-                companyProfiles = []
-                
-                companyProfile = get_people_memecache('mentor_mobile')
-                for _companyRep in companyProfile:
-                    if not time:
-                        for _companyRep in companyProfile:
-                            companyRepProfile = {'name':_companyRep.name,
-                            'email':_companyRep.email, 
-                            'company':_companyRep.company, 
-                            'job_title':_companyRep.jobTitle, 
-                            'skills':_companyRep.skills, 
-                            'fb_url':_companyRep.pictureURL, 
-                            'status':_companyRep.status, 
-                            'database_key':_companyRep.email, 
-                            'time':_companyRep.updatedTime, 
-                            'type':'mentor'}
-                            companyProfiles.append(companyRepProfile)
-                    else:
-                        for _companyRep in companyProfile:
-                            if time and time >= _companyRep.updatedTime:
-                                companyRepProfile = {'name':_companyRep.name,
-                                'email':_companyRep.email, 
-                                'company':_companyRep.company, 
-                                'job_title':_companyRep.jobTitle, 
-                                'skills':_companyRep.skills, 
-                                'fb_url':_companyRep.pictureURL, 
-                                'status':_companyRep.status, 
-                                'database_key':_companyRep.email, 
-                                'time':_companyRep.updatedTime, 
-                                'type':'mentor'}
-                                companyProfiles.append(companyRepProfile)
+                listOfMentors = get_people_memecache('mentor_mobile')
                 return self.write(json.dumps(listOfMentors))
             
             # add search by accepting flag
             if 'hacker' == params:
-                listOfHackers = []
-                
-                hackerProfiles = get_people_memecache('hacker_mobile')
-                
-                if not time:
-                    for hackerProfile in hackerProfiles:
-                        name = ''
-                        if hackerProfile.nameFirst: name+=hackerProfile.nameFirst + ' '
-                        if hackerProfile.nameLast: name+=hackerProfile.nameLast
-                        _hacker = {'name':name, 
-                            'email':hackerProfile.email, 
-                            'school':hackerProfile.school, 
-                            'year':hackerProfile.year, 
-                            'skills':hackerProfile.skills, 
-                            'homebase':hackerProfile.homebase, 
-                            'fb_url':hackerProfile.pictureURL, 
-                            'status':hackerProfile.status, 
-                            'database_key':hackerProfile.email,
-                            'time':hackerProfile.updatedTime, 
-                            'type':'hacker'}
-                        listOfHackers.append(_hacker)
-                else:
-                    for hackerProfile in hackerProfiles:
-                        if time and time >= hackerProfile.updatedTime:
-                            name = ''
-                            if hackerProfile.nameFirst: name+=hackerProfile.nameFirst + ' '
-                            if hackerProfile.nameLast: name+=hackerProfile.nameLast
-                            _hacker = {'name':name, 
-                            'email':hackerProfile.email, 
-                            'school':hackerProfile.school, 
-                            'year':hackerProfile.year, 
-                            'skills':hackerProfile.skills, 
-                            'homebase':hackerProfile.homebase, 
-                            'fb_url':hackerProfile.pictureURL, 
-                            'status':hackerProfile.status, 
-                            'database_key':hackerProfile.email,
-                            'time':hackerProfile.updatedTime, 
-                            'type':'hacker'}
-                            listOfHackers.append(_hacker)
+                listOfHackers = get_people_memecache('hacker_mobile')
                 return self.write(json.dumps(listOfHackers))
             
             if 'key' == keyParams:
                 profile = params['key'].get()
 
-                hackerProfiles = get_people_memecache('hacker_mobile')
-                mentorProfiles = get_people_memecache('mentor_mobile')
-                staffProfiles = get_people_memecache('staff_mobile')
+                allProfiles = get_people_memecache('all')
 
-                for hackerProfile in hackerProfiles:
-                    if hackerProfile.email == profile:
-                        name = ''
-                        if hackerProfile.nameFirst: name+=hackerProfile.nameFirst + ' '
-                        if hackerProfile.nameLast: name+=hackerProfile.nameLast
-                        hackerProfile = [{'name':name, 
-                        'email':hackerProfile.email, 
-                        'school':hackerProfile.school, 
-                        'year':hackerProfile.year, 
-                        'skills':hackerProfile.skills, 
-                        'homebase':hackerProfile.homebase, 
-                        'picture_url':hackerProfile.pictureURL, 
-                        'status':hackerProfile.status, 
-                        'database_key':hackerProfile.email,
-                        'time':hackerProfile.updatedTime}]
-                        return self.write(json.dumps(hackerProfile))
-
-                for mentorProfile in mentorProfiles:
-                    if mentorProfile.email == profile:
-                        companyRepProfile = [{'name':mentorProfile.name,
-                                'email':mentorProfile.email, 
-                                'company':mentorProfile.company, 
-                                'job_title':mentorProfile.jobTitle, 
-                                'skills':mentorProfile.skills, 
-                                'fb_url':mentorProfile.pictureURL, 
-                                'status':mentorProfile.status, 
-                                'database_key':mentorProfile.email, 
-                                'time':mentorProfile.updatedTime, 
-                                'type':'mentor'}]
-                        return self.write(json.dumps(companyRepProfile))
-
-                for staffProfile in staffProfiles:
-                    if staffProfile.email == profile:
-                        _staff = [{'name':staffProfile.name, 
-                            'email':staffProfile.email, 
-                            'school':staffProfile.school, 
-                            'year':staffProfile.year, 
-                            'skills':staffProfile.skills, 
-                            'homebase':staffProfile.homebase, 
-                            'fb_url':staffProfile.pictureURL, 
-                            'status':staffProfile.status, 
-                            'database_key':staffProfile.email, 
-                            'time':staffProfile.updatedTime, 
-                            'type':'staff'}]
-                        return self.write(json.dumps(_staff))
+                for personProfile in allProfiles:
+                    if personProfile.email == profile:
+                        return self.write(json.dumps([personProfile]))
 
         else:
-            #get all hacker models
-            listOfHackers = []
-            
-            hackerProfiles = get_people_memecache('hacker_mobile')
-            if not time:
-                for hackerProfile in hackerProfiles:
-                    name = ''
-                    if hackerProfile.nameFirst: name+=hackerProfile.nameFirst + ' '
-                    if hackerProfile.nameLast: name+=hackerProfile.nameLast
-                    _hacker = {'name':name, 
-                    'email':hackerProfile.email, 
-                    'school':hackerProfile.school, 
-                    'year':hackerProfile.year, 
-                    'skills':hackerProfile.skills, 
-                    'homebase':hackerProfile.homebase, 
-                    'fb_url':hackerProfile.pictureURL, 
-                    'status':hackerProfile.status, 
-                    'database_key':hackerProfile.email,
-                    'time':hackerProfile.updatedTime, 
-                    'type':'hacker'}
-                    listOfHackers.append(_hacker)
-            else:
-                for hackerProfile in hackerProfiles:
-                    if time and time >= hackerProfile.updatedTime:
-                        name = ''
-                        if hackerProfile.nameFirst: name+=hackerProfile.nameFirst + ' '
-                        if hackerProfile.nameLast: name+=hackerProfile.nameLast
-                        _hacker = {'name':name, 
-                        'email':hackerProfile.email, 
-                        'school':hackerProfile.school, 
-                        'year':hackerProfile.year, 
-                        'skills':hackerProfile.skills, 
-                        'homebase':hackerProfile.homebase, 
-                        'fb_url':hackerProfile.pictureURL, 
-                        'status':hackerProfile.status, 
-                        'database_key':hackerProfile.email,
-                        'time':hackerProfile.updatedTime, 
-                        'type':'hacker'}
-                        listOfHackers.append(_hacker)
-            
-            # get all staff models
-            staffProfiles = get_people_memecache('staff_mobile')
-            listOfStaff = []
-            
-            if not time:
-                for staffProfile in staffProfiles:
-                    _staff = {'name':staffProfile.name, 
-                    'email':staffProfile.email, 
-                    'school':staffProfile.school, 
-                    'year':staffProfile.year, 
-                    'skills':staffProfile.skills, 
-                    'homebase':staffProfile.homebase, 
-                    'fb_url':staffProfile.pictureURL, 
-                    'status':staffProfile.status, 
-                    'database_key':staffProfile.email, 
-                    'time':staffProfile.updatedTime, 
-                    'type':'staff'}
-                    listOfStaff.append(_staff)
-            else:
-                for staffProfile in staffProfiles:
-                    if time >= staffProfile.updatedTime:
-                        _staff = {'name':staffProfile.name, 
-                        'email':staffProfile.email, 
-                        'school':staffProfile.school, 
-                        'year':staffProfile.year, 
-                        'skills':staffProfile.skills, 
-                        'homebase':staffProfile.homebase, 
-                        'fb_url':staffProfile.pictureURL, 
-                        'status':staffProfile.status, 
-                        'database_key':staffProfile.email, 
-                        'time':staffProfile.updatedTime, 
-                        'type':'staff'}
-                        listOfStaff.append(_staff)
-            
-            # get all mentor models
-            listOfMentors = []
-            
-            companyProfile = get_people_memecache('mentor_mobile')
-            for _companyRep in companyProfile:
-                if not time:
-                    for _companyRep in companyProfile:
-                        companyRepProfile = {'name':_companyRep.name,
-                        'email':_companyRep.email, 
-                        'company':_companyRep.company, 
-                        'job_title':_companyRep.jobTitle, 
-                        'skills':_companyRep.skills, 
-                        'fb_url':_companyRep.pictureURL, 
-                        'status':_companyRep.status, 
-                        'database_key':_companyRep.email, 
-                        'time':_companyRep.updatedTime, 
-                        'type':'mentor'}
-                        listOfMentors.append(companyRepProfile)
-                else:
-                    for _companyRep in companyProfile:
-                        if time and time >= _companyRep.updatedTime:
-                            companyRepProfile = {'name':_companyRep.name,
-                            'email':_companyRep.email, 
-                            'company':_companyRep.company, 
-                            'job_title':_companyRep.jobTitle, 
-                            'skills':_companyRep.skills, 
-                            'fb_url':_companyRep.pictureURL, 
-                            'status':_companyRep.status, 
-                            'database_key':_companyRep.email, 
-                            'time':_companyRep.updatedTime, 
-                            'type':'mentor'}
-                            listOfMentors.append(companyRepProfile)
-            
-            return self.write(json.dumps(listOfMentors+listOfStaff+listOfHackers))
+            #get all models
+            listOfEveryone = get_people_memecache('all')
+            return self.write(json.dumps(listOfEveryone))
     
     
     def post(self):
