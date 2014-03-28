@@ -7,7 +7,7 @@ from TropoHandler import TropoHandler
 from SponsorHandler import SponsorDownloadHandler
 from LogoutHandler import LogoutHandler
 from MGTHandler import MGTHandler, ParticlesHandler
-from RsvpHandler import RsvpHandler
+from RsvpHandler import RsvpHandler, NotApprovedHandler
 import ApplyHandler
 import MentorHandler
 import SkillsHandler
@@ -22,6 +22,8 @@ handlers = [
 
     RedirectRoute('/apply', handler=ApplyHandler.ApplyHandler, name='Apply', strict_slash=True),
     RedirectRoute('/apply/update', handler=ApplyHandler.ApplyHandler, name='ApplyUpdate', strict_slash=True),
+    RedirectRoute('/apply/whitelist/<unique_string>', handler=ApplyHandler.ApplyHandler, name='ApplyWhitelist', strict_slash=True),
+
     RedirectRoute('/apply/complete', handler=ApplyHandler.ApplyCompleteHandler, name='ApplyComplete', strict_slash=True),
     RedirectRoute('/apply/closed', handler=ApplyHandler.ApplicationsClosedHandler, name='ApplicationsClosed', strict_slash=True),
     RedirectRoute('/apply/updated', handler=ApplyHandler.UpdateCompleteHandler, name='UpdateComplete', strict_slash=True),
@@ -30,6 +32,7 @@ handlers = [
     RedirectRoute('/apply/myresume', handler=ApplyHandler.MyResumeHandler, name='MyResume', strict_slash=True),
     RedirectRoute('/apply/uploadurl', handler=ApplyHandler.UploadURLHandler, name='UploadURL', strict_slash=True),
     RedirectRoute('/apply/rsvp', handler=RsvpHandler, name='Rsvp', strict_slash=True),
+    RedirectRoute('/apply/rsvp/pending', handler=NotApprovedHandler, name='RsvpNotApproved', strict_slash=True),
 
     RedirectRoute('/mentor', handler=MentorHandler.RenderHandler, name='Mentor', strict_slash=True),
 
@@ -48,10 +51,7 @@ handlers = [
     # If you create a new file in AdminHandlers, make sure to add it to AdminHandlers/__init__.py
     RedirectRoute('/admin', handler=AdminHandlers.IndexHandler.IndexHandler, name='AdminIndex', strict_slash=True),
     RedirectRoute('/admin/xkcd', handler=AdminHandlers.XkcdHandler.XkcdHandler, name='AdminXkcd', strict_slash=True),
-    RedirectRoute('/admin/approve', handler=AdminHandlers.ApproveHandler.ApproveHandler, name='AdminApprove', strict_slash=True),
-    RedirectRoute('/admin/approve/<school>', handler=AdminHandlers.ApproveSchoolHandler.ApproveSchoolHandler, name='AdminApproveSchool', strict_slash=True),
     RedirectRoute('/admin/stats', handler=AdminHandlers.StatsHandler.StatsHandler, name='AdminStats', strict_slash=True),
-    RedirectRoute('/admin/basicstats', handler=AdminHandlers.BasicStatsHandler.BasicStatsHandler, name='AdminBasicStats', strict_slash=True),
     RedirectRoute('/admin/busstats', handler=AdminHandlers.BusRouteStatsHandler.BusRouteStatsHandler, name='AdminBusStats', strict_slash=True),
     RedirectRoute('/admin/resume', handler=AdminHandlers.ResumeHandler.ResumeHandler, name='AdminResume', strict_slash=True),
     RedirectRoute('/admin/applycount', handler=AdminHandlers.ApplyCountHandler.ApplyCountHandler, name='AdminApplyCount', strict_slash=True),
@@ -59,14 +59,33 @@ handlers = [
     RedirectRoute('/admin/profile/<userId>', handler=AdminHandlers.ProfileHandler.ProfileHandler, name='AdminProfile', strict_slash=True),
     RedirectRoute('/admin/manager', handler=AdminHandlers.ManagerHandler.ManagerHandler, name='AdminManager', strict_slash=True),
     RedirectRoute('/admin/manager/accesscontrol', handler=AdminHandlers.AccessControlHandler.AccessControlHandler, name='AdminAccessControl', strict_slash=True),
-    RedirectRoute('/admin/export', handler=AdminHandlers.ExportHandler.ExportHandler, name='AdminExport', strict_slash=True),
-    # RedirectRoute('/admin/mentors', handler=AdminHandler.AdminMentorsHandler, name='AdminMentors', strict_slash=True),
+    RedirectRoute('/admin/manager/whitelistcontrol', handler=AdminHandlers.ManagerHandler.WhitelistControlHandler, name='AdminWhitelistControl', strict_slash=True),
+    RedirectRoute('/admin/send', handler=AdminHandlers.MarkSentEmailHandler.MarkSentEmailHandler, name='AdminMarkSentEmail', strict_slash=True),
+
+    RedirectRoute('/admin/basicstats',          handler=AdminHandlers.BasicStatsHandler.BasicStatsHandler, name='AdminBasicStats0', strict_slash=True),
+    RedirectRoute('/admin/basicstats/<status>', handler=AdminHandlers.BasicStatsHandler.BasicStatsHandler, name='AdminBasicStats1', strict_slash=True),
+
+    RedirectRoute('/admin/export',                             handler=AdminHandlers.ExportHandler.ExportHandler, name='AdminExport0', strict_slash=True),
+    RedirectRoute('/admin/export/<status>',                    handler=AdminHandlers.ExportHandler.ExportHandler, name='AdminExport1', strict_slash=True),
+    RedirectRoute('/admin/export/<status>/<category>',         handler=AdminHandlers.ExportHandler.ExportHandler, name='AdminExport2', strict_slash=True),
+    RedirectRoute('/admin/export/<status>/<category>/<route>', handler=AdminHandlers.ExportHandler.ExportHandler, name='AdminExport3', strict_slash=True),
+
+    RedirectRoute('/admin/approve',                             handler=AdminHandlers.ApproveHandlers.ApproveHandler, name='AdminApprove0', strict_slash=True),
+    RedirectRoute('/admin/approve/<status>',                    handler=AdminHandlers.ApproveHandlers.ApproveHandler, name='AdminApprove1', strict_slash=True),
+    RedirectRoute('/admin/approve/<status>/<category>',         handler=AdminHandlers.ApproveHandlers.ApproveHandler, name='AdminApprove2', strict_slash=True),
+    RedirectRoute('/admin/approve/<status>/<category>/<route>', handler=AdminHandlers.ApproveHandlers.ApproveHandler, name='AdminApprove3', strict_slash=True),
+
+    RedirectRoute('/admin/rsvp',                             handler=AdminHandlers.RsvpHandler.RsvpHandler, name='AdminRsvp0', strict_slash=True),
+    RedirectRoute('/admin/rsvp/<status>',                    handler=AdminHandlers.RsvpHandler.RsvpHandler, name='AdminRsvp1', strict_slash=True),
+    RedirectRoute('/admin/rsvp/<status>/<category>',         handler=AdminHandlers.RsvpHandler.RsvpHandler, name='AdminRsvp2', strict_slash=True),
+    RedirectRoute('/admin/rsvp/<status>/<category>/<route>', handler=AdminHandlers.RsvpHandler.RsvpHandler, name='AdminRsvp3', strict_slash=True),
 
     RedirectRoute('/admin/tests', handler=AdminHandlers.TestAllHandler.TestAllHandler, name='TestAll', strict_slash=True),
     RedirectRoute('/admin/testsjs', handler=AdminHandlers.TestAllHandler.TestAllJsHandler, name='TestAllJs', strict_slash=True),
 
     RedirectRoute('/admin/skills', handler=AdminHandlers.AddingSkillsHandler.AddingSkillsHandler, name='AdminSkills', strict_slash=True),
-    
+    # RedirectRoute('/admin/updateschema', handler=AdminHandlers.UpdateSchemaHandler.UpdateSchemaHandler, name='UpdateSchema', strict_slash=True),
+
     RedirectRoute('/mobile/schedule', handler=MobileHandler.ScheduleHandler, name='MobileSchedule', strict_slash=True),
     RedirectRoute('/mobile/map', handler=MobileHandler.MapHandler, name='MobileMap', strict_slash=True),
     RedirectRoute('/mobile/support', handler=MobileHandler.SupportHandler, name='MobileSupportType', strict_slash=True),

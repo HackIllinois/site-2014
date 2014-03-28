@@ -1,0 +1,351 @@
+{% extends "base/admin_base.html" %}
+{% set active_page = "approve" %}
+
+{% block head %}
+    <style type="text/css">
+        .page-header {
+            margin-top: 0;
+        }
+        .t-centered {
+            text-align: center;
+        }
+        .dropdown_buttons {
+            margin-bottom: 20px;
+        }
+
+        table {
+            table-layout: fixed;
+        }
+        td, th {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        td:hover, th:hover {
+            white-space: normal;
+            overflow: visible;
+            word-wrap:break-word;
+        }
+        .width100 {
+            width:100%;
+        }
+        .width50 {
+            width:50%;
+        }
+        .t-centered {
+            text-align: center;
+        }
+        .toggle-columns {
+            margin-bottom:20px;
+        }
+    </style>
+{% endblock head %}
+
+
+{% block body %}
+    <div class="row">
+        <div class="col-md-9">
+            <h1 class="page-header">Hacker Summary<small>&nbsp;&nbsp;</small><small id="count">{{ data.num_people }}</small><small>&nbsp;people</small></h1>
+        </div>
+        <div class="col-md-3">
+            <a href="{{ data.export_url }}" role="button" class="btn btn-success btn-lg btn-block">Download as CSV</a>
+        </div>
+    </div>
+
+    <div class="row dropdown_buttons">
+        <div class="col-md-12">
+            <div class="btn-group">
+                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                    {{ data.status_dropdown_text }}&nbsp;&nbsp;<span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" role="menu">
+                    <li role="presentation"><a role="menuitem" href="{{ data.all_status_link }}">Show all</a></li>
+                    <li role="presentation" class="divider"></li>
+                    <li role="presentation" class="dropdown-header">Statuses</li>
+                    {% for s in data.statuses %}
+                    <li role="presentation"><a role="menuitem" href="{{ s.link }}">{{ s.text }}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <div class="btn-group">
+                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                    {{ data.category_dropdown_text }}&nbsp;&nbsp;<span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" role="menu">
+                    <li role="presentation"><a role="menuitem" href="{{ data.all_category_link }}">Show all</a></li>
+                    <li role="presentation" class="divider"></li>
+                    <li role="presentation" class="dropdown-header">Categories</li>
+                    {% for c in data.categories %}
+                    <li role="presentation"><a role="menuitem" href="{{ c.link }}">{{ c.text }}</a></li>
+                    {% endfor %}
+                    <li role="presentation" class="divider"></li>
+                    <li role="presentation" class="dropdown-header">Bus Routes</li>
+                    {% for r in data.routes %}
+                    <li role="presentation"><a role="menuitem" href="{{ r.link }}">{{ r.text }}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <p>{{ data.approveCount }} hackers approved<br>
+            {{ data.waitlistCount }} hackers waitlisted<br>
+            {{ data.notapproveCount }} hackers not approved</p>
+        </div>
+    </div>
+
+    <div class="container-fluid">
+        <div class="row toggle-columns">
+            <div class="col-md-12">
+                <label>Show columns:&nbsp;&nbsp;</label>
+                <div class="btn-group" data-toggle="buttons">
+                    {% for name, text in [('gender', 'Gender'), ('school', 'School'), ('linkedin', 'LinkedIn'), ('github', 'Github'), ('project', 'Project Type'), ('resume', 'Resume'), ] %}
+                    <label class="btn btn-default column-btn active">
+                        <input type="checkbox" name="{{ name }}"> {{ text }}
+                    </label>
+                    {% endfor %}
+                </div>
+            </div><!-- col-md-12 -->
+        </div><!-- row -->
+
+        <div class="row">
+            <div class="col-md-12">
+                <div id="hackers" class="table-responsive">
+                    <table id="usertable" class="table table-bordered table-hover table-condensed">
+                        <thead>
+                            <tr name="search_params">
+                                <th><input id="search_name"   type="text" class="width100" placeholder="Search Names" ></th>
+                                <th name="tgender">
+                                    <input type="checkbox" class="cgender" name="Male"   checked> Male<br>
+                                    <input type="checkbox" class="cgender" name="Female" checked> Female<br>
+                                    <input type="checkbox" class="cgender" name="Other"  checked> Other
+                                </th>
+                                <th name="tschool"><input id="search_school" type="text" class="width100" placeholder="Search School"></th>
+                                <th name="tlinkedin"></th>
+                                <th name="tgithub"></th>
+                                <th name="tproject">
+                                    <input type="checkbox" class="cproject" name="Software Hack" checked> Software Hack<br>
+                                    <input type="checkbox" class="cproject" name="Hardware Hack" checked> Hardware Hack<br>
+                                    <input type="checkbox" class="cproject" name="Unsure"        checked> Unsure
+                                </th>
+                                <th name="tresume">
+                                    <input type="checkbox" class="cresume" name="Has Resume"> Has Resume
+                                </th>
+                                <th></th>
+                                <th></th>
+                            </tr>
+                            <tr>
+                                <th name="tname"     class="sort" data-sort="name"   >Name</th>
+                                <th name="tgender"   class="sort" data-sort="gender" >Gender</th>
+                                <th name="tschool"   class="sort" data-sort="school" >School</th>
+                                <th name="tlinkedin"                                 >LinkedIn</th>
+                                <th name="tgithub"                                   >Github</th>
+                                <th name="tproject"  class="sort" data-sort="project">Project Type</th>
+                                <th name="tresume"                                   >Resume</th>
+                                <th>Approve</th><!-- Button 1 -->
+                                <th>Waitlist</th><!-- Button 2 -->
+                            </tr>
+                        </thead>
+                        <tbody class="list">
+                            {% for h in data.hackers %}
+                            <tr name="hackerData" id="{{ h.userId }}">
+                                <td                  class="id"     style="display:none;">{{ loop.index }}</td>
+                                <td name="tname"     class="name"   onclick="document.location='/admin/profile/{{ h.userId }}';">{{ h.nameFirst }} {{ h.nameLast }}</td>
+                                <td name="tgender"   class="gender"  >{{ h.gender }}</td>
+                                <td name="tschool"   class="school"  >{{ h.school }}</td>
+                                <td name="tlinkedin" class="linkedin">{{ h.linkedin }}</td>
+                                <td name="tgithub"   class="github"  >{{ h.github }}</td>
+                                <td name="tproject"  class="project" >{{ h.projectType }}</td>
+                                <td name="tresume"   class="resume"  >{% if h.resume %}<a href='/admin/resume?userId={{ h.userId }}'>Resume</a>{% endif %}</td>
+                                {% if h.approvalStatus.status  == 'Not Approved' %}
+                                <td><button class="btn btn-success status-btn aButton width100">Approve</button></td>
+                                <td><button class="btn btn-success status-btn wButton width100">Waitlist</button></td>
+                                {% elif h.approvalStatus.status  == 'Approved' %}
+                                <td><button class="btn btn-danger status-btn aButton width100">Un-Approve</button></td>
+                                <td><button class="btn btn-success status-btn wButton width100">Waitlist</button></td>
+                                {% elif h.approvalStatus.status  == 'Waitlisted' %}
+                                <td><button class="btn btn-success status-btn aButton width100">Approve</button></td>
+                                <td><button class="btn btn-danger status-btn wButton width100">Un-Waitlist</button></td>
+                                {% else %}
+                                <td></td>
+                                <td></td>
+                                {% endif %}
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    <ul class="pagination"></ul>
+                </div><!-- table-responsive -->
+            </div><!-- col-md-12 -->
+        </div><!-- row -->
+    </div><!-- container-fluid -->
+{% endblock body %}
+
+
+{% block scripts %}
+    <script src="//cdnjs.cloudflare.com/ajax/libs/list.js/1.1.0/list.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/list.pagination.js/0.1.0/list.pagination.min.js"></script>
+    <script type="text/javascript">
+        var paginationOptions = {
+            name: "pagination",
+            paginationClass: "pagination",
+            innerWindow: 2,
+            outerWindow: 1
+        };
+        var options = {
+            // http://listjs.com/docs/options
+            valueNames: [ 'id', 'name', 'gender', 'school', 'project', 'resume' ],
+            page: 20,
+            plugins: [
+                ListPagination(paginationOptions)
+            ]
+        };
+        var hackerList = null;
+
+        function colToggleCallbacks() {
+            $('.column-btn').click(function () {
+                name = $(this).find('input').attr('name');
+                q = '[name="t' + name + '"]';
+                if ($(this).hasClass('active')) {
+                    $(q).addClass("hidden");
+                } else {
+                    $(q).removeClass("hidden");
+                }
+            });
+        }
+
+        function colToggleCallbacks() {
+            $('.column-btn').click(function () {
+                var name = $(this).find('input').attr('name');
+                q = '[name="t' + name + '"]';
+                if ($(this).hasClass('active')) {
+                    $(q).addClass("hidden");
+                } else {
+                    $(q).removeClass("hidden");
+                }
+            });
+        }
+
+        function updateColumVisibility() {
+            $('.column-btn').each(function(index) {
+                var name = $(this).find('input').attr('name');
+                q = '[name="t' + name + '"]';
+                if ($(this).hasClass('active')) {
+                    $(q).removeClass("hidden");
+                } else {
+                    $(q).addClass("hidden");
+                }
+            });
+        }
+
+        function applyBtnCallbacks() {
+            $('.status-btn').click(function () {
+                var name = $(this).closest('tr').find('.name').text(),
+                    userId = $(this).closest('tr').get(0).id,
+                    aButton = $(this).closest('tr').find('.aButton'),
+                    wButton = $(this).closest('tr').find('.wButton'),
+                    action = $(this).text(),
+                    r = confirm(action + " " + name + "?");
+                if (r == true) {
+                    var status = "";
+                    if (action == "Approve") {
+                        status = "Approved";
+                        $.post("/admin/approve", {"userId": userId, "status": status});
+                        aButton.html("Un-Approve");
+                        wButton.html("Waitlist");
+                        aButton.removeClass('btn-success').addClass('btn-danger');
+                        wButton.removeClass('btn-danger').addClass('btn-success');
+                    } else if (action == "Un-Approve") {
+                        status = "Not Approved";
+                        $.post("/admin/approve", {"userId": userId, "status": status});
+                        aButton.html("Approve");
+                        wButton.html("Waitlist");
+                        aButton.removeClass('btn-danger').addClass('btn-success');
+                        wButton.removeClass('btn-danger').addClass('btn-success');
+                    } else if (action == "Waitlist") {
+                        status = "Waitlisted";
+                        $.post("/admin/approve", {"userId": userId, "status": status});
+                        aButton.html("Approve");
+                        wButton.html("Un-Waitlist");
+                        aButton.removeClass('btn-danger').addClass('btn-success');
+                        wButton.removeClass('btn-success').addClass('btn-danger');
+                    } else if (action == "Un-Waitlist") {
+                        status = "Not Approved";
+                        $.post("/admin/approve", {"userId": userId, "status": status});
+                        aButton.html("Approve");
+                        wButton.html("Waitlist");
+                        aButton.removeClass('btn-danger').addClass('btn-success');
+                        wButton.removeClass('btn-danger').addClass('btn-success');
+                    } else {
+                        return;
+                    }
+                }
+            });
+        }
+
+        function searchCallbacks() {
+            $('#search_name').keyup(function() {
+                hackerList.search($('#search_name').val(), ['name']);
+            });
+            $('#search_school').keyup(function() {
+                hackerList.search($('#search_school').val(), ['school']);
+            });
+        }
+
+        function schoolClickCallbacks() {
+            $('.school').click(function () {
+                $('#search_school').val($(this).html());
+                hackerList.search($('#search_school').val(), ['school']);
+            });
+        }
+
+        function checkBoxCallback() {
+            var project_checked = $('.cproject:checked').map(function () {
+                return $(this).attr('name');
+            }).get();
+            var gender_checked = $('.cgender:checked').map(function () {
+                return $(this).attr('name');
+            }).get();
+            var resume_checked = $('.cresume').prop('checked');
+            hackerList.filter(function(item) {
+                var proj = item.values().project,
+                    gend = item.values().gender,
+                    res = item.values().resume;
+                if (resume_checked) {
+                    return res != null && res != '' && $.inArray(proj, project_checked) != -1 && $.inArray(gend, gender_checked) != -1;
+                } else {
+                    return $.inArray(proj, project_checked) != -1 && $.inArray(gend, gender_checked) != -1;
+                }
+            });
+        }
+
+        function checkBoxCallbacks() {
+            $('.cgender').click(checkBoxCallback);
+            $('.cproject').click(checkBoxCallback);
+            $('.cresume').click(checkBoxCallback);
+        }
+
+        $(document).ready(function () {
+
+            // Do before list created so applied to all
+            applyBtnCallbacks();
+            schoolClickCallbacks();
+
+            hackerList = new List('hackers', options);
+
+            colToggleCallbacks();
+            schoolClickCallbacks();
+            searchCallbacks();
+            checkBoxCallbacks
+
+            $('#count').html(hackerList.matchingItems.length);
+            hackerList.on('updated', function() {
+                $('#count').html(hackerList.matchingItems.length);
+                updateColumVisibility();
+            });
+        });
+    </script>
+{% endblock scripts%}

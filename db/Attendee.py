@@ -1,6 +1,7 @@
 from google.appengine.ext import ndb
 import constants
 from Resume import Resume
+from Status import Status
 from Model import Model
 
 class Attendee(Model):
@@ -20,6 +21,13 @@ class Attendee(Model):
 
     travel = ndb.StringProperty(choices=constants.TRAVEL_ARRANGEMENTS + [''], default='')
     busRoute = ndb.StringProperty(choices=constants.BUS_ROUTES + [''], default='')
+
+    approvalStatus = ndb.StructuredProperty(Status)
+    groupNumber = ndb.IntegerProperty(default=-1)
+
+    micro1 = ndb.StringProperty()
+    micro2 = ndb.StringProperty()
+    labEquipment = ndb.StringProperty()
 
     nameFirst = ndb.StringProperty()
     nameLast = ndb.StringProperty()

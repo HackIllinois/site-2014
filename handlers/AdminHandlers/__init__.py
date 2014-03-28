@@ -1,7 +1,7 @@
 import AccessControlHandler
 import AddingSkillsHandler
 import ApplyCountHandler
-import ApproveHandler
+import ApproveHandlers
 import ApproveSchoolHandler
 import BasicStatsHandler
 import BusRouteStatsHandler
@@ -14,3 +14,7 @@ import SchoolCountHandler
 import StatsHandler
 import TestAllHandler
 import XkcdHandler
+import RsvpHandler
+import MarkSentEmailHandler
+
+import UpdateSchemaHandler

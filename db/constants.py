@@ -4,9 +4,11 @@ BUCKET = 'hackillinois'
 
 MEMCACHE_TIMEOUT = 10800 # seconds = 3 hours , once we close registration increase to 1 day
 MEMCACHE_COUNT_TIMEOUT = 900 # seconds = 15 min
+USE_ADMIN_MEMCACHE = False
 
 APPLY_TITLE = 'Application'
 PROFILE_TITLE = 'Profile'
+RSVP_TITLE = 'RSVP'
 
 APPLY_COMPLETE_HEADER = 'Application Complete!'
 APPLY_COMPLETE_MESSAGE = 'Thanks for applying! To keep in touch, follow us on Facebook and Twitter. Also, don\'t forget to RSVP to the <a href="https://www.facebook.com/events/285744431573053" target="_blank" style="color: #ef3e36">Facebook event</a>!'
@@ -16,6 +18,9 @@ UPDATE_COMPLETE_MESSAGE = 'Thanks for updating your application!<br>To keep in t
 
 APPLICATION_CLOSED_HEADER = 'Applications Are Closed'
 APPLICATION_CLOSED_MESSAGE = 'We\'re sorry, but applications for HackIllinois closed on March 21st.<br>Please try again next time, and happy hacking!<br><br>If you have already registered, please <a href="/logout?redirect=/apply/update" style="color: #ef3e36">logout</a> and login with the account you used to register.'
+
+NOT_APPROVED_HEADER = 'Application Pending Review'
+NOT_APPROVED_MESSAGE = 'Your application is still being reviewed by our staff.<br>You will receive an email once your application has been reviewed.'
 
 ERROR_MESSAGE_PREFIX = 'Please provide '
 ERROR_MESSAGE_SUFFIX = '.'
@@ -44,7 +49,64 @@ CSV_HEADINGS = ['First Name','Last Name','Email',
                 'Gender','School','Year','LinkedIn',
                 'Github','Shirt','Food','Project Type',
                 'Registration Time','Is Approved',
-                'User ID','Resume']
+                'User ID','Resume','Status']
+
+# The below array is for more descriptive error messages. @Mattato pls fix.
+# READABLE_REQUIRED_FIELDS = ['First Name','Last Name','E-mail','Gender','School','Year in School','T-shirt size','past experience', 'Please accept the Terms of Service']
+
+EMAIL_MATCH = r"^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$"
+
+GENDERS = ['Male','Female','Other', 'I choose not to specify']
+YEARS = ['Freshman','Sophomore','Junior','Senior','Grad','HS']
+SHIRTS = ['XS','S','M','L','XL','XXL']
+FOODS = ['Vegetarian','Vegan','Gluten Free','Lactose Free', 'Other']
+PROJECTS = ['Software Hack','Hardware Hack','Unsure']
+
+MICRO1 = ['Arduinos','Raspberry Pi']
+MICRO2 = ['Electric Imp Dev Kit','Spark Core']
+LABEQUIPMENT = ['Power Supplies','Oscilloscopes']
+
+TRAVEL_RIDE_BUS = 'I would like to ride a HackIllinois bus'
+TRAVEL_PROVIDE_OWN_TRANSIT = 'I will provide my own transportation'
+TRAVEL_ALREADY_AT_UIUC = 'I am already in Urbana-Champaign, IL'
+TRAVEL_NO_RESPONSE = 'I have not responded to this quesiton'
+TRAVEL_ARRANGEMENTS = [TRAVEL_RIDE_BUS, TRAVEL_PROVIDE_OWN_TRANSIT, TRAVEL_ALREADY_AT_UIUC]
+
+STATUSES = [
+    'Not Approved',
+    'Approved',
+    'Waitlisted',
+    'Awaiting Response',
+    'Rsvp Coming',
+    'Rsvp Not Coming',
+    'No Rsvp'
+]
+
+APPROVE_STATUSES = [
+    'Not Approved',
+    'Approved',
+    'Waitlisted'
+]
+
+RSVP_STATUSES = [
+    'Awaiting Response',
+    'Rsvp Coming',
+    'Rsvp Not Coming',
+    'No Rsvp'
+]
+
+STATS_STATUSES = [
+    'approved',
+    'emailed',
+    'rsvpd'
+]
+
+CATEGORIES = [
+    TRAVEL_RIDE_BUS,
+    TRAVEL_PROVIDE_OWN_TRANSIT,
+    TRAVEL_ALREADY_AT_UIUC,
+    TRAVEL_NO_RESPONSE
+]
 
 BUS_ROUTES = [
     'Purdue',
@@ -58,22 +120,6 @@ BUS_ROUTES = [
     'Indiana -> Rose Hulman',
     'University of Michigan Ann-Arbor'
 ]
-
-# The below array is for more descriptive error messages. @Mattato pls fix.
-# READABLE_REQUIRED_FIELDS = ['First Name','Last Name','E-mail','Gender','School','Year in School','T-shirt size','past experience', 'Please accept the Terms of Service']
-
-EMAIL_MATCH = r"^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$"
-
-GENDERS = ['Male','Female','Other', 'I choose not to specify']
-YEARS = ['Freshman','Sophomore','Junior','Senior','Grad','HS']
-SHIRTS = ['XS','S','M','L','XL','XXL']
-FOODS = ['Vegetarian','Vegan','Gluten Free','Lactose Free', 'Other']
-PROJECTS = ['Software Hack','Hardware Hack','Unsure']
-
-TRAVEL_RIDE_BUS = 'I would like to ride a HackIllinois bus'
-TRAVEL_PROVIDE_OWN_TRANSIT = 'I will provide my own transportation'
-TRAVEL_ALREADY_AT_UIUC = 'I am already in Urbana-Champaign, IL'
-TRAVEL_ARRANGEMENTS = [TRAVEL_RIDE_BUS, TRAVEL_PROVIDE_OWN_TRANSIT, TRAVEL_ALREADY_AT_UIUC]
 
 RESUME_MAX_SIZE = 2097152 # in Bytes = 2 mb
 
