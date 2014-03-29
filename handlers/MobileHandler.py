@@ -71,6 +71,9 @@ def get_mentor_data():
                     'time':mentor_profile.updatedTime, 
                     'type':'mentor'})
 
+    # This is added to give Rob fake mentor data and act in the same way as going through memcache
+    data = MobileConstants.FAKE_MENTOR_DATA
+
     return data
 
 def set_all_mobile_memcache():
@@ -94,7 +97,7 @@ def get_people_memecache(table_key):
     all_data = memcache.get('all')
 
     if not all_data:
-        all_data = set_all_memcache()
+        all_data = set_all_mobile_memcache()
 
     stats = memcache.get_stats()
     logging.info('Hackers:: Cache Hits:%s  Cache Misses:%s' % (stats['hits'], stats['misses']))
@@ -106,6 +109,8 @@ def get_people_memecache(table_key):
         elif table_key == 'mentor_mobile' and data.type == 'mentor':
             return_data.append(data)
         elif table_key == 'staff_mobile' and data.type == 'staff':
+            return_data.append(data)
+        elif table_key == 'all':
             return_data.append(data)
 
     return return_data
@@ -170,9 +175,6 @@ class PersonHandler(MainHandler.BaseMobileHandler):
             
             if 'mentor' == params:
                 listOfMentors = get_people_memecache('mentor_mobile')
-                # added so Rob has some mentor data 
-                # !!! This is fake change later !!!
-                listOfMentors = MobileConstants.FAKE_MENTOR_DATA
                 return self.write(json.dumps(listOfMentors))
             
             # add search by accepting flag
