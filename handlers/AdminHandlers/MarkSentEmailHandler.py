@@ -4,6 +4,7 @@ from db.Attendee import Attendee
 import re
 import urllib
 from datetime import datetime
+# import requests
 
 class MarkSentEmailHandler(MainAdminHandler.BaseAdminHandler):
     def get(self):
@@ -64,7 +65,8 @@ class MarkSentEmailHandler(MainAdminHandler.BaseAdminHandler):
                 successful_emails.append(email)
                 person.approvalStatus.status = 'Awaiting Response'
                 person.approvalStatus.emailedTime = datetime.now()
-                person.put()
+                # debug
+                # person.put()
             elif person.approvalStatus.status in constants.RSVP_STATUSES:
                 already_emailed_emails.append(email)
             else:
@@ -75,4 +77,11 @@ class MarkSentEmailHandler(MainAdminHandler.BaseAdminHandler):
         self.write("Not Found Emails: %s<br>" % str(not_found_emails))
         self.write("Not Approved Emails: %s<br>" % str(not_approved_emails))
         self.write("Already Emailed Emails: %s<br>" % str(already_emailed_emails))
+
+        # Integrate with the SendGrid API to actually send the emails!
+        # self.write("Email Status: %s<br>" % self.send_acceptance_email(successful_emails))
+
         return
+
+
+
