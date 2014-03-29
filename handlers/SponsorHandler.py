@@ -20,11 +20,11 @@ from StringIO import StringIO
 import urllib2
 
 def addResource(zfile, url, fname):
-    # get the contents      
+    # get the contents
     contents = urlfetch.fetch(url).content
     # write the contents to the zip file
     zfile.writestr(fname, contents)
-	
+
 class SponsorDownloadHandler(MainHandler.Handler, webapp.RequestHandler):
     def get(self):
         data = memcache.get('hackers')
@@ -40,13 +40,13 @@ class SponsorDownloadHandler(MainHandler.Handler, webapp.RequestHandler):
                                          'school':hacker.school,
                                          'year':hacker.year,
                                          'linkedin':hacker.linkedin,
-                                         'github':hacker.github,                                        
+                                         'github':hacker.github,
                                          'projectType':hacker.projectType,
                                          'resume':hacker.resume,
                                          'isApproved':hacker.isApproved,
                                          'userId':hacker.userId})
 
-            if not memcache.add('hackers', data, time=constants.MEMCACHE_TIMEOUT):
+            if not memcache.set('hackers', data, time=constants.MEMCACHE_TIMEOUT):
                 logging.error('Memcache set failed.')
 
         stats = memcache.get_stats()

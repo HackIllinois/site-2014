@@ -150,7 +150,7 @@ class BaseAdminHandler(MainHandler.Handler):
                           'isApproved':hacker.isApproved,
                           'userId':hacker.userId})
 
-        if not memcache.add('hackers', data, time=constants.MEMCACHE_TIMEOUT):
+        if not memcache.set('hackers', data, time=constants.MEMCACHE_TIMEOUT):
             logging.error('Memcache set failed.')
 
         return data
@@ -233,7 +233,7 @@ class BaseAdminHandler(MainHandler.Handler):
                                             'rsvpTime':hacker.approvalStatus.rsvpTime.strftime('%x %X') if hacker.approvalStatus.rsvpTime else None} if hacker.approvalStatus else None,
                           'groupNumber':hacker.groupNumber })
 
-        if not memcache.add(key, data, time=constants.MEMCACHE_TIMEOUT):
+        if not memcache.set(key, data, time=constants.MEMCACHE_TIMEOUT):
             logging.error('Memcache set failed.')
 
         return data
@@ -242,7 +242,7 @@ class BaseAdminHandler(MainHandler.Handler):
         """Sets the 'apply_count' key in memcache"""
         q = Attendee.query(Attendee.isRegistered == True)
         cached_count = q.count()
-        if not memcache.add('apply_count', cached_count, time=constants.MEMCACHE_COUNT_TIMEOUT):
+        if not memcache.set('apply_count', cached_count, time=constants.MEMCACHE_COUNT_TIMEOUT):
             logging.error('Memcache set failed.')
         return cached_count
 
@@ -251,7 +251,7 @@ class BaseAdminHandler(MainHandler.Handler):
         q = Attendee.query(Attendee.isRegistered == True, projection=[Attendee.school], distinct=True)
         set_of_field = set([data.school for data in q])
         cached_count = len(set_of_field)
-        if not memcache.add('school_count', cached_count, time=constants.MEMCACHE_COUNT_TIMEOUT):
+        if not memcache.set('school_count', cached_count, time=constants.MEMCACHE_COUNT_TIMEOUT):
             logging.error('Memcache set failed.')
         return cached_count
 
@@ -259,7 +259,7 @@ class BaseAdminHandler(MainHandler.Handler):
         """Sets the 'approve_count' key in memcache"""
         q = Attendee.query(Attendee.isRegistered == True, Attendee.approvalStatus.status == 'Approved', ancestor=Attendee.get_default_event_parent_key())
         cached_count = q.count()
-        if not memcache.add('approve_count', cached_count, time=constants.MEMCACHE_COUNT_TIMEOUT):
+        if not memcache.set('approve_count', cached_count, time=constants.MEMCACHE_COUNT_TIMEOUT):
             logging.error('Memcache set failed.')
         return cached_count
 
@@ -267,7 +267,7 @@ class BaseAdminHandler(MainHandler.Handler):
         """Sets the 'status_count/<status>' key in memcache"""
         q = Attendee.query(Attendee.isRegistered == True, Attendee.approvalStatus.status == status, ancestor=Attendee.get_default_event_parent_key())
         cached_count = q.count()
-        if not memcache.add('status_count/'+status, cached_count, time=constants.MEMCACHE_COUNT_TIMEOUT):
+        if not memcache.set('status_count/'+status, cached_count, time=constants.MEMCACHE_COUNT_TIMEOUT):
             logging.error('Memcache set failed.')
         return cached_count
 
@@ -278,7 +278,7 @@ class BaseAdminHandler(MainHandler.Handler):
         for obj in query:
             data.append(obj)
 
-        if not memcache.add(key, data, time=constants.MEMCACHE_TIMEOUT):
+        if not memcache.set(key, data, time=constants.MEMCACHE_TIMEOUT):
             logging.error('Memcache set failed for <%s>.' % key)
 
         return data

@@ -147,7 +147,7 @@ class StatsHandler(MainAdminHandler.BaseAdminHandler):
                             'hardware':data['total']['hardware'],
                             'unsure':data['total']['unsure'] })
 
-            if not memcache.add('stats', schools, time=constants.MEMCACHE_TIMEOUT):
+            if not memcache.set('stats', schools, time=constants.MEMCACHE_TIMEOUT):
                 logging.error('Memcache set failed.')
 
         stats = memcache.get_stats()

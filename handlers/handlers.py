@@ -56,6 +56,7 @@ handlers = [
     RedirectRoute('/admin', handler=AdminHandlers.IndexHandler.IndexHandler, name='AdminIndex', strict_slash=True),
     RedirectRoute('/admin/xkcd', handler=AdminHandlers.XkcdHandler.XkcdHandler, name='AdminXkcd', strict_slash=True),
     RedirectRoute('/admin/stats', handler=AdminHandlers.StatsHandler.StatsHandler, name='AdminStats', strict_slash=True),
+    RedirectRoute('/admin/rsvpstats', handler=AdminHandlers.RsvpStatsHandler.RsvpStatsHandler, name='AdminRsvpStats', strict_slash=True),
     RedirectRoute('/admin/busstats', handler=AdminHandlers.BusRouteStatsHandler.BusRouteStatsHandler, name='AdminBusStats', strict_slash=True),
     RedirectRoute('/admin/resume', handler=AdminHandlers.ResumeHandler.ResumeHandler, name='AdminResume', strict_slash=True),
     RedirectRoute('/admin/applycount', handler=AdminHandlers.ApplyCountHandler.ApplyCountHandler, name='AdminApplyCount', strict_slash=True),
