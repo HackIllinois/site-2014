@@ -36,6 +36,9 @@ class RsvpHandler(MainHandler.Handler):
         if db_user.approvalStatus.status is 'No Rsvp':
             return self.redirect('/rsvp/closed')
 
+        if db_user.approvalStatus.status == 'Rsvp Not Coming':
+            return self.redirect('/rsvp/no')
+
         if db_user.approvalStatus.status not in ['Awaiting Response', 'Rsvp Coming']:
             return self.redirect('/rsvp/pending')
 
@@ -108,6 +111,9 @@ class RsvpHandler(MainHandler.Handler):
 
         if db_user.approvalStatus.status is 'No Rsvp':
             return self.redirect('/rsvp/closed')
+
+        if db_user.approvalStatus.status == 'Rsvp Not Coming':
+            return self.redirect('/rsvp/no')
 
         if db_user.approvalStatus.status not in ['Awaiting Response', 'Rsvp Coming']:
             return self.redirect('/rsvp/pending')

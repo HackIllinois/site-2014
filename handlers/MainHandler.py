@@ -29,15 +29,4 @@ class Handler(webapp2.RequestHandler):
 class BaseMobileHandler(Handler):
 
     def dispatch(self):
-        if 'AuthName' in self.request.headers:
-            userId = self.request.headers['AuthName']
-        else:
-            userId = None
-
-        if userId == 'test':
-            super(BaseMobileHandler, self).dispatch()
-        elif userId:
-            db_user = Attendee.search_database({'userId':userId}).get()
-            super(BaseMobileHandler, self).dispath()
-        else:
-            return self.write('Did not pass userId')
+        super(BaseMobileHandler, self).dispatch()
