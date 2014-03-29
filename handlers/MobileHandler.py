@@ -281,6 +281,7 @@ class SkillsHandler(MainHandler.BaseMobileHandler):
 
 class LoginHandler(MainHandler.BaseMobileHandler):
     def get(self):
+        user_id = None
         if 'Authentication' in self.request.headers:
             user_id = self.request.headers['Authentication']
         else:
