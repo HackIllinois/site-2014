@@ -12,6 +12,7 @@ class Sponsor(Model):
     googleUser = ndb.UserProperty()
 
     # these vairables are needed for mobile
+    name = ndb.StringProperty(default='')
     jobTitle = ndb.TextProperty(default='')
     skills = ndb.JsonProperty(default=[''])
     status = ndb.TextProperty(default='')

@@ -17,6 +17,7 @@ class Admin(Model):
     skills = ndb.JsonProperty(default=[''])
     status = ndb.TextProperty(default='')
     updatedTime = ndb.StringProperty(default='')
+    pictureURL= ndb.TextProperty(default='')
 
     # For people who have access to approve and disapprove attendees
     approveAccess = ndb.BooleanProperty(default=False)
