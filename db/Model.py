@@ -236,7 +236,6 @@ class Model(ndb.Model):
         if search is None: search = {}
         
         q = cls.query(ancestor=cls.get_default_event_parent_key())
-        # q = cls.query()
         for k in search:
             q = q.filter(getattr(cls, k) == search[k])
         return q

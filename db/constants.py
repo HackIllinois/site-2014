@@ -3,6 +3,7 @@ ADMIN_EMAILS = set(['lx.icomputer@gmail.com','mvd7793@gmail.com','austin.1111h@g
 BUCKET = 'hackillinois'
 
 MEMCACHE_TIMEOUT = 10800 # seconds = 3 hours , once we close registration increase to 1 day
+MOBILE_MEMCACHE_TIMEOUT = 86400 # second = 1 day (24 hours)
 MEMCACHE_COUNT_TIMEOUT = 900 # seconds = 15 min
 USE_ADMIN_MEMCACHE = False
 
