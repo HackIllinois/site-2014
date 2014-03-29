@@ -16,5 +16,5 @@ import TestAllHandler
 import XkcdHandler
 import RsvpHandler
 import MarkSentEmailHandler
-
+import MassApprovalHandler
 import UpdateSchemaHandler
