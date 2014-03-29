@@ -537,6 +537,12 @@ div.main-content {
 	.epic {
 		width: 20%;
 	}
+	.z_a {
+		min-width: 12%;
+	}
+	.pwc {
+		min-width: 12%;
+	}
 }
 
 @-webkit-keyframes spin {

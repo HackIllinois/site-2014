@@ -40,7 +40,6 @@ function setupBusRoutes() {
     else {
         $('#bus-routes').addClass("hidden");
     }
-
     $("input[name='travel']").change(function(){
         if ($('#travel-0').is(':checked')){
             $('#bus-routes').removeClass("hidden");
@@ -50,8 +49,6 @@ function setupBusRoutes() {
         }
     });
 }
-
-
 
 function displayRSVP(){
     $('#attend-0').on('click', function () {
@@ -88,9 +85,27 @@ function displayRSVP(){
     });
 }
 
-
 function validateAttendee() {
-	return true
+	if($("input[name='attend']:checked").val() == "Yes"){
+		if($("input[name='travel']:checked").val() == 'I will provide my own transportation' || $("input[name='travel']:checked").val() == 'I am already in Urbana-Champaign, IL'){
+		    return "valid";
+		}
+		else if($("input[name='travel']:checked").val() == 'I would like to ride a HackIllinois bus' && $("[name='busRoute']").val() == ""){
+			return "Please chose a Bus Route";
+		}
+		else if($("input[name='travel']:checked").val() == 'I would like to ride a HackIllinois bus' && $("[name='busRoute']").val() != ""){
+			return "valid";
+		}
+		else if($("input[name='travel']:checked").val() == ""){
+			return "Please chose a travel Arragnement";
+		}
+		else{
+			return "There was an unforeseen error please try again";
+		}
+	}
+	else if($("input[name='attend']:checked").val() == "No"){
+		return "valid";
+	}
 }
 
 $(document).ready(function () {
@@ -98,35 +113,19 @@ $(document).ready(function () {
 	setupBusRoutes();
 	approveBusRoutes();
 	
+	if($("[name='attend']:checked").val() == "Yes"){
+		$('#attend-0').click();
+	}
     var form = $('#attendForm');
-    $('button#rsvp-submit-btn').click(function (event) {
-        event.preventDefault();
-        //var stratosphere = $(window).height();
-        //stratosphere += 150;
-        //stratosphere += 'px';
-		
-        if (validateAttendee()) {
-          //  $(".rocket-ship").animate({
-            //    marginBottom: stratosphere
-         //   }, {
-           //     duration: 2000,
-             //   easing: "easeInCirc"
-           // });
-            //$(".rocket-plume").animate({
-           //     opacity: 1,
-           //     marginBottom: stratosphere
-            //}, {
-           //     duration: 2050,
-            //    easing: "easeInCirc",
-              //  complete: function () {
-                    form.submit();
-          //      }
-				
-        } else {
-         //   $('.field-missing').show();
-         //   $('html, body').animate({
-         //       scrollTop: ($('.field-missing').first().offset().top - 30)
-         //   }, 500);
+    $('button#rsvp-submit-btn').click(function() {
+		validation = validateAttendee();
+        if (validation == "valid") {
+            form.submit();
+        } 
+		else {
+            $('.field-missing').show();
+			$('.errormessages').text(validation);
+            $('html, body').animate({scrollTop: ($('.field-missing').first().offset().top - 30)}, 500);
         }
     });
 	
