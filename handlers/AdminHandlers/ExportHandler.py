@@ -82,7 +82,7 @@ class ExportHandler(MainAdminHandler.BaseAdminHandler):
         csv_string = output.getvalue()
         output.close()
 
-        if not memcache.add('hackers_csv/' + str(status) + '/' + str(category) + '/' + str(route), csv_string, time=constants.MEMCACHE_TIMEOUT):
+        if not memcache.set('hackers_csv/' + str(status) + '/' + str(category) + '/' + str(route), csv_string, time=constants.MEMCACHE_TIMEOUT):
             logging.error('Memcache set failed.')
 
         return csv_string

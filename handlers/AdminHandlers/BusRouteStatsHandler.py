@@ -82,7 +82,7 @@ class BusRouteStatsHandler(MainAdminHandler.BaseAdminHandler):
 
             data = bus_routes
 
-            if not memcache.add('bus_route_stats', data, time=constants.MEMCACHE_TIMEOUT):
+            if not memcache.set('bus_route_stats', data, time=constants.MEMCACHE_TIMEOUT):
                 logging.error('Memcache set failed.')
 
         stats = memcache.get_stats()

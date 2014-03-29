@@ -94,7 +94,7 @@ class BasicStatsHandler(MainAdminHandler.BaseAdminHandler):
                 d['stats'].append(e)
             data['fields'].append(d)
 
-        if not memcache.add('basic_stats/'+str(status), data, time=constants.MEMCACHE_TIMEOUT):
+        if not memcache.set('basic_stats/'+str(status), data, time=constants.MEMCACHE_TIMEOUT):
             logging.error('Memcache set failed.')
 
         return data
