@@ -240,10 +240,11 @@ class PersonHandler(MainHandler.BaseMobileHandler):
                 #update memcache
                 all_staff_profiles = get_people_memecache('all')
                 for memcache_staff_profile in all_staff_profiles:
-                    if 'skills' in updatedKeys:
-                        memcache_staff_profile.skills = updatedProfileDict['skills']
-                    elif 'homebase' in updatedKeys:
-                        memcache_staff_profile.homebase = updatedProfileDict['homebase']
+                    if memcache_staff_profile.email == staffProfile.email:
+                        if 'skills' in updatedKeys:
+                            memcache_staff_profile.skills = updatedProfileDict['skills']
+                        elif 'homebase' in updatedKeys:
+                            memcache_staff_profile.homebase = updatedProfileDict['homebase']
                 if not memcache.replace('all', all_staff_profiles, time=constants.MOBILE_MEMCACHE_TIMEOUT):
                     logging.error('Memcache set failed for all')
 
@@ -254,12 +255,13 @@ class PersonHandler(MainHandler.BaseMobileHandler):
                 # update memcache
                 all_mentor_profiles = get_people_memecache('all')
                 for memcache_mentor_profile in all_mentor_profiles:
-                    if 'skills' in updatedKeys:
-                        memcache_mentor_profile.skills = updatedProfileDict['skills']
-                    elif 'homebase' in updatedKeys:
-                        memcache_mentor_profile.homebase = updatedProfileDict['homebase']
-                    elif 'status' in updatedKeys:
-                        memcache_mentor_profile.status = updatedKeys['status']
+                    if memcache_mentor_profile.email == companyProfile.email:
+                        if 'skills' in updatedKeys:
+                            memcache_mentor_profile.skills = updatedProfileDict['skills']
+                        elif 'homebase' in updatedKeys:
+                            memcache_mentor_profile.homebase = updatedProfileDict['homebase']
+                        elif 'status' in updatedKeys:
+                            memcache_mentor_profile.status = updatedKeys['status']
                 if not memcache.replace('all', all_mentor_profiles, time=constants.MOBILE_MEMCACHE_TIMEOUT):
                     logging.error('Memcache set failed for all')
             
