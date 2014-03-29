@@ -32,7 +32,7 @@ def set_hacker_memcache():
                     'time':hackerProfile.updatedTime, 
                     'type':'hacker'})
 
-    if not memcache.add('hacker_mobile', data, time=constants.MEMCACHE_TIMEOUT):
+    if not memcache.add('hacker_mobile', data, time=constants.MOBILE_MEMCACHE_TIMEOUT):
         logging.error('Memcache set failed for hacker_mobile.')
 
     return data
@@ -54,7 +54,7 @@ def set_staff_memcache():
                     'time':staff_profile.updatedTime, 
                     'type':'staff'})
 
-    if not memcache.add('staff_mobile', data, time=constants.MEMCACHE_TIMEOUT):
+    if not memcache.add('staff_mobile', data, time=constants.MOBILE_MEMCACHE_TIMEOUT):
         logging.error('Memcache set failed for staff_mobile.')
 
     return data
@@ -75,14 +75,14 @@ def set_mentor_memcache():
                     'time':mentor_profile.updatedTime, 
                     'type':'mentor'})
 
-    if not memcache.add('mentor_mobile', data, time=constants.MEMCACHE_TIMEOUT):
+    if not memcache.add('mentor_mobile', data, time=constants.MOBILE_MEMCACHE_TIMEOUT):
         logging.error('Memcache set failed for mentor_mobile.')
 
     return data
 
 def set_all_mobile_memcache(hacker, mentor, staff):
     data = hacker+mentor+staff
-    if not memcache.add('all', data, time=constants.MEMCACHE_TIMEOUT):
+    if not memcache.add('all', data, time=constants.MOBILE_MEMCACHE_TIMEOUT):
         logging.error('Memcache set failed.')
 
     return data
@@ -294,7 +294,8 @@ class LoginHandler(MainHandler.BaseMobileHandler):
             'time':_companyRep.updatedTime,
             'type':'staff'}
         elif mentorProfile:
-            profile = {'email':mentorProfile.email, 
+            profile = {'name':mentorProfile.name
+            'email':mentorProfile.email, 
             'company':mentorProfile.company, 
             'job_title':mentorProfile.jobTitle, 
             'skills':mentorProfile.skills, 
