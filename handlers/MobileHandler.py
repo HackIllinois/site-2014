@@ -10,7 +10,7 @@ from google.appengine.api import users, memcache
 import json
 import time
 
-def set_hacker_memcache():
+def get_hacker_data():
     """Sets the 'hacker_mobile' key in the memcache"""
     # change to search for accepted hackers
     # hackers = Attendee.search_database({'isApproved':True})
@@ -18,8 +18,10 @@ def set_hacker_memcache():
     data = []
     for hackerProfile in hackers:
         name = ''
-        if hackerProfile.nameFirst: name+=hackerProfile.nameFirst + ' '
-        if hackerProfile.nameLast: name+=hackerProfile.nameLast
+        if hackerProfile.nameFirst: 
+            name+=hackerProfile.nameFirst + ' '
+        if hackerProfile.nameLast: 
+            name+=hackerProfile.nameLast
         data.append({'name':name, 
                     'email':hackerProfile.email, 
                     'school':hackerProfile.school, 
@@ -32,12 +34,9 @@ def set_hacker_memcache():
                     'time':hackerProfile.updatedTime, 
                     'type':'hacker'})
 
-    if not memcache.add('hacker_mobile', data, time=constants.MOBILE_MEMCACHE_TIMEOUT):
-        logging.error('Memcache set failed for hacker_mobile.')
-
     return data
 
-def set_staff_memcache():
+def get_staff_data():
     all_staff = Admin.search_database({})
     data = []
 
@@ -54,12 +53,9 @@ def set_staff_memcache():
                     'time':staff_profile.updatedTime, 
                     'type':'staff'})
 
-    if not memcache.add('staff_mobile', data, time=constants.MOBILE_MEMCACHE_TIMEOUT):
-        logging.error('Memcache set failed for staff_mobile.')
-
     return data
 
-def set_mentor_memcache():
+def get_mentor_data():
     all_mentors = Sponsor.search_database({})
     data = []
 
@@ -75,12 +71,13 @@ def set_mentor_memcache():
                     'time':mentor_profile.updatedTime, 
                     'type':'mentor'})
 
-    if not memcache.add('mentor_mobile', data, time=constants.MOBILE_MEMCACHE_TIMEOUT):
-        logging.error('Memcache set failed for mentor_mobile.')
-
     return data
 
-def set_all_mobile_memcache(hacker, mentor, staff):
+def set_all_mobile_memcache():
+    hacker = get_hacker_data()
+    mentor = get_mentor_data()
+    staff = get_staff_data()
+
     data = hacker+mentor+staff
     if not memcache.add('all', data, time=constants.MOBILE_MEMCACHE_TIMEOUT):
         logging.error('Memcache set failed.')
@@ -91,38 +88,27 @@ def get_people_memecache(table_key):
     """Gets the 'hackers' key from the memcache and updates the memcache if the key is not in the memcache"""
 
     all_data = None
+    return_data = []
 
-    if table_key == 'all':
-        all_data = memcache.get('all')
-        if not all_data:
-            hacker = set_hacker_memcache()
-            mentor = set_mentor_memcache()
-            staff = set_staff_memcache()
+    # get memcache data
+    all_data = memcache.get('all')
 
-            all_data = set_all_mobile_memcache(hacker, mentor, staff)
-
-    elif table_key == 'hacker_mobile':
-        all_data = memcache.get('hacker_mobile')
-
-        if not all_data:
-            all_data = set_hacker_memcache()
-
-    elif table_key == 'mentor_mobile':
-        all_data = memcache.get('mentor_mobile')
-
-        if not all_data:
-            all_data = set_mentor_memcache()
-
-    elif table_key == 'staff_mobile':
-        all_data = memcache.get('staff_mobile')
-
-        if not all_data:
-            all_data = set_staff_memcache()
+    if not all_data:
+        all_data = set_all_memcache()
 
     stats = memcache.get_stats()
     logging.info('Hackers:: Cache Hits:%s  Cache Misses:%s' % (stats['hits'], stats['misses']))
 
-    return all_data
+    # set up return data list depending on what is requested
+    for data in all_data:
+        if table_key == 'hacker_mobile' and data.type == 'hacker':
+            return_data.append(data)
+        elif table_key == 'mentor_mobile' and data.type == 'mentor':
+            return_data.append(data)
+        elif table_key == 'staff_mobile' and data.type == 'staff':
+            return_data.append(data)
+
+    return return_data
 
 
 class ScheduleHandler(MainHandler.BaseMobileHandler):
@@ -216,8 +202,10 @@ class PersonHandler(MainHandler.BaseMobileHandler):
         
         updatedProfile = json.loads(params)
         updatedProfileDict = {}
+        updatedKeys = []
         for _key,_value in updatedProfile:
             updatedProfileDict[_key] = _value
+            updatedKeys.append(_key)
         
         if user_id:
             hackerProfile = Attendee.search_database({'userId':user_id}).get()
@@ -225,11 +213,49 @@ class PersonHandler(MainHandler.BaseMobileHandler):
             companyProfile = Sponsor.search_database({'userId':user_id}).get()
             
             if hackerProfile:
+                # update datastore
                 Attendee.update_search(updatedProfileDict, {'userId':user_id})
+
+                # update memcache
+                all_hacker_profiles = get_people_memecache('all')
+                for memcache_hacker_profile in all_hacker_profiles:
+                    if memcache_hacker_profile.email == hackerProfile.email:
+                        if 'skills' in updatedKeys:
+                            memcache_hacker_profile.skills = updatedProfileDict['skills']
+                        elif 'homebase' in updatedKeys:
+                            memcache_hacker_profile.homebase = updatedProfileDict['homebase']
+                memcache.replace('all', all_hacker_profiles,time=constants.MOBILE_MEMCACHE_TIMEOUT):
+                    logging.error('Memcache set failed for all.')
+
             elif staffProfile:
+                # update datastore
                 Admin.update_search(updatedProfileDict, {'userId':user_id})
+
+                #update memcache
+                all_staff_profiles = get_people_memecache('all')
+                for memcache_staff_profile in all_staff_profiles:
+                    if 'skills' in updatedKeys:
+                        memcache_staff_profile.skills = updatedProfileDict['skills']
+                    elif 'homebase' in updatedKeys:
+                        memcache_staff_profile.homebase = updatedProfileDict['homebase']
+                memcache.replace('all', all_staff_profiles, time=constants.MOBILE_MEMCACHE_TIMEOUT):
+                    logging.error('Memcache set failed for all')
+
             elif companyProfile:
+                # update datastore
                 Sponsor.update_search(updatedProfileDict, {'userId':user_id})
+
+                # update memcache
+                all_mentor_profiles = get_people_memecache('all')
+                for memcache_mentor_profile in all_mentor_profiles:
+                    if 'skills' in updatedKeys:
+                        memcache_mentor_profile.skills = updatedProfileDict['skills']
+                    elif 'homebase' in updatedKeys:
+                        memcache_mentor_profile.homebase = updatedProfileDict['homebase']
+                    elif 'status' in updatedKeys:
+                        memcache_mentor_profile.status = updatedKeys['status']
+                memcache.replace('all', all_mentor_profiles, time=constants.MOBILE_MEMCACHE_TIMEOUT):
+                    logging.error('Memcache set failed for all')
             
             return self.write(json.dumps({'message':'Updated Profile'}))
         else:
@@ -276,7 +302,7 @@ class LoginHandler(MainHandler.BaseMobileHandler):
             'year':hackerProfile.year,
             'skills':hackerProfile.skills, 
             'homebase':hackerProfile.homebase, 
-            'picture_url':hackerProfile.pictureURL, 
+            'fb_url':hackerProfile.pictureURL, 
             'status':hackerProfile.status, 
             'database_key':hackerProfile.email ,
             'time':_companyRep.updatedTime,
@@ -288,18 +314,18 @@ class LoginHandler(MainHandler.BaseMobileHandler):
             'year':staffProfile.year,
             'skills':staffProfile.skills, 
             'homebase':staffProfile.homebase, 
-            'picture_url':staffProfile.pictureURL, 
+            'fb_url':staffProfile.pictureURL, 
             'status':staffProfile.status, 
             'database_key':staffProfile.email , 
             'time':_companyRep.updatedTime,
             'type':'staff'}
         elif mentorProfile:
-            profile = {'name':mentorProfile.name
+            profile = {'name':mentorProfile.name,
             'email':mentorProfile.email, 
             'company':mentorProfile.company, 
             'job_title':mentorProfile.jobTitle, 
             'skills':mentorProfile.skills, 
-            'picture_url':mentorProfile.pictureURL, 
+            'fb_url':mentorProfile.pictureURL, 
             'status':mentorProfile.status, 
             'database_key':mentorProfile.email , 
             'time':mentorProfile.updatedTime,
