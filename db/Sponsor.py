@@ -19,6 +19,8 @@ class Sponsor(Model):
     pictureURL = ndb.TextProperty(default='')
     name = ndb.StringProperty(default='', required=True)
     updatedTime = ndb.StringProperty(default='')
+    email_lower = ndb.ComputedProperty(lambda self: self.email.lower())
+
 
     @classmethod
     def new(cls, data):

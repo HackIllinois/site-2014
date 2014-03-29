@@ -200,6 +200,7 @@ class PersonHandler(MainHandler.BaseMobileHandler):
     def post(self):
         if 'Email' in self.request.headers:
             email = self.request.headers['Email']
+            email = email.lower()
         else:
             return self.write(json.dumps({'message':'No userId'}))
 
@@ -213,13 +214,13 @@ class PersonHandler(MainHandler.BaseMobileHandler):
             updatedKeys.append(_key)
         
         if email:
-            hackerProfile = Attendee.search_database({'email':email}).get()
-            staffProfile = Admin.search_database({'email':email}).get()
-            companyProfile = Sponsor.search_database({'email':email}).get()
+            hackerProfile = Attendee.search_database({'email_lower':email}).get()
+            staffProfile = Admin.search_database({'email_lower':email}).get()
+            companyProfile = Sponsor.search_database({'email_lower':email}).get()
             
             if hackerProfile:
                 # update datastore
-                Attendee.update_search(updatedProfileDict, {'email':email})
+                Attendee.update_search(updatedProfileDict, {'email_lower':email})
 
                 # update memcache
                 all_hacker_profiles = get_people_memecache('all')
@@ -234,7 +235,7 @@ class PersonHandler(MainHandler.BaseMobileHandler):
 
             elif staffProfile:
                 # update datastore
-                Admin.update_search(updatedProfileDict, {'email':email})
+                Admin.update_search(updatedProfileDict, {'email_lower':email})
 
                 #update memcache
                 all_staff_profiles = get_people_memecache('all')
@@ -248,7 +249,7 @@ class PersonHandler(MainHandler.BaseMobileHandler):
 
             elif companyProfile:
                 # update datastore
-                Sponsor.update_search(updatedProfileDict, {'email':email})
+                Sponsor.update_search(updatedProfileDict, {'email_lower':email})
 
                 # update memcache
                 all_mentor_profiles = get_people_memecache('all')
@@ -284,17 +285,17 @@ class LoginHandler(MainHandler.BaseMobileHandler):
         email = None
         if 'Email' in self.request.headers:
             email = self.request.headers['Email']
+            email = email.lower()
         else:
             return self.write(json.dumps({'message':'No userId'}))
 
         # filter by accepted and attending later on
-        hackerProfile = Attendee.search_database({'email':email}).get()
-        staffProfile = Admin.search_database({'email':email}).get()
-        mentorProfile = Sponsor.search_database({'email':email}).get()
+        hackerProfile = Attendee.search_database({'email_lower':email}).get()
+        staffProfile = Admin.search_database({'email_lower':email}).get()
+        mentorProfile = Sponsor.search_database({'email_lower':email}).get()
 
         if not hackerProfile and staffProfile and mentorProfile: 
-            return self.write(json.dumps({'message':'No user'}))
-        
+            return self.write(json.dumps({'message':'No user'}))   
         
         profile = {}
         
@@ -311,7 +312,7 @@ class LoginHandler(MainHandler.BaseMobileHandler):
             'fb_url':hackerProfile.pictureURL, 
             'status':hackerProfile.status, 
             'database_key':hackerProfile.email ,
-            'time':_companyRep.updatedTime,
+            'time':hackerProfile.updatedTime,
             'type':'hacker'}
         elif staffProfile:
             profile = {'name':staffProfile.name, 
