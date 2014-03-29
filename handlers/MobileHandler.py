@@ -255,6 +255,9 @@ class LoginHandler(MainHandler.BaseMobileHandler):
         profile = {}
         
         if hackerProfile:
+            name = ''
+            if hackerProfile.nameFirst: name+=hackerProfile.nameFirst + ' '
+            if hackerProfile.nameLast: name+=hackerProfile.nameLast
             profile = {'name':hackerProfile.name, 'email':hackerProfile.email, 'school':hackerProfile.school, 'year':hackerProfile.year, 'skills':hackerProfile.skills, 'homebase':hackerProfile.homebase, 'picture_url':hackerProfile.pictureURL, 'status':hackerProfile.status, 'database_key':hackerProfile.key ,'time':_companyRep.updatedTime}
         elif staffProfile:
             profile = {'name':staffProfile.name, 'email':staffProfile.email, 'school':staffProfile.school, 'year':staffProfile.year, 'skills':staffProfile.skills, 'homebase':staffProfile.homebase, 'picture_url':staffProfile.pictureURL, 'status':staffProfile.status, 'database_key':staffProfile.key , 'time':_companyRep.updatedTime}
