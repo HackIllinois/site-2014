@@ -11,6 +11,9 @@ sys.path.append(os.path.join(third_party, 'tropo-webapi-python'))
 # Include cloudstorage for resume upload
 sys.path.append(os.path.join(third_party, 'cloudstorage'))
 
+# Include requests for ease-of-use while integrating with SendGrid
+sys.path.append(os.path.join(third_party, 'requests'))
+
 # Include sources for google drive api
 # Reference: https://developers.google.com/api-client-library/python/start/installation#appengine
 #            https://developers.google.com/drive/web/quickstart/quickstart-python#step_2_install_the_google_client_library
