@@ -104,13 +104,13 @@ def get_people_memecache(table_key):
 
     # set up return data list depending on what is requested
     for data in all_data:
-        if table_key == 'hacker_mobile' and data.type == 'hacker':
+        if (table_key == 'hacker_mobile') and (data['type'] == 'hacker'):
             return_data.append(data)
-        elif table_key == 'mentor_mobile' and data.type == 'mentor':
+        elif (table_key == 'mentor_mobile') and (data['type'] == 'mentor'):
             return_data.append(data)
-        elif table_key == 'staff_mobile' and data.type == 'staff':
+        elif (table_key == 'staff_mobile') and (data['type'] == 'staff'):
             return_data.append(data)
-        elif table_key == 'all':
+        elif (table_key == 'all'):
             return_data.append(data)
 
     return return_data
