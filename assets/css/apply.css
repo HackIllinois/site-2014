@@ -115,6 +115,7 @@ p.loggedin {
     color: white;
     font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
     margin-bottom: 25px;
+    text-align: center;
 }
 
 p.errormessages {

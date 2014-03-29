@@ -11,10 +11,10 @@ PROFILE_TITLE = 'Profile'
 RSVP_TITLE = 'RSVP'
 
 APPLY_COMPLETE_HEADER = 'Application Complete!'
-APPLY_COMPLETE_MESSAGE = 'Thanks for applying! To keep in touch, follow us on Facebook and Twitter. Also, don\'t forget to RSVP to the <a href="https://www.facebook.com/events/285744431573053" target="_blank" style="color: #ef3e36">Facebook event</a>!'
+APPLY_COMPLETE_MESSAGE = 'Thanks for applying! To keep in touch, follow us on Facebook and Twitter. Also, don\'t forget to RSVP to the <a href="http://go.hackillinois.org/event" target="_blank" style="color: #ef3e36">Facebook event</a>!'
 
 UPDATE_COMPLETE_HEADER = 'Application Updated!'
-UPDATE_COMPLETE_MESSAGE = 'Thanks for updating your application!<br>To keep in touch, follow us on Facebook and Twitter.<br>Also, don\'t forget to RSVP to the <a href="https://www.facebook.com/events/285744431573053" target="_blank" style="color: #ef3e36">Facebook event</a>!'
+UPDATE_COMPLETE_MESSAGE = 'Thanks for updating your application!<br>To keep in touch, follow us on Facebook and Twitter.<br>Also, don\'t forget to RSVP to the <a href="http://go.hackillinois.org/event" target="_blank" style="color: #ef3e36">Facebook event</a>!'
 
 APPLICATION_CLOSED_HEADER = 'Applications Are Closed'
 APPLICATION_CLOSED_MESSAGE = 'We\'re sorry, but applications for HackIllinois closed on March 21st.<br>Please try again next time, and happy hacking!<br><br>If you have already registered, please <a href="/logout?redirect=/apply/update" style="color: #ef3e36">logout</a> and login with the account you used to register.'
@@ -23,13 +23,13 @@ NOT_APPROVED_HEADER = 'Application Pending Review'
 NOT_APPROVED_MESSAGE = 'Your application is still being reviewed by our staff.<br>You will receive an email once your application has been reviewed.'
 
 RSVP_YES_HEADER = 'RSVP Complete!'
-RSVP_YES_MESSAGE = 'Thanks for RSVPing!<br>To keep in touch, follow us on Facebook and Twitter.<br>Also, don\'t forget to RSVP to the <a href="https://www.facebook.com/events/285744431573053" target="_blank" style="color: #ef3e36">Facebook event</a>!'
+RSVP_YES_MESSAGE = 'Thanks for RSVPing, and welcome to HackIllinois!<br>To keep in touch, follow us on Facebook and Twitter.<br>Also, don\'t forget to RSVP to the <a href="http://go.hackillinois.org/event" target="_blank" style="color: #ef3e36">Facebook event</a>!'
 
 RSVP_NO_HEADER = 'RSVP Complete.'
-RSVP_NO_MESSAGE = 'Thanks for RSVPing! We are sorry that you cannot make it.<br>To keep in touch for next year, follow us on Facebook and Twitter.'
+RSVP_NO_MESSAGE = 'Thanks for RSVPing! We are sorry that you cannot make it.<br>To keep in touch for the next HackIllinois, follow us on Facebook and Twitter.'
 
 RSVP_CLOSED_HEADER = 'RSVP Deadline Passed'
-RSVP_CLOSED_MESSAGE = 'We\'re sorry, but your RSVP deadline for HackIllinois has past and your spot has been given to another hacker.<br>Please apply again next year. Happy hacking!'
+RSVP_CLOSED_MESSAGE = 'We\'re sorry, but your RSVP deadline for HackIllinois has past.<br>We have released your spot to another hacker on the waitlist.<br>Please apply again for the next HackIllinois. Happy hacking!'
 
 ERROR_MESSAGE_PREFIX = 'Please provide '
 ERROR_MESSAGE_SUFFIX = '.'
