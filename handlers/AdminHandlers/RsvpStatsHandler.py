@@ -93,7 +93,10 @@ class RsvpStatsHandler(MainAdminHandler.BaseAdminHandler):
             t['name'] = name
             t['stats'] = []
             for option in sorted(table.keys()):
-                t['stats'].append({'name':option, 'num':table[option]})
+                if option == '':
+                    t['stats'].append({'name':'None', 'num':table[option]})
+                else:
+                    t['stats'].append({'name':option, 'num':table[option]})
             t['totalCount'] = sum([i['num'] for i in t['stats']])
             tables.append(t)
 
