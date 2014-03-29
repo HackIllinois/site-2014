@@ -23,7 +23,7 @@ NOT_APPROVED_HEADER = 'Application Pending Review'
 NOT_APPROVED_MESSAGE = 'Your application is still being reviewed by our staff.<br>You will receive an email once your application has been reviewed.'
 
 RSVP_YES_HEADER = 'RSVP Complete!'
-RSVP_YES_MESSAGE = 'Thanks for RSVPing, and welcome to HackIllinois!<br>To keep in touch, follow us on Facebook and Twitter.<br>Also, don\'t forget to RSVP to the <a href="http://go.hackillinois.org/event" target="_blank" style="color: #ef3e36">Facebook event</a>!'
+RSVP_YES_MESSAGE = 'Thanks for RSVPing, and welcome to HackIllinois!<br>To keep in touch, follow us on Facebook and Twitter, RSVP to the <a href="http://go.hackillinois.org/event" target="_blank" style="color: #ef3e36">Facebook event</a>,<br>and join your school\'s <a href="http://go.hackillinois.org/fbgroups" target="_blank" style="color: #ef3e36">Facebook group</a> to meet other hackers from your school.'
 
 RSVP_NO_HEADER = 'RSVP Complete.'
 RSVP_NO_MESSAGE = 'Thanks for RSVPing! We are sorry that you cannot make it.<br>To keep in touch for the next HackIllinois, follow us on Facebook and Twitter.'
