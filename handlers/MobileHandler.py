@@ -198,8 +198,8 @@ class PersonHandler(MainHandler.BaseMobileHandler):
     
     
     def post(self):
-        if 'Authentication' in self.request.headers:
-            user_id = self.request.headers['Authentication']
+        if 'Email' in self.request.headers:
+            email = self.request.headers['Email']
         else:
             return self.write(json.dumps({'message':'No userId'}))
 
@@ -212,14 +212,14 @@ class PersonHandler(MainHandler.BaseMobileHandler):
             updatedProfileDict[_key] = _value
             updatedKeys.append(_key)
         
-        if user_id:
-            hackerProfile = Attendee.search_database({'userId':user_id}).get()
-            staffProfile = Admin.search_database({'userId':user_id}).get()
-            companyProfile = Sponsor.search_database({'userId':user_id}).get()
+        if email:
+            hackerProfile = Attendee.search_database({'email':email}).get()
+            staffProfile = Admin.search_database({'email':email}).get()
+            companyProfile = Sponsor.search_database({'email':email}).get()
             
             if hackerProfile:
                 # update datastore
-                Attendee.update_search(updatedProfileDict, {'userId':user_id})
+                Attendee.update_search(updatedProfileDict, {'email':email})
 
                 # update memcache
                 all_hacker_profiles = get_people_memecache('all')
@@ -234,7 +234,7 @@ class PersonHandler(MainHandler.BaseMobileHandler):
 
             elif staffProfile:
                 # update datastore
-                Admin.update_search(updatedProfileDict, {'userId':user_id})
+                Admin.update_search(updatedProfileDict, {'email':email})
 
                 #update memcache
                 all_staff_profiles = get_people_memecache('all')
@@ -248,7 +248,7 @@ class PersonHandler(MainHandler.BaseMobileHandler):
 
             elif companyProfile:
                 # update datastore
-                Sponsor.update_search(updatedProfileDict, {'userId':user_id})
+                Sponsor.update_search(updatedProfileDict, {'email':email})
 
                 # update memcache
                 all_mentor_profiles = get_people_memecache('all')
@@ -281,16 +281,16 @@ class SkillsHandler(MainHandler.BaseMobileHandler):
 
 class LoginHandler(MainHandler.BaseMobileHandler):
     def get(self):
-        user_id = None
-        if 'Authentication' in self.request.headers:
-            user_id = self.request.headers['Authentication']
+        email = None
+        if 'Email' in self.request.headers:
+            email = self.request.headers['Email']
         else:
             return self.write(json.dumps({'message':'No userId'}))
 
         # filter by accepted and attending later on
-        hackerProfile = Attendee.search_database({'userId':user_id}).get()
-        staffProfile = Admin.search_database({'userId':user_id}).get()
-        mentorProfile = Sponsor.search_database({'userId':user_id}).get()
+        hackerProfile = Attendee.search_database({'email':email}).get()
+        staffProfile = Admin.search_database({'email':email}).get()
+        mentorProfile = Sponsor.search_database({'email':email}).get()
 
         if not hackerProfile and staffProfile and mentorProfile: 
             return self.write(json.dumps({'message':'No user'}))
