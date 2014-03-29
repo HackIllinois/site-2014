@@ -170,6 +170,9 @@ class PersonHandler(MainHandler.BaseMobileHandler):
             
             if 'mentor' == params:
                 listOfMentors = get_people_memecache('mentor_mobile')
+                # added so Rob has some mentor data 
+                # !!! This is fake change later !!!
+                listOfMentors = MobileConstants.FAKE_MENTOR_DATA
                 return self.write(json.dumps(listOfMentors))
             
             # add search by accepting flag
@@ -224,7 +227,7 @@ class PersonHandler(MainHandler.BaseMobileHandler):
                             memcache_hacker_profile.skills = updatedProfileDict['skills']
                         elif 'homebase' in updatedKeys:
                             memcache_hacker_profile.homebase = updatedProfileDict['homebase']
-                memcache.replace('all', all_hacker_profiles,time=constants.MOBILE_MEMCACHE_TIMEOUT):
+                if not memcache.replace('all', all_hacker_profiles,time=constants.MOBILE_MEMCACHE_TIMEOUT):
                     logging.error('Memcache set failed for all.')
 
             elif staffProfile:
@@ -238,7 +241,7 @@ class PersonHandler(MainHandler.BaseMobileHandler):
                         memcache_staff_profile.skills = updatedProfileDict['skills']
                     elif 'homebase' in updatedKeys:
                         memcache_staff_profile.homebase = updatedProfileDict['homebase']
-                memcache.replace('all', all_staff_profiles, time=constants.MOBILE_MEMCACHE_TIMEOUT):
+                if not memcache.replace('all', all_staff_profiles, time=constants.MOBILE_MEMCACHE_TIMEOUT):
                     logging.error('Memcache set failed for all')
 
             elif companyProfile:
@@ -254,7 +257,7 @@ class PersonHandler(MainHandler.BaseMobileHandler):
                         memcache_mentor_profile.homebase = updatedProfileDict['homebase']
                     elif 'status' in updatedKeys:
                         memcache_mentor_profile.status = updatedKeys['status']
-                memcache.replace('all', all_mentor_profiles, time=constants.MOBILE_MEMCACHE_TIMEOUT):
+                if not memcache.replace('all', all_mentor_profiles, time=constants.MOBILE_MEMCACHE_TIMEOUT):
                     logging.error('Memcache set failed for all')
             
             return self.write(json.dumps({'message':'Updated Profile'}))
@@ -320,15 +323,26 @@ class LoginHandler(MainHandler.BaseMobileHandler):
             'time':_companyRep.updatedTime,
             'type':'staff'}
         elif mentorProfile:
-            profile = {'name':mentorProfile.name,
-            'email':mentorProfile.email, 
-            'company':mentorProfile.company, 
-            'job_title':mentorProfile.jobTitle, 
-            'skills':mentorProfile.skills, 
-            'fb_url':mentorProfile.pictureURL, 
-            'status':mentorProfile.status, 
-            'database_key':mentorProfile.email , 
-            'time':mentorProfile.updatedTime,
+            profile = {'name':'mentorProfile.name',
+            'email':'mentorProfile.email@gmail.com', 
+            'company':'mentorProfile.company', 
+            'job_title':'mentorProfile.jobTitle', 
+            'skills':['mentorProfile.skills'], 
+            'fb_url':'mentorProfile.pictureURL', 
+            'status':'mentorProfile.status', 
+            'database_key':'mentorProfile.email' , 
+            'time':'mentorProfile.updatedTime',
             'type':'mentor'}
+
+            # profile = {'name':mentorProfile.name,
+            # 'email':mentorProfile.email, 
+            # 'company':mentorProfile.company, 
+            # 'job_title':mentorProfile.jobTitle, 
+            # 'skills':mentorProfile.skills, 
+            # 'fb_url':mentorProfile.pictureURL, 
+            # 'status':mentorProfile.status, 
+            # 'database_key':mentorProfile.email , 
+            # 'time':mentorProfile.updatedTime,
+            # 'type':'mentor'}
         
         self.write(json.dumps([profile]))
