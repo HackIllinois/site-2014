@@ -7,7 +7,7 @@ from TropoHandler import TropoHandler
 from SponsorHandler import SponsorDownloadHandler
 from LogoutHandler import LogoutHandler
 from MGTHandler import MGTHandler, ParticlesHandler
-from RsvpHandler import RsvpHandler, NotApprovedHandler
+from RsvpHandler import RsvpHandler, NotApprovedHandler, RsvpYesHandler, RsvpNoHandler, RsvpClosedHandler
 import ApplyHandler
 import MentorHandler
 import SkillsHandler
@@ -31,8 +31,12 @@ handlers = [
     RedirectRoute('/apply/schoollist', handler=ApplyHandler.SchoolListHandler, name='SchoolList', strict_slash=True),
     RedirectRoute('/apply/myresume', handler=ApplyHandler.MyResumeHandler, name='MyResume', strict_slash=True),
     RedirectRoute('/apply/uploadurl', handler=ApplyHandler.UploadURLHandler, name='UploadURL', strict_slash=True),
-    RedirectRoute('/apply/rsvp', handler=RsvpHandler, name='Rsvp', strict_slash=True),
-    RedirectRoute('/apply/rsvp/pending', handler=NotApprovedHandler, name='RsvpNotApproved', strict_slash=True),
+
+    RedirectRoute('/rsvp', handler=RsvpHandler, name='Rsvp', strict_slash=True),
+    RedirectRoute('/rsvp/pending', handler=NotApprovedHandler, name='RsvpNotApproved', strict_slash=True),
+    RedirectRoute('/rsvp/yes', handler=RsvpYesHandler, name='RsvpYes', strict_slash=True),
+    RedirectRoute('/rsvp/no', handler=RsvpNoHandler, name='RsvpNo', strict_slash=True),
+    RedirectRoute('/rsvp/closed', handler=RsvpClosedHandler, name='RsvpClosed', strict_slash=True),
 
     RedirectRoute('/mentor', handler=MentorHandler.RenderHandler, name='Mentor', strict_slash=True),
 

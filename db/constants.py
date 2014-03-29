@@ -22,6 +22,15 @@ APPLICATION_CLOSED_MESSAGE = 'We\'re sorry, but applications for HackIllinois cl
 NOT_APPROVED_HEADER = 'Application Pending Review'
 NOT_APPROVED_MESSAGE = 'Your application is still being reviewed by our staff.<br>You will receive an email once your application has been reviewed.'
 
+RSVP_YES_HEADER = 'RSVP Complete!'
+RSVP_YES_MESSAGE = 'Thanks for RSVPing!<br>To keep in touch, follow us on Facebook and Twitter.<br>Also, don\'t forget to RSVP to the <a href="https://www.facebook.com/events/285744431573053" target="_blank" style="color: #ef3e36">Facebook event</a>!'
+
+RSVP_NO_HEADER = 'RSVP Complete.'
+RSVP_NO_MESSAGE = 'Thanks for RSVPing! We are sorry that you cannot make it.<br>To keep in touch for next year, follow us on Facebook and Twitter.'
+
+RSVP_CLOSED_HEADER = 'RSVP Deadline Passed'
+RSVP_CLOSED_MESSAGE = 'We\'re sorry, but your RSVP deadline for HackIllinois has past and your spot has been given to another hacker.<br>Please apply again next year. Happy hacking!'
+
 ERROR_MESSAGE_PREFIX = 'Please provide '
 ERROR_MESSAGE_SUFFIX = '.'
 
