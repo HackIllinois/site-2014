@@ -33,14 +33,17 @@ class BaseAdminHandler(MainHandler.Handler):
             is_admin = True
         elif email in constants.ADMIN_EMAILS:
             parent = Admin.get_default_event_parent_key()
-            Admin(parent=parent, email=user.email(), googleUser=user, approveAccess=True, fullAccess=True).put()
+            Admin(parent=parent, email=user.email(), googleUser=user, userId=user.user_id(), approveAccess=True, fullAccess=True).put()
             is_admin = True
         elif domain == 'hackillinois.org':
             parent = Admin.get_default_event_parent_key()
-            Admin(parent=parent, email=user.email(), googleUser=user).put()
+            Admin(parent=parent, email=user.email(), googleUser=user, userId=user.user_id()).put()
             is_admin = True
 
         if is_admin:
+            if admin_user.userId is None or admin_user.userId == ''::
+                admin_user.userId = user.user_id()
+                admin_user.put()
             # Parent class will call the method to be dispatched
             # -- get() or post() or etc.
             logging.info('Admin user %s is online.', email)
