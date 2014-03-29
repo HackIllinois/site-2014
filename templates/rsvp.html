@@ -1,140 +1,154 @@
-{% extends "base/base2.html" %}
+{% extends "base/base.html" %}
 
-{% block stylesheets %}
+{% block head %}
+<link rel="stylesheet" type="text/css" href="/css/index.css">
 <link rel="stylesheet" type="text/css" href="/lib/bootstrap/css/bootstrap.min.css">
 <link rel="stylesheet" type="text/css" href="/lib/selectize/css/selectize.bootstrap3.css">
-<style type="text/css">
-    .header {
-        margin-top: 50px;
-    }
-</style>
-{% endblock stylesheets %}
+<link rel="stylesheet" type="text/css" href="/css/apply.css">
+{% endblock head %}
 
-{% block content %}
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-md-12">
-            <div class="container header">
-                <a href="/"><img class="img-responsive center-block" src="/img/hackillinois_logo.svg"/></a>
-                <h2 class="text-center">{{ data.title }}</h2>
-                <p class="text-center">Hello {{ data.username }}! <a class="rules-link" href="{{ data.logoutUrl }}">Not you</a>?</p>
+{% block body %}
+<div class="wrapper bg-stars">
+    <div class="const">
+        <img class="constellations" src="/img/constellations.png">
+    </div>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="header">
+                    <a href="/"><img class="logo-main-svg img-responsive center-block" src="/img/hackillinois_logo.svg"/></a>
+                    <h2 class="text-center">{{ data.title }}</h2>
+                    <p class="text-center loggedin">Hello {{ data.username }}! <a class="rules-link" href="{{ data.logoutUrl }}">Not you</a>?</p>
+                </div>
+
+                <div class="field-missing">
+                    <p class="errormessages">
+                        Whoops! Looks like you missed a required field or two.
+                    </p>
+                </div>
             </div>
-            <div class="container">
-                <form class="form-horizontal" role="form" action="/apply/rsvp" method="post">
+        </div>
+
+        <div class="container-fluid">
+            <div class="row">
+
+                <form id="attendForm" class="form-horizontal" role="form" action="/rsvp" method="post">
                     <div class="form-group">
-                        <label class="control-label col-sm-4" for="attend">Will you be attending Hackillinois?</label>
-                        <div class="controls col-sm-8">
-                            <label class="radio-inline" for="attend">
+                        <label class="control-label col-sm-3 col-sm-offset-1" for="attend">Will you be attending Hackillinois?</label>
+                        <div class="controls col-sm-6">
+                            <label class="radio" for="attend">
                                 <input type="radio" name="attend" id="attend-0" value="Yes" required="required">
                                 Yes!
                             </label>
-                            <label class="radio-inline" for="attend">
+                            <label class="radio" for="attend">
                                 <input type="radio" name="attend" id="attend-1" value="No" required="required">
                                 No, please release my spot.
                             </label>
                         </div>
                     </div>
+                    <span id="rsvp-form" style="display:none">
+                        <div class="col-sm-10 col-sm-offset-1"><hr></div>
 
-                    <hr>
-
-                    <div class="form-group">
-                        <label class="control-label col-sm-4" for="micro1">Microcontrollers</label>
-                        <div class="controls col-sm-8">
-                            {% for m1 in data.micro1 %}
-                            <label class="micro1-options checkbox-inline" for="micro1-{{ loop.index0 }}">
-                                <input type="checkbox" name="micro1" id="micro1-{{ loop.index0 }}" value="{{ m1.name }}" {% if m1.checked %}checked{% endif %}/>
-                                {{ m1.name }}
-                            </label>
-                            {% endfor %}
-                            <span class="help-block no-bottom-margin">Note that you will need to return these items by the end of the event. Cables are included.</span>
+                        <div class="form-group">
+                            <label class="control-label col-sm-3 col-sm-offset-1"></label>
+                            <div class="controls col-sm-6">
+                                <span style="font-weight:bold;" class="help-block no-bottom-margin">Want to work with hardware? We've got plenty available! Let us know what you'd like to use, and we'll do our best to have it available. If you have any questions, email us at <a href="mailto:hardware@hackillinois.org" target="_blank" style="color:#ADD8E6">hardware@hackillinois.org</a></span>
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label col-sm-4" for="micro2">Microcontrollers</label>
-                        <div class="controls col-sm-8">
-                            {% for m2 in data.micro2 %}
-                            <label class="micro2-options checkbox-inline" for="micro2-{{ loop.index0 }}">
-                                <input type="checkbox" name="micro2" id="micro2-{{ loop.index0 }}" value="{{ m2.name }}" {% if m2.checked %}checked{% endif %}/>
-                                {{ m2.name }}
-                            </label>
-                            {% endfor %}
-                            <span class="help-block no-bottom-margin">You will be able to keep these.</span>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label col-sm-4" for="lab">Lab Equipment</label>
-                        <div class="controls col-sm-8">
-                            {% for l in data.labEquipment %}
-                            <label class="lab-options checkbox-inline" for="lab-{{ loop.index0 }}">
-                                <input type="checkbox" name="lab" id="lab-{{ loop.index0 }}" value="{{ l.name }}" {% if l.checked %}checked{% endif %}/>
-                                {{ l.name }}
-                            </label>
-                            {% endfor %}
-                        </div>
-                    </div>
+                        <div class="form-group">
+                        <label class="control-label col-sm-3 col-sm-offset-1" for="micro1">Microcontrollers</label>
+                            <div class="controls col-sm-6">
 
-                    <hr>
-
-                    <div class="form-group">
-                        <label class="control-label col-sm-4" for="travel">Travel Arrangements<span class="reqd"> *</span></label>
-                            <div class="controls col-sm-8">
-                            <div>
-                                {% for tA in data.travelArrangements %}
-                                <label class="radio" for="travel-{{ loop.index0 }}">
-                                    <input type="radio" name="travel" id="travel-{{ loop.index0 }}" value="{{ tA.name }}" required="required" {% if tA.checked %}checked{% endif %}>
-                                    {{ tA.name }}
+                                {% for m1 in data.micro1 %}
+                                <label class="micro1-options checkbox-inline" for="micro1-{{ loop.index0 }}">
+                                    <input type="checkbox" name="micro1" id="micro1-{{ loop.index0 }}" value="{{ m1.name }}" {% if m1.checked %}checked{% endif %}/>
+                                    <a href="{{m1.link}}" target="_blank" style="color:#ADD8E6">{{ m1.name }}</a>
+                                </label>
+                                {% endfor %}
+                                <span class="help-block no-bottom-margin">Note that you will need to return these items by the end of the event. Cables are included.</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-3 col-sm-offset-1" for="micro2">Microcontrollers</label>
+                            <div class="controls col-sm-6">
+                                {% for m2 in data.micro2 %}
+                                <label class="micro2-options checkbox-inline" for="micro2-{{ loop.index0 }}">
+                                    <input type="checkbox" name="micro2" id="micro2-{{ loop.index0 }}" value="{{ m2.name }}" {% if m2.checked %}checked{% endif %}/>
+                                    <a href="{{m2.link}}" target="_blank" style="color:#ADD8E6">{{ m2.name }}</a>
+                                </label>
+                                {% endfor %}
+                                <span class="help-block no-bottom-margin">You will be able to keep these.</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-3 col-sm-offset-1" for="lab">Lab Equipment</label>
+                            <div class="controls col-sm-6">
+                                {% for l in data.labEquipment %}
+                                <label class="lab-options checkbox-inline" for="lab-{{ loop.index0 }}">
+                                    <input type="checkbox" name="labEquipment" id="lab-{{ loop.index0 }}" value="{{ l.name }}" {% if l.checked %}checked{% endif %}/>
+                                    {{ l.name }}
                                 </label>
                                 {% endfor %}
                             </div>
+                        </div>
 
-                            <span class="help-block no-bottom-margin">
-                                Unfortunataly we cannot provide reimbursment for personal travel arrangements.<br>
-                                For more information, please see <a class="rules-link" href="/travel" target="_blank">our travel page</a>.
-                            </span>
-                            <div class="errormessages">
-                                {{ data.errors.travel }}
+                        <div class="col-sm-10 col-sm-offset-1"><hr></div>
+
+                        <div class="form-group">
+                            <label class="control-label col-sm-3 col-sm-offset-1" for="travel">Travel Arrangements<span class="reqd"> *</span></label>
+                            <div class="controls col-sm-6">
+                                <div>
+                                    {% for tA in data.travelArrangements %}
+                                    <label class="radio" for="travel-{{ loop.index0 }}">
+                                        <input type="radio" name="travel" id="travel-{{ loop.index0 }}" value="{{ tA.name }}" required="required" {% if tA.checked %}checked{% endif %}>
+                                        {{ tA.name }}
+                                    </label>
+                                    {% endfor %}
+                                </div>
+
+                                <span class="help-block no-bottom-margin">
+                                    Unfortunately we cannot provide reimbursement for personal travel arrangements. For more information, please see our travel page.
+                                    <a class="rules-link" href="/travel" target="_blank">our travel page</a>.
+                                </span>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="" id="bus-routes">
-                        <div class="form-group">
-                            <label class="control-label col-sm-4" for="busRoute">Bus Route<span class="reqd"> *</span></label>
-                            <div class="controls col-sm-8">
-                                <select name="busRoute" class="form-control" required="required">
-                                    <option value="">Please select</option>
-                                    {% for b in data.busRoutes %}
-                                    <option {% if b.selected %}selected{% endif %} value="{{ b.name }}">{{ b.name }}</option>
-                                    {% endfor %}
-                                </select>
-                                <div class="errormessages">
-                                    {{ data.errors.busRoute }}
+                        <div class="" id="bus-routes">
+                            <div class="form-group">
+                                <label class="control-label col-sm-3 col-sm-offset-1" for="busRoute">Bus Route<span class="reqd"> *</span></label>
+                                <div class="controls col-sm-4">
+                                    <select name="busRoute" class="form-control" required="required">
+                                        <option value="">Please select</option>
+                                        {% for b in data.busRoutes %}
+                                        <option {% if b.selected %}selected{% endif %} value="{{ b.name }}">{{ b.name }}</option>
+                                        {% endfor %}
+                                    </select>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </span>
 
-                    <div class="form-group" style="">
-                        <div class="col-sm-4"></div>
-                        <label class="control-label sr-only"></label>
-                        <div class="controls col-sm-4">
-                            <button id="rsvp-submit" type="submit" class="btn btn-primary btn-lg btn-block">Submit</button>
+                    <span id="rsvp-submit">
+                        <div class="form-group" style="">
+                            <label class="control-label col-sm-4 sr-only"></label>
+                            <div class="controls col-sm-4">
+                                <button id="rsvp-submit-btn" class="btn btn-primary btn-lg pull-left footer btn-block btn-hackil submit-disabled" disabled>Submit</button>
+                            </div>
                         </div>
-                        <div class="col-sm-4"></div>
-                    </div>
+                    </span>
                 </form>
             </div>
         </div>
     </div>
 </div>
-{% endblock content %}
 
 
-{% block scripts %}
+
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 <!--script src="/js/jquery.min.js"></script-->
 <script src="/lib/selectize/js/standalone/selectize.min.js"></script>
 <script src="/lib/bootstrap/js/bootstrap.min.js"></script>
 <script src="/js/easing.min.js"></script>
 <script src="/js/rsvp.js"></script>
-{% endblock %}
+{% endblock body %}

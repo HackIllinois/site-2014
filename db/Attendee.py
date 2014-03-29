@@ -22,7 +22,7 @@ class Attendee(Model):
     travel = ndb.StringProperty(choices=constants.TRAVEL_ARRANGEMENTS + [''], default='')
     busRoute = ndb.StringProperty(choices=constants.BUS_ROUTES + [''], default='')
 
-    approvalStatus = ndb.StructuredProperty(Status)
+    approvalStatus = ndb.StructuredProperty(Status, default=Status())
     groupNumber = ndb.IntegerProperty(default=-1)
 
     micro1 = ndb.StringProperty()
