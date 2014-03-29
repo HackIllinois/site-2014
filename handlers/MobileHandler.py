@@ -214,13 +214,13 @@ class PersonHandler(MainHandler.BaseMobileHandler):
             updatedKeys.append(_key)
         
         if email:
-            hackerProfile = Attendee.search_database({'email_lower':email}).get()
-            staffProfile = Admin.search_database({'email_lower':email}).get()
-            companyProfile = Sponsor.search_database({'email_lower':email}).get()
+            hackerProfile = Attendee.search_database({'userEmail':email}).get()
+            staffProfile = Admin.search_database({'email':email}).get()
+            companyProfile = Sponsor.search_database({'email':email}).get()
             
             if hackerProfile:
                 # update datastore
-                Attendee.update_search(updatedProfileDict, {'email_lower':email})
+                Attendee.update_search(updatedProfileDict, {'userEmail':email})
 
                 # update memcache
                 all_hacker_profiles = get_people_memecache('all')
@@ -235,7 +235,7 @@ class PersonHandler(MainHandler.BaseMobileHandler):
 
             elif staffProfile:
                 # update datastore
-                Admin.update_search(updatedProfileDict, {'email_lower':email})
+                Admin.update_search(updatedProfileDict, {'email':email})
 
                 #update memcache
                 all_staff_profiles = get_people_memecache('all')
@@ -250,7 +250,7 @@ class PersonHandler(MainHandler.BaseMobileHandler):
 
             elif companyProfile:
                 # update datastore
-                Sponsor.update_search(updatedProfileDict, {'email_lower':email})
+                Sponsor.update_search(updatedProfileDict, {'email':email})
 
                 # update memcache
                 all_mentor_profiles = get_people_memecache('all')
@@ -292,9 +292,9 @@ class LoginHandler(MainHandler.BaseMobileHandler):
             return self.write(json.dumps({'message':'No userId'}))
 
         # filter by accepted and attending later on
-        hackerProfile = Attendee.search_database({'email_lower':email}).get()
-        staffProfile = Admin.search_database({'email_lower':email}).get()
-        mentorProfile = Sponsor.search_database({'email_lower':email}).get()
+        hackerProfile = Attendee.search_database({'userEmail':email}).get()
+        staffProfile = Admin.search_database({'email':email}).get()
+        mentorProfile = Sponsor.search_database({'email':email}).get()
 
         if not hackerProfile and staffProfile and mentorProfile: 
             return self.write(json.dumps({'message':'No user'}))   
