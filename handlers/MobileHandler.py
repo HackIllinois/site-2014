@@ -324,7 +324,7 @@ class LoginHandler(MainHandler.BaseMobileHandler):
             'fb_url':staffProfile.pictureURL, 
             'status':staffProfile.status, 
             'database_key':staffProfile.email , 
-            'time':_companyRep.updatedTime,
+            'time':staffProfile.updatedTime,
             'type':'staff'}
         elif mentorProfile:
             profile = {'name':'mentorProfile.name',
