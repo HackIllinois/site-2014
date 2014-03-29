@@ -65,8 +65,7 @@ class MarkSentEmailHandler(MainAdminHandler.BaseAdminHandler):
                 successful_emails.append(email)
                 person.approvalStatus.status = 'Awaiting Response'
                 person.approvalStatus.emailedTime = datetime.now()
-                # debug
-                # person.put()
+                person.put()
             elif person.approvalStatus.status in constants.RSVP_STATUSES:
                 already_emailed_emails.append(email)
             else:
