@@ -38,7 +38,7 @@
                         <label class="control-label col-sm-3 col-sm-offset-1" for="attend">Will you be attending Hackillinois?</label>
                         <div class="controls col-sm-6">
                             <label class="radio" for="attend">
-                                <input type="radio" name="attend" id="attend-0" value="Yes" required="required" {% if data.status == 'Rsvp Coming' %} selected {% endif %} >
+                                <input type="radio" name="attend" id="attend-0" value="Yes" required="required" {% if data.status == 'Rsvp Coming' %} checked {% endif %} >
                                 Yes! Status: {{data.status}}
                             </label>
                             <label class="radio" for="attend">
