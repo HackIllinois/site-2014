@@ -10,6 +10,19 @@ from google.appengine.api import users, memcache
 import json
 import time
 
+# def check_email_for_login(email):
+#     if not email:
+#         return False
+
+#     hackerProfile = Attendee.search_database({'userEmail':email}).get()
+#     staffProfile = Admin.search_database({'email':email}).get()
+#     mentorProfile = Sponsor.search_database({'email':email}).get()
+    
+#     if not hackerProfile and not staffProfile and not mentorProfile: 
+#         return False
+#     else:
+#         return True
+
 def get_hacker_data():
     """Sets the 'hacker_mobile' key in the memcache"""
     # change to search for accepted hackers
@@ -164,6 +177,7 @@ class NewsfeedHandler(MainHandler.BaseMobileHandler):
 class PersonHandler(MainHandler.BaseMobileHandler):
     
     def get(self):
+        logging.info('person get data')
         params = self.request.get('type')
         keyParams = self.request.get('key')
         time = self.request.get('last_updated')
@@ -198,6 +212,7 @@ class PersonHandler(MainHandler.BaseMobileHandler):
     
     
     def post(self):
+        logging.info('person post data')
         if 'Email' in self.request.headers:
             email = self.request.headers['Email']
             # email = email.lower()
@@ -231,11 +246,11 @@ class PersonHandler(MainHandler.BaseMobileHandler):
                 # update memcache
                 all_hacker_profiles = get_people_memecache('all')
                 for memcache_hacker_profile in all_hacker_profiles:
-                    if memcache_hacker_profile.email == hackerProfile.email:
+                    if memcache_hacker_profile['email'] == hackerProfile.email:
                         if 'skills' in updatedKeys:
-                            memcache_hacker_profile.skills = updatedProfileDict['skills']
+                            memcache_hacker_profile['skills'] = updatedProfileDict['skills']
                         elif 'homebase' in updatedKeys:
-                            memcache_hacker_profile.homebase = updatedProfileDict['homebase']
+                            memcache_hacker_profile['homebase'] = updatedProfileDict['homebase']
                 if not memcache.replace('all', all_hacker_profiles,time=constants.MOBILE_MEMCACHE_TIMEOUT):
                     logging.error('Memcache set failed for all.')
 
@@ -248,11 +263,11 @@ class PersonHandler(MainHandler.BaseMobileHandler):
                 #update memcache
                 all_staff_profiles = get_people_memecache('all')
                 for memcache_staff_profile in all_staff_profiles:
-                    if memcache_staff_profile.email == staffProfile.email:
+                    if memcache_staff_profile['email'] == staffProfile.email:
                         if 'skills' in updatedKeys:
-                            memcache_staff_profile.skills = updatedProfileDict['skills']
+                            memcache_staff_profile['skills'] = updatedProfileDict['skills']
                         elif 'homebase' in updatedKeys:
-                            memcache_staff_profile.homebase = updatedProfileDict['homebase']
+                            memcache_staff_profile['homebase'] = updatedProfileDict['homebase']
                 if not memcache.replace('all', all_staff_profiles, time=constants.MOBILE_MEMCACHE_TIMEOUT):
                     logging.error('Memcache set failed for all')
 
@@ -265,13 +280,13 @@ class PersonHandler(MainHandler.BaseMobileHandler):
                 # update memcache
                 all_mentor_profiles = get_people_memecache('all')
                 for memcache_mentor_profile in all_mentor_profiles:
-                    if memcache_mentor_profile.email == companyProfile.email:
+                    if memcache_mentor_profile['email'] == companyProfile.email:
                         if 'skills' in updatedKeys:
-                            memcache_mentor_profile.skills = updatedProfileDict['skills']
+                            memcache_mentor_profile['skills'] = updatedProfileDict['skills']
                         elif 'homebase' in updatedKeys:
-                            memcache_mentor_profile.homebase = updatedProfileDict['homebase']
+                            memcache_mentor_profile['homebase'] = updatedProfileDict['homebase']
                         elif 'status' in updatedKeys:
-                            memcache_mentor_profile.status = updatedKeys['status']
+                            memcache_mentor_profile['status'] = updatedKeys['status']
                 if not memcache.replace('all', all_mentor_profiles, time=constants.MOBILE_MEMCACHE_TIMEOUT):
                     logging.error('Memcache set failed for all')
                 
@@ -309,7 +324,7 @@ class LoginHandler(MainHandler.BaseMobileHandler):
         staffProfile = Admin.search_database({'email':email}).get()
         mentorProfile = Sponsor.search_database({'email':email}).get()
 
-        if not hackerProfile and staffProfile and mentorProfile: 
+        if not hackerProfile and not staffProfile and not mentorProfile: 
             return self.write(json.dumps({'message':'No user'}))   
         
         profile = {}
