@@ -24,7 +24,8 @@ class ProfileHandler(MainAdminHandler.BaseAdminHandler, blobstore_handlers.Blobs
             'experience', 'linkedin', 'github', 'year',
             'gender', 'projectType', 'shirt', 'food',
             'foodInfo', 'teamMembers', 'registrationTime',
-            'userNickname', 'userEmail', 'userId', 'isApproved', 'resume', 'approvalStatus']
+            'userNickname', 'userEmail', 'userId', 'isApproved',
+            'travel', 'busRoute', 'resume', 'approvalStatus']
 
         for field in text_fields:
             value = getattr(db_user, field) # Gets db_user.field using a string
