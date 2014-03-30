@@ -11,8 +11,9 @@ class BusRouteStatsHandler(MainAdminHandler.BaseAdminHandler):
         admin_user = self.get_admin_user()
         if not admin_user: return self.abort(500, detail='User not in database')
 
-        data = memcache.get('bus_route_stats')
-
+        # data = memcache.get('bus_route_stats')
+        # Disabling memcache here for now since we aren't expiring keys anywhere :D
+        data = None
         if not data:
             bus_routes = [
                 {
