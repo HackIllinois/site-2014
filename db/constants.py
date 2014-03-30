@@ -58,6 +58,7 @@ TOS_ERROR_MESSAGE = 'Please accept the Terms of Service'
 CSV_HEADINGS = ['First Name','Last Name','Email',
                 'Gender','School','Year','LinkedIn',
                 'Github','Shirt','Food','Project Type',
+                'Travel Preference', 'Bus Route',
                 'Registration Time','Is Approved',
                 'User ID','Resume','Status']
 
