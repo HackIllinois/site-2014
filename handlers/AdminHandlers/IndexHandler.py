@@ -8,7 +8,7 @@ class IndexHandler(MainAdminHandler.BaseAdminHandler):
         admin_user = self.get_admin_user()
         if not admin_user: return self.abort(500, detail='User not in database')
 
-        data = {}
+        data = {'registerCount': ""}
         # data['registerCount'] = self.get_apply_count_memcache(constants.USE_ADMIN_MEMCACHE)
         # data['schoolCount'] = self.get_school_count_memcache(constants.USE_ADMIN_MEMCACHE)
         # data['approveCount'] = self.get_status_count_memcache('Approved', constants.USE_ADMIN_MEMCACHE)
@@ -22,7 +22,7 @@ class IndexHandler(MainAdminHandler.BaseAdminHandler):
         map = {}
         for hacker in dup_hackers:
             if hacker.email in map:
-                print hacker.email
+                data['registerCount'] += hacker.email
             else:
                 map[hacker.email] = [hacker]
 
