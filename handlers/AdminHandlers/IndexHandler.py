@@ -1,6 +1,5 @@
 import MainAdminHandler
 from db import constants
-from db.Attendee import Attendee
 
 
 class IndexHandler(MainAdminHandler.BaseAdminHandler):
