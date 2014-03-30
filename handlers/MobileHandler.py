@@ -248,9 +248,9 @@ class PersonHandler(MainHandler.BaseMobileHandler):
                 for memcache_hacker_profile in all_hacker_profiles:
                     if memcache_hacker_profile['email'] == hackerProfile.email:
                         if 'skills' in updatedKeys:
-                            memcache_hacker_profile.skills = updatedProfileDict['skills']
+                            memcache_hacker_profile['skills'] = updatedProfileDict['skills']
                         elif 'homebase' in updatedKeys:
-                            memcache_hacker_profile.homebase = updatedProfileDict['homebase']
+                            memcache_hacker_profile['homebase'] = updatedProfileDict['homebase']
                 if not memcache.replace('all', all_hacker_profiles,time=constants.MOBILE_MEMCACHE_TIMEOUT):
                     logging.error('Memcache set failed for all.')
 
@@ -265,9 +265,9 @@ class PersonHandler(MainHandler.BaseMobileHandler):
                 for memcache_staff_profile in all_staff_profiles:
                     if memcache_staff_profile['email'] == staffProfile.email:
                         if 'skills' in updatedKeys:
-                            memcache_staff_profile.skills = updatedProfileDict['skills']
+                            memcache_staff_profile['skills'] = updatedProfileDict['skills']
                         elif 'homebase' in updatedKeys:
-                            memcache_staff_profile.homebase = updatedProfileDict['homebase']
+                            memcache_staff_profile['homebase'] = updatedProfileDict['homebase']
                 if not memcache.replace('all', all_staff_profiles, time=constants.MOBILE_MEMCACHE_TIMEOUT):
                     logging.error('Memcache set failed for all')
 
@@ -282,11 +282,11 @@ class PersonHandler(MainHandler.BaseMobileHandler):
                 for memcache_mentor_profile in all_mentor_profiles:
                     if memcache_mentor_profile['email'] == companyProfile.email:
                         if 'skills' in updatedKeys:
-                            memcache_mentor_profile.skills = updatedProfileDict['skills']
+                            memcache_mentor_profile['skills'] = updatedProfileDict['skills']
                         elif 'homebase' in updatedKeys:
-                            memcache_mentor_profile.homebase = updatedProfileDict['homebase']
+                            memcache_mentor_profile['homebase'] = updatedProfileDict['homebase']
                         elif 'status' in updatedKeys:
-                            memcache_mentor_profile.status = updatedKeys['status']
+                            memcache_mentor_profile['status'] = updatedKeys['status']
                 if not memcache.replace('all', all_mentor_profiles, time=constants.MOBILE_MEMCACHE_TIMEOUT):
                     logging.error('Memcache set failed for all')
                 
