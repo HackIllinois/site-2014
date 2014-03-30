@@ -30,7 +30,6 @@ class MassApprovalHandler(MainAdminHandler.BaseAdminHandler):
         # Split emails by comma, semicolon, space, or newline (or some combination of all of those)
         emails = re.split(r'[,; \n]', email_str)
 
-        emails = emails.split(split_char)
         for i in xrange(len(emails)):
             emails[i] = emails[i].strip()
 
