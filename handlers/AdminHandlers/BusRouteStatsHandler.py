@@ -18,49 +18,48 @@ class BusRouteStatsHandler(MainAdminHandler.BaseAdminHandler):
                 {
                     'routeName': 'Purdue',
                     'schools': ['Purdue University'],
-                    'riderCount': 0,
                 },
                 {
                     'routeName': 'Iowa State -> Grinnell -> University of Iowa',
                     'schools': ['Iowa State University', 'University of Iowa', 'Grinnell College'],
-                    'riderCount': 0,
                 },
                 {
                     'routeName': 'Northwestern -> University of Chicago',
                     'schools': ['Northwestern University', 'University of Chicago'],
-                    'riderCount': 0,
                 },
                 {
                     'routeName': 'Illinois Institute of Technology -> University of Illinois Chicago -> Depaul',
                     'schools': ['Illinois Institute of Technology', 'Depaul University', 'University of Illinois - Chicago', 'university of illinois at chicago'],
-                    'riderCount': 0,
                 },
                 {
                     'routeName': 'Michigan Tech -> UW Madison',
                     'schools': ['Michigan Technological University', 'Michigan Institute of Technology', 'Michigan Tech', 'Michigan Tech University', 'University of Wisconsin', 'University of Wisconsin - Madison', 'UW Madison', 'UW-Madison'],
-                    'riderCount': 0,
                 },
                 {
                     'routeName': 'IU Bloomington -> Rose-Hulman',
                     'schools': ['Indiana University Bloomington', 'Indiana University', 'Rose Hulman Institute of Technology'],
-                    'riderCount': 0,
                 },
                 {
                     'routeName': 'University of Missouri (Columbia) -> Washington University',
                     'schools': ['University of Missouri - Columbia', 'University of Missouri', 'Washington University in St. Louis'],
-                    'riderCount': 0,
                 },
                 {
                     'routeName': 'Case Western Reserve -> Kent State -> Ohio State',
                     'schools': ['Case Western Reserve University', 'kent state university', 'Kent state university', 'Kent State University', 'Ohio State University'],
-                    'riderCount': 0,
                 },
                 {
                     'routeName': 'University of Michigan (+Purdue overflow, not counted here)',
                     'schools': ['Ann Arbor', 'University of Michigan'],
-                    'riderCount': 0,
                 },
             ]
+
+            # Setup rider counts
+            for bus_route in bus_routes:
+                # People who have Applied
+                bus_route['appliedRiderCount'] = 0
+
+                # People Approved OR Emailed OR who have RSVP'd
+                bus_route['acceptedRiderCount'] = 0
 
             # Put routes in a school name --> route map to speed up the query over everyone
             school_to_routes = {}
@@ -77,8 +76,12 @@ class BusRouteStatsHandler(MainAdminHandler.BaseAdminHandler):
 
                 # We assume everyone who has not marked a travel preference is coming via a bus
                 if (hacker.travel == constants.TRAVEL_RIDE_BUS or hacker.travel == '') and hacker.school in school_to_routes:
+                    hackerAccepted = (hacker.approvalStatus.status in constants.STATUSES_FOR_PEOPLE_TO_COUNT)
                     for route in school_to_routes[hacker.school]:
-                        route['riderCount'] += 1
+                        route['appliedRiderCount'] += 1
+                        if hackerAccepted:
+                            route['acceptedRiderCount'] += 1
+
 
             data = bus_routes
 

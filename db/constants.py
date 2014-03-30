@@ -106,6 +106,16 @@ RSVP_STATUSES = [
     'No Rsvp'
 ]
 
+# The list of all approval statuses for which a person could come
+# e.g. "No Rsvp" means that person cannot come, but "Awaiting Response" could be a person
+# This is used for bus route counting when we have a hard cap for how many people could be on the bus
+# so a potential person has to count as a person
+STATUSES_FOR_PEOPLE_TO_COUNT = [
+    'Approved',
+    'Awaiting Response',
+    'Rsvp Coming'
+]
+
 STATS_STATUSES = [
     'approved',
     'emailed',

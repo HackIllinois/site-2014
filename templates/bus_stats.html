@@ -25,14 +25,16 @@
                 <thead>
                     <tr>
                         <th class="t-centered">Route Name</th>
-                        <th class="t-centered">Num Attendees On Route</th>
+                        <th class="t-centered">Applied Attendees On Route</th>
+                        <th class="t-centered">Approved Attendees On Route</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for bus_route in data %}
                     <tr>
                         <td>{{ bus_route.routeName }}</td>
-                        <td class="t-centered">{{ bus_route.riderCount }}</td>
+                        <td class="t-centered">{{ bus_route.appliedRiderCount }}</td>
+                        <td class="t-centered">{{ bus_route.acceptedRiderCount }}</td>
                     </tr>
                     {% endfor %}
                 </tbody>
