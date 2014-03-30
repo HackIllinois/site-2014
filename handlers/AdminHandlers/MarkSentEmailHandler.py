@@ -23,17 +23,13 @@ class MarkSentEmailHandler(MainAdminHandler.BaseAdminHandler):
             return self.abort(401, detail='User does not have permission to email attendees.')
 
         orig_str = str(urllib.unquote(self.request.get('emails')))
-        emails = orig_str.strip()
-        if not emails:
+        email_str = orig_str.strip()
+        if not email_str:
             return self.write("Error: No emails entered.")
 
-        split_char = None
-        if ',' in emails: split_char = ','
-        elif ';' in emails: split_char = ';'
-        elif ' ' in emails or re.match(constants.EMAIL_MATCH, emails): split_char = ' '
-        else: return self.write("Error: Could not parse the entered text.")
+        # Split emails by comma, semicolon, space, or newline (or some combination of all of those)
+        emails = re.split(r'[,; \n]', email_str)
 
-        emails = emails.split(split_char)
         for i in xrange(len(emails)):
             emails[i] = emails[i].strip()
 
