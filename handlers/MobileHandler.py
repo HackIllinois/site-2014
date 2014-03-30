@@ -200,18 +200,24 @@ class PersonHandler(MainHandler.BaseMobileHandler):
     def post(self):
         if 'Email' in self.request.headers:
             email = self.request.headers['Email']
-            email = email.lower()
+            # email = email.lower()
         else:
             return self.write(json.dumps({'message':'No userId'}))
 
-        params = self.request.boby()
-        
-        updatedProfile = json.loads(params)
+        params = self.request.body
+
         updatedProfileDict = {}
         updatedKeys = []
-        for _key,_value in updatedProfile:
-            updatedProfileDict[_key] = _value
-            updatedKeys.append(_key)
+
+        split_by_and = params.split('&')
+        split_by_equal = []
+
+        for first in split_by_and:
+            split_by_equal.append(first.split('='))
+
+        for each_update_value in split_by_equal:
+            updatedKeys.append(each_update_value[0])
+            updatedProfileDict[each_update_value[0]] = each_update_value[1]
         
         if email:
             hackerProfile = Attendee.search_database({'userEmail':email}).get()
@@ -233,6 +239,8 @@ class PersonHandler(MainHandler.BaseMobileHandler):
                 if not memcache.replace('all', all_hacker_profiles,time=constants.MOBILE_MEMCACHE_TIMEOUT):
                     logging.error('Memcache set failed for all.')
 
+                return self.write(json.dumps({'message':'Updated Profile'}))
+
             elif staffProfile:
                 # update datastore
                 Admin.update_search(updatedProfileDict, {'email':email})
@@ -247,6 +255,8 @@ class PersonHandler(MainHandler.BaseMobileHandler):
                             memcache_staff_profile.homebase = updatedProfileDict['homebase']
                 if not memcache.replace('all', all_staff_profiles, time=constants.MOBILE_MEMCACHE_TIMEOUT):
                     logging.error('Memcache set failed for all')
+
+                return self.write(json.dumps({'message':'Updated Profile'}))
 
             elif companyProfile:
                 # update datastore
@@ -264,8 +274,11 @@ class PersonHandler(MainHandler.BaseMobileHandler):
                             memcache_mentor_profile.status = updatedKeys['status']
                 if not memcache.replace('all', all_mentor_profiles, time=constants.MOBILE_MEMCACHE_TIMEOUT):
                     logging.error('Memcache set failed for all')
-            
-            return self.write(json.dumps({'message':'Updated Profile'}))
+                
+                return self.write(json.dumps({'message':'Updated Profile'}))
+            else:
+                return self.write(json.dumps({'message':'No user found that matches userid passed'}))            
+
         else:
             return self.write(json.dumps({'message':'No user'}))
 
@@ -287,7 +300,7 @@ class LoginHandler(MainHandler.BaseMobileHandler):
         email = None
         if 'Email' in self.request.headers:
             email = self.request.headers['Email']
-            email = email.lower()
+            # email = email.lower()
         else:
             return self.write(json.dumps({'message':'No userId'}))
 
