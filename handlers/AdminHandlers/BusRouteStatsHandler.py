@@ -85,7 +85,7 @@ class BusRouteStatsHandler(MainAdminHandler.BaseAdminHandler):
                         route['appliedRiderCount'] += 1
                         if hackerAccepted:
                             route['acceptedRiderCount'] += 1
-                        else:
+                        elif hacker.approvalStatus.status != 'No Rsvp' and hacker.approvalStatus.status != 'Rsvp Not Coming':
                             route['missingRiders'] += '%s ' % hacker.email
 
 
