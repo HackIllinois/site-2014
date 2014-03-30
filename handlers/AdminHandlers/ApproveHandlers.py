@@ -85,7 +85,7 @@ class ApproveHandler(MainAdminHandler.BaseAdminHandler):
             data['routes'].append({'text':r, 'link':urllib.quote(link)})
 
 
-        data['hackers'] = self.get_hackers_new_memecache(status, category, route, constants.USE_ADMIN_MEMCACHE)
+        data['hackers'] = self.get_hackers_new_memcache(status, category, route, constants.USE_ADMIN_MEMCACHE)
 
         data['num_people'] = len(data['hackers'])
 

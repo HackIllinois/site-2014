@@ -62,7 +62,7 @@ class BaseAdminHandler(MainHandler.Handler):
             return None
         return admin_user
 
-    def get_hackers_memecache(self, use_memcache=True):
+    def get_hackers_memcache(self, use_memcache=True):
         """Gets the 'hackers' key from the memcache and updates the memcache if the key is not in the memcache"""
         if use_memcache:
             data = memcache.get('hackers')
@@ -72,7 +72,7 @@ class BaseAdminHandler(MainHandler.Handler):
         else:
             return self.set_hackers_memcache()
 
-    def get_hackers_new_memecache(self, status=None, category=None, route=None, use_memcache=False):
+    def get_hackers_new_memcache(self, status=None, category=None, route=None, use_memcache=False):
         """Gets the 'hackers/<status>/<category>/<route>' key from the memcache and updates the memcache if the key is not in the memcache"""
         if use_memcache:
             key = 'hackers/' + str(status) + '/' + str(category) + '/' + str(route)
@@ -122,7 +122,7 @@ class BaseAdminHandler(MainHandler.Handler):
         else:
             return self.set_status_count_memcache(status)
 
-    def get_query_all_memecache(self, cls, model_type, use_memcache=True):
+    def get_query_all_memcache(self, cls, model_type, use_memcache=True):
         if use_memcache:
             key = 'query_all/' + model_type
             data = memcache.get(key)
@@ -274,7 +274,7 @@ class BaseAdminHandler(MainHandler.Handler):
             logging.error('Memcache set failed.')
         return cached_count
 
-    def set_query_all_memecache(self, cls, model_type):
+    def set_query_all_memcache(self, cls, model_type):
         key = 'query_all/' + model_type
         query = cls.search_database({})
         data = []

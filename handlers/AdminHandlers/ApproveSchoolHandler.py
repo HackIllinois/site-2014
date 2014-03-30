@@ -13,7 +13,7 @@ class ApproveSchoolHandler(MainAdminHandler.BaseAdminHandler):
 
         data = {}
         data['hackers'] = []
-        hackers = self.get_hackers_memecache(constants.USE_ADMIN_MEMCACHE)
+        hackers = self.get_hackers_memcache(constants.USE_ADMIN_MEMCACHE)
         for h in hackers:
             if h['school'] == school:
                 data['hackers'].append(h)

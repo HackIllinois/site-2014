@@ -58,6 +58,7 @@ TOS_ERROR_MESSAGE = 'Please accept the Terms of Service'
 CSV_HEADINGS = ['First Name','Last Name','Email',
                 'Gender','School','Year','LinkedIn',
                 'Github','Shirt','Food','Project Type',
+                'Travel Preference', 'Bus Route',
                 'Registration Time','Is Approved',
                 'User ID','Resume','Status']
 
@@ -103,6 +104,16 @@ RSVP_STATUSES = [
     'Rsvp Coming',
     'Rsvp Not Coming',
     'No Rsvp'
+]
+
+# The list of all approval statuses for which a person could come
+# e.g. "No Rsvp" means that person cannot come, but "Awaiting Response" could be a person
+# This is used for bus route counting when we have a hard cap for how many people could be on the bus
+# so a potential person has to count as a person
+STATUSES_FOR_PEOPLE_TO_COUNT = [
+    'Approved',
+    'Awaiting Response',
+    'Rsvp Coming'
 ]
 
 STATS_STATUSES = [

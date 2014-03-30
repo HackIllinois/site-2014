@@ -25,14 +25,19 @@
                 <thead>
                     <tr>
                         <th class="t-centered">Route Name</th>
-                        <th class="t-centered">Num Attendees On Route</th>
+                        <th class="t-centered">Applied Attendees On Route</th>
+                        <th class="t-centered">
+                            Approved Attendees On Route
+                            <i class="glyphicon glyphicon-question-sign" rel="tooltip" title="This includes every potential person on the route who we've *approved*. This includes people who have said yes, people who have been emailed and are awaiting response, AND people who have not been emailed yet but have been approved."></i>
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for bus_route in data %}
                     <tr>
                         <td>{{ bus_route.routeName }}</td>
-                        <td class="t-centered">{{ bus_route.riderCount }}</td>
+                        <td class="t-centered">{{ bus_route.appliedRiderCount }}</td>
+                        <td class="t-centered">{{ bus_route.acceptedRiderCount }}</td>
                     </tr>
                     {% endfor %}
                 </tbody>
