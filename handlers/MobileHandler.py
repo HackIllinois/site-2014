@@ -45,7 +45,7 @@ def get_hacker_data():
                     'database_key':hackerProfile.email,
                     'time':hackerProfile.updatedTime, 
                     'type':'hacker'}
-        if hackerProfile.skills != '':
+        if hackerProfile.skills[0] != "":
             profile['skills'] = hackerProfile.skills
         else:
             profile['skills'] = []
@@ -70,7 +70,7 @@ def get_staff_data():
                     'database_key':staff_profile.email, 
                     'time':staff_profile.updatedTime, 
                     'type':'staff'}
-        if staff_profile.skills != '':
+        if staff_profile.skills[0] != "":
             profile['skills'] = staff_profile.skills
         else:
             profile['skills'] = []
@@ -93,7 +93,7 @@ def get_mentor_data():
                     'database_key':mentor_profile.email, 
                     'time':mentor_profile.updatedTime, 
                     'type':'mentor'}
-        if mentor_profile.skills != '':
+        if mentor_profile.skills[0] != "":
             profile['skills'] = mentor_profile.skills
         else:
             profile['skills'] = []
