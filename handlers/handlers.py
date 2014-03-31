@@ -10,7 +10,6 @@ from MGTHandler import MGTHandler, ParticlesHandler
 from RsvpHandler import RsvpHandler, NotApprovedHandler, RsvpYesHandler, RsvpNoHandler, RsvpClosedHandler
 import ApplyHandler
 import MentorHandler
-import SkillsHandler
 import SubpageHandlers
 import AdminHandlers
 import MobileHandler
