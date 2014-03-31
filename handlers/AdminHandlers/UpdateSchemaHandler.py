@@ -17,7 +17,6 @@ def UpdateSchema(cursor=None, count=0):
     query = Attendee.query()
     # query = Sponsor.query()
     # query = Admin.query()
-    count = query.count()
     data, next_curs, more = query.fetch_page(BATCH_SIZE, start_cursor=cursor)
 
     to_put = []
