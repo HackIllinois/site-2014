@@ -38,7 +38,6 @@ class SkillsHandler(MainAdminHandler.BaseAdminTableHandler):
         self.require_and_get_admin_user()
 
         db_dict = self.get_db_dict()
-        print 'db_dict: %s' % db_dict
 
         if 'alias' in db_dict:
             db_dict['alias'] = self.split_and_strip(db_dict['alias'])
