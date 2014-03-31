@@ -20,6 +20,8 @@ class AddingSkillsHandler(MainAdminHandler.BaseAdminHandler):
         tagsList = tags.split(',')
         
         skillsDict = {'name':name, 'alias':aliasList, 'tags':tagsList}
-        
+
+        print 'skills dict %s' % skillsDict
+
         Skills.add(skillsDict)
         return self.render('skills.html', data={}, approveAccess=admin_user.approveAccess, fullAccess=admin_user.fullAccess)

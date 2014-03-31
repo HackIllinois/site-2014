@@ -91,13 +91,16 @@ class Model(ndb.Model):
                 properties = cls.unique_properties()
                 for p in properties:
                     search[p] = data[p]
+                print 'class unique properties %s ' % properties
             except AttributeError:
                 # logging.info("Model: AttributeError")
                 #class does not have attribute unique_properties()
+                print 'attribute errors'
                 return cls.f_add(data, parent=parent)
             except LookupError:
                 #data does not key "p"
                 # logging.info("Model: LookupError")
+                print 'lookup error'
                 return False
         # logging.info("Model: before in database")
         if not cls.in_database(search):
@@ -215,6 +218,7 @@ class Model(ndb.Model):
         Returns True if "doe1@illinois.edu" is already in the database
         Returns False otherwise
         '''
+        print 'in_database search %s' % search
         s = cls.search_database(search).get()
         if s != None and (isinstance(s, list) and len(s) > 0) and s[0] != None:
             return True
