@@ -226,7 +226,6 @@ class PersonHandler(MainHandler.BaseMobileHandler):
             allProfiles = get_people_memecache('all')
 
             for personProfile in allProfiles:
-                logging.info(personProfile['database_key'])
                 if personProfile['database_key'] == keyParams:
                     return self.write(json.dumps([personProfile]))
 
