@@ -194,7 +194,6 @@ class NewsfeedHandler(MainHandler.BaseMobileHandler):
 class PersonHandler(MainHandler.BaseMobileHandler):
     
     def get(self):
-        logging.info('person get data')
         params = self.request.get('type')
         keyParams = self.request.get('key')
         time = self.request.get('last_updated')
@@ -230,7 +229,6 @@ class PersonHandler(MainHandler.BaseMobileHandler):
     
     
     def post(self):
-        logging.info('person post data')
         if 'Email' in self.request.headers:
             email = self.request.headers['Email']
             # email = email.lower()
@@ -322,7 +320,12 @@ class SkillsHandler(MainHandler.BaseMobileHandler):
         listOfSkills = []
         
         for skill in querySkills:
-            skillDict = {'name':skill.name, 'alias':skill.alias, 'tags':skill.tags}
+            skillDict = {'name':skill.name}
+            if skill.alias != "":
+                skillDict['alias'] = skill.alias
+            if skill.tags != "":
+                skillDict['tags'] = skill.tags
+
             listOfSkills.append(skillDict)
         
         return self.write(json.dumps(listOfSkills))
