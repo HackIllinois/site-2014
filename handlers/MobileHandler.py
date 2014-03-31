@@ -68,7 +68,7 @@ def get_staff_data():
                     'homebase':staff_profile.homebase, 
                     'fb_url':staff_profile.pictureURL, 
                     'status':staff_profile.status, 
-                    # 'database_key':staff_profile.database_key, 
+                    'database_key':staff_profile.database_key, 
                     'time':staff_profile.updatedTime, 
                     'type':'staff'}
         if staff_profile.skills[0] != "":
