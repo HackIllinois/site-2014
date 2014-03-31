@@ -261,6 +261,8 @@ class PersonHandler(MainHandler.BaseMobileHandler):
                             memcache_hacker_profile['skills'] = updatedProfileDict['skills']
                         elif 'homebase' in updatedKeys:
                             memcache_hacker_profile['homebase'] = updatedProfileDict['homebase']
+                        elif 'fb_url' in updatedKeys:
+                            memcache_hacker_profile['fb_url'] =  updatedProfileDict['fb_url']
                 if not memcache.replace('all', all_hacker_profiles,time=constants.MOBILE_MEMCACHE_TIMEOUT):
                     logging.error('Memcache set failed for all.')
 
@@ -278,6 +280,8 @@ class PersonHandler(MainHandler.BaseMobileHandler):
                             memcache_staff_profile['skills'] = updatedProfileDict['skills']
                         elif 'homebase' in updatedKeys:
                             memcache_staff_profile['homebase'] = updatedProfileDict['homebase']
+                        elif 'fb_url' in updatedKeys:
+                            memcache_staff_profile['fb_url'] = updatedProfileDict['fb_url']
                 if not memcache.replace('all', all_staff_profiles, time=constants.MOBILE_MEMCACHE_TIMEOUT):
                     logging.error('Memcache set failed for all')
 
@@ -296,7 +300,9 @@ class PersonHandler(MainHandler.BaseMobileHandler):
                         elif 'homebase' in updatedKeys:
                             memcache_mentor_profile['homebase'] = updatedProfileDict['homebase']
                         elif 'status' in updatedKeys:
-                            memcache_mentor_profile['status'] = updatedKeys['status']
+                            memcache_mentor_profile['status'] = updatedProfileDict['status']
+                        elif 'fb_url' in updatedKeys:
+                            memcache_mentor_profile['fb_url'] = updatedProfileDict['fb_url']
                 if not memcache.replace('all', all_mentor_profiles, time=constants.MOBILE_MEMCACHE_TIMEOUT):
                     logging.error('Memcache set failed for all')
                 
