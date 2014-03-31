@@ -317,15 +317,12 @@ class LoginHandler(MainHandler.BaseMobileHandler):
             email = self.request.headers['Email']
             # email = email.lower()
         else:
-            return self.write(json.dumps({'message':'No userId'}))
+            return self.write(json.dumps([]))
 
         # filter by accepted and attending later on
         hackerProfile = Attendee.search_database({'userEmail':email}).get()
         staffProfile = Admin.search_database({'email':email}).get()
         mentorProfile = Sponsor.search_database({'email':email}).get()
-
-        if not hackerProfile and not staffProfile and not mentorProfile: 
-            return self.write(json.dumps({'message':'No user'}))   
         
         list_profile = []
         
