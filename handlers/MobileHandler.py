@@ -35,8 +35,7 @@ def get_hacker_data():
             name+=hackerProfile.nameFirst + ' '
         if hackerProfile.nameLast: 
             name+=hackerProfile.nameLast
-        profile = {'name':name, 
-                    'email':hackerProfile.email, 
+        profile = {'email':hackerProfile.email, 
                     'school':hackerProfile.school, 
                     'year':hackerProfile.year, 
                     'homebase':hackerProfile.homebase, 
@@ -45,12 +44,14 @@ def get_hacker_data():
                     'database_key':hackerProfile.email,
                     'time':hackerProfile.updatedTime, 
                     'type':'hacker'}
-        if hackerProfile.skills != '':
+        if hackerProfile.skills[0] != "":
             profile['skills'] = hackerProfile.skills
         else:
             profile['skills'] = []
 
-        data.append(profile)
+        if name != "":
+            profile['name'] = name
+            data.append(profile)
 
     return data[:800]
 
@@ -70,7 +71,7 @@ def get_staff_data():
                     'database_key':staff_profile.email, 
                     'time':staff_profile.updatedTime, 
                     'type':'staff'}
-        if staff_profile.skills != '':
+        if staff_profile.skills[0] != "":
             profile['skills'] = staff_profile.skills
         else:
             profile['skills'] = []
@@ -93,7 +94,7 @@ def get_mentor_data():
                     'database_key':mentor_profile.email, 
                     'time':mentor_profile.updatedTime, 
                     'type':'mentor'}
-        if mentor_profile.skills != '':
+        if mentor_profile.skills[0] != "":
             profile['skills'] = mentor_profile.skills
         else:
             profile['skills'] = []
@@ -193,7 +194,6 @@ class NewsfeedHandler(MainHandler.BaseMobileHandler):
 class PersonHandler(MainHandler.BaseMobileHandler):
     
     def get(self):
-        logging.info('person get data')
         params = self.request.get('type')
         keyParams = self.request.get('key')
         time = self.request.get('last_updated')
@@ -229,7 +229,6 @@ class PersonHandler(MainHandler.BaseMobileHandler):
     
     
     def post(self):
-        logging.info('person post data')
         if 'Email' in self.request.headers:
             email = self.request.headers['Email']
             # email = email.lower()
@@ -237,19 +236,13 @@ class PersonHandler(MainHandler.BaseMobileHandler):
             return self.write(json.dumps({'message':'No userId'}))
 
         params = self.request.body
-
+        
+        updatedProfile = json.loads(params)
         updatedProfileDict = {}
         updatedKeys = []
-
-        split_by_and = params.split('&')
-        split_by_equal = []
-
-        for first in split_by_and:
-            split_by_equal.append(first.split('='))
-
-        for each_update_value in split_by_equal:
-            updatedKeys.append(each_update_value[0])
-            updatedProfileDict[each_update_value[0]] = each_update_value[1]
+        for _key,_value in updatedProfile:
+            updatedProfileDict[_key] = _value
+            updatedKeys.append(_key)
         
         if email:
             hackerProfile = Attendee.search_database({'userEmail':email}).get()
@@ -321,7 +314,17 @@ class SkillsHandler(MainHandler.BaseMobileHandler):
         listOfSkills = []
         
         for skill in querySkills:
-            skillDict = {'name':skill.name, 'alias':skill.alias, 'tags':skill.tags}
+            skillDict = {'name':skill.name}
+            if (skill.alias[0] != "") and (skill.alias[0] != " "):
+                skillDict['alias'] = skill.alias
+            else:
+                skillDict['alias'] = []
+            
+            if (skill.tags[0] != "") and (skill.tags[0] != " "):
+                skillDict['tags'] = skill.tags
+            else:
+                skillDict['tags'] = []
+
             listOfSkills.append(skillDict)
         
         return self.write(json.dumps(listOfSkills))
@@ -351,13 +354,19 @@ class LoginHandler(MainHandler.BaseMobileHandler):
             'email':hackerProfile.email, 
             'school':hackerProfile.school, 
             'year':hackerProfile.year,
-            'skills':hackerProfile.skills, 
             'homebase':hackerProfile.homebase, 
             'fb_url':hackerProfile.pictureURL, 
             'status':hackerProfile.status, 
             'database_key':hackerProfile.email ,
             'time':hackerProfile.updatedTime,
             'type':'hacker'}
+
+            if hackerProfile.skills[0] != "":
+                profile['skills'] = hackerProfile.skills
+            else:
+                profile['skills'] = []
+
+
             list_profile.append(profile)
         elif staffProfile:
             profile = {'name':staffProfile.name, 
@@ -365,13 +374,18 @@ class LoginHandler(MainHandler.BaseMobileHandler):
             'company':staffProfile.companyName,
             'job_title':staffProfile.jobTitle,
             'year':staffProfile.year,
-            'skills':staffProfile.skills, 
             'homebase':staffProfile.homebase, 
             'fb_url':staffProfile.pictureURL, 
             'status':staffProfile.status, 
             'database_key':staffProfile.email , 
             'time':staffProfile.updatedTime,
             'type':'staff'}
+
+            if staffProfile.skills[0] != "":
+                profile['skills'] = staffProfile.skills
+            else:
+                profile['skills'] = []
+
             list_profile.append(profile)
         elif mentorProfile:
             profile = {'name':'Jacob Fuss',
@@ -390,11 +404,15 @@ class LoginHandler(MainHandler.BaseMobileHandler):
             # 'email':mentorProfile.email, 
             # 'company':mentorProfile.companyName, 
             # 'job_title':mentorProfile.jobTitle, 
-            # 'skills':mentorProfile.skills, 
             # 'fb_url':mentorProfile.pictureURL, 
             # 'status':mentorProfile.status, 
             # 'database_key':mentorProfile.email , 
             # 'time':mentorProfile.updatedTime,
             # 'type':'mentor'}
+            #
+            #if mentorProfile.skills[0] != "":
+            #     profile['skills'] = mentorProfile.skills
+            # else:
+            #     profile['skills'] = []
         
         self.write(json.dumps(list_profile))
