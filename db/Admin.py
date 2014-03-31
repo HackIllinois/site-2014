@@ -19,6 +19,9 @@ class Admin(Model):
     updatedTime = ndb.StringProperty(default='')
     pictureURL= ndb.TextProperty(default='')
     email_lower = ndb.ComputedProperty(lambda self: self.email.lower())
+    companyName = ndb.StringProperty(default='HackIllinois')
+    jobTitle = ndb.TextProperty(default='')
+
 
     # For people who have access to approve and disapprove attendees
     approveAccess = ndb.BooleanProperty(default=False)

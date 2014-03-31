@@ -35,17 +35,22 @@ def get_hacker_data():
             name+=hackerProfile.nameFirst + ' '
         if hackerProfile.nameLast: 
             name+=hackerProfile.nameLast
-        data.append({'name':name, 
+        profile = {'name':name, 
                     'email':hackerProfile.email, 
                     'school':hackerProfile.school, 
                     'year':hackerProfile.year, 
-                    'skills':hackerProfile.skills, 
                     'homebase':hackerProfile.homebase, 
                     'fb_url':hackerProfile.pictureURL, 
                     'status':hackerProfile.status, 
                     'database_key':hackerProfile.email,
                     'time':hackerProfile.updatedTime, 
-                    'type':'hacker'})
+                    'type':'hacker'}
+        if hackerProfile.skills != '':
+            profile['skills'] = hackerProfile.skills
+        else:
+            profile['skills'] = []
+
+        data.append(profile)
 
     return data[:800]
 
@@ -54,17 +59,23 @@ def get_staff_data():
     data = []
 
     for staff_profile in all_staff:
-        data.append({'name':staff_profile.name, 
+        profile = {'name':staff_profile.name, 
                     'email':staff_profile.email, 
-                    'school':staff_profile.school, 
+                    'company':staff_profile.companyName,
+                    'job_title':staff_profile.jobTitle,
                     'year':staff_profile.year, 
-                    'skills':staff_profile.skills, 
                     'homebase':staff_profile.homebase, 
                     'fb_url':staff_profile.pictureURL, 
                     'status':staff_profile.status, 
                     'database_key':staff_profile.email, 
                     'time':staff_profile.updatedTime, 
-                    'type':'staff'})
+                    'type':'staff'}
+        if staff_profile.skills != '':
+            profile['skills'] = staff_profile.skills
+        else:
+            profile['skills'] = []
+
+        data.append(profile)
 
     return data
 
@@ -73,16 +84,21 @@ def get_mentor_data():
     data = []
 
     for mentor_profile in all_mentors:
-        data.append({'name':mentor_profile.name,
+        profile = {'name':mentor_profile.name,
                     'email':mentor_profile.email, 
-                    'company':mentor_profile.company, 
+                    'company':mentor_profile.companyName, 
                     'job_title':mentor_profile.jobTitle, 
-                    'skills':mentor_profile.skills, 
                     'fb_url':mentor_profile.pictureURL, 
                     'status':mentor_profile.status, 
                     'database_key':mentor_profile.email, 
                     'time':mentor_profile.updatedTime, 
-                    'type':'mentor'})
+                    'type':'mentor'}
+        if mentor_profile.skills != '':
+            profile['skills'] = mentor_profile.skills
+        else:
+            profile['skills'] = []
+
+        data.append(profile)
 
     # This is added to give Rob fake mentor data and act in the same way as going through memcache
     data = MobileConstants.FAKE_MENTOR_DATA
@@ -346,7 +362,8 @@ class LoginHandler(MainHandler.BaseMobileHandler):
         elif staffProfile:
             profile = {'name':staffProfile.name, 
             'email':staffProfile.email, 
-            'school':staffProfile.school, 
+            'company':staffProfile.companyName,
+            'job_title':staffProfile.jobTitle,
             'year':staffProfile.year,
             'skills':staffProfile.skills, 
             'homebase':staffProfile.homebase, 
@@ -371,7 +388,7 @@ class LoginHandler(MainHandler.BaseMobileHandler):
 
             # profile = {'name':mentorProfile.name,
             # 'email':mentorProfile.email, 
-            # 'company':mentorProfile.company, 
+            # 'company':mentorProfile.companyName, 
             # 'job_title':mentorProfile.jobTitle, 
             # 'skills':mentorProfile.skills, 
             # 'fb_url':mentorProfile.pictureURL, 
