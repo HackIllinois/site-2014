@@ -35,8 +35,7 @@ def get_hacker_data():
             name+=hackerProfile.nameFirst + ' '
         if hackerProfile.nameLast: 
             name+=hackerProfile.nameLast
-        profile = {'name':name, 
-                    'email':hackerProfile.email, 
+        profile = {'email':hackerProfile.email, 
                     'school':hackerProfile.school, 
                     'year':hackerProfile.year, 
                     'homebase':hackerProfile.homebase, 
@@ -50,7 +49,9 @@ def get_hacker_data():
         else:
             profile['skills'] = []
 
-        data.append(profile)
+        if name != "":
+            profile['name'] = name
+            data.append(profile)
 
     return data[:800]
 
