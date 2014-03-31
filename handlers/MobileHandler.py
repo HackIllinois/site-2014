@@ -182,11 +182,11 @@ class NewsfeedHandler(MainHandler.BaseMobileHandler):
             list_of_news_feed_items = [{'description':'ANNOUNCEMENT - Interactive Itelligence is hiring! Check out our jobs at inin.jobs.', 'time':1396269004, 'icon_url':'https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcSNwVLUS8TsSni5_gXYPWDVBehYxMHnQj5RIWITO11uACXHhky5', 'highlighted':[[[0,12],[30,75,102]]], 'emergency':False},
                                        {'description':'WIFI Problems - Houston, we are experience Wifi problems on the first floor.', 'time':1396269010, 'icon_url':'http://www.tarkettsportsindoor.com/sites/tarkett_indoor/assets/Resicore-PU-Midnight-Blue.png', 'highlighted':[[[0,13],[167,65,46]]], 'emergency':True},
                                        {'description':'A spontaneous game of finger blasters is going to start in SC1404 in 5 minutes!', 'time':1396269923, 'icon_url':'http://www.tarkettsportsindoor.com/sites/tarkett_indoor/assets/Resicore-PU-Midnight-Blue.png', 'highlighted':[[[59,65],[19,38,51]]], 'emergency':False},
-                                       {'description':'The first 100 people to tweet something to @hackillinois will win a Hack Illinois blanket', 'time':1396269876, 'icon_url':'http://www.tarkettsportsindoor.com/sites/tarkett_indoor/assets/Resicore-PU-Midnight-Blue.png', 'highlighted':[[[43,56],[19,38,51]]], 'emergency':False},
-                                       {'description':'', 'time':9923223, 'icon_url':'http://www.tarkettsportsindoor.com/sites/tarkett_indoor/assets/Resicore-PU-Midnight-Blue.png', 'highlighted':[], 'emergency':False},
-                                       {'description':'', 'time':23423, 'icon_url':'http://www.tarkettsportsindoor.com/sites/tarkett_indoor/assets/Resicore-PU-Midnight-Blue.png', 'highlighted':[], 'emergency':False},
-                                       {'description':'', 'time':765524333, 'icon_url':'https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcSNwVLUS8TsSni5_gXYPWDVBehYxMHnQj5RIWITO11uACXHhky5', 'highlighted':[[[0,5],[25,25,112]]], 'emergency':True},
-                                       {'description':'', 'time':88923443, 'icon_url':'http://www.tarkettsportsindoor.com/sites/tarkett_indoor/assets/Resicore-PU-Midnight-Blue.png', 'highlighted':[[[7,12],[139,0,0]]], 'emergency':False}]
+                                       {'description':'The first 100 people to tweet something to @hackillinois will win a Hack Illinois blanket', 'time':1396269876, 'icon_url':'http://www.tarkettsportsindoor.com/sites/tarkett_indoor/assets/Resicore-PU-Midnight-Blue.png', 'highlighted':[[[43,56],[19,38,51]]], 'emergency':False}]
+                                       # {'description':'', 'time':9923223, 'icon_url':'http://www.tarkettsportsindoor.com/sites/tarkett_indoor/assets/Resicore-PU-Midnight-Blue.png', 'highlighted':[], 'emergency':False},
+                                       # {'description':'', 'time':23423, 'icon_url':'http://www.tarkettsportsindoor.com/sites/tarkett_indoor/assets/Resicore-PU-Midnight-Blue.png', 'highlighted':[], 'emergency':False},
+                                       # {'description':'', 'time':765524333, 'icon_url':'https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcSNwVLUS8TsSni5_gXYPWDVBehYxMHnQj5RIWITO11uACXHhky5', 'highlighted':[[[0,5],[25,25,112]]], 'emergency':True},
+                                       # {'description':'', 'time':88923443, 'icon_url':'http://www.tarkettsportsindoor.com/sites/tarkett_indoor/assets/Resicore-PU-Midnight-Blue.png', 'highlighted':[[[7,12],[139,0,0]]], 'emergency':False}]
                                        
             return self.write(json.dumps(list_of_news_feed_items))
 
@@ -198,14 +198,15 @@ class PersonHandler(MainHandler.BaseMobileHandler):
         if self.request.body:
             check_email_for_login(json.loads(self.request.body)['Email'])
 
-        if not valid_email:
-            return self.write(json.dumps([]))
+        # if not valid_email:
+        #     return self.write(json.dumps([]))
 
-        params = self.request.get('type')
-        keyParams = self.request.get('key')
+        
+        
         time = self.request.get('last_updated')
         
-        if params:
+        if self.request.get('type'):
+            params = self.request.get('type')
             if 'staff' == params:
                 listOfStaff = get_people_memecache('staff_mobile')
                 return self.write(json.dumps(listOfStaff))
@@ -219,14 +220,15 @@ class PersonHandler(MainHandler.BaseMobileHandler):
                 listOfHackers = get_people_memecache('hacker_mobile')
                 return self.write(json.dumps(listOfHackers))
             
-            if 'key' == keyParams:
-                profile = params['key'].get()
+        elif self.request.get('key'):
+            keyParams = self.request.get('key')
 
-                allProfiles = get_people_memecache('all')
+            allProfiles = get_people_memecache('all')
 
-                for personProfile in allProfiles:
-                    if personProfile.database_key == profile:
-                        return self.write(json.dumps([personProfile]))
+            for personProfile in allProfiles:
+                logging.info(personProfile['database_key'])
+                if personProfile['database_key'] == keyParams:
+                    return self.write(json.dumps([personProfile]))
 
         else:
             #get all models
@@ -402,7 +404,7 @@ class LoginHandler(MainHandler.BaseMobileHandler):
             list_profile.append(profile)
         elif mentorProfile:
             profile = {'name':'Jacob Fuss',
-            'email':'fuss1@illinois', 
+            'email':'fuss1@illinois.edu', 
             'company':'Amazon', 
             'job_title':'SDE', 
             'skills':['python'], 

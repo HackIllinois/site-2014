@@ -92,12 +92,12 @@ SCHEDULE = {
           }
 
 FAKE_MENTOR_DATA = [{'name':'Jacob Fuss',
-            'email':'fuss1@illinois', 
+            'email':'fuss1@illinois.edu', 
             'company':'Amazon', 
             'job_title':'SDE', 
             'skills':['ios', 'python', 'objective-c', 'html', 'css', 'java'], 
             'fb_url':'', 
             'status':'available', 
-            'database_key':'fuss1@illinois' , 
+            'database_key':'fuss1@illinois.edu' , 
             'time':'',
             'type':'mentor'}]
