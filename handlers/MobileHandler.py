@@ -236,19 +236,13 @@ class PersonHandler(MainHandler.BaseMobileHandler):
             return self.write(json.dumps({'message':'No userId'}))
 
         params = self.request.body
-
+        
+        updatedProfile = json.loads(params)
         updatedProfileDict = {}
         updatedKeys = []
-
-        split_by_and = params.split('&')
-        split_by_equal = []
-
-        for first in split_by_and:
-            split_by_equal.append(first.split('='))
-
-        for each_update_value in split_by_equal:
-            updatedKeys.append(each_update_value[0])
-            updatedProfileDict[each_update_value[0]] = each_update_value[1]
+        for _key,_value in updatedProfile:
+            updatedProfileDict[_key] = _value
+            updatedKeys.append(_key)
         
         if email:
             hackerProfile = Attendee.search_database({'userEmail':email}).get()
