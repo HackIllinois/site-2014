@@ -201,8 +201,24 @@ class Model(ndb.Model):
 
         ex: Attendee.update_model({'nameFirst':'John', 'nameLast':'Doe'}, {'email':'doe1@illinois.edu', 'year':3})
         '''
+
+        if not search:
+            search = {}
+            try:
+                properties = cls.unique_properties()
+                for p in properties:
+                    search[p] = data[p]
+            except AttributeError:
+                #class does not have attribute unique_properties()
+                return False
+            except LookupError:
+                #data does not key "p"
+                return False
+
+        print 'search: %s' % search
+
         if not cls.add(data, search):
-            cls.update(data, search)
+            cls.update_search(data, search)
 
     @classmethod
     def in_database(cls, search):
@@ -221,7 +237,7 @@ class Model(ndb.Model):
         return cls.search_database(search).count() > 0
 
     @classmethod
-    def search_database(cls, search, perfect_match=True):
+    def search_database(cls, search=None, perfect_match=True):
         '''
         Searches the database for models matching "search"
         DOES NOT effect the database

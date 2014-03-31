@@ -1,5 +1,4 @@
 import AccessControlHandler
-import AddingSkillsHandler
 import ApplyCountHandler
 import ApproveHandlers
 import ApproveSchoolHandler
@@ -11,6 +10,7 @@ import ManagerHandler
 import ProfileHandler
 import ResumeHandler
 import SchoolCountHandler
+import SkillsHandler
 import StatsHandler
 import TestAllHandler
 import XkcdHandler
