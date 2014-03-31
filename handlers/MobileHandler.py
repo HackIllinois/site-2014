@@ -47,7 +47,7 @@ def get_hacker_data():
                     'time':hackerProfile.updatedTime, 
                     'type':'hacker'})
 
-    return data
+    return data[:800]
 
 def get_staff_data():
     all_staff = Admin.search_database({})
@@ -208,6 +208,7 @@ class PersonHandler(MainHandler.BaseMobileHandler):
         else:
             #get all models
             listOfEveryone = get_people_memecache('all')
+
             return self.write(json.dumps(listOfEveryone))
     
     
