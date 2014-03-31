@@ -11,8 +11,9 @@ class BusRouteStatsHandler(MainAdminHandler.BaseAdminHandler):
         admin_user = self.get_admin_user()
         if not admin_user: return self.abort(500, detail='User not in database')
 
-        data = memcache.get('bus_route_stats')
-
+        # data = memcache.get('bus_route_stats')
+        # Disabling memcache here for now since we aren't expiring keys anywhere :D
+        data = None
         if not data:
             bus_routes = [
                 {
@@ -61,6 +62,9 @@ class BusRouteStatsHandler(MainAdminHandler.BaseAdminHandler):
                 # People Approved OR Emailed OR who have RSVP'd
                 bus_route['acceptedRiderCount'] = 0
 
+                # Emails of people who are on a route but not accepted for it
+                bus_route['missingRiders'] = ""
+
             # Put routes in a school name --> route map to speed up the query over everyone
             school_to_routes = {}
             for bus_route in bus_routes:
@@ -81,6 +85,9 @@ class BusRouteStatsHandler(MainAdminHandler.BaseAdminHandler):
                         route['appliedRiderCount'] += 1
                         if hackerAccepted:
                             route['acceptedRiderCount'] += 1
+                        elif hacker.approvalStatus.status != 'No Rsvp' and hacker.approvalStatus.status != 'Rsvp Not Coming':
+                            route['missingRiders'] += '%s ' % hacker.email
+
 
 
             data = bus_routes

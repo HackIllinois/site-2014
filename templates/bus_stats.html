@@ -37,7 +37,12 @@
                     <tr>
                         <td>{{ bus_route.routeName }}</td>
                         <td class="t-centered">{{ bus_route.appliedRiderCount }}</td>
-                        <td class="t-centered">{{ bus_route.acceptedRiderCount }}</td>
+                        <td class="t-centered">
+                            {{ bus_route.acceptedRiderCount }}
+                            {% if bus_route.missingRiders != '' %}
+                                <i class="glyphicon glyphicon-question-sign" rel="popover" data-toggle="popover" data-container="body" data-placement="right" data-content="{{bus_route.missingRiders}}"></i>
+                            {% endif %}
+                        </td>
                     </tr>
                     {% endfor %}
                 </tbody>
