@@ -47,7 +47,7 @@ def get_hacker_data():
                     'time':hackerProfile.updatedTime, 
                     'type':'hacker'})
 
-    return data
+    return data[:800]
 
 def get_staff_data():
     all_staff = Admin.search_database({})
@@ -208,6 +208,7 @@ class PersonHandler(MainHandler.BaseMobileHandler):
         else:
             #get all models
             listOfEveryone = get_people_memecache('all')
+
             return self.write(json.dumps(listOfEveryone))
     
     
@@ -317,17 +318,14 @@ class LoginHandler(MainHandler.BaseMobileHandler):
             email = self.request.headers['Email']
             # email = email.lower()
         else:
-            return self.write(json.dumps({'message':'No userId'}))
+            return self.write(json.dumps([]))
 
         # filter by accepted and attending later on
         hackerProfile = Attendee.search_database({'userEmail':email}).get()
         staffProfile = Admin.search_database({'email':email}).get()
         mentorProfile = Sponsor.search_database({'email':email}).get()
-
-        if not hackerProfile and not staffProfile and not mentorProfile: 
-            return self.write(json.dumps({'message':'No user'}))   
         
-        profile = {}
+        list_profile = []
         
         if hackerProfile:
             name = ''
@@ -344,6 +342,7 @@ class LoginHandler(MainHandler.BaseMobileHandler):
             'database_key':hackerProfile.email ,
             'time':hackerProfile.updatedTime,
             'type':'hacker'}
+            list_profile.append(profile)
         elif staffProfile:
             profile = {'name':staffProfile.name, 
             'email':staffProfile.email, 
@@ -356,17 +355,19 @@ class LoginHandler(MainHandler.BaseMobileHandler):
             'database_key':staffProfile.email , 
             'time':staffProfile.updatedTime,
             'type':'staff'}
+            list_profile.append(profile)
         elif mentorProfile:
-            profile = {'name':'mentorProfile.name',
-            'email':'mentorProfile.email@gmail.com', 
-            'company':'mentorProfile.company', 
-            'job_title':'mentorProfile.jobTitle', 
-            'skills':['mentorProfile.skills'], 
-            'fb_url':'mentorProfile.pictureURL', 
-            'status':'mentorProfile.status', 
-            'database_key':'mentorProfile.email' , 
-            'time':'mentorProfile.updatedTime',
+            profile = {'name':'Jacob Fuss',
+            'email':'fuss1@illinois', 
+            'company':'Amazon', 
+            'job_title':'SDE', 
+            'skills':['python'], 
+            'fb_url':'', 
+            'status':'available', 
+            'database_key':'fuss1@illinois' , 
+            'time':'',
             'type':'mentor'}
+            list_profile.append(profile)
 
             # profile = {'name':mentorProfile.name,
             # 'email':mentorProfile.email, 
@@ -379,4 +380,4 @@ class LoginHandler(MainHandler.BaseMobileHandler):
             # 'time':mentorProfile.updatedTime,
             # 'type':'mentor'}
         
-        self.write(json.dumps([profile]))
+        self.write(json.dumps(list_profile))
