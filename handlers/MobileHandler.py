@@ -112,7 +112,7 @@ def set_all_mobile_memcache():
     staff = get_staff_data()
 
     data = hacker+mentor+staff
-    if not memcache.add('all', data, time=constants.MOBILE_MEMCACHE_TIMEOUT):
+    if not memcache.set('all', data, time=constants.MOBILE_MEMCACHE_TIMEOUT):
         logging.error('Memcache set failed.')
 
     return data
@@ -240,8 +240,8 @@ class PersonHandler(MainHandler.BaseMobileHandler):
         updatedProfile = json.loads(params)
         updatedProfileDict = {}
         updatedKeys = []
-        for _key,_value in updatedProfile:
-            updatedProfileDict[_key] = _value
+        for _key in updatedProfile:
+            updatedProfileDict[_key] = updatedProfile[_key]
             updatedKeys.append(_key)
         
         if email:
