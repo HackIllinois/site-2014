@@ -21,7 +21,7 @@ class Admin(Model):
     email_lower = ndb.ComputedProperty(lambda self: self.email.lower())
     companyName = ndb.StringProperty(default='HackIllinois')
     jobTitle = ndb.TextProperty(default='')
-
+    database_key = ndb.IntegerProperty(default=0)
 
     # For people who have access to approve and disapprove attendees
     approveAccess = ndb.BooleanProperty(default=False)
