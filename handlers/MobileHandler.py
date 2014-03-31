@@ -321,10 +321,15 @@ class SkillsHandler(MainHandler.BaseMobileHandler):
         
         for skill in querySkills:
             skillDict = {'name':skill.name}
-            if skill.alias != "":
+            if (skill.alias[0] != "") and (skill.alias[0] != " "):
                 skillDict['alias'] = skill.alias
-            if skill.tags != "":
+            else:
+                skillDict['alias'] = []
+            
+            if (skill.tags[0] != "") and (skill.tags[0] != " "):
                 skillDict['tags'] = skill.tags
+            else:
+                skillDict['tags'] = []
 
             listOfSkills.append(skillDict)
         
@@ -355,13 +360,19 @@ class LoginHandler(MainHandler.BaseMobileHandler):
             'email':hackerProfile.email, 
             'school':hackerProfile.school, 
             'year':hackerProfile.year,
-            'skills':hackerProfile.skills, 
             'homebase':hackerProfile.homebase, 
             'fb_url':hackerProfile.pictureURL, 
             'status':hackerProfile.status, 
             'database_key':hackerProfile.email ,
             'time':hackerProfile.updatedTime,
             'type':'hacker'}
+
+            if hackerProfile.skills[0] != "":
+                profile['skills'] = hackerProfile.skills
+            else:
+                profile['skills'] = []
+
+
             list_profile.append(profile)
         elif staffProfile:
             profile = {'name':staffProfile.name, 
@@ -369,13 +380,18 @@ class LoginHandler(MainHandler.BaseMobileHandler):
             'company':staffProfile.companyName,
             'job_title':staffProfile.jobTitle,
             'year':staffProfile.year,
-            'skills':staffProfile.skills, 
             'homebase':staffProfile.homebase, 
             'fb_url':staffProfile.pictureURL, 
             'status':staffProfile.status, 
             'database_key':staffProfile.email , 
             'time':staffProfile.updatedTime,
             'type':'staff'}
+
+            if staffProfile.skills[0] != "":
+                profile['skills'] = staffProfile.skills
+            else:
+                profile['skills'] = []
+
             list_profile.append(profile)
         elif mentorProfile:
             profile = {'name':'Jacob Fuss',
@@ -394,11 +410,15 @@ class LoginHandler(MainHandler.BaseMobileHandler):
             # 'email':mentorProfile.email, 
             # 'company':mentorProfile.companyName, 
             # 'job_title':mentorProfile.jobTitle, 
-            # 'skills':mentorProfile.skills, 
             # 'fb_url':mentorProfile.pictureURL, 
             # 'status':mentorProfile.status, 
             # 'database_key':mentorProfile.email , 
             # 'time':mentorProfile.updatedTime,
             # 'type':'mentor'}
+            #
+            #if mentorProfile.skills[0] != "":
+            #     profile['skills'] = mentorProfile.skills
+            # else:
+            #     profile['skills'] = []
         
         self.write(json.dumps(list_profile))
