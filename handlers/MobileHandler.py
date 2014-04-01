@@ -198,8 +198,8 @@ class PersonHandler(MainHandler.BaseMobileHandler):
         if 'Email' in self.request.headers:
             check_email_for_login(self.request.headers['Email'])
 
-        if not valid_email:
-            return self.write(json.dumps([]))
+        # if not valid_email:
+        #     return self.write(json.dumps([]))
         
         time = self.request.get('last_updated')
         
