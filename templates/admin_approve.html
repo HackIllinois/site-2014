@@ -162,7 +162,7 @@
                                 <td name="tresume"   class="resume"  >{% if h.resume %}<a href='/admin/resume?userId={{ h.userId }}'>Resume</a>{% endif %}</td>
                                 {% if h.approvalStatus.status  == 'Not Approved' %}
                                 <td><button class="btn btn-success status-btn aButton width100">Approve</button></td>
-                                <td><button class="btn btn-success status-btn wButton width100">Waitlist</button></td>
+                                <td><button class="btn btn-danger status-btn wButton width100">Waitlist</button></td>
                                 {% elif h.approvalStatus.status  == 'Approved' %}
                                 <td><button class="btn btn-danger status-btn aButton width100">Un-Approve</button></td>
                                 <td><button class="btn btn-success status-btn wButton width100">Waitlist</button></td>
