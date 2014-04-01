@@ -18,10 +18,10 @@ def check_email_for_login(email):
     staffProfile = Admin.search_database({'email':email}).get()
     mentorProfile = Sponsor.search_database({'email':email}).get()
     
-    if not hackerProfile and not staffProfile and not mentorProfile: 
-        return False
-    else:
+    if hackerProfile or staffProfile or mentorProfile: 
         return True
+    else:
+        return False
 
 def get_hacker_data():
     """Sets the 'hacker_mobile' key in the memcache"""
@@ -40,7 +40,7 @@ def get_hacker_data():
                     'year':hackerProfile.year, 
                     'homebase':hackerProfile.homebase, 
                     'fb_url':hackerProfile.pictureURL, 
-                    'status':hackerProfile.status, 
+                    'status':hackerProfile.status_list, 
                     'database_key':hackerProfile.database_key,
                     'time':hackerProfile.updatedTime, 
                     'type':'hacker'}
@@ -67,7 +67,7 @@ def get_staff_data():
                     'year':staff_profile.year, 
                     'homebase':staff_profile.homebase, 
                     'fb_url':staff_profile.pictureURL, 
-                    'status':staff_profile.status, 
+                    'status':staff_profile.status_list, 
                     'database_key':staff_profile.database_key, 
                     'time':staff_profile.updatedTime, 
                     'type':'staff'}
@@ -90,7 +90,7 @@ def get_mentor_data():
                     'company':mentor_profile.companyName, 
                     'job_title':mentor_profile.jobTitle, 
                     'fb_url':mentor_profile.pictureURL, 
-                    'status':mentor_profile.status, 
+                    'status':mentor_profile.status_list, 
                     'database_key':mentor_profile.database_key, 
                     'time':mentor_profile.updatedTime, 
                     'type':'mentor'}
@@ -195,13 +195,11 @@ class PersonHandler(MainHandler.BaseMobileHandler):
     
     def get(self):
         valid_email = False
-        if self.request.body:
-            check_email_for_login(json.loads(self.request.body)['Email'])
+        if 'Email' in self.request.headers:
+            check_email_for_login(self.request.headers['Email'])
 
-        # if not valid_email:
-        #     return self.write(json.dumps([]))
-
-        
+        if not valid_email:
+            return self.write(json.dumps([]))
         
         time = self.request.get('last_updated')
         
@@ -226,7 +224,7 @@ class PersonHandler(MainHandler.BaseMobileHandler):
             allProfiles = get_people_memecache('all')
 
             for personProfile in allProfiles:
-                if personProfile['database_key'] == keyParams:
+                if personProfile['database_key'] == int(keyParams):
                     return self.write(json.dumps([personProfile]))
 
         else:
@@ -370,7 +368,7 @@ class LoginHandler(MainHandler.BaseMobileHandler):
             'year':hackerProfile.year,
             'homebase':hackerProfile.homebase, 
             'fb_url':hackerProfile.pictureURL, 
-            'status':hackerProfile.status, 
+            'status':hackerProfile.status_list, 
             'database_key':hackerProfile.database_key ,
             'time':hackerProfile.updatedTime,
             'type':'hacker'}
@@ -390,7 +388,7 @@ class LoginHandler(MainHandler.BaseMobileHandler):
             'year':staffProfile.year,
             'homebase':staffProfile.homebase, 
             'fb_url':staffProfile.pictureURL, 
-            'status':staffProfile.status, 
+            'status':staffProfile.status_list, 
             'database_key':staffProfile.database_key, 
             'time':staffProfile.updatedTime,
             'type':'staff'}
@@ -408,9 +406,9 @@ class LoginHandler(MainHandler.BaseMobileHandler):
             'job_title':'SDE', 
             'skills':['python'], 
             'fb_url':'', 
-            'status':'available', 
-            'database_key':'fuss1@illinois.edu', 
-            'time':'',
+            'status':['available'], 
+            'database_key':30000, 
+            'time':0,
             'type':'mentor'}
             list_profile.append(profile)
 
@@ -419,7 +417,7 @@ class LoginHandler(MainHandler.BaseMobileHandler):
             # 'company':mentorProfile.companyName, 
             # 'job_title':mentorProfile.jobTitle, 
             # 'fb_url':mentorProfile.pictureURL, 
-            # 'status':mentorProfile.status, 
+            # 'status':mentorProfile.status_list, 
             # 'database_key':mentorProfile.database_key , 
             # 'time':mentorProfile.updatedTime,
             # 'type':'mentor'}

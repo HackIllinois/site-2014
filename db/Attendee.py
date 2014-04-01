@@ -44,6 +44,8 @@ class Attendee(Model):
     updatedTime = ndb.IntegerProperty(default=0)
     email_lower = ndb.ComputedProperty(lambda self: self.userEmail.lower())
     database_key = ndb.IntegerProperty(default=0)
+    status_list = ndb.JsonProperty(default=[])
+
 
     # Not sure how this will be used yet
     pushNotificationToken = ndb.StringProperty(default='')

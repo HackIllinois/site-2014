@@ -21,6 +21,8 @@ class Sponsor(Model):
     updatedTime = ndb.StringProperty(default='')
     email_lower = ndb.ComputedProperty(lambda self: self.email.lower())
     database_key = ndb.IntegerProperty(default=0)
+    status_list = ndb.JsonProperty(default=[])
+
 
 
     @classmethod
