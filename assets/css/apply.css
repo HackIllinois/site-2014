@@ -110,12 +110,12 @@ body h2 {
 }
 
 p.loggedin {
-    text-align: center;
     font-size: 14px;
     font-weight: bold;
     color: white;
     font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
     margin-bottom: 25px;
+    text-align: center;
 }
 
 p.errormessages {

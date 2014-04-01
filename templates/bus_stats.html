@@ -1,0 +1,59 @@
+{% extends "base/admin_base.html" %}
+{% set active_page = "busstats" %}
+
+{% block head %}
+<style type="text/css">
+    table {
+        table-layout: auto;
+    }
+    .t-centered {
+        text-align: center;
+    }
+    .page-header {
+        margin-top: 0;
+    }
+</style>
+{% endblock head %}
+
+
+{% block body %}
+<h1 class="page-header">Bus Route Status</h1>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th class="t-centered">Route Name</th>
+                        <th class="t-centered">Applied Attendees On Route</th>
+                        <th class="t-centered">
+                            Approved Attendees On Route
+                            <i class="glyphicon glyphicon-question-sign" rel="tooltip" title="This includes every potential person on the route who we've *approved*. This includes people who have said yes, people who have been emailed and are awaiting response, AND people who have not been emailed yet but have been approved."></i>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for bus_route in data %}
+                    <tr>
+                        <td>{{ bus_route.routeName }}</td>
+                        <td class="t-centered">{{ bus_route.appliedRiderCount }}</td>
+                        <td class="t-centered">
+                            {{ bus_route.acceptedRiderCount }}
+                            {% if bus_route.missingRiders != '' %}
+                                <i class="glyphicon glyphicon-question-sign" rel="popover" data-toggle="popover" data-container="body" data-placement="right" data-content="{{bus_route.missingRiders}}"></i>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            These numbers include all attendees from each school (and most misspellings) who have selected a bus travel preference or no travel preference.
+        </div>
+    </div>
+</div>
+{% endblock body %}
+
+
+{% block scripts %}
+<script type="text/javascript"></script>
+{% endblock scripts%}

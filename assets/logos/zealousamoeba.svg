@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 17.0.2, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1000px"
+	 height="1000px" viewBox="0 0 1000 1000" enable-background="new 0 0 1000 1000" xml:space="preserve">
+<g id="Layer_1" display="none">
+	<rect display="inline" stroke="#000000" stroke-miterlimit="10" width="1000" height="1000"/>
+</g>
+<g id="Layer_2">
+	<path fill="#FFFFFF" stroke="#FFFFFF" stroke-miterlimit="10" d="M924.48,494.398c0,230.104-187.594,416.641-419.002,416.641
+		c-226.092,0-419.002-186.536-419.002-416.641S274.069,77.757,505.478,77.757S924.48,264.294,924.48,494.398z"/>
+	<linearGradient id="SVGID_1_" gradientUnits="userSpaceOnUse" x1="91.8037" y1="494" x2="919.3074" y2="494">
+		<stop  offset="0" style="stop-color:#89171A"/>
+		<stop  offset="1" style="stop-color:#761113"/>
+	</linearGradient>
+	<ellipse fill="url(#SVGID_1_)" stroke="#000000" stroke-miterlimit="10" cx="505.556" cy="494" rx="413.752" ry="410.314"/>
+	<circle fill="#FFFFFF" cx="505.556" cy="494" r="400"/>
+	
+		<linearGradient id="SVGID_2_" gradientUnits="userSpaceOnUse" x1="488.5623" y1="393.6468" x2="768.8848" y2="393.6468" gradientTransform="matrix(0.9954 -0.0954 0.0954 0.9954 -29.7302 61.5367)">
+		<stop  offset="0" style="stop-color:#89171A"/>
+		<stop  offset="1" style="stop-color:#761113"/>
+	</linearGradient>
+	<path fill="url(#SVGID_2_)" d="M770.852,380.265c35.878,161.416-67.366,289.705-133.491,160.649
+		c-11.783-22.996-13.77-69.391-25.636-87.669c-26.583-40.948-63.388-42.795-96.457-89.308
+		c-85.711-120.556,14.006-184.991,89.863-169.706c28.505,5.744,60.303,20.352,85.499,44.922
+		C732.624,280.102,762.178,341.241,770.852,380.265z"/>
+</g>
+<g id="Layer_3">
+	<path fill="#FFFFFF" stroke="#8D181B" stroke-miterlimit="10" d="M586.043,327.288c-50.492-32.242-16.776-66.984-7.159-72.231
+		c23.582-12.866,48.025,0.218,59.43,21.613c12.897,24.193,24.498,66.15,7.851,82.957
+		C631.499,374.435,618.429,347.968,586.043,327.288z"/>
+	<path display="none" fill="#FFFFFF" stroke="#000000" stroke-miterlimit="10" d="M631.801,246.87
+		c38.083,31.956,85.095,155.167,76.679,165.197c-13.077,15.585-107.109-3.456-192.63-80.161
+		c-48.704-43.683-25.931-81.558-14.751-94.882C524.081,209.635,582.098,205.164,631.801,246.87z"/>
+	<path display="none" stroke="#000000" stroke-miterlimit="10" d="M657.971,286.951c94.444,100.694,67.204,128.975,57.649,131.827
+		c-93.056,27.778-213.468-87.132-219.482-100.815c-49.29-112.153,72.26-135.296,105.593-83.907
+		C607.158,242.422,655.61,284.434,657.971,286.951z"/>
+</g>
+</svg>

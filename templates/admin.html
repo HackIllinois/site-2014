@@ -17,7 +17,14 @@
 
 
 {% block body %}
-<h1 id="typer_target" class="page-header">XXX hackers registered<br>from XXX schools!</h1>
+<h1 id="typer_target" class="page-header">
+    {{ data.registerCount }} hackers registered from {{ data.schoolCount }} schools<br>
+    {{ data.approveCount }} hackers approved<br>
+    {{ data.waitlistCount }} hackers waitlisted<br>
+    {{ data.emailedCount }} hackers awaiting RSVP response<br>
+    {{ data.rsvpYesCount }} hackers RSVP'd Yes<br>
+    {{ data.rsvpNoCount }} hackers RSVP'd No<br>
+</h1>
 
 <p>Note: If you need access to user applications and have a valid reason, please contact <a href="mailto:systems@hackillinois.org?Subject=HackIllinois%20Admin%20Access%20Request">systems@hackillinois.org</a></p>
 
@@ -34,22 +41,10 @@
 var num = 0;
 
 $(document).ready(function() {
-    $("#typer_target").fitText(1.2);
+    // $("#typer_target").fitText(1.2);
 
     hacker_count = "";
     school_count = "";
-
-	$.get( "/admin/applycount", function( data ) {
-        hacker_count = data;
-
-        $.get( "/admin/schoolcount", function( data ) {
-            school_count = data;
-
-            $("#typer_target").html(hacker_count + " hackers registered<br>from " + school_count + " schools!");
-            $("#typer_target").fitText(1.2);
-        });
-
-	});
 
     var img = document.getElementById("xkcd");
     var title = document.getElementById("xkcd_title");

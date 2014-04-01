@@ -1,7 +1,6 @@
 from google.appengine.ext import ndb
 import constants
 from Model import Model
-from google.appengine.ext.db import BadValueError
 
 class Sponsor(Model):
     companyName = ndb.StringProperty(required=True)
@@ -10,14 +9,19 @@ class Sponsor(Model):
     initialId = ndb.StringProperty()
     initialLogin = ndb.BooleanProperty()
     userId = ndb.StringProperty()
+    googleUser = ndb.UserProperty()
 
     # these vairables are needed for mobile
+    name = ndb.StringProperty(default='')
     jobTitle = ndb.TextProperty(default='')
     skills = ndb.JsonProperty(default=[''])
     status = ndb.TextProperty(default='')
     pictureURL = ndb.TextProperty(default='')
     name = ndb.StringProperty(default='', required=True)
     updatedTime = ndb.StringProperty(default='')
+    email_lower = ndb.ComputedProperty(lambda self: self.email.lower())
+    database_key = ndb.IntegerProperty(default=0)
+
 
     @classmethod
     def new(cls, data):

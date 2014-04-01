@@ -1,5 +1,5 @@
 {% extends "base/admin_base.html" %}
-{% set active_page = "hackers" %}
+{% set active_page = "approve" %}
 
 {% block head %}
     <style type="text/css">
@@ -19,7 +19,7 @@
             overflow: visible;
             word-wrap:break-word;
         }
-        .c1{width:7%;}
+        /*.c1{width:7%;}
         .c2{width:7%;}
         .c3{width:12%;}
         .c4{width:5%;}
@@ -32,10 +32,13 @@
         .c11{width:9%;}
         .c12{width:7%;}
         .c13{width:6%;}
-        .c14{width:8%;}
+        .c14{width:8%;}*/
         .search-container {
-            width: 14%;
+            /*width: 14%;*/
             vertical-align: middle;
+        }
+		.width100 {
+            width:100%;
         }
         .t-centered {
             text-align: center;
@@ -65,81 +68,143 @@
             <div class="col-md-12">
                 <form name="tcol" onsubmit="return false">
                     <label>Show columns:&nbsp;&nbsp;</label>
-                    <input id="c-gender" type=checkbox name="gender" onclick="toggleVis(this.name)" checked> Gender&nbsp;&nbsp;
-                    <input id="c-school" type=checkbox name="school" onclick="toggleVis(this.name)" checked> School&nbsp;&nbsp;
-                    <input id="c-year" type=checkbox name="year" onclick="toggleVis(this.name)" checked> Year&nbsp;&nbsp;
-                    <input id="c-linkedin" type=checkbox name="linkedin" onclick="toggleVis(this.name)" checked> LinkedIn&nbsp;&nbsp;
-                    <input id="c-github" type=checkbox name="github" onclick="toggleVis(this.name)" checked> Github&nbsp;&nbsp;
-                    <input id="c-shirt" type=checkbox name="shirt" onclick="toggleVis(this.name)" checked> Shirt&nbsp;&nbsp;
-                    <input id="c-food" type=checkbox name="food" onclick="toggleVis(this.name)" checked> Dietary Restrictions&nbsp;&nbsp;
-                    <input id="c-project" type=checkbox name="project" onclick="toggleVis(this.name)" checked> Project Type&nbsp;&nbsp;
-                    <input id="c-time" type=checkbox name="time" onclick="toggleVis(this.name)" checked> Registered&nbsp;&nbsp;
+					<!--<input id="c-gender" type=checkbox name="gender" onclick="toggleVis(this.name)"> <label id="lgender">Gender</label>&nbsp;&nbsp;-->
+                    <input id="c-school" type=checkbox name="school" onclick="toggleVis(this.name)" checked> <label id="lschool">School</label>&nbsp;&nbsp;
+                    <!--<input id="c-year" type=checkbox name="year" onclick="toggleVis(this.name)" checked> <label id="lyear">Year</label>&nbsp;&nbsp;-->
+                    <input id="c-linkedin" type=checkbox name="linkedin" onclick="toggleVis(this.name)" checked> <label id="llinkedin">LinkedIn</label>&nbsp;&nbsp;
+                    <input id="c-github" type=checkbox name="github" onclick="toggleVis(this.name)" checked> <label id="lgithub">Github</label>&nbsp;&nbsp;
+                    <!--<input id="c-shirt" type=checkbox name="shirt" onclick="toggleVis(this.name)"> <label id="lshirt">Shirt</label>&nbsp;&nbsp;-->
+                    <!--<input id="c-food" type=checkbox name="food" onclick="toggleVis(this.name)"> <label id="lfood">Dietary Restrictions</label>&nbsp;&nbsp;-->
+                    <input id="c-project" type=checkbox name="project" onclick="toggleVis(this.name)" checked> <label id="lproject">Dietary Restrictions</label>&nbsp;&nbsp;
+                    <!--<input id="c-time" type=checkbox name="time" onclick="toggleVis(this.name)"> <label id="ltime">Registered</label>&nbsp;&nbsp;-->
+					<input id="c-resume" type=checkbox name="resume" onclick="toggleVis(this.name)" checked> <label id="lresume">Resume</label>&nbsp;&nbsp;
                 </form>
                 <div id="hackers" class="table-responsive">
                     <table id="usertable" class="table table-bordered table-hover">
+					     <thead>
+							<tr name="search_params">
+                                <td class="search-name" colspan="2"><input id="search_name" type="text" class="width100" placeholder="Search Names" onchange="searchHackers()" /></td>
+								<!--<td class="c3"><input id="search_email" type="text" class="width100" placeholder="Search Email" onchange="searchHackers()"/></td>-->
+								<!--<td class="c4" name="tgender">
+									<form name="search_gender">
+										<input type=checkbox name="Male" onclick="searchHackers()" checked> Male<br>
+										<input type=checkbox name="Female" onclick="searchHackers()" checked> Female<br>
+										<input type=checkbox name="Other" onclick="searchHackers()" checked> Other
+										<!--"I chose not to specify" is being stored as "Other"
+									</form>
+								</td>-->
+								<td class="c5" name="tschool"><input id="search_school" type="text" class="width100" placeholder="Search School" onchange="searchHackers()"/></td>
+								<!--<td class="c6" name="tyear">
+									<form name="search_year">
+										<input type=checkbox name="Freshman" onclick="searchHackers()" checked> Freshman<br>
+										<input type=checkbox name="Sophomore" onclick="searchHackers()" checked> Sophomore<br>
+										<input type=checkbox name="Junior" onclick="searchHackers()" checked> Junior<br>
+										<input type=checkbox name="Senior" onclick="searchHackers()" checked> Senior<br>
+										<input type=checkbox name="Grad" onclick="searchHackers()" checked> Grad<br>
+										<input type=checkbox name="HS" onclick="searchHackers()" checked> HS
+									</form>
+								</td>-->
+								<td class="c7" name="tlinkedin"><input id="search_linkedin" type="text" class="width100" placeholder="Search LinkedIn" onchange="searchHackers()"/></td>
+								<td class="c8" name="tgithub"><input id="search_github" type="text" class="width100" placeholder="Search GitHub" onchange="searchHackers()"/></td>
+								<!--<td class="c9" name="tshirt">
+									<form name="search_shirt">
+										<input type=checkbox name="XS" onclick="searchHackers()" checked> XS<br>
+										<input type=checkbox name="S" onclick="searchHackers()" checked> S<br>
+										<input type=checkbox name="M" onclick="searchHackers()" checked> M<br>
+										<input type=checkbox name="L" onclick="searchHackers()" checked> L<br>
+										<input type=checkbox name="XL" onclick="searchHackers()" checked> XL<br>
+										<input type=checkbox name="XXL" onclick="searchHackers()" checked> XXL
+									</form>
+								</td>-->
+								<!--<td class="c10" name="tfood">
+									<form name="search_food">
+										<input type=checkbox name="Vegetarian" onclick="searchHackers()"> Vegetarian<br>
+										<input type=checkbox name="Vegan" onclick="searchHackers()"> Vegan<br>
+										<input type=checkbox name="Gluten Free" onclick="searchHackers()"> Gluten Free<br>
+										<input type=checkbox name="Lactose Free" onclick="searchHackers()"> Lactose Free<br>
+										<input type=checkbox name="Other" onclick="searchHackers()"> Other
+									</form>
+								</td>-->
+								<td class="c11" name="tproject">
+									<form name="search_project">
+										<input type=checkbox name="Software Hack" onclick="searchHackers()" checked> Software Hack<br>
+										<input type=checkbox name="Hardware Hack" onclick="searchHackers()" checked> Hardware Hack<br>
+										<input type=checkbox name="Unsure" onclick="searchHackers()" checked> Unsure
+									</form>
+								</td>
+								<!--<td class="c12" name="ttime"></td>-->
+								<td class="c13" name="tresume">
+									<form name="search_resume">
+										<input type=checkbox name="Has Resume" onclick="searchHackers()"> Has Resume
+									</form>
+								</td>
+
+
+							</tr>
                         <thead>
                             <tr>
                                 <th class="c1 sort" data-sort="fname">First Name</th>
                                 <th class="c2 sort" data-sort="lname">Last Name</th>
-                                <th class="c3 sort" data-sort="email">Email</th>
-                                <th name="tgender" class="c4 sort" data-sort="gender">Gender</th>
+                                <!-- <th class="c3 sort" data-sort="email">Email</th> -->
+                                <!-- <th name="tgender" class="c4 sort" data-sort="gender">Gender</th> -->
                                 <th name="tschool" class="c5 sort" data-sort="school">School</th>
-                                <th name="tyear" class="c6 sort" data-sort="year">Year</th>
+                                <!-- <th name="tyear" class="c6 sort" data-sort="year">Year</th> -->
                                 <th name="tlinkedin" class="c7 sort" data-sort="linkedin">LinkedIn</th>
                                 <th name="tgithub" class="c8 sort" data-sort="github">Github</th>
-                                <th name="tshirt" class="c9 sort" data-sort="shirt">Shirt Size</th>
-                                <th name="tfood" class="c10 sort" data-sort="food">Dietary Restrictions</th>
+                                <!-- <th name="tshirt" class="c9 sort" data-sort="shirt">Shirt Size</th> -->
+                                <!-- <th name="tfood" class="c10 sort" data-sort="food">Dietary Restrictions</th> -->
                                 <th name="tproject" class="c11 sort" data-sort="project">Project Type</th>
-                                <th name="ttime" class="c12 sort" data-sort="time">Registered</th>
-                                <!-- <th class="c13">Resume</th> -->
-                                <th class="search-container" colspan="2"><input type="text" class="search" placeholder="Search hackers" autofocus/></th>
+                                <!-- <th name="ttime" class="c12 sort" data-sort="time">Registered</th> -->
+                                <th name="tresume" class="c13">Resume</th>
+								<th class="c14"></th>
                             </tr>
                         </thead>
                         <tbody class="list">
                             {% for h in data.hackers %}
                             {% if not h.isApproved%}
-                            <tr id="{{ h.userId }}">
+                            <tr name="hackerData" id="{{ h.userId }}">
                                 <td class="id" style="display:none;">{{ loop.index }}</td>
-                                <td class="c1 fname" onclick="document.location='/admin/profile/{{ h.userId }}';">{{ h.nameFirst }}</td>
-                                <td class="c2 lname" onclick="document.location='/admin/profile/{{ h.userId }}';">{{ h.nameLast }}</td>
-                                <td class="c3 email" onclick="document.location='/admin/profile/{{ h.userId }}';">{{ h.email }}</td>
-                                <td name="tgender" class="c4 gender">{{ h.gender }}</td>
-                                <td name="tschool" class="c5 school">{{ h.school }}</td>
-                                <td name="tyear" class="c6 year">{{ h.year }}</td>
+                                <td name="tfirstName" class="c1 fname" onclick="document.location='/admin/profile/{{ h.userId }}';">{{ h.nameFirst }}</td>
+                                <td name="tlastName" class="c2 lname" onclick="document.location='/admin/profile/{{ h.userId }}';">{{ h.nameLast }}</td>
+                                <!-- <td name="temail" class="c3 email" onclick="document.location='/admin/profile/{{ h.userId }}';">{{ h.email }}</td> -->
+                                <!-- <td name="tgender" class="c4 gender">{{ h.gender }}</td> -->
+                                <td name="tschool" class="c5 school" onclick="searchSchool(this.innerHTML)">{{ h.school }}</td>
+                                <!-- <td name="tyear" class="c6 year">{{ h.year }}</td> -->
                                 <td name="tlinkedin" class="c7 linkedin">{{ h.linkedin }}</td>
                                 <td name="tgithub" class="c8 github">{{ h.github }}</td>
-                                <td name="tshirt" class="c9 shirt">{{ h.shirt }}</td>
-                                <td name="tfood" class="c10 food">{{ h.food }}</td>
+                                <!-- <td name="tshirt" class="c9 shirt">{{ h.shirt }}</td> -->
+                                <!-- <td name="tfood" class="c10 food">{{ h.food }}</td> -->
                                 <td name="tproject" class="c11 project">{{ h.projectType }}</td>
-                                <td name="ttime" class="c12 time">{{ h.registrationTime }}</td>
-                                <td class="c13">{% if h.resume %}<a href='/admin/resume?userId={{ h.userId }}'>Resume</a>{% endif %}</td>
-                                <td class="c14 approved"><button class="btn btn-primary approve-btn">Approve</button></td>
+                                <!-- <td name="ttime" class="c12 time">{{ h.registrationTime }}</td> -->
+                                <td name="tresume" class="c13 resume">{% if h.resume %}<a href='/admin/resume?userId={{ h.userId }}'>Resume</a>{% endif %}</td>
+                                <td class="c14 approved"><button class="btn btn-success approve-btn">Approve</button></td>
                             </tr>
                             {% endif %}
                             {% endfor %}
                             {% for h in data.hackers %}
                             {% if h.isApproved%}
-                            <tr id="{{ h.userId }}">
+                            <tr name="hackerData" id="{{ h.userId }}">
                                 <td class="id" style="display:none;">{{ loop.index }}</td>
-                                <td class="c1 fname" onclick="document.location='/admin/profile/{{ h.userId }}';">{{ h.nameFirst }}</td>
-                                <td class="c2 lname" onclick="document.location='/admin/profile/{{ h.userId }}';">{{ h.nameLast }}</td>
-                                <td class="c3 email" onclick="document.location='/admin/profile/{{ h.userId }}';">{{ h.email }}</td>
-                                <td name="tgender" class="c4 gender">{{ h.gender }}</td>
-                                <td name="tschool" class="c5 school">{{ h.school }}</td>
-                                <td name="tyear" class="c6 year">{{ h.year }}</td>
+                                <td name="tfirstName" class="c1 fname" onclick="document.location='/admin/profile/{{ h.userId }}';">{{ h.nameFirst }}</td>
+                                <td name="tlastName" class="c2 lname" onclick="document.location='/admin/profile/{{ h.userId }}';">{{ h.nameLast }}</td>
+                                <!-- <td name="temail" class="c3 email" onclick="document.location='/admin/profile/{{ h.userId }}';">{{ h.email }}</td> -->
+                                <!-- <td name="tgender" class="c4 gender">{{ h.gender }}</td> -->
+                                <td name="tschool" class="c5 school" onclick="searchSchool(this.innerHTML)">{{ h.school }}</td>
+                                <!-- <td name="tyear" class="c6 year">{{ h.year }}</td> -->
                                 <td name="tlinkedin" class="c7 linkedin">{{ h.linkedin }}</td>
                                 <td name="tgithub" class="c8 github">{{ h.github }}</td>
-                                <td name="tshirt" class="c9 shirt">{{ h.shirt }}</td>
-                                <td name="tfood" class="c10 food">{{ h.food }}</td>
+                                <!-- <td name="tshirt" class="c9 shirt">{{ h.shirt }}</td> -->
+                                <!-- <td name="tfood" class="c10 food">{{ h.food }}</td> -->
                                 <td name="tproject" class="c11 project">{{ h.projectType }}</td>
-                                <td name="ttime" class="c12 time">{{ h.registrationTime }}</td>
-                                <td class="c13">{% if h.resume %}<a href='/admin/resume?userId={{ h.userId }}'>Resume</a>{% endif %}</td>
-                                <td class="c14 approved"><button class="btn btn-warning approve-btn">Un-Approve</button></td>
+                                <!-- <td name="ttime" class="c12 time">{{ h.registrationTime }}</td> -->
+                                <td name="tresume" class="c13 resume">{% if h.resume %}<a href='/admin/resume?userId={{ h.userId }}'>Resume</a>{% endif %}</td>
+                                <td class="c14 approved"><button class="btn btn-danger approve-btn">Un-Approve</button></td>
                             </tr>
                             {% endif %}
                             {% endfor %}
                         </tbody>
                     </table>
+                    <ul class="pagination"></ul>
                 </div>
             </div>
         </div>
@@ -149,10 +214,21 @@
 
 {% block scripts %}
     <script src="//cdnjs.cloudflare.com/ajax/libs/list.js/1.1.0/list.min.js"></script>
+    <script src="/js/list.pagination.min.js"></script>
     <script type="text/javascript">
+        var paginationOptions = {
+            name: "pagination",
+            paginationClass: "pagination",
+            innerWindow: 2,
+            outerWindow: 1
+        };
         var options = {
-            valueNames: [ 'id', 'fname', 'lname', 'email', 'gender', 'school', 'year', 'linkedin', 'github', 'shirt', 'food', 'project', 'time' ],
-            page: 1000
+            // valueNames: [ 'id', 'fname', 'lname', 'email', 'gender', 'school', 'year', 'linkedin', 'github', 'shirt', 'food', 'project', 'time' ],
+            valueNames: [ 'id', 'fname', 'lname', 'school', 'linkedin', 'github', 'project' ],
+            page: 20,
+            plugins: [
+                ListPagination(paginationOptions)
+            ]
         };
 
         var hackerList = new List('hackers', options);
@@ -161,11 +237,61 @@
         var showMode = 'table-cell';
         if (document.all) showMode='block';
 
-        function toggleVis(btn){
-            btn = document.forms['tcol'].elements[btn];
-            cells = document.getElementsByName('t'+btn.name);
-            mode = btn.checked ? showMode : 'none';
-            for(j = 0; j < cells.length; j++) cells[j].style.display = mode;
+		function toggleVis(btn){
+			btn = document.forms['tcol'].elements[btn];
+			cells = document.getElementsByName('t' + btn.name);
+			mode = btn.checked ? showMode : 'none';
+
+			for(j = 0; j < cells.length; j++) cells[j].style.display = mode;
+
+            var is_filtered = false;
+			if(btn.name == "project"){
+				search_btn = document.forms['search_' + btn.name].elements;
+				for(i = 0; i < search_btn.length; i++)
+				{
+					if(!search_btn[i].checked)
+					{
+						is_filtered = true;
+					}
+				}
+			}
+			if(btn.name == "resume"){
+				search_btn = document.forms['search_' + btn.name].elements;
+				for(i = 0; i < search_btn.length; i++)
+				{
+					if(!search_btn[i].checked == false)
+					{
+						is_filtered = true;
+					}
+				}
+			}
+			else if(btn.name == "school" || btn.name == "github" || btn.name == "linkedin"){
+				search_btn = document.getElementById('search_' + btn.name).value;
+				if(search_btn != '')
+				{
+					is_filtered = true;
+				}
+			}
+			if(is_filtered && !btn.checked){
+				if(btn.name == "linkedin")
+				{
+					document.getElementById('l' + btn.name).innerHTML = "LinkedIn is filtering";
+				}
+				else{
+					document.getElementById('l' + btn.name).innerHTML = btn.name.replace(btn.name.charAt(0),btn.name.charAt(0).toUpperCase()) + " is filering";
+				}
+				document.getElementById('l' + btn.name).style.color = "red";
+			}
+			else{
+				if(btn.name == "linkedin")
+				{
+					document.getElementById('l' + btn.name).innerHTML = "LinkedIn";
+				}
+				else{
+					document.getElementById('l' + btn.name).innerHTML = btn.name.replace(btn.name.charAt(0),btn.name.charAt(0).toUpperCase());
+				}
+				document.getElementById('l' + btn.name).style.color = "black";
+			}
         }
 
         function applyBtnCallbacks() {
@@ -179,29 +305,96 @@
                     if(approve == "Approve"){
                         $.post("/admin/approve", {"userId": itemuserId, "isApproved":"True"});
                         $(this).html("Un-Approve");
-                        $(this).removeClass("btn-primary").addClass("btn-warning");
+                        $(this).removeClass("btn-success").addClass("btn-danger");
                     }
                     else{
                         $.post("/admin/approve", {"userId": itemuserId, "isApproved":"False"});
                         $(this).html("Approve");
-                        $(this).removeClass("btn-warning").addClass("btn-primary");
+                        $(this).removeClass("btn-danger").addClass("btn-success");
                     }
                 }
             });
         };
 
-        $(document).ready(function() {
-            document.getElementById("c-gender").click();
-            document.getElementById("c-linkedin").click();
-            document.getElementById("c-github").click();
-            document.getElementById("c-shirt").click();
-            document.getElementById("c-food").click();
-            document.getElementById("c-time").click();
+		function searchSchool(school_name){
+			document.getElementById('search_school').value = school_name;
+			searchHackers();
+		}
 
+		function searchHackers(){
+			search_name = document.getElementById('search_name').value;
+            search_school = document.getElementById('search_school').value;
+            search_linkedin = document.getElementById('search_linkedin').value;
+            search_github = document.getElementById('search_github').value;
+			search_project = document.forms['search_project'].elements;
+			rows = document.getElementsByName('hackerData');
+			for(j = 0; j < rows.length; j++)
+			{
+				var hide = false;
+				var hacker_name = rows[j].cells['tfirstName'].innerHTML + " " + rows[j].cells['tlastName'].innerHTML;
+				var hacker_school = rows[j].cells['tschool'].innerHTML;
+				var hacker_linkedin = rows[j].cells['tlinkedin'].innerHTML;
+				var hacker_github = rows[j].cells['tgithub'].innerHTML;
+				var hacker_project = rows[j].cells['tproject'].innerHTML;
+				var hacker_resume = rows[j].cells['tresume'].innerHTML;
+				if(hacker_name.toUpperCase().indexOf(search_name.toUpperCase()) == -1)
+				{
+					hide = true;
+				}
+				if(hacker_school.toUpperCase().indexOf(search_school.toUpperCase()) == -1)
+				{
+					hide = true;
+				}
+				if(hacker_linkedin.toUpperCase().indexOf(search_linkedin.toUpperCase()) == -1)
+				{
+					hide = true;
+				}
+				if(hacker_github.toUpperCase().indexOf(search_github.toUpperCase()) == -1)
+				{
+					hide = true;
+				}
+				if(hacker_resume == "" && document.getElementsByName('Has Resume')[0].checked)
+				{
+					hide = true;
+				}
+				var hide_project = true;
+				for(i = 0; i < search_project.length; i++)
+				{
+					if(search_project[i].checked && (search_project[i].name == hacker_project))
+					{
+						hide_project = false;
+					}
+				}
+				hide = hide_project || hide;
+				if(hide)
+				{
+					rows[j].style.display = 'none';
+				}
+				else
+				{
+					rows[j].style.display = 'table-row';
+				}
+			}
+		}
+
+        $(document).ready(function() {
+            // document.getElementById("c-gender").click();
+            // document.getElementById("c-linkedin").click();
+            // document.getElementById("c-github").click();
+            // document.getElementById("c-shirt").click();
+            // document.getElementById("c-food").click();
+            // document.getElementById("c-time").click();
+
+            hackerList.sort('approved');
             applyBtnCallbacks();
 
             document.getElementById("count").innerHTML = hackerList.size();
-            hackerList.on('searchComplete', function(){document.getElementById("count").innerHTML = hackerList.matchingItems.length;});
+			var col = document.forms['tcol'].elements;
+			for(var i = 0; i < col.length; i++){
+				toggleVis(document.forms['tcol'].elements[i].name);
+			}
+			searchHackers()
+			hackerList.on('searchComplete', function(){document.getElementById("count").innerHTML = hackerList.matchingItems.length;});
         });
     </script>
 {% endblock scripts%}

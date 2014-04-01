@@ -1,0 +1,69 @@
+{% extends "base/admin_base.html" %}
+{% set active_page = "send" %}
+
+{% block head %}
+<style type="text/css">
+    .page-header {
+        margin-top: 0;
+    }
+    .t-centered {
+        text-align: center;
+    }
+    .width100 {
+        width:100%;
+    }
+    .email-form {
+        margin-bottom: 20px;
+    }
+</style>
+{% endblock head %}
+
+
+{% block body %}
+<h1 class="page-header">Mark Sent Email</h1>
+<p>
+    Please give a comma/semi-colon/space separated list of all Attendee emails that you have contacted.
+    This form will change an the Attendees' status from "Approved" to "Awaiting Response" and will record
+    the time that you submitted this form. If the Attendee is not approved, their status will NOT be changed.
+    I.E. The Attendee must be marked as approved before submitting this form.
+</p>
+<!-- Putting this here for now. Right now the DB state is all messed up with some people marked as sent who we haven't sent an email to. It's not a problem to fix unless people come along and start making changes I don't know about. :D -Matthew -->
+<div class="alert alert-danger">
+    <strong>WARNING: </strong> At this time, absolutely DO NOT under any circumstances use this tool without talking to Matthew BEFOREHAND.
+</div>
+<form id="email-form" role="form" method="post" class="email-form">
+    <div class="form-group">
+        <label for="exampleInputEmail1">Email Addresses</label>
+        <textarea id="emails" class="form-control" name="emails" rows="8" required></textarea>
+    </div>
+    <button id="email-submit" type="submit" class="btn btn-primary" data-loading-text="Thinking...">Submit</button>
+</form>
+
+<p id="result" class="text-info"></p>
+
+{% endblock body %}
+
+
+{% block scripts %}
+<script type="text/javascript">
+$(document).ready(function() {
+    $("#email-form").submit(function(event) {
+        event.preventDefault();
+        $("#email-submit").button('loading');
+
+        var posting = $.post('/admin/send', {"emails": $("#emails").val()});
+
+        posting.done(function(data) {
+            $("#result").html(data);
+            $("#emails").val("");
+            $("#email-submit").button('reset');
+        });
+
+        posting.fail(function() {
+            alert("Error submitting data.");
+            $("#email-submit").button('reset');
+        });
+    });
+});
+</script>
+{% endblock scripts%}

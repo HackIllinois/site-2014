@@ -1,24 +1,43 @@
-ADMIN_EMAILS = set(['lx.icomputer@gmail.com','mvd7793@gmail.com','austin.1111h@gmail.com','fishben2@illinois.edu'])
+ADMIN_EMAILS = set(['lx.icomputer@gmail.com','mvd7793@gmail.com','austin.1111h@gmail.com','fishben2@illinois.edu','jacob@hackillinois.org'])
 
 BUCKET = 'hackillinois'
 
 MEMCACHE_TIMEOUT = 10800 # seconds = 3 hours , once we close registration increase to 1 day
+MOBILE_MEMCACHE_TIMEOUT = 86400 # second = 1 day (24 hours)
 MEMCACHE_COUNT_TIMEOUT = 900 # seconds = 15 min
+USE_ADMIN_MEMCACHE = False
 
 APPLY_TITLE = 'Application'
 PROFILE_TITLE = 'Profile'
+RSVP_TITLE = 'RSVP'
 
 APPLY_COMPLETE_HEADER = 'Application Complete!'
-APPLY_COMPLETE_MESSAGE = 'Thanks for applying! To keep in touch, follow us on Facebook and Twitter. Also, don\'t forget to RSVP to the <a href="https://www.facebook.com/events/285744431573053" target="_blank" style="color: #ef3e36">Facebook event</a>!'
+APPLY_COMPLETE_MESSAGE = 'Thanks for applying! To keep in touch, follow us on Facebook and Twitter. Also, don\'t forget to RSVP to the <a href="http://go.hackillinois.org/event" target="_blank" style="color: #ef3e36">Facebook event</a>!'
 
 UPDATE_COMPLETE_HEADER = 'Application Updated!'
-UPDATE_COMPLETE_MESSAGE = 'Thanks for updating your application!<br>To keep in touch, follow us on Facebook and Twitter.<br>Also, don\'t forget to RSVP to the <a href="https://www.facebook.com/events/285744431573053" target="_blank" style="color: #ef3e36">Facebook event</a>!'
+UPDATE_COMPLETE_MESSAGE = 'Thanks for updating your application!<br>To keep in touch, follow us on Facebook and Twitter.<br>Also, don\'t forget to RSVP to the <a href="http://go.hackillinois.org/event" target="_blank" style="color: #ef3e36">Facebook event</a>!'
 
 APPLICATION_CLOSED_HEADER = 'Applications Are Closed'
 APPLICATION_CLOSED_MESSAGE = 'We\'re sorry, but applications for HackIllinois closed on March 21st.<br>Please try again next time, and happy hacking!<br><br>If you have already registered, please <a href="/logout?redirect=/apply/update" style="color: #ef3e36">logout</a> and login with the account you used to register.'
 
+NOT_APPROVED_HEADER = 'Application Pending Review'
+NOT_APPROVED_MESSAGE = 'Your application is still being reviewed by our staff.<br>You will receive an email once your application has been reviewed.'
+
+RSVP_YES_HEADER = 'RSVP Complete!'
+RSVP_YES_MESSAGE = 'Thanks for RSVPing, and welcome to HackIllinois!<br>To keep in touch, follow us on Facebook and Twitter, RSVP to the <a href="http://go.hackillinois.org/event" target="_blank" style="color: #ef3e36">Facebook event</a>,<br>and join your school\'s <a href="http://go.hackillinois.org/fbgroups" target="_blank" style="color: #ef3e36">Facebook group</a> to meet other hackers from your school.'
+
+RSVP_NO_HEADER = 'RSVP Complete.'
+RSVP_NO_MESSAGE = 'Thanks for RSVPing! We are sorry that you cannot make it.<br>To keep in touch for the next HackIllinois, follow us on Facebook and Twitter.'
+
+RSVP_CLOSED_HEADER = 'RSVP Deadline Passed'
+RSVP_CLOSED_MESSAGE = 'We\'re sorry, but your RSVP deadline for HackIllinois has past.<br>We have released your spot to another hacker on the waitlist.<br>Please apply again for the next HackIllinois. Happy hacking!'
+
 ERROR_MESSAGE_PREFIX = 'Please provide '
 ERROR_MESSAGE_SUFFIX = '.'
+
+ATTENDEE_START_COUNT = 1
+SPONSOR_START_COUNT = 10001
+ADMIN_START_COUNT = 20001
 
 ALL_FIELDS = ['nameFirst', 'nameLast', 'email', 'gender', 'school', 'year', 'resume', 'linkedin', 'github', 'shirt', 'food', 'foodInfo', 'projectType', 'experience', 'termsOfService', 'travel']
 REQUIRED_FIELDS = ['nameFirst', 'nameLast', 'email', 'gender', 'school', 'year', 'shirt', 'experience', 'travel']
@@ -43,8 +62,76 @@ TOS_ERROR_MESSAGE = 'Please accept the Terms of Service'
 CSV_HEADINGS = ['First Name','Last Name','Email',
                 'Gender','School','Year','LinkedIn',
                 'Github','Shirt','Food','Project Type',
+                'Travel Preference', 'Bus Route',
                 'Registration Time','Is Approved',
-                'User ID','Resume']
+                'User ID','Resume','Status']
+
+# The below array is for more descriptive error messages. @Mattato pls fix.
+# READABLE_REQUIRED_FIELDS = ['First Name','Last Name','E-mail','Gender','School','Year in School','T-shirt size','past experience', 'Please accept the Terms of Service']
+
+EMAIL_MATCH = r"^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$"
+
+GENDERS = ['Male','Female','Other', 'I choose not to specify']
+YEARS = ['Freshman','Sophomore','Junior','Senior','Grad','HS']
+SHIRTS = ['XS','S','M','L','XL','XXL']
+FOODS = ['Vegetarian','Vegan','Gluten Free','Lactose Free', 'Other']
+PROJECTS = ['Software Hack','Hardware Hack','Unsure']
+
+MICRO1 = [['Arduinos','http://www.arduino.cc/'],['Raspberry Pi','http://www.raspberrypi.org/']]
+MICRO2 = [['Electric Imp Dev Kit','http://www.electricimp.com/'],['Spark Core','https://www.spark.io/']]
+LABEQUIPMENT = ['Power Supplies','Oscilloscopes']
+
+TRAVEL_RIDE_BUS = 'I would like to ride a HackIllinois bus'
+TRAVEL_PROVIDE_OWN_TRANSIT = 'I will provide my own transportation'
+TRAVEL_ALREADY_AT_UIUC = 'I am already in Urbana-Champaign, IL'
+TRAVEL_NO_RESPONSE = 'I have not responded to this quesiton'
+TRAVEL_ARRANGEMENTS = [TRAVEL_RIDE_BUS, TRAVEL_PROVIDE_OWN_TRANSIT, TRAVEL_ALREADY_AT_UIUC]
+
+STATUSES = [
+    'Not Approved',
+    'Approved',
+    'Waitlisted',
+    'Awaiting Response',
+    'Rsvp Coming',
+    'Rsvp Not Coming',
+    'No Rsvp'
+]
+
+APPROVE_STATUSES = [
+    'Not Approved',
+    'Approved',
+    'Waitlisted'
+]
+
+RSVP_STATUSES = [
+    'Awaiting Response',
+    'Rsvp Coming',
+    'Rsvp Not Coming',
+    'No Rsvp'
+]
+
+# The list of all approval statuses for which a person could come
+# e.g. "No Rsvp" means that person cannot come, but "Awaiting Response" could be a person
+# This is used for bus route counting when we have a hard cap for how many people could be on the bus
+# so a potential person has to count as a person
+STATUSES_FOR_PEOPLE_TO_COUNT = [
+    'Approved',
+    'Awaiting Response',
+    'Rsvp Coming'
+]
+
+STATS_STATUSES = [
+    'approved',
+    'emailed',
+    'rsvpd'
+]
+
+CATEGORIES = [
+    TRAVEL_RIDE_BUS,
+    TRAVEL_PROVIDE_OWN_TRANSIT,
+    TRAVEL_ALREADY_AT_UIUC,
+    TRAVEL_NO_RESPONSE
+]
 
 BUS_ROUTES = [
     'Purdue',
@@ -58,18 +145,6 @@ BUS_ROUTES = [
     'Indiana -> Rose Hulman',
     'University of Michigan Ann-Arbor'
 ]
-
-# The below array is for more descriptive error messages. @Mattato pls fix.
-# READABLE_REQUIRED_FIELDS = ['First Name','Last Name','E-mail','Gender','School','Year in School','T-shirt size','past experience', 'Please accept the Terms of Service']
-
-EMAIL_MATCH = r"^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$"
-
-GENDERS = ['Male','Female','Other', 'I choose not to specify']
-YEARS = ['Freshman','Sophomore','Junior','Senior','Grad','HS']
-SHIRTS = ['XS','S','M','L','XL','XXL']
-FOODS = ['Vegetarian','Vegan','Gluten Free','Lactose Free', 'Other']
-PROJECTS = ['Software Hack','Hardware Hack','Unsure']
-TRAVEL_ARRANGEMENTS = ['I would like to ride a HackIllinois bus','I will provide my own transportation','I am already in Urbana-Champaign, IL']
 
 RESUME_MAX_SIZE = 2097152 # in Bytes = 2 mb
 
@@ -201,6 +276,10 @@ TEST_SITE_URLS = [
     '/admin/applycount',
     '/admin/schoolcount',
     '/admin/manager',
+    '/admin/export',
+
+    # '/admin/approve/<school>',
+    # '/admin/profile/<userId>',
 
     # '/logout',
 

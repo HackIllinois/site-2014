@@ -180,7 +180,7 @@
                                 <td name="tproject" class="c11 project">{{ h.projectType }}</td>
                                 <td name="ttime" class="c12 time">{{ h.registrationTime }}</td>
                                 <td class="c13">{% if h.resume %}<a href='/admin/resume?userId={{ h.userId }}'>Resume</a>{% endif %}</td>
-                                <td class="c14 approved"><button class="btn btn-primary approve-btn">Approve</button></td>
+                                <td class="c14 approved"><button class="btn btn-success approve-btn">Approve</button></td>
                             </tr>
 							{% endif %}
                             {% endfor %}
@@ -201,7 +201,7 @@
                                 <td name="tproject" class="c11 project">{{ h.projectType }}</td>
                                 <td name="ttime" class="c12 time">{{ h.registrationTime }}</td>
                                 <td class="c13">{% if h.resume %}<a href='/admin/resume?userId={{ h.userId }}'>Resume</a>{% endif %}</td>
-                                <td class="c14 approved"><button class="btn btn-warning approve-btn">Un-Approve</button></td>
+                                <td class="c14 approved"><button class="btn btn-danger approve-btn">Un-Approve</button></td>
                             </tr>
 							{% endif %}
                             {% endfor %}
@@ -398,12 +398,12 @@
 					if(approve == "Approve"){
 						$.post("/admin/approve", {"userId": itemuserId, "isApproved":"True"});
 						$(this).html("Un-Approve");
-						$(this).removeClass("btn-primary").addClass("btn-warning");
+						$(this).removeClass("btn-success").addClass("btn-danger");
 					}
 					else{
 					    $.post("/admin/approve", {"userId": itemuserId, "isApproved":"False"});
 						$(this).html("Approve");
-						$(this).removeClass("btn-warning").addClass("btn-primary");
+						$(this).removeClass("btn-danger").addClass("btn-success");
 					}
                 }
             });

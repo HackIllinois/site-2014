@@ -61,6 +61,10 @@ handlers:
   script: main.app
   login: required
 
+- url: /rsvp.*
+  script: main.app
+  login: required
+
 - url: /admin.*
   script: main.app
   login: required
@@ -83,3 +87,5 @@ libraries:
 # https://developers.google.com/appengine/docs/python/tools/appstats?csw=1
 builtins:
 - appstats: on
+- remote_api: on
+- deferred: on

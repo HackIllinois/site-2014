@@ -17,7 +17,23 @@
 
 
 {% block body %}
-<h1 class="page-header">Hacker Stats<small>&nbsp;&nbsp;</small><small id="count">{{ data.numPeople }}</small><small>&nbsp;people</small></h1>
+<div class="row">
+    <div class="col-md-9">
+        <h1 class="page-header">Hacker Stats<small>&nbsp;&nbsp;</small><small id="count">{{ data.numPeople }}</small><small>&nbsp;people</small></h1>
+    </div>
+    <div class="btn-group col-md-3">
+        <button type="button" class="btn btn-primary dropdown-toggle btn-block" data-toggle="dropdown">
+            {{ data.status_dropdown_text }}&nbsp;&nbsp;<span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu" role="menu">
+            <li role="presentation"><a role="menuitem" href="/admin/basicstats"         >All Hackers</a></li>
+            <li role="presentation"><a role="menuitem" href="/admin/basicstats/approved">Approved Hackers</a></li>
+            <li role="presentation"><a role="menuitem" href="/admin/basicstats/emailed" >Emailed Hackers</a></li>
+            <li role="presentation"><a role="menuitem" href="/admin/basicstats/rsvpd"   >RSVP'd Hackers</a></li>
+        </ul>
+    </div>
+</div>
+
 <div class="container-fluid">
     {% for f in data.fields %}
     {% set column = loop.index0 % 2 %}
