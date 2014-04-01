@@ -7,4 +7,3 @@ six==1.5.2
 times==0.6.2
 wsgiref==0.1.2
 httplib2==0.8
-wget==2.0
