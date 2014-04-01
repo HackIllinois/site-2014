@@ -3,6 +3,7 @@ import json
 import urllib
 import httplib2
 import os
+import wget
 from redis import Redis
 from rq import Queue
 import googledatastore as datastore
@@ -88,21 +89,17 @@ def getToken():
 def getData():
     # Construct the request to Google
     http = httplib2.Http()
-    resp, content = http.request('https://storage.googleapis.com/hackillinois', \
+    resp, content = http.request('https://www.googleapis.com/storage/v1beta2/b/hackillinois/o', \
                                   body=None, \
                                   headers={'Authorization': 'OAuth ' + access_token, \
                                            'x-goog-api-version': '2', \
                                            'x-goog-project-id': GOOGLE_STORAGE_PROJECT_NUMBER })
     if resp.status == 200:
-      #download here
-      #content = xml2py.parse(content)
-      for item in #content.ListBucketResult.Contents:
-        if item.Size > 0:
-          resp, content = http.request('https://storage.googleapis.com/hackillinois/'+item.Key, \
-                                    body=None, \
-                                    headers={'Authorization': 'OAuth ' + access_token, \
-                                             'x-goog-api-version': '2', \
-                                             'x-goog-project-id': GOOGLE_STORAGE_PROJECT_NUMBER })
+      jsonContent = json.loads(content)
+      for item in jsonContent["items"]:
+        if item["size"] > 0:
+          #wget with item["mediaLink"]
+          wget.download(item["mediaLink"])
     else:
        print resp.status
 
