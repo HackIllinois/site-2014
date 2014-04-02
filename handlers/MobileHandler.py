@@ -10,18 +10,18 @@ from google.appengine.api import users, memcache
 import json
 import time
 
-# def check_email_for_login(email):
-#     if not email:
-#         return False
+def check_email_for_login(email):
+    if not email:
+        return False
 
-#     hackerProfile = Attendee.search_database({'userEmail':email}).get()
-#     staffProfile = Admin.search_database({'email':email}).get()
-#     mentorProfile = Sponsor.search_database({'email':email}).get()
+    hackerProfile = Attendee.search_database({'userEmail':email}).get()
+    staffProfile = Admin.search_database({'email':email}).get()
+    mentorProfile = Sponsor.search_database({'email':email}).get()
     
-#     if not hackerProfile and not staffProfile and not mentorProfile: 
-#         return False
-#     else:
-#         return True
+    if hackerProfile or staffProfile or mentorProfile: 
+        return True
+    else:
+        return False
 
 def get_hacker_data():
     """Sets the 'hacker_mobile' key in the memcache"""
@@ -40,8 +40,8 @@ def get_hacker_data():
                     'year':hackerProfile.year, 
                     'homebase':hackerProfile.homebase, 
                     'fb_url':hackerProfile.pictureURL, 
-                    'status':hackerProfile.status, 
-                    'database_key':hackerProfile.email,
+                    'status':hackerProfile.status_list, 
+                    'database_key':hackerProfile.database_key,
                     'time':hackerProfile.updatedTime, 
                     'type':'hacker'}
         if hackerProfile.skills[0] != "":
@@ -67,8 +67,8 @@ def get_staff_data():
                     'year':staff_profile.year, 
                     'homebase':staff_profile.homebase, 
                     'fb_url':staff_profile.pictureURL, 
-                    'status':staff_profile.status, 
-                    'database_key':staff_profile.email, 
+                    'status':staff_profile.status_list, 
+                    'database_key':staff_profile.database_key, 
                     'time':staff_profile.updatedTime, 
                     'type':'staff'}
         if staff_profile.skills[0] != "":
@@ -90,8 +90,8 @@ def get_mentor_data():
                     'company':mentor_profile.companyName, 
                     'job_title':mentor_profile.jobTitle, 
                     'fb_url':mentor_profile.pictureURL, 
-                    'status':mentor_profile.status, 
-                    'database_key':mentor_profile.email, 
+                    'status':mentor_profile.status_list, 
+                    'database_key':mentor_profile.database_key, 
                     'time':mentor_profile.updatedTime, 
                     'type':'mentor'}
         if mentor_profile.skills[0] != "":
@@ -179,14 +179,14 @@ class NewsfeedHandler(MainHandler.BaseMobileHandler):
             pass
         else:
             empty_list = []
-            list_of_news_feed_items = [{'subject':'iOS is better than Android', 'description':'First fake data for the app', 'time':77273243, 'icon_url':'https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcSNwVLUS8TsSni5_gXYPWDVBehYxMHnQj5RIWITO11uACXHhky5', 'highlighted':[], 'emergency':True},
-                                       {'description':'best hackathon ever! You wanted a longer description, so here is a much longer description', 'time':9923223, 'icon_url':'http://www.tarkettsportsindoor.com/sites/tarkett_indoor/assets/Resicore-PU-Midnight-Blue.png', 'highlighted':[], 'emergency':False},
-                                       {'description':'Rob love ios dev. Yes he does!', 'time':23423, 'icon_url':'http://www.tarkettsportsindoor.com/sites/tarkett_indoor/assets/Resicore-PU-Midnight-Blue.png', 'highlighted':[], 'emergency':False},
-                                       {'description':'Short weather. Georgia!', 'time':765524333, 'icon_url':'https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcSNwVLUS8TsSni5_gXYPWDVBehYxMHnQj5RIWITO11uACXHhky5', 'highlighted':[[[0,5],[25,25,112]]], 'emergency':True},
-                                       {'description':'WIFI Problems - Houston, we are experience Wifi problems on the first floor.', 'time':123412234, 'icon_url':'http://www.tarkettsportsindoor.com/sites/tarkett_indoor/assets/Resicore-PU-Midnight-Blue.png', 'highlighted':[[[0,13],[25,25,112]]], 'emergency':False},
-                                       {'description':'A spontaneous game of finger blasters is going to start in SC1404 in 5 minutes!', 'time':23452342, 'icon_url':'http://www.tarkettsportsindoor.com/sites/tarkett_indoor/assets/Resicore-PU-Midnight-Blue.png', 'highlighted':[[[59,65],[139,0,12]]], 'emergency':False},
-                                       {'description':'The first 100 people to tweet something to @hackillinois will win a Hack Illinois blanket', 'time':23453123, 'icon_url':'http://www.tarkettsportsindoor.com/sites/tarkett_indoor/assets/Resicore-PU-Midnight-Blue.png', 'highlighted':[[[43,56],[139,0,12]]], 'emergency':False},
-                                       {'description':'Rob is happy now', 'time':88923443, 'icon_url':'http://www.tarkettsportsindoor.com/sites/tarkett_indoor/assets/Resicore-PU-Midnight-Blue.png', 'highlighted':[[[7,12],[139,0,0]]], 'emergency':False}]
+            list_of_news_feed_items = [{'description':'ANNOUNCEMENT - Interactive Itelligence is hiring! Check out our jobs at inin.jobs.', 'time':1396269004, 'icon_url':'https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcSNwVLUS8TsSni5_gXYPWDVBehYxMHnQj5RIWITO11uACXHhky5', 'highlighted':[[[0,12],[30,75,102]]], 'emergency':False},
+                                       {'description':'WIFI Problems - Houston, we are experience Wifi problems on the first floor.', 'time':1396269010, 'icon_url':'http://www.tarkettsportsindoor.com/sites/tarkett_indoor/assets/Resicore-PU-Midnight-Blue.png', 'highlighted':[[[0,13],[167,65,46]]], 'emergency':True},
+                                       {'description':'A spontaneous game of finger blasters is going to start in SC1404 in 5 minutes!', 'time':1396269923, 'icon_url':'http://www.tarkettsportsindoor.com/sites/tarkett_indoor/assets/Resicore-PU-Midnight-Blue.png', 'highlighted':[[[59,65],[19,38,51]]], 'emergency':False},
+                                       {'description':'The first 100 people to tweet something to @hackillinois will win a Hack Illinois blanket', 'time':1396269876, 'icon_url':'http://www.tarkettsportsindoor.com/sites/tarkett_indoor/assets/Resicore-PU-Midnight-Blue.png', 'highlighted':[[[43,56],[19,38,51]]], 'emergency':False}]
+                                       # {'description':'', 'time':9923223, 'icon_url':'http://www.tarkettsportsindoor.com/sites/tarkett_indoor/assets/Resicore-PU-Midnight-Blue.png', 'highlighted':[], 'emergency':False},
+                                       # {'description':'', 'time':23423, 'icon_url':'http://www.tarkettsportsindoor.com/sites/tarkett_indoor/assets/Resicore-PU-Midnight-Blue.png', 'highlighted':[], 'emergency':False},
+                                       # {'description':'', 'time':765524333, 'icon_url':'https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcSNwVLUS8TsSni5_gXYPWDVBehYxMHnQj5RIWITO11uACXHhky5', 'highlighted':[[[0,5],[25,25,112]]], 'emergency':True},
+                                       # {'description':'', 'time':88923443, 'icon_url':'http://www.tarkettsportsindoor.com/sites/tarkett_indoor/assets/Resicore-PU-Midnight-Blue.png', 'highlighted':[[[7,12],[139,0,0]]], 'emergency':False}]
                                        
             return self.write(json.dumps(list_of_news_feed_items))
 
@@ -194,11 +194,17 @@ class NewsfeedHandler(MainHandler.BaseMobileHandler):
 class PersonHandler(MainHandler.BaseMobileHandler):
     
     def get(self):
-        params = self.request.get('type')
-        keyParams = self.request.get('key')
+        valid_email = False
+        if 'Email' in self.request.headers:
+            check_email_for_login(self.request.headers['Email'])
+
+        # if not valid_email:
+        #     return self.write(json.dumps([]))
+        
         time = self.request.get('last_updated')
         
-        if params:
+        if self.request.get('type'):
+            params = self.request.get('type')
             if 'staff' == params:
                 listOfStaff = get_people_memecache('staff_mobile')
                 return self.write(json.dumps(listOfStaff))
@@ -212,14 +218,14 @@ class PersonHandler(MainHandler.BaseMobileHandler):
                 listOfHackers = get_people_memecache('hacker_mobile')
                 return self.write(json.dumps(listOfHackers))
             
-            if 'key' == keyParams:
-                profile = params['key'].get()
+        elif self.request.get('key'):
+            keyParams = self.request.get('key')
 
-                allProfiles = get_people_memecache('all')
+            allProfiles = get_people_memecache('all')
 
-                for personProfile in allProfiles:
-                    if personProfile.email == profile:
-                        return self.write(json.dumps([personProfile]))
+            for personProfile in allProfiles:
+                if personProfile['database_key'] == int(keyParams):
+                    return self.write(json.dumps([personProfile]))
 
         else:
             #get all models
@@ -261,6 +267,8 @@ class PersonHandler(MainHandler.BaseMobileHandler):
                             memcache_hacker_profile['skills'] = updatedProfileDict['skills']
                         elif 'homebase' in updatedKeys:
                             memcache_hacker_profile['homebase'] = updatedProfileDict['homebase']
+                        elif 'fb_url' in updatedKeys:
+                            memcache_hacker_profile['fb_url'] =  updatedProfileDict['fb_url']
                 if not memcache.replace('all', all_hacker_profiles,time=constants.MOBILE_MEMCACHE_TIMEOUT):
                     logging.error('Memcache set failed for all.')
 
@@ -278,6 +286,8 @@ class PersonHandler(MainHandler.BaseMobileHandler):
                             memcache_staff_profile['skills'] = updatedProfileDict['skills']
                         elif 'homebase' in updatedKeys:
                             memcache_staff_profile['homebase'] = updatedProfileDict['homebase']
+                        elif 'fb_url' in updatedKeys:
+                            memcache_staff_profile['fb_url'] = updatedProfileDict['fb_url']
                 if not memcache.replace('all', all_staff_profiles, time=constants.MOBILE_MEMCACHE_TIMEOUT):
                     logging.error('Memcache set failed for all')
 
@@ -296,7 +306,9 @@ class PersonHandler(MainHandler.BaseMobileHandler):
                         elif 'homebase' in updatedKeys:
                             memcache_mentor_profile['homebase'] = updatedProfileDict['homebase']
                         elif 'status' in updatedKeys:
-                            memcache_mentor_profile['status'] = updatedKeys['status']
+                            memcache_mentor_profile['status'] = updatedProfileDict['status']
+                        elif 'fb_url' in updatedKeys:
+                            memcache_mentor_profile['fb_url'] = updatedProfileDict['fb_url']
                 if not memcache.replace('all', all_mentor_profiles, time=constants.MOBILE_MEMCACHE_TIMEOUT):
                     logging.error('Memcache set failed for all')
                 
@@ -356,8 +368,8 @@ class LoginHandler(MainHandler.BaseMobileHandler):
             'year':hackerProfile.year,
             'homebase':hackerProfile.homebase, 
             'fb_url':hackerProfile.pictureURL, 
-            'status':hackerProfile.status, 
-            'database_key':hackerProfile.email ,
+            'status':hackerProfile.status_list, 
+            'database_key':hackerProfile.database_key ,
             'time':hackerProfile.updatedTime,
             'type':'hacker'}
 
@@ -376,8 +388,8 @@ class LoginHandler(MainHandler.BaseMobileHandler):
             'year':staffProfile.year,
             'homebase':staffProfile.homebase, 
             'fb_url':staffProfile.pictureURL, 
-            'status':staffProfile.status, 
-            'database_key':staffProfile.email , 
+            'status':staffProfile.status_list, 
+            'database_key':staffProfile.database_key, 
             'time':staffProfile.updatedTime,
             'type':'staff'}
 
@@ -389,14 +401,14 @@ class LoginHandler(MainHandler.BaseMobileHandler):
             list_profile.append(profile)
         elif mentorProfile:
             profile = {'name':'Jacob Fuss',
-            'email':'fuss1@illinois', 
+            'email':'fuss1@illinois.edu', 
             'company':'Amazon', 
             'job_title':'SDE', 
             'skills':['python'], 
             'fb_url':'', 
-            'status':'available', 
-            'database_key':'fuss1@illinois' , 
-            'time':'',
+            'status':['available'], 
+            'database_key':30000, 
+            'time':0,
             'type':'mentor'}
             list_profile.append(profile)
 
@@ -405,8 +417,8 @@ class LoginHandler(MainHandler.BaseMobileHandler):
             # 'company':mentorProfile.companyName, 
             # 'job_title':mentorProfile.jobTitle, 
             # 'fb_url':mentorProfile.pictureURL, 
-            # 'status':mentorProfile.status, 
-            # 'database_key':mentorProfile.email , 
+            # 'status':mentorProfile.status_list, 
+            # 'database_key':mentorProfile.database_key , 
             # 'time':mentorProfile.updatedTime,
             # 'type':'mentor'}
             #

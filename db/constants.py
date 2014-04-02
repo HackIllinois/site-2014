@@ -35,6 +35,10 @@ RSVP_CLOSED_MESSAGE = 'We\'re sorry, but your RSVP deadline for HackIllinois has
 ERROR_MESSAGE_PREFIX = 'Please provide '
 ERROR_MESSAGE_SUFFIX = '.'
 
+ATTENDEE_START_COUNT = 1
+SPONSOR_START_COUNT = 10001
+ADMIN_START_COUNT = 20001
+
 ALL_FIELDS = ['nameFirst', 'nameLast', 'email', 'gender', 'school', 'year', 'resume', 'linkedin', 'github', 'shirt', 'food', 'foodInfo', 'projectType', 'experience', 'termsOfService', 'travel']
 REQUIRED_FIELDS = ['nameFirst', 'nameLast', 'email', 'gender', 'school', 'year', 'shirt', 'experience', 'travel']
 

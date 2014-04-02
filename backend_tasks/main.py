@@ -23,8 +23,8 @@ RDq = ''
 def main():
   RDq = Queue(connection=Redis())
   datastore.set_options(dataset='hackillinois')
-  res = getData()
-  print res
+  print getData()
+  print downloadAllResumes()
 
 def getData():
   req = datastore.RunQueryRequest()
@@ -50,28 +50,20 @@ def enqueue(tasks):
                timeout=30)
 
 def downloadAllResumes():
-  if getToken():"""
-    uri = boto.storage_uri(BUCKET, GOOGLE_STORAGE)
-    dest_dir = '/var/hackillinois/'
-    for filename in uri.get_bucket():
-      src_uri = boto.storage_uri(BUCKET + '/' + filename, GOOGLE_STORAGE)
-
-    # Create a file-like object for holding the object contents.
-    object_contents = StringIO.StringIO()
-
-    # The unintuitively-named get_file() doesn't return the object
-    # contents; instead, it actually writes the contents to
-    # object_contents.
-    src_uri.get_key().get_file(object_contents)
-
-    local_dst_uri = boto.storage_uri(
-        os.path.join(dest_dir, filename), LOCAL_FILE)
-
-    for dst_uri in (local_dst_uri, bucket_dst_uri):
-      object_contents.seek(0)
-      dst_uri.new_key().set_contents_from_file(object_contents)
-    object_contents.close()"""
-
+  http = httplib2.Http()
+  resp, content = http.request('https://www.googleapis.com/storage/v1beta2/b/hackillinois/o', \
+                                body=None, \
+                                headers={'Authorization': 'OAuth ' + access_token, \
+                                         'x-goog-api-version': '2', \
+                                         'x-goog-project-id': GOOGLE_STORAGE_PROJECT_NUMBER })
+  if resp.status == 200:
+    jsonContent = json.loads(content)
+    for item in jsonContent["items"]:
+      if item["size"] > 0:
+        (resp_headers, content) = http.request(jsonContent["items"][3]["mediaLink"], "GET", body=None, headers={'Authorization': 'OAuth ' + access_token,\
+                                                                                                                'x-goog-api-version': '2','x-goog-project-id': GOOGLE_STORAGE_PROJECT_NUMBER })
+  else:
+     print resp.status
 
 def getToken():
   token_uri = '%s/%s/token' % (METADATA_SERVER, SERVICE_ACCOUNT)
@@ -84,27 +76,6 @@ def getToken():
     return True
   else:
     return False
-
-def getData():
-    # Construct the request to Google
-    http = httplib2.Http()
-    resp, content = http.request('https://storage.googleapis.com/hackillinois', \
-                                  body=None, \
-                                  headers={'Authorization': 'OAuth ' + access_token, \
-                                           'x-goog-api-version': '2', \
-                                           'x-goog-project-id': GOOGLE_STORAGE_PROJECT_NUMBER })
-    if resp.status == 200:
-      #download here
-      #content = xml2py.parse(content)
-      for item in #content.ListBucketResult.Contents:
-        if item.Size > 0:
-          resp, content = http.request('https://storage.googleapis.com/hackillinois/'+item.Key, \
-                                    body=None, \
-                                    headers={'Authorization': 'OAuth ' + access_token, \
-                                             'x-goog-api-version': '2', \
-                                             'x-goog-project-id': GOOGLE_STORAGE_PROJECT_NUMBER })
-    else:
-       print resp.status
 
 
 if __name__ == '__main__':

@@ -459,6 +459,13 @@ button:focus {
 .ge {
 	width: 10%;
 }
+.three_red {
+	width: 2%;
+	min-width: 40px;
+}
+.z_a {
+	width: 15%;
+}
 
 .sponsor-shoutout-CTA {
 	margin-top: 20px;

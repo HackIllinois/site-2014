@@ -1,6 +1,7 @@
 import logging
 import csv
 import cStringIO
+import random
 
 from google.appengine.api import users
 from google.appengine.api import urlfetch
@@ -23,6 +24,14 @@ class BaseAdminHandler(MainHandler.Handler):
     def __init__(self, request, response):
         super(BaseAdminHandler, self).__init__(request, response)
 
+    def get_next_key(self):
+        key = None
+        while not key:
+            i = random.randint(constants.ADMIN_START_COUNT, constants.ADMIN_START_COUNT+9998)
+            c = Admin.search_database({'database_key':i}).count()
+            if c == 0: key = i
+        return key
+
     def dispatch(self):
         is_admin = False
 
@@ -39,14 +48,17 @@ class BaseAdminHandler(MainHandler.Handler):
             if admin_user.userId is None or admin_user.userId == '':
                 admin_user.userId = user.user_id()
                 admin_user.put()
+            if not admin_user.database_key:
+                admin_user.database_key = self.get_next_key()
+                admin_user.put()
         elif email in constants.ADMIN_EMAILS:
             parent = Admin.get_default_event_parent_key()
             Admin(parent=parent, email=user.email(), googleUser=user, userId=user.user_id(), approveAccess=True,
-                  fullAccess=True).put()
+                  fullAccess=True, database_key=self.get_next_key()).put()
             is_admin = True
         elif domain == 'hackillinois.org':
             parent = Admin.get_default_event_parent_key()
-            Admin(parent=parent, email=user.email(), googleUser=user, userId=user.user_id()).put()
+            Admin(parent=parent, email=user.email(), googleUser=user, userId=user.user_id(), database_key=self.get_next_key()).put()
             is_admin = True
 
         if is_admin:
