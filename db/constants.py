@@ -60,6 +60,7 @@ CSV_HEADINGS = ['First Name','Last Name','Email',
                 'Github','Shirt','Food','Project Type',
                 'Travel Preference', 'Bus Route',
                 'Registration Time','Is Approved',
+                'Previous Experience', 'Team Members',
                 'User ID','Resume','Status']
 
 # The below array is for more descriptive error messages. @Mattato pls fix.
