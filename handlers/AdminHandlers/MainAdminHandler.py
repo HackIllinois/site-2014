@@ -2,6 +2,7 @@ import logging
 import csv
 import cStringIO
 import random
+import pickle
 
 from google.appengine.api import users
 from google.appengine.api import urlfetch
@@ -86,6 +87,24 @@ class BaseAdminHandler(MainHandler.Handler):
             return None
         return admin_user
 
+    """http://stackoverflow.com/questions/9127982/avoiding-memcache-1m-limit-of-values"""
+    def store(self, key, value, chunksize=950000):
+        serialized = pickle.dumps(value, 2)
+        values = {}
+        for i in xrange(0, len(serialized), chunksize):
+            values['%s.%s' % (key, i//chunksize)] = serialized[i : i+chunksize]
+        memcache.set_multi(values, time=constants.MEMCACHE_TIMEOUT)
+
+    """http://stackoverflow.com/questions/9127982/avoiding-memcache-1m-limit-of-values"""
+    def retrieve(self, key):
+        MAX_SPLITS = 32
+        result = memcache.get_multi(['%s.%s' % (key, i) for i in xrange(MAX_SPLITS)])
+        serialized = ''.join([v for k, v in sorted(result.items()) if v is not None])
+        data = None
+        if serialized:
+            data = pickle.loads(serialized)
+        return data
+        
     def get_hackers_memcache(self, use_memcache=True):
         """Gets the 'hackers' key from the memcache and updates the memcache if the key is not in the memcache"""
         if use_memcache:
@@ -110,7 +129,8 @@ class BaseAdminHandler(MainHandler.Handler):
         """Gets the 'hackers/<status>/<category>/<route>' key from the memcache and updates the memcache if the key is not in the memcache"""
         """Uses memcache for everything but the status"""
         key = 'hackers/' + str(status) + '/' + str(category) + '/' + str(route)
-        data = memcache.get(key)
+        # data = memcache.get(key)
+        data = self.retrieve(key)
         
         stats = memcache.get_stats()
         logging.info('Cache Hits:%s, Cache Misses:%s' % (stats['hits'], stats['misses']))
@@ -346,7 +366,8 @@ class BaseAdminHandler(MainHandler.Handler):
         #     logging.error('Memcache set failed.')
 
         return data
-
+        
+        
     def set_hackers_better_memcache(self, status=None, category=None, route=None):
         """Sets the 'hackers/<status>/<category>/<route>' key in the memcache"""
         key = 'hackers/' + str(status) + '/' + str(category) + '/' + str(route)
@@ -467,9 +488,9 @@ class BaseAdminHandler(MainHandler.Handler):
                 'teamMembers':'' if not hacker.teamMembers else hacker.teamMembers.replace('\n', ' ').replace('\r', ''),
             }
 
-        if not memcache.set(key, data, time=constants.MEMCACHE_TIMEOUT):
-            logging.error('Memcache set failed.')
-
+        # if not memcache.set(key, data, time=constants.MEMCACHE_TIMEOUT):
+        #     logging.error('Memcache set failed.')
+        self.store(key, data)
         return data
     
     def set_apply_count_memcache(self):
