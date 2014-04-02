@@ -106,6 +106,44 @@ class BaseAdminHandler(MainHandler.Handler):
         else:
             return self.set_hackers_new_memcache(status, category, route)
 
+    def get_hackers_better_memcache(self, status=None, category=None, route=None):
+        """Gets the 'hackers/<status>/<category>/<route>' key from the memcache and updates the memcache if the key is not in the memcache"""
+        """Uses memcache for everything but the status"""
+        key = 'hackers/' + str(status) + '/' + str(category) + '/' + str(route)
+        data = memcache.get(key)
+        
+        stats = memcache.get_stats()
+        logging.info('Cache Hits:%s, Cache Misses:%s' % (stats['hits'], stats['misses']))
+        
+        if data is None:
+            data =  self.set_hackers_better_memcache(status, category, route)
+            return [ data[i] for i in data ]
+
+        hackers = Attendee.query(
+            Attendee.isRegistered == True,
+            projection=[
+                Attendee.userId,
+                Attendee.approvalStatus.status,
+                Attendee.approvalStatus.approvedTime,
+                Attendee.approvalStatus.waitlistedTime,
+                Attendee.approvalStatus.rsvpTime,
+            ],
+            ancestor=Attendee.get_default_event_parent_key()
+        )
+        for hacker in hackers:
+            if hacker.userId not in data:
+                continue
+            if hacker.approvalStatus:
+                data[hacker.userId]['approvalStatus'] = {
+                    'status': hacker.approvalStatus.status,
+                    'approvedTime': hacker.approvalStatus.approvedTime.strftime('%x %X') if hacker.approvalStatus.approvedTime else None,
+                    'waitlistedTime': hacker.approvalStatus.waitlistedTime.strftime('%x %X') if hacker.approvalStatus.waitlistedTime else None,
+                    'rsvpTime': hacker.approvalStatus.rsvpTime.strftime('%x %X') if hacker.approvalStatus.rsvpTime else None
+                }
+            else:
+                data[hacker.userId]['approvalStatus'] = None
+        return [ data[i] for i in data ]
+            
     def get_apply_count_memcache(self, use_memcache=True):
         """Gets the 'apply_count' key from memcache"""
         if use_memcache:
@@ -309,6 +347,131 @@ class BaseAdminHandler(MainHandler.Handler):
 
         return data
 
+    def set_hackers_better_memcache(self, status=None, category=None, route=None):
+        """Sets the 'hackers/<status>/<category>/<route>' key in the memcache"""
+        key = 'hackers/' + str(status) + '/' + str(category) + '/' + str(route)
+        hackers = None
+
+        # Change search of category='I have not responded to this question' to ''
+        category = '' if category == 'I have not responded to this quesiton' else category
+
+        if status is not None and status != 'a' and status != 'b' and status != 'c' and status != 'All':
+            if category is not None:
+                if route is not None:
+                    hackers = Attendee.query(Attendee.isRegistered == True, Attendee.approvalStatus.status == status,
+                                             Attendee.travel == category, Attendee.busRoute == route,
+                                             ancestor=Attendee.get_default_event_parent_key())
+                else:
+                    hackers = Attendee.query(Attendee.isRegistered == True, Attendee.approvalStatus.status == status,
+                                             Attendee.travel == category,
+                                             ancestor=Attendee.get_default_event_parent_key())
+            else:
+                if route is not None:
+                    hackers = Attendee.query(Attendee.isRegistered == True, Attendee.approvalStatus.status == status,
+                                             Attendee.busRoute == route,
+                                             ancestor=Attendee.get_default_event_parent_key())
+                else:
+                    hackers = Attendee.query(Attendee.isRegistered == True, Attendee.approvalStatus.status == status,
+                                             ancestor=Attendee.get_default_event_parent_key())
+        elif status == 'a':
+            if category is not None:
+                if route is not None:
+                    hackers = Attendee.query(Attendee.isRegistered == True,
+                                             Attendee.approvalStatus.status.IN(constants.APPROVE_STATUSES),
+                                             Attendee.travel == category, Attendee.busRoute == route,
+                                             ancestor=Attendee.get_default_event_parent_key())
+                else:
+                    hackers = Attendee.query(Attendee.isRegistered == True,
+                                             Attendee.approvalStatus.status.IN(constants.APPROVE_STATUSES),
+                                             Attendee.travel == category,
+                                             ancestor=Attendee.get_default_event_parent_key())
+            else:
+                if route is not None:
+                    hackers = Attendee.query(Attendee.isRegistered == True,
+                                             Attendee.approvalStatus.status.IN(constants.APPROVE_STATUSES),
+                                             Attendee.busRoute == route,
+                                             ancestor=Attendee.get_default_event_parent_key())
+                else:
+                    hackers = Attendee.query(Attendee.isRegistered == True,
+                                             Attendee.approvalStatus.status.IN(constants.APPROVE_STATUSES),
+                                             ancestor=Attendee.get_default_event_parent_key())
+        elif status == 'b':
+            if category is not None:
+                if route is not None:
+                    hackers = Attendee.query(Attendee.isRegistered == True,
+                                             Attendee.approvalStatus.status.IN(constants.RSVP_STATUSES),
+                                             Attendee.travel == category, Attendee.busRoute == route,
+                                             ancestor=Attendee.get_default_event_parent_key())
+                else:
+                    hackers = Attendee.query(Attendee.isRegistered == True,
+                                             Attendee.approvalStatus.status.IN(constants.RSVP_STATUSES),
+                                             Attendee.travel == category,
+                                             ancestor=Attendee.get_default_event_parent_key())
+            else:
+                if route is not None:
+                    hackers = Attendee.query(Attendee.isRegistered == True,
+                                             Attendee.approvalStatus.status.IN(constants.RSVP_STATUSES),
+                                             Attendee.busRoute == route,
+                                             ancestor=Attendee.get_default_event_parent_key())
+                else:
+                    hackers = Attendee.query(Attendee.isRegistered == True,
+                                             Attendee.approvalStatus.status.IN(constants.RSVP_STATUSES),
+                                             ancestor=Attendee.get_default_event_parent_key())
+        else:
+            if category is not None:
+                if route is not None:
+                    hackers = Attendee.query(Attendee.isRegistered == True, Attendee.travel == category,
+                                             Attendee.busRoute == route,
+                                             ancestor=Attendee.get_default_event_parent_key())
+                else:
+                    hackers = Attendee.query(Attendee.isRegistered == True, Attendee.travel == category,
+                                             ancestor=Attendee.get_default_event_parent_key())
+            else:
+                if route is not None:
+                    hackers = Attendee.query(Attendee.isRegistered == True, Attendee.busRoute == route,
+                                             ancestor=Attendee.get_default_event_parent_key())
+                else:
+                    hackers = Attendee.query(Attendee.isRegistered == True,
+                                             ancestor=Attendee.get_default_event_parent_key())
+
+        data = {}
+        for hacker in hackers:
+            data[hacker.userId] = {
+                'nameFirst': hacker.nameFirst,
+                'nameLast': hacker.nameLast,
+                'email': hacker.email,
+                'gender': hacker.gender if hacker.gender == 'Male' or hacker.gender == 'Female' else 'Other',
+                'school': hacker.school,
+                'year': hacker.year,
+                'linkedin': hacker.linkedin,
+                'github': hacker.github,
+                'shirt': hacker.shirt,
+                'food': '' if not hacker.food else ', '.join(hacker.food.split(',')),
+                'foodInfo':hacker.foodInfo,
+                'projectType': hacker.projectType,
+                'resume': hacker.resume,
+                'registrationTime': hacker.registrationTime.strftime('%x %X'),
+                'isApproved': hacker.isApproved,
+                'userId': hacker.userId,
+                'travel': hacker.travel,
+                'busRoute': hacker.busRoute,
+                'approvalStatus': {'status': hacker.approvalStatus.status,
+                                   'approvedTime': hacker.approvalStatus.approvedTime.strftime('%x %X') if hacker.approvalStatus.approvedTime else None,
+                                   'waitlistedTime': hacker.approvalStatus.waitlistedTime.strftime('%x %X') if hacker.approvalStatus.waitlistedTime else None,
+                                   'rsvpTime': hacker.approvalStatus.rsvpTime.strftime('%x %X') if hacker.approvalStatus.rsvpTime else None} if hacker.approvalStatus else None,
+                'groupNumber': hacker.groupNumber,
+                'micro1':hacker.micro1,
+                'micro2':hacker.micro2,
+                'labEquipment':hacker.labEquipment,
+                'experience':'' if not hacker.experience else hacker.experience.replace('\n', ' ').replace('\r', ''),
+                'teamMembers':'' if not hacker.teamMembers else hacker.teamMembers.replace('\n', ' ').replace('\r', ''),
+            }
+
+        if not memcache.set(key, data, time=constants.MEMCACHE_TIMEOUT):
+            logging.error('Memcache set failed.')
+
+        return data
+    
     def set_apply_count_memcache(self):
         """Sets the 'apply_count' key in memcache"""
         q = Attendee.query(Attendee.isRegistered == True)

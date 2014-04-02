@@ -85,7 +85,8 @@ class ApproveHandler(MainAdminHandler.BaseAdminHandler):
             data['routes'].append({'text':r, 'link':urllib.quote(link)})
 
 
-        data['hackers'] = self.get_hackers_new_memcache(status, category, route, constants.USE_ADMIN_MEMCACHE)
+        # data['hackers'] = self.get_hackers_new_memcache(status, category, route, constants.USE_ADMIN_MEMCACHE)
+        data['hackers'] = self.get_hackers_better_memcache(status, category, route)
 
         data['num_people'] = len(data['hackers'])
 
@@ -134,8 +135,5 @@ class ApproveHandler(MainAdminHandler.BaseAdminHandler):
                 db_user.approvalStatus = Status(status=status)
 
         db_user.put()
-
-        # Delete memcache key so /admin/approve is updated
-        # memcache.delete('hackers')
 
         return self.write('success')
