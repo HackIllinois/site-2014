@@ -2,7 +2,6 @@ import logging
 import csv
 import cStringIO
 import random
-import string
 
 from google.appengine.api import users
 from google.appengine.api import urlfetch
@@ -301,8 +300,8 @@ class BaseAdminHandler(MainHandler.Handler):
                          'micro1':hacker.micro1,
                          'micro2':hacker.micro2,
                          'labEquipment':hacker.labEquipment,
-                         'experience':'' if not hacker.experience else string.replace(hacker.experience, '\n', ' '),
-                         'teamMembers':'' if not hacker.teamMembers else string.replace(hacker.teamMembers, '\n', ' ')})
+                         'experience':'' if not hacker.experience else hacker.experience.replace('\n', ' ').replace('\r', ''),
+                         'teamMembers':'' if not hacker.teamMembers else hacker.teamMembers.replace('\n', ' ').replace('\r', '')})
 
         # Not using memcache at the moment
         # if not memcache.set(key, data, time=constants.MEMCACHE_TIMEOUT):
