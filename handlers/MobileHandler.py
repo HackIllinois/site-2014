@@ -362,7 +362,7 @@ class LoginHandler(MainHandler.BaseMobileHandler):
             name = ''
             if hackerProfile.nameFirst: name+=hackerProfile.nameFirst + ' '
             if hackerProfile.nameLast: name+=hackerProfile.nameLast
-            profile = {'name':hackerProfile.name, 
+            profile = {'name':name, 
             'email':hackerProfile.email, 
             'school':hackerProfile.school, 
             'year':hackerProfile.year,
