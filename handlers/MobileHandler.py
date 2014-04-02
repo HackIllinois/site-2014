@@ -10,6 +10,42 @@ from google.appengine.api import users, memcache
 import json
 import time
 
+def _decode_list(data):
+    rv = []
+    for item in data:
+        if isinstance(item, unicode):
+            item = item.encode('utf-8')
+        elif isinstance(item, list):
+            item = _decode_list(item)
+        elif isinstance(item, dict):
+            item = _decode_dict(item)
+        rv.append(item)
+    return rv
+
+def _decode_dict(data):
+    rv = {}
+    for key, value in data.iteritems():
+        if isinstance(key, unicode):
+            key = key.encode('utf-8')
+        if isinstance(value, unicode):
+            value = value.encode('utf-8')
+        elif isinstance(value, list):
+            value = _decode_list(value)
+        elif isinstance(value, dict):
+            value = _decode_dict(value)
+        rv[key] = value
+    return rv
+
+def update_profile_dict(profile, updated_dict):
+    if 'skills' in updatedKeys:
+        memcache_profile['skills'] = updatedProfileDict['skills']
+    elif 'homebase' in updatedKeys:
+        memcache_profile['homebase'] = updatedProfileDict['homebase']
+    elif 'status' in updatedKeys:
+        memcache_profile['status'] = updatedProfileDict['status']
+    elif 'fb_url' in updatedKeys:
+        memcache_profile['fb_url'] = updatedProfileDict['fb_url']
+
 def check_email_for_login(email):
     if not email:
         return False
@@ -196,10 +232,10 @@ class PersonHandler(MainHandler.BaseMobileHandler):
     def get(self):
         valid_email = False
         if 'Email' in self.request.headers:
-            check_email_for_login(self.request.headers['Email'])
+            valid_email = check_email_for_login(self.request.headers['Email'])
 
-        # if not valid_email:
-        #     return self.write(json.dumps([]))
+        if not valid_email:
+            return self.write(json.dumps([]))
         
         time = self.request.get('last_updated')
         
@@ -242,8 +278,14 @@ class PersonHandler(MainHandler.BaseMobileHandler):
             return self.write(json.dumps({'message':'No userId'}))
 
         params = self.request.body
-        
-        updatedProfile = json.loads(params)
+        updatedProfile = None
+
+        try:
+            updatedProfile = json.loads(params, object_hook=_decode_dict)
+        except ValueError, e:
+            return self.write(json.dumps({'message':'Invalid JSON'}))
+            
+
         updatedProfileDict = {}
         updatedKeys = []
         for _key in updatedProfile:
@@ -259,58 +301,29 @@ class PersonHandler(MainHandler.BaseMobileHandler):
                 # update datastore
                 Attendee.update_search(updatedProfileDict, {'userEmail':email})
 
-                # update memcache
-                all_hacker_profiles = get_people_memecache('all')
-                for memcache_hacker_profile in all_hacker_profiles:
-                    if memcache_hacker_profile['email'] == hackerProfile.email:
-                        if 'skills' in updatedKeys:
-                            memcache_hacker_profile['skills'] = updatedProfileDict['skills']
-                        elif 'homebase' in updatedKeys:
-                            memcache_hacker_profile['homebase'] = updatedProfileDict['homebase']
-                        elif 'fb_url' in updatedKeys:
-                            memcache_hacker_profile['fb_url'] =  updatedProfileDict['fb_url']
-                if not memcache.replace('all', all_hacker_profiles,time=constants.MOBILE_MEMCACHE_TIMEOUT):
-                    logging.error('Memcache set failed for all.')
-
-                return self.write(json.dumps({'message':'Updated Profile'}))
-
             elif staffProfile:
                 # update datastore
                 Admin.update_search(updatedProfileDict, {'email':email})
-
-                #update memcache
-                all_staff_profiles = get_people_memecache('all')
-                for memcache_staff_profile in all_staff_profiles:
-                    if memcache_staff_profile['email'] == staffProfile.email:
-                        if 'skills' in updatedKeys:
-                            memcache_staff_profile['skills'] = updatedProfileDict['skills']
-                        elif 'homebase' in updatedKeys:
-                            memcache_staff_profile['homebase'] = updatedProfileDict['homebase']
-                        elif 'fb_url' in updatedKeys:
-                            memcache_staff_profile['fb_url'] = updatedProfileDict['fb_url']
-                if not memcache.replace('all', all_staff_profiles, time=constants.MOBILE_MEMCACHE_TIMEOUT):
-                    logging.error('Memcache set failed for all')
-
-                return self.write(json.dumps({'message':'Updated Profile'}))
 
             elif companyProfile:
                 # update datastore
                 Sponsor.update_search(updatedProfileDict, {'email':email})
 
-                # update memcache
-                all_mentor_profiles = get_people_memecache('all')
-                for memcache_mentor_profile in all_mentor_profiles:
-                    if memcache_mentor_profile['email'] == companyProfile.email:
-                        if 'skills' in updatedKeys:
-                            memcache_mentor_profile['skills'] = updatedProfileDict['skills']
-                        elif 'homebase' in updatedKeys:
-                            memcache_mentor_profile['homebase'] = updatedProfileDict['homebase']
-                        elif 'status' in updatedKeys:
-                            memcache_mentor_profile['status'] = updatedProfileDict['status']
-                        elif 'fb_url' in updatedKeys:
-                            memcache_mentor_profile['fb_url'] = updatedProfileDict['fb_url']
-                if not memcache.replace('all', all_mentor_profiles, time=constants.MOBILE_MEMCACHE_TIMEOUT):
-                    logging.error('Memcache set failed for all')
+            # update memcache
+            all_profiles = get_people_memecache('all')
+            for memcache_profile in all_profiles:
+                if memcache_profile['email'] == email:
+                    if 'skills' in updatedKeys:
+                        memcache_hacker_profile['skills'] = updatedProfileDict['skills']
+                    elif 'homebase' in updatedKeys:
+                        memcache_hacker_profile['homebase'] = updatedProfileDict['homebase']
+                    elif 'fb_url' in updatedKeys:
+                        memcache_hacker_profile['fb_url'] =  updatedProfileDict['fb_url']
+                    elif 'status' in updatedKeys:
+                        memcache_hacker_profile['status'] = updatedProfileDict['status']
+                    
+            if not memcache.replace('all', all_profiles, time=constants.MOBILE_MEMCACHE_TIMEOUT):
+                logging.error('Memcache set failed for all')
                 
                 return self.write(json.dumps({'message':'Updated Profile'}))
             else:

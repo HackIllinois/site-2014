@@ -102,6 +102,26 @@
             .main {
                 margin-top: 0;
             }
+            .display-dropdown-list-mobile {
+                display: none;
+            }
+            @media only screen
+            and (max-width: 767px) {
+                .display-dropdown-list-mobile {
+                    display: block;
+                }
+                .display-dropdown-list-mobile > li {
+                    padding: 10px 15px;
+                }
+                .display-dropdown-list-mobile > li > a {
+                    line-height: 20px;
+                    color: #999;
+                }
+                .display-dropdown-list-mobile > li > a:hover {
+                    text-decoration: none;
+                    color: #fff;
+                }
+            }
         </style>
 
         <meta property="og:title" content="HackIllinois">
@@ -150,7 +170,24 @@
                 </div>
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav navbar-right">
+                        <div class="display-dropdown-list-mobile">
+                            {% for href, id, caption in navigation_sidebar %}
+                            <li{% if id == active_page %} class="active"{% endif %}><a href="{{ href|e }}">{{ caption|e }}</a></li>
+                            {% endfor %}
 
+                            {% if approveAccess %}
+                            {% for href, id, caption in navigation_sidebar_approve %}
+                            <li{% if id == active_page %} class="active"{% endif %}><a href="{{ href|e }}">{{ caption|e }}</a></li>
+                            {% endfor %}
+                            {% endif %}
+
+                            {% if fullAccess %}
+                            {% for href, id, caption in navigation_sidebar_full %}
+                            <li{% if id == active_page %} class="active"{% endif %}><a href="{{ href|e }}">{{ caption|e }}</a></li>
+                            {% endfor %}
+                            {% endif %}
+                        </div>
+                        <!--logout-->
                         {% for href, caption in navigation_topbar %}
                         <li><a href="{{ href|e }}">{{ caption|e }}</a></li>
                         {% endfor %}
