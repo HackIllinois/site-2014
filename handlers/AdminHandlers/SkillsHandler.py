@@ -47,5 +47,5 @@ class SkillsHandler(MainAdminHandler.BaseAdminTableHandler):
 
         Skills.add_or_update(db_dict)
 
-        return self.redirect('/admin/skills')
+        return self.redirect('/admin/mobile/skills')
 

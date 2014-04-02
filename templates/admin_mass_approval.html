@@ -32,7 +32,8 @@
         <label for="exampleInputEmail1">Email Addresses</label>
         <textarea id="emails" class="form-control" name="emails" rows="8" required></textarea>
     </div>
-    <button id="email-submit" type="submit" class="btn btn-primary" data-loading-text="Thinking...">Submit</button>
+    <button id="email-approve" class="btn btn-primary" data-loading-text="Thinking...">Approve</button>
+    <button id="email-waitlist" class="btn btn-primary" data-loading-text="Thinking...">Waitlist</button>
 </form>
 
 <p id="result" class="text-info"></p>
@@ -44,19 +45,39 @@
 $(document).ready(function() {
     $("#email-form").submit(function(event) {
         event.preventDefault();
-        $("#email-submit").button('loading');
+    });
 
-        var posting = $.post('/admin/massapproval', {"emails": $("#emails").val()});
+    $("#email-approve").click(function() {
+        $("#email-approve").button('loading');
+
+        var posting = $.post('/admin/massapproval', {"emails": $("#emails").val(), "action": "approve"});
 
         posting.done(function(data) {
             $("#result").html(data);
             $("#emails").val("");
-            $("#email-submit").button('reset');
+            $("#email-approve").button('reset');
         });
 
         posting.fail(function() {
             alert("Error submitting data.");
-            $("#email-submit").button('reset');
+            $("#email-approve").button('reset');
+        });
+    });
+
+    $("#email-waitlist").click(function() {
+        $("#email-waitlist").button('loading');
+
+        var posting = $.post('/admin/massapproval', {"emails": $("#emails").val(), "action": "waitlist"});
+
+        posting.done(function(data) {
+            $("#result").html(data);
+            $("#emails").val("");
+            $("#email-waitlist").button('reset');
+        });
+
+        posting.fail(function() {
+            alert("Error submitting data.");
+            $("#email-waitlist").button('reset');
         });
     });
 });

@@ -93,7 +93,9 @@ handlers = [
     RedirectRoute('/admin/tests', handler=AdminHandlers.TestAllHandler.TestAllHandler, name='TestAll', strict_slash=True),
     RedirectRoute('/admin/testsjs', handler=AdminHandlers.TestAllHandler.TestAllJsHandler, name='TestAllJs', strict_slash=True),
 
-    RedirectRoute('/admin/skills', handler=AdminHandlers.SkillsHandler.SkillsHandler, name='AdminSkills', strict_slash=True),
+    RedirectRoute('/admin/mobile/skills', handler=AdminHandlers.SkillsHandler.SkillsHandler, name='AdminSkills', strict_slash=True),
+    RedirectRoute('/admin/mobile/newsfeed', handler=AdminHandlers.NewsFeedHandler.NewsFeedHandler, name='AdminNewsFeed', strict_slash=True),
+    RedirectRoute('/admin/mobile/schedule', handler=AdminHandlers.ScheduleHandler.ScheduleHandler, name='AdminSchedule', strict_slash=True),
     
     # RedirectRoute('/admin/updateschema', handler=AdminHandlers.UpdateSchemaHandler.UpdateSchemaHandler, name='UpdateSchema', strict_slash=True),
 

@@ -22,6 +22,8 @@ class MassApprovalHandler(MainAdminHandler.BaseAdminHandler):
         if not admin_user.fullAccess:
             return self.abort(401, detail='User does not have permission to email attendees.')
 
+        action = str(urllib.unquote(self.request.get('action')))
+
         orig_str = str(urllib.unquote(self.request.get('emails')))
         email_str = orig_str.strip()
         if not email_str:
@@ -56,9 +58,16 @@ class MassApprovalHandler(MainAdminHandler.BaseAdminHandler):
 
             if person.approvalStatus.status in ["Not Approved", "Waitlisted"]:
                 successful_emails.append(email)
-                person.approvalStatus.status = "Approved"
-                person.approvalStatus.approvedTime = datetime.now()
-                person.put()
+                if action == "approve":
+                    person.approvalStatus.status = "Approved"
+                    person.approvalStatus.approvedTime = datetime.now()
+                    person.put()
+                elif action == "waitlist":
+                    person.approvalStatus.status = "Waitlisted"
+                    person.approvalStatus.waitlistedTime = datetime.now()
+                    person.put()
+                else:
+                    return self.write("Error: Invalid action.")
             elif person.approvalStatus.status == "Approved":
                 already_approved_emails.append(email)
             elif person.approvalStatus.status in constants.RSVP_STATUSES:

@@ -4,7 +4,6 @@
     ('/admin/basicstats/approved', 'basicstats', 'Basic Stats'),
     ('/admin/stats', 'stats', 'Advanced Stats'),
     ('/admin/busstats', 'busstats', 'Bus Stats'),
-    ('/admin/skills', 'skills', 'Skills'),
 ] %}
 {% set navigation_sidebar_approve = [
     ('/admin/allhackers', 'all_hackers', 'All Hackers'),
@@ -12,8 +11,13 @@
     ('/admin/rsvp', 'rsvp', 'RSVP'),
     ('/admin/approve', 'profile', 'Profile'),
 ] %}
+{% set navigation_sidebar_mobile = [
+    ('/admin/mobile/skills', 'skills', 'Mobile Skills'),
+    ('/admin/mobile/newsfeed', 'newsfeed', 'Mobile Newsfeed'),
+    ('/admin/mobile/schedule', 'schedule', 'Mobile Schedule'),
+] %}
 {% set navigation_sidebar_full = [
-    ('/admin/massapproval', 'massapproval', 'Mass Approval'),
+    ('/admin/massapproval', 'massapproval', 'Mass Approval/Waitlist'),
     ('/admin/send', 'send', 'Mark Sent Email'),
     ('/admin/testsjs', 'tests', 'URL Tests'),
     ('/admin/manager', 'manager', 'Manager'),

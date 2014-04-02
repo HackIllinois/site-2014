@@ -20,3 +20,5 @@ import MassApprovalHandler
 import UpdateSchemaHandler
 import RsvpStatsHandler
 import AllHackersHandler
+import NewsFeedHandler
+import ScheduleHandler
