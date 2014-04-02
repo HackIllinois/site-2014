@@ -280,7 +280,7 @@ class BaseAdminHandler(MainHandler.Handler):
                          'linkedin': hacker.linkedin,
                          'github': hacker.github,
                          'shirt': hacker.shirt,
-                         'food': 'None' if not hacker.food else ', '.join(hacker.food.split(',')),
+                         'food': '' if not hacker.food else ', '.join(hacker.food.split(',')),
                          'foodInfo':hacker.foodInfo,
                          'projectType': hacker.projectType,
                          'resume': hacker.resume,
@@ -300,11 +300,12 @@ class BaseAdminHandler(MainHandler.Handler):
                          'micro1':hacker.micro1,
                          'micro2':hacker.micro2,
                          'labEquipment':hacker.labEquipment,
-                         'experience':hacker.experience,
-                         'teamMembers':hacker.teamMembers})
+                         'experience':'' if not hacker.experience else hacker.experience.replace('\n', ' ').replace('\r', ''),
+                         'teamMembers':'' if not hacker.teamMembers else hacker.teamMembers.replace('\n', ' ').replace('\r', '')})
 
-        if not memcache.set(key, data, time=constants.MEMCACHE_TIMEOUT):
-            logging.error('Memcache set failed.')
+        # Not using memcache at the moment
+        # if not memcache.set(key, data, time=constants.MEMCACHE_TIMEOUT):
+        #     logging.error('Memcache set failed.')
 
         return data
 
