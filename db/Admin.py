@@ -28,6 +28,9 @@ class Admin(Model):
     # For people who have access to approve and disapprove attendees
     approveAccess = ndb.BooleanProperty(default=False)
 
+    # For people who have access to change mobile things
+    mobileAccess = ndb.BooleanProperty(default=False)
+
     # Only Systems-Core and Matthew have this
     fullAccess = ndb.BooleanProperty(default=False)
 

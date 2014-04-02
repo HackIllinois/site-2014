@@ -1,5 +1,5 @@
 {% extends "base/admin_base.html" %}
-{% set active_page = "{{ active_page }}" %}
+{% set active_page = "skills" %}
 
 {% block head %}
 <style type="text/css">
@@ -42,7 +42,15 @@
                     {% for row in table_data.content %}
                     <tr>
                         {% for field in table_data.fields %}
+                            {% if row[field.db_field]|is_list %}
+                                <td>
+                                {% for item in row[field.db_field] %}
+                                    {{ item }}{% if not loop.last %}, {% endif %}
+                                {% endfor %}
+                                </td>
+                            {% else %}
                             <td>{{ row[field.db_field] }}</td>
+                            {% endif %}
                         {% endfor %}
                     </tr>
                     {% endfor %}

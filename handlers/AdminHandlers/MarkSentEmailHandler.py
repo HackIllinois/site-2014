@@ -14,7 +14,7 @@ class MarkSentEmailHandler(MainAdminHandler.BaseAdminHandler):
             return self.abort(401, detail='User does not have permission to email attendees.')
 
         data = {}
-        return self.render('admin_send_email.html', data=data, approveAccess=admin_user.approveAccess, fullAccess=admin_user.fullAccess)
+        return self.render('admin_send_email.html', data=data, approveAccess=admin_user.approveAccess, mobileAccess=admin_user.mobileAccess, fullAccess=admin_user.fullAccess)
 
     def post(self):
         admin_user = self.get_admin_user()

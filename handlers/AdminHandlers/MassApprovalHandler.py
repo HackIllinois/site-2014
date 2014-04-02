@@ -14,7 +14,7 @@ class MassApprovalHandler(MainAdminHandler.BaseAdminHandler):
             return self.abort(401, detail='User does not have permission to mass approve.')
 
         data = {}
-        return self.render('admin_mass_approval.html', data=data, approveAccess=admin_user.approveAccess, fullAccess=admin_user.fullAccess)
+        return self.render('admin_mass_approval.html', data=data, approveAccess=admin_user.approveAccess, mobileAccess=admin_user.mobileAccess, fullAccess=admin_user.fullAccess)
 
     def post(self):
         admin_user = self.get_admin_user()

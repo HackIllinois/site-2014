@@ -104,4 +104,4 @@ class RsvpHandler(MainAdminHandler.BaseAdminHandler):
             elif st == 'No Rsvp':
                 data['noresponseCount'] += 1
 
-        return self.render("admin_rsvp.html", data=data, approveAccess=admin_user.approveAccess, fullAccess=admin_user.fullAccess)
+        return self.render("admin_rsvp.html", data=data, approveAccess=admin_user.approveAccess, mobileAccess=admin_user.mobileAccess, fullAccess=admin_user.fullAccess)

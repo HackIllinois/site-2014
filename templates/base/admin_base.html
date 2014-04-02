@@ -72,6 +72,8 @@
                     padding: 70px 20px 20px;
                     background-color: #f5f5f5;
                     border-right: 1px solid #eee;
+                    overflow-x: hidden;
+                    overflow-y: auto;
                 }
             }
 
@@ -181,6 +183,12 @@
                             {% endfor %}
                             {% endif %}
 
+                            {% if mobileAccess %}
+                            {% for href, id, caption in navigation_sidebar_mobile %}
+                            <li{% if id == active_page %} class="active"{% endif %}><a href="{{ href|e }}">{{ caption|e }}</a></li>
+                            {% endfor %}
+                            {% endif %}
+
                             {% if fullAccess %}
                             {% for href, id, caption in navigation_sidebar_full %}
                             <li{% if id == active_page %} class="active"{% endif %}><a href="{{ href|e }}">{{ caption|e }}</a></li>
@@ -208,6 +216,12 @@
 
                         {% if approveAccess %}
                         {% for href, id, caption in navigation_sidebar_approve %}
+                        <li{% if id == active_page %} class="active"{% endif %}><a href="{{ href|e }}">{{ caption|e }}</a></li>
+                        {% endfor %}
+                        {% endif %}
+
+                        {% if mobileAccess %}
+                        {% for href, id, caption in navigation_sidebar_mobile %}
                         <li{% if id == active_page %} class="active"{% endif %}><a href="{{ href|e }}">{{ caption|e }}</a></li>
                         {% endfor %}
                         {% endif %}

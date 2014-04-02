@@ -101,7 +101,7 @@ class ApproveHandler(MainAdminHandler.BaseAdminHandler):
             elif st == 'Not Approved':
                 data['notapproveCount'] += 1
 
-        return self.render("admin_approve.html", data=data, approveAccess=admin_user.approveAccess, fullAccess=admin_user.fullAccess)
+        return self.render("admin_approve.html", data=data, approveAccess=admin_user.approveAccess, mobileAccess=admin_user.mobileAccess, fullAccess=admin_user.fullAccess)
 
 
     def post(self):
