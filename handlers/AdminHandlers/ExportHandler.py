@@ -56,7 +56,8 @@ class ExportHandler(MainAdminHandler.BaseAdminHandler):
         fields = ['nameFirst','nameLast','email',
                   'gender','school','year','linkedin',
                   'github','shirt','food','projectType', 'travel', 'busRoute',
-                  'registrationTime','isApproved','userId',]
+                  'registrationTime','isApproved',
+                  'userId',]
 
         # Putting this is constants is cool, but bonus points for not having "fields" in one and "headings" in another
         # when changing one requires changing the other. Also there are two more headings than fields which is in the code
@@ -69,6 +70,16 @@ class ExportHandler(MainAdminHandler.BaseAdminHandler):
                     row.append(h[f])
                 else:
                     row.append('')
+
+            if 'experience' in h:
+                row.append('')
+            else:
+                row.append('')
+
+            if 'teamMembers' in h:
+                row.append(h.teamMembers.get())
+            else:
+                row.append('')
 
             if 'resume' in h and h['resume'] is not None:
                 row.append(base_url + '/admin/resume?userId='+h['userId'])
