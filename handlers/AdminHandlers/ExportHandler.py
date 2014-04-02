@@ -18,7 +18,7 @@ class ExportHandler(MainAdminHandler.BaseAdminHandler):
 
         if status is not None:
             status = str(urllib.unquote(status))
-            if status not in constants.STATUSES + ['All', 'a', 'b']:
+            if status not in constants.STATUSES + ['All', 'a', 'b', 'c']:
                 return self.abort(404, detail='Status <%s> does not exist.' % status)
         if category is not None:
             category = str(urllib.unquote(category))
@@ -54,17 +54,15 @@ class ExportHandler(MainAdminHandler.BaseAdminHandler):
         writer = csv.writer(output)
 
         fields = ['nameFirst','nameLast','email','gender','school','year','linkedin',
-                  'github','shirt','food','projectType', 'travel', 'busRoute',
+                  'github','shirt','food','foodInfo','projectType', 'travel', 'busRoute',
+                  'experience','teamMembers','micro1','micro2','labEquipment',
                   'registrationTime','isApproved','userId']
 
         csv_headings = ['First Name','Last Name','Email','Gender','School','Year','LinkedIn',
-                        'Github','Shirt','Food','Project Type','Travel Preference','Bus Route',
-                        'Registration Time','Is Approved','User ID','Prev Experience','Team Members',
-                        'Resume','Status']
+                        'Github','Shirt','Food','Special Food Arrangements','Project Type','Travel Preference','Bus Route',
+                        'Experience','Team','Hardware (return)','Hardware (keep)','Lab Equipment',
+                        'Registration Time','Is Approved','User ID','Resume','Status']
 
-        # Putting this is constants is cool, but bonus points for not having "fields" in one and "headings" in another
-        # when changing one requires changing the other. Also there are two more headings than fields which is in the code
-        # fine but difficult to figure out from a third party's (e.g. my) perspective. --Matthew :)
         writer.writerow(csv_headings)
         for h in hackers:
             row = []
@@ -73,16 +71,6 @@ class ExportHandler(MainAdminHandler.BaseAdminHandler):
                     row.append(h[f])
                 else:
                     row.append('')
-
-            if 'experience' in h:
-                row.append('')
-            else:
-                row.append('')
-
-            if 'teamMembers' in h:
-                row.append(h.teamMembers.get())
-            else:
-                row.append('')
 
             if 'resume' in h and h['resume'] is not None:
                 row.append(base_url + '/admin/resume?userId='+h['userId'])
