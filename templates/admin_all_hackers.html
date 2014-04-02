@@ -1,5 +1,5 @@
 {% extends "base/admin_base.html" %}
-{% set active_page = "rsvp" %}
+{% set active_page = "all_hackers" %}
 
 {% block head %}
     <style type="text/css">
@@ -29,9 +29,6 @@
         .width100 {
             width:100%;
         }
-        .width50 {
-            width:50%;
-        }
         .t-centered {
             text-align: center;
         }
@@ -45,7 +42,7 @@
 {% block body %}
     <div class="row">
         <div class="col-md-9">
-            <h1 class="page-header">Hacker Summary<small>&nbsp;&nbsp;</small><small id="count">{{ data.num_people }}</small><small>&nbsp;people</small></h1>
+            <h1 class="page-header">All Hackers<small>&nbsp;&nbsp;</small><small id="count">{{ data.num_people }}</small><small>&nbsp;people</small></h1>
         </div>
         <div class="col-md-3">
             <a href="{{ data.export_url }}" role="button" class="btn btn-success btn-lg btn-block">Download as CSV</a>
@@ -86,15 +83,6 @@
                     {% endfor %}
                 </ul>
             </div>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-md-12">
-            <p>{{ data.awaitCount }} hackers pending response<br>
-            {{ data.comingCount }} hackers RSVP's Yes<br>
-            {{ data.notcomingCount }} hackers RSVP's No<br>
-            {{ data.noresponseCount }} hackers did not respond on time</p>
         </div>
     </div>
 

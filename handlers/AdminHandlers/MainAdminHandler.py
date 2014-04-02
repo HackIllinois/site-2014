@@ -190,7 +190,7 @@ class BaseAdminHandler(MainHandler.Handler):
         # Change search of category='I have not responded to this quesiton' to ''
         category = '' if category == 'I have not responded to this quesiton' else category
 
-        if status is not None and status != 'a' and status != 'b' and status != 'All':
+        if status is not None and status != 'a' and status != 'b' and status != 'c' and status != 'All':
             if category is not None:
                 if route is not None:
                     hackers = Attendee.query(Attendee.isRegistered == True, Attendee.approvalStatus.status == status,
@@ -281,6 +281,7 @@ class BaseAdminHandler(MainHandler.Handler):
                          'github': hacker.github,
                          'shirt': hacker.shirt,
                          'food': 'None' if not hacker.food else ', '.join(hacker.food.split(',')),
+                         'foodInfo':hacker.foodInfo,
                          'projectType': hacker.projectType,
                          'resume': hacker.resume,
                          'registrationTime': hacker.registrationTime.strftime('%x %X'),
@@ -295,7 +296,12 @@ class BaseAdminHandler(MainHandler.Handler):
                                                 '%x %X') if hacker.approvalStatus.waitlistedTime else None,
                                             'rsvpTime': hacker.approvalStatus.rsvpTime.strftime(
                                                 '%x %X') if hacker.approvalStatus.rsvpTime else None} if hacker.approvalStatus else None,
-                         'groupNumber': hacker.groupNumber})
+                         'groupNumber': hacker.groupNumber,
+                         'micro1':hacker.micro1,
+                         'micro2':hacker.micro2,
+                         'labEquipment':hacker.labEquipment,
+                         'experience':hacker.experience,
+                         'teamMembers':hacker.teamMembers})
 
         if not memcache.set(key, data, time=constants.MEMCACHE_TIMEOUT):
             logging.error('Memcache set failed.')
