@@ -269,6 +269,8 @@ class PersonHandler(MainHandler.BaseMobileHandler):
                             memcache_hacker_profile['homebase'] = updatedProfileDict['homebase']
                         elif 'fb_url' in updatedKeys:
                             memcache_hacker_profile['fb_url'] =  updatedProfileDict['fb_url']
+                        elif 'status' in updatedKeys:
+                            memcache_hacker_profile['status'] = updatedProfileDict['status']
                 if not memcache.replace('all', all_hacker_profiles,time=constants.MOBILE_MEMCACHE_TIMEOUT):
                     logging.error('Memcache set failed for all.')
 
@@ -288,6 +290,8 @@ class PersonHandler(MainHandler.BaseMobileHandler):
                             memcache_staff_profile['homebase'] = updatedProfileDict['homebase']
                         elif 'fb_url' in updatedKeys:
                             memcache_staff_profile['fb_url'] = updatedProfileDict['fb_url']
+                        elif 'status' in updatedKeys:
+                            memcache_staff_profile['status'] = updatedProfileDict['status']
                 if not memcache.replace('all', all_staff_profiles, time=constants.MOBILE_MEMCACHE_TIMEOUT):
                     logging.error('Memcache set failed for all')
 
