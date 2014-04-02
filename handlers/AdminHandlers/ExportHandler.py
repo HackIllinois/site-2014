@@ -72,7 +72,7 @@ class ExportHandler(MainAdminHandler.BaseAdminHandler):
                     row.append('')
 
             if 'experience' in h:
-                row.append(h.experience.getValue())
+                row.append('')
             else:
                 row.append('')
 
