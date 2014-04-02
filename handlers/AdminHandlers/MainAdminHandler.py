@@ -303,8 +303,9 @@ class BaseAdminHandler(MainHandler.Handler):
                          'experience':hacker.experience,
                          'teamMembers':hacker.teamMembers})
 
-        if not memcache.set(key, data, time=constants.MEMCACHE_TIMEOUT):
-            logging.error('Memcache set failed.')
+        # Not using memcache at the moment
+        # if not memcache.set(key, data, time=constants.MEMCACHE_TIMEOUT):
+        #     logging.error('Memcache set failed.')
 
         return data
 
