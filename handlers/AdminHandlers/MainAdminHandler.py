@@ -190,7 +190,7 @@ class BaseAdminHandler(MainHandler.Handler):
         # Change search of category='I have not responded to this quesiton' to ''
         category = '' if category == 'I have not responded to this quesiton' else category
 
-        if status is not None and status != 'a' and status != 'b' and status != 'All':
+        if status is not None and status != 'a' and status != 'b' and status != 'c' and status != 'All':
             if category is not None:
                 if route is not None:
                     hackers = Attendee.query(Attendee.isRegistered == True, Attendee.approvalStatus.status == status,

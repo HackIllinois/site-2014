@@ -59,15 +59,6 @@ READABLE_FIELDS = {'food':'your dietary restrictions',
 
 TOS_ERROR_MESSAGE = 'Please accept the Terms of Service'
 
-CSV_HEADINGS = ['First Name','Last Name','Email',
-                'Gender','School','Year','LinkedIn',
-                'Github','Shirt','Food','Project Type',
-                'Travel Preference', 'Bus Route',
-                'Registration Time','Is Approved',
-                'User ID',
-                'Prev Experience', 'Team Members',
-                'Resume','Status']
-
 # The below array is for more descriptive error messages. @Mattato pls fix.
 # READABLE_REQUIRED_FIELDS = ['First Name','Last Name','E-mail','Gender','School','Year in School','T-shirt size','past experience', 'Please accept the Terms of Service']
 

@@ -19,3 +19,4 @@ import MarkSentEmailHandler
 import MassApprovalHandler
 import UpdateSchemaHandler
 import RsvpStatsHandler
+import AllHackersHandler

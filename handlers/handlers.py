@@ -85,6 +85,11 @@ handlers = [
     RedirectRoute('/admin/rsvp/<status>/<category>',         handler=AdminHandlers.RsvpHandler.RsvpHandler, name='AdminRsvp2', strict_slash=True),
     RedirectRoute('/admin/rsvp/<status>/<category>/<route>', handler=AdminHandlers.RsvpHandler.RsvpHandler, name='AdminRsvp3', strict_slash=True),
 
+    RedirectRoute('/admin/allhackers',                             handler=AdminHandlers.AllHackersHandler.AllHackersHandler, name='AdminAllHackersHandler0', strict_slash=True),
+    RedirectRoute('/admin/allhackers/<status>',                    handler=AdminHandlers.AllHackersHandler.AllHackersHandler, name='AdminAllHackersHandler1', strict_slash=True),
+    RedirectRoute('/admin/allhackers/<status>/<category>',         handler=AdminHandlers.AllHackersHandler.AllHackersHandler, name='AdminAllHackersHandler2', strict_slash=True),
+    RedirectRoute('/admin/allhackers/<status>/<category>/<route>', handler=AdminHandlers.AllHackersHandler.AllHackersHandler, name='AdminAllHackersHandler3', strict_slash=True),
+
     RedirectRoute('/admin/tests', handler=AdminHandlers.TestAllHandler.TestAllHandler, name='TestAll', strict_slash=True),
     RedirectRoute('/admin/testsjs', handler=AdminHandlers.TestAllHandler.TestAllJsHandler, name='TestAllJs', strict_slash=True),
 

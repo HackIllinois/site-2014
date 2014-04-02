@@ -53,16 +53,19 @@ class ExportHandler(MainAdminHandler.BaseAdminHandler):
         output = cStringIO.StringIO()
         writer = csv.writer(output)
 
-        fields = ['nameFirst','nameLast','email',
-                  'gender','school','year','linkedin',
+        fields = ['nameFirst','nameLast','email','gender','school','year','linkedin',
                   'github','shirt','food','projectType', 'travel', 'busRoute',
-                  'registrationTime','isApproved',
-                  'userId',]
+                  'registrationTime','isApproved','userId']
+
+        csv_headings = ['First Name','Last Name','Email','Gender','School','Year','LinkedIn',
+                        'Github','Shirt','Food','Project Type','Travel Preference','Bus Route',
+                        'Registration Time','Is Approved','User ID','Prev Experience','Team Members',
+                        'Resume','Status']
 
         # Putting this is constants is cool, but bonus points for not having "fields" in one and "headings" in another
         # when changing one requires changing the other. Also there are two more headings than fields which is in the code
         # fine but difficult to figure out from a third party's (e.g. my) perspective. --Matthew :)
-        writer.writerow(constants.CSV_HEADINGS)
+        writer.writerow(csv_headings)
         for h in hackers:
             row = []
             for f in fields:
