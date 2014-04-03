@@ -132,6 +132,7 @@ def get_mentor_data():
                     'type':'mentor'}
         if mentor_profile.skills[0] != "":
             profile['skills'] = mentor_profile.skills
+
         else:
             profile['skills'] = []
 
@@ -309,6 +310,7 @@ class PersonHandler(MainHandler.BaseMobileHandler):
             return self.write(json.dumps({'message':'Invalid JSON'}))
             
 
+        # look at this. Think this is wrong for status
         updatedProfileDict = {}
         updatedKeys = []
         for _key in updatedProfile:
