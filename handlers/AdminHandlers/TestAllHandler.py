@@ -42,4 +42,4 @@ class TestAllJsHandler(MainAdminHandler.BaseAdminHandler):
         data = {}
         data['base'] = self.request.application_url
         data['extensions'] = all_extensions
-        return self.render('tests.html', data=data, approveAccess=admin_user.approveAccess, fullAccess=admin_user.fullAccess)
+        return self.render('tests.html', data=data, approveAccess=admin_user.approveAccess, mobileAccess=admin_user.mobileAccess, fullAccess=admin_user.fullAccess)

@@ -7,7 +7,7 @@ class SkillsHandler(MainAdminHandler.BaseAdminTableHandler):
         super(SkillsHandler, self).__init__(request, response)
 
         self.table_data = {
-            'table_name': 'Skills',
+            'table_name': 'Mobile Skills',
             'fields': [
                 {'header': 'Name', 'db_field': 'name', 'field': 'field'},
                 {'header': 'Aliases', 'db_field': 'alias'},
@@ -32,6 +32,7 @@ class SkillsHandler(MainAdminHandler.BaseAdminTableHandler):
                            form_data=self.form_data,
                            activePage='skills',
                            approveAccess=admin_user.approveAccess,
+                           mobileAccess=admin_user.mobileAccess,
                            fullAccess=admin_user.fullAccess)
 
     def post(self):
@@ -47,5 +48,5 @@ class SkillsHandler(MainAdminHandler.BaseAdminTableHandler):
 
         Skills.add_or_update(db_dict)
 
-        return self.redirect('/admin/skills')
+        return self.redirect('/admin/mobile/skills')
 

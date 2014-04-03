@@ -16,5 +16,4 @@ class IndexHandler(MainAdminHandler.BaseAdminHandler):
         data['rsvpYesCount'] = self.get_status_count_memcache('Rsvp Coming', constants.USE_ADMIN_MEMCACHE)
         data['rsvpNoCount'] = self.get_status_count_memcache('Rsvp Not Coming', constants.USE_ADMIN_MEMCACHE)
 
-        return self.render('admin.html', data=data, approveAccess=admin_user.approveAccess,
-                           fullAccess=admin_user.fullAccess)
+        return self.render('admin.html', data=data, approveAccess=admin_user.approveAccess, mobileAccess=admin_user.mobileAccess, fullAccess=admin_user.fullAccess)

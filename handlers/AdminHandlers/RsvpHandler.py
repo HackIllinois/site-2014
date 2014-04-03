@@ -85,7 +85,8 @@ class RsvpHandler(MainAdminHandler.BaseAdminHandler):
             data['routes'].append({'text':r, 'link':urllib.quote(link)})
 
 
-        data['hackers'] = self.get_hackers_new_memcache(status, category, route, constants.USE_ADMIN_MEMCACHE)
+        # data['hackers'] = self.get_hackers_new_memcache(status, category, route, constants.USE_ADMIN_MEMCACHE)
+        data['hackers'] = self.get_hackers_better_memcache(status, category, route)
 
         data['num_people'] = len(data['hackers'])
 
@@ -104,4 +105,4 @@ class RsvpHandler(MainAdminHandler.BaseAdminHandler):
             elif st == 'No Rsvp':
                 data['noresponseCount'] += 1
 
-        return self.render("admin_rsvp.html", data=data, approveAccess=admin_user.approveAccess, fullAccess=admin_user.fullAccess)
+        return self.render("admin_rsvp.html", data=data, approveAccess=admin_user.approveAccess, mobileAccess=admin_user.mobileAccess, fullAccess=admin_user.fullAccess)

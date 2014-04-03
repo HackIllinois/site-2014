@@ -13,15 +13,18 @@ class AccessControlHandler(MainAdminHandler.BaseAdminHandler):
         email = str(urllib.unquote(self.request.get('email')))
         accessControl = self.request.get('accessControl')
         approveAccess = accessControl == 'approve'
+        mobileAccess = accessControl == 'mobile'
         fullAccess = accessControl == 'full'
 
         db_user = Admin.search_database({'email': email}).get()
         if not db_user:
             Admin.add({'approveAccess':(approveAccess or fullAccess),
+                       'mobileAccess':(mobileAccess or fullAccess),
                        'fullAccess':fullAccess,
                        'email': email})
         else:
             Admin.update_search({'approveAccess':(approveAccess or fullAccess),
+                                 'mobileAccess':(mobileAccess or fullAccess),
                                  'fullAccess':fullAccess},
                                 {'email': email})
 

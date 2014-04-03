@@ -49,7 +49,8 @@ class ExportHandler(MainAdminHandler.BaseAdminHandler):
             return self.set_hackers_csv_memcache(base_url, status, category, route)
 
     def set_hackers_csv_memcache(self, base_url, status, category, route):
-        hackers = self.get_hackers_new_memcache(status, category, route, constants.USE_ADMIN_MEMCACHE)
+        # hackers = self.get_hackers_new_memcache(status, category, route, constants.USE_ADMIN_MEMCACHE)
+        hackers = self.get_hackers_better_memcache(status, category, route)
         output = cStringIO.StringIO()
         writer = csv.writer(output)
 

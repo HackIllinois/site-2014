@@ -84,8 +84,9 @@ class AllHackersHandler(MainAdminHandler.BaseAdminHandler):
             else: link += 'c/'+constants.TRAVEL_RIDE_BUS+'/'+r
             data['routes'].append({'text':r, 'link':urllib.quote(link)})
 
-        data['hackers'] = self.get_hackers_new_memcache(status, category, route, constants.USE_ADMIN_MEMCACHE)
+        # data['hackers'] = self.get_hackers_new_memcache(status, category, route, constants.USE_ADMIN_MEMCACHE)
+        data['hackers'] = self.get_hackers_better_memcache(status, category, route)
 
         data['num_people'] = len(data['hackers'])
 
-        return self.render("admin_all_hackers.html", data=data, approveAccess=admin_user.approveAccess, fullAccess=admin_user.fullAccess)
+        return self.render("admin_all_hackers.html", data=data, approveAccess=admin_user.approveAccess, mobileAccess=admin_user.mobileAccess, fullAccess=admin_user.fullAccess)

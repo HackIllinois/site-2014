@@ -14,8 +14,7 @@ class ManagerHandler(MainAdminHandler.BaseAdminHandler):
         data = {}
 
         db_admins = Admin.search_database({})
-        admins = [ {'email':admin.email, 'approveAccess':admin.approveAccess, 'fullAccess':admin.fullAccess} for admin in db_admins ]
-        data['admins'] = admins
+        data['admins'] = [ {'email':admin.email, 'approveAccess':admin.approveAccess, 'fullAccess':admin.fullAccess, 'mobileAccess':admin.mobileAccess} for admin in db_admins ]
 
         db_whtlsts = Whitelist.search_database({})
         whitelists = [ {'enabled': w.enabled,
@@ -27,7 +26,7 @@ class ManagerHandler(MainAdminHandler.BaseAdminHandler):
                         } for w in db_whtlsts ]
         data['whitelists'] = whitelists
 
-        return self.render('admin_manager.html', data=data, approveAccess=admin_user.approveAccess, fullAccess=admin_user.fullAccess)
+        return self.render('admin_manager.html', data=data, approveAccess=admin_user.approveAccess, mobileAccess=admin_user.mobileAccess, fullAccess=admin_user.fullAccess)
 
 class WhitelistControlHandler(MainAdminHandler.BaseAdminHandler):
     def post(self):

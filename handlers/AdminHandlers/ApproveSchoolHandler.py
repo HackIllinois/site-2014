@@ -19,4 +19,4 @@ class ApproveSchoolHandler(MainAdminHandler.BaseAdminHandler):
                 data['hackers'].append(h)
 
         # self.render("approve.html", data=data, approveAccess=admin_user.approveAccess, fullAccess=admin_user.fullAccess)
-        self.render("summary.html", data=data, approveAccess=admin_user.approveAccess, fullAccess=admin_user.fullAccess)
+        self.render("summary.html", data=data, approveAccess=admin_user.approveAccess, mobileAccess=admin_user.mobileAccess, fullAccess=admin_user.fullAccess)

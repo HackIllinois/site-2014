@@ -30,6 +30,7 @@
                         <tr>
                             <th>Email</th>
                             <th class="t-centered">Approve Access</th>
+                            <th class="t-centered">Mobile Access</th>
                             <th class="t-centered">Full Access</th>
                         </tr>
                     </thead>
@@ -38,6 +39,7 @@
                         <tr>
                             <td>{{ a.email }}</td>
                             <td class="t-centered {% if a.approveAccess %}info{% endif %}">{% if a.approveAccess %}X{% endif %}</td>
+                            <td class="t-centered {% if a.mobileAccess %}info{% endif %}">{% if a.mobileAccess %}X{% endif %}</td>
                             <td class="t-centered {% if a.fullAccess %}info{% endif %}">{% if a.fullAccess %}X{% endif %}</td>
                         </tr>
                         {% endfor %}
@@ -65,7 +67,10 @@
                         <input type="radio" name="accessControl" id="radio2" value="approve"> Approve Access
                     </label>
                     <label class="radio-inline" for="radio3">
-                        <input type="radio" name="accessControl" id="radio3" value="full"> Full Access
+                        <input type="radio" name="accessControl" id="radio3" value="mobile"> Mobile Access
+                    </label>
+                    <label class="radio-inline" for="radio4">
+                        <input type="radio" name="accessControl" id="radio4" value="full"> Full Access
                     </label>
                 </div>
                 <button type="submit" class="btn btn-primary submit-button">Submit</button>
