@@ -59,7 +59,7 @@ class MassApprovalHandler(MainAdminHandler.BaseAdminHandler):
         for person in hackers:
             del found_emails[person.email]
             if person.approvalStatus.status in ["Not Approved", "Waitlisted"]:
-                successful_emails.append(email)
+                successful_emails.append(person.email)
                 if action == "approve":
                     person.approvalStatus.status = "Approved"
                     person.approvalStatus.approvedTime = datetime.now()
@@ -71,11 +71,11 @@ class MassApprovalHandler(MainAdminHandler.BaseAdminHandler):
                 else:
                     return self.write("Error: Invalid action.")
             elif person.approvalStatus.status == "Approved":
-                already_approved_emails.append(email)
+                already_approved_emails.append(person.email)
             elif person.approvalStatus.status in constants.RSVP_STATUSES:
-                already_emailed_emails.append(email)
+                already_emailed_emails.append(person.email)
             else:
-                error_emails.append(email)
+                error_emails.append(person.email)
 
         for email in found_emails:
             not_found_emails.append(email)
