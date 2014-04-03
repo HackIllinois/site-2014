@@ -74,7 +74,7 @@ def get_hacker_data():
         else:
             profile['skills'] = []
 
-        if len(hackerProfile.status_list) <=
+        # if len(hackerProfile.status_list) <=
 
 
         if name != "":
@@ -106,7 +106,7 @@ def get_staff_data():
 
         if len(staff_profile.status_list) <= 3:
             profile['status'] = staff_profile.status
-        else:
+        # else:
             # filter the 3 most recent and add them into the profile
 
         data.append(profile)
