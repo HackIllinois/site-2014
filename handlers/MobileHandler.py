@@ -10,6 +10,21 @@ from google.appengine.api import users, memcache
 import json
 import time
 
+# def filter_status(profile_status_list):
+#     if len(profile_status_list) <= 3:
+#         return profile_status_list
+#     else:
+#         # filter the 3 most recent and add them into the profile
+#         third_most_recent_time = 0
+#         status_list = []
+#         for status_dict in profile_status_list:
+#             if third_most_recent_time <= 3:
+#                 status_list.append(status_dict)
+#                 if third_most_recent_time > status_dict['time']:
+#                     third_most_recent_time = status_dict['time']
+#             elif status_dict['time'] > third_most_recent_time:
+#                 for 
+
 def _decode_list(data):
     rv = []
     for item in data:
@@ -65,7 +80,6 @@ def get_hacker_data():
                     'year':hackerProfile.year, 
                     'homebase':hackerProfile.homebase, 
                     'fb_url':hackerProfile.pictureURL, 
-                    'status':hackerProfile.status_list, 
                     'database_key':hackerProfile.database_key,
                     'time':hackerProfile.updatedTime, 
                     'type':'hacker'}
@@ -74,8 +88,10 @@ def get_hacker_data():
         else:
             profile['skills'] = []
 
-        # if len(hackerProfile.status_list) <=
-
+        # if len(hackerProfile.status_list) <= 3:
+        #     profile['status'] = hackerProfile.status_list
+        # else:
+            # filter the 3 most recent and add them into the profile
 
         if name != "":
             profile['name'] = name
@@ -95,7 +111,6 @@ def get_staff_data():
                     'year':staff_profile.year, 
                     'homebase':staff_profile.homebase, 
                     'fb_url':staff_profile.pictureURL, 
-                    'status':staff_profile.status_list, 
                     'database_key':staff_profile.database_key, 
                     'time':staff_profile.updatedTime, 
                     'type':'staff'}
@@ -104,8 +119,8 @@ def get_staff_data():
         else:
             profile['skills'] = []
 
-        if len(staff_profile.status_list) <= 3:
-            profile['status'] = staff_profile.status
+        # if len(staff_profile.status_list) <= 3:
+        #     profile['status'] = staff_profile.status
         # else:
             # filter the 3 most recent and add them into the profile
 
@@ -129,9 +144,14 @@ def get_mentor_data():
                     'type':'mentor'}
         if mentor_profile.skills[0] != "":
             profile['skills'] = mentor_profile.skills
-
         else:
             profile['skills'] = []
+
+        # if len(mentor_profile.status_list) <= 3:
+        #     profile['status'] = mentor_profile.status_list
+        # else
+            # filter the 3 most recent and add them into the profile
+
 
         data.append(profile)
 
@@ -309,7 +329,13 @@ class PersonHandler(MainHandler.BaseMobileHandler):
         updatedProfileDict = {}
         updatedKeys = []
         for _key in updatedProfile:
-            updatedProfileDict[_key] = updatedProfile[_key]
+            if _key == 'status':
+                updatedProfileDict['status_list'] = updatedProfile[_key]
+            if _key == 'fb_url':
+                updatedProfileDict['pictureURL'] = updatedProfile[_key]
+            else:
+                updatedProfileDict[_key] = updatedProfile[_key]
+            
             updatedKeys.append(_key)
         
         if email:
@@ -344,13 +370,13 @@ class PersonHandler(MainHandler.BaseMobileHandler):
                         else:
                             return self.write(json.dumps({'message':'Invalid homebase'}))
                     elif 'fb_url' in updatedKeys:
-                        if isinstance(updatedProfileDict['fb_url'],str):
-                            memcache_profile['fb_url'] =  updatedProfileDict['fb_url']
+                        if isinstance(updatedProfileDict['pictureURL'],str):
+                            memcache_profile['fb_url'] =  updatedProfileDict['pictureURL']
                         else:
                             return self.write(json.dumps({'message':'Invalid fb_url'}))
                     elif 'status' in updatedKeys:
-                        if isinstance(updatedProfileDict['status'],list) and all(isinstance(idx,dict) for idx in updatedProfileDict['status']):
-                            memcache_profile['status'] = updatedProfileDict['status']
+                        if isinstance(updatedProfileDict['status_list'],list) and all(isinstance(idx,dict) for idx in updatedProfileDict['status_list']):
+                            memcache_profile['status'] = updatedProfileDict['status_list']
                         else:
                             return self.write(json.dumps({'message':'Invalid status'}))
                     
