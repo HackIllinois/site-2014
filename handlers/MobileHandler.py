@@ -338,22 +338,22 @@ class PersonHandler(MainHandler.BaseMobileHandler):
                 if memcache_profile['email'] == email:
                     if 'skills' in updatedKeys:
                         if isinstance(updatedProfileDict['skills'],list) and all(isinstance(idx, str) for idx in updatedProfileDict['skills']):
-                            memcache_hacker_profile['skills'] = updatedProfileDict['skills']
+                            memcache_profile['skills'] = updatedProfileDict['skills']
                         else:
                             return self.write(json.dumps({'message':'Invalid skills'}))
                     elif 'homebase' in updatedKeys:
                         if isinstance(updatedProfileDict['homebase'],str):
-                            memcache_hacker_profile['homebase'] = updatedProfileDict['homebase']
+                            memcache_profile['homebase'] = updatedProfileDict['homebase']
                         else:
                             return self.write(json.dumps({'message':'Invalid homebase'}))
                     elif 'fb_url' in updatedKeys:
                         if isinstance(updatedProfileDict['fb_url'],str):
-                            memcache_hacker_profile['fb_url'] =  updatedProfileDict['fb_url']
+                            memcache_profile['fb_url'] =  updatedProfileDict['fb_url']
                         else:
                             return self.write(json.dumps({'message':'Invalid fb_url'}))
                     elif 'status' in updatedKeys:
                         if isinstance(updatedProfileDict['status'],dict):
-                            memcache_hacker_profile['status'] = updatedProfileDict['status']
+                            memcache_profile['status'] = updatedProfileDict['status']
                         else:
                             return self.write(json.dumps({'message':'Invalid status'}))
                     
