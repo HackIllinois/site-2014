@@ -24,3 +24,9 @@ indexes:
   - name: approvalStatus.status
   - name: approvalStatus.waitlistedTime
   - name: userId
+
+- kind: NewsFeedItem
+  ancestor: yes
+  properties:
+  - name: time
+    direction: desc

@@ -14,6 +14,9 @@
 		font-style: italic; 
 		text-decoration: underline; 
 	}
+	.rendered-container {
+		border: 1px solid red;
+	}
 </style>
 {% endblock head %}
 
@@ -31,18 +34,11 @@
 <div class="feedform-container row">
 	<form class="form-horizontal" role="form" id="addFeedItem-form" method="post">
 		<div class="form-group">
-			<label for="inputHeader" class="col-sm-1 control-label">Header</label>
-			<div class="col-sm-10">
-				<input type="text" class="form-control" id="inputHeader">
-			</div>
-		</div>
-		<div class="form-group">
 			<label for="inputDescription" class="col-sm-1 control-label">Description</label>
 			<div class="col-sm-10">
-				<textarea class="form-control" id="inputDescription" rows="5" required></textarea>
+				<textarea class="form-control" id="inputDescription" rows="5" name="description" required></textarea>
 			</div>
 		</div>
-
 		<div class="form-group">
 			<label for="radioType" class="col-sm-1 control-label">Type</label>
 			<div class="col-sm-10">
@@ -60,7 +56,7 @@
 		<div class="form-group">
 			<label for="inputHighlights" class="col-sm-1 control-label">Highlights</label>
 			<div class="col-sm-10">
-				<input type="text" class="form-control" id="inputHighlights">
+				<input type="text" class="form-control" id="inputHighlights" name="highlight">
 				<span class="help-block">
 					Enter a <span class="underBoldItalic">semi-colon</span> separated list of
 					text to be highlighted from the description.
@@ -77,11 +73,35 @@
 </div>
 
 <div class="row rendered-container" style="display: none;">
-	<p>Rendered</p>
+	<ul class="media-list">
+		<li class="media">
+			<div class="pull-left">
+				<img id="rendered-image" class="media-object" data-src="holder.js/64x64" alt="64x64" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2NCIgaGVpZ2h0PSI2NCI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiBmaWxsPSIjZWVlIj48L3JlY3Q+PHRleHQgdGV4dC1hbmNob3I9Im1pZGRsZSIgeD0iMzIiIHk9IjMyIiBzdHlsZT0iZmlsbDojYWFhO2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1zaXplOjEycHg7Zm9udC1mYW1pbHk6QXJpYWwsSGVsdmV0aWNhLHNhbnMtc2VyaWY7ZG9taW5hbnQtYmFzZWxpbmU6Y2VudHJhbCI+NjR4NjQ8L3RleHQ+PC9zdmc+" style="width: 64px; height: 64px;">
+			</div>
+			<div class="media-body">
+				<p id="rendered-description"></p>
+			</div>
+		</li>
+	</ul>
 </div>
 
 <div class="feed-container row">
-	<p>Container</p>
+	<ul class="media-list">
+		{% for item in feed %}
+		<li class="media">
+			<div class="pull-left">
+				{% if item.img %}
+				<img class="media-object" alt="{{ item.img.alt }}" src="{{ item.img.src }}" style="width: 64px; height: 64px;">
+				{% else %}
+				<img class="media-object" data-src="holder.js/64x64" alt="64x64" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2NCIgaGVpZ2h0PSI2NCI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiBmaWxsPSIjZWVlIj48L3JlY3Q+PHRleHQgdGV4dC1hbmNob3I9Im1pZGRsZSIgeD0iMzIiIHk9IjMyIiBzdHlsZT0iZmlsbDojYWFhO2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1zaXplOjEycHg7Zm9udC1mYW1pbHk6QXJpYWwsSGVsdmV0aWNhLHNhbnMtc2VyaWY7ZG9taW5hbnQtYmFzZWxpbmU6Y2VudHJhbCI+NjR4NjQ8L3RleHQ+PC9zdmc+" style="width: 64px; height: 64px;">
+				{% endif %}
+			</div>
+			<div class="media-body">
+				<p>{{ item.description|safe }}</p>
+			</div>
+		</li>
+		{% endfor %}
+	</ul>
 </div>
 {% endblock body %}
 
@@ -95,9 +115,18 @@ $(document).ready(function() {
 
 	$("#addFeedItem-button").click(function() {
 		$(".feedform-container").slideToggle();
+		$(".rendered-container").slideUp();
 	});
 	$("#render-feeditem").click(function() {
-		$(".rendered-container").slideToggle();
+		// $("#rendered-image").html();
+		if ($("#inputDescription").val()) {
+			$("#rendered-description").html($("#inputDescription").val());
+			$(".rendered-container").slideDown();
+		} else {
+			alert("Please fill in the 'Description'.");
+		}
+		// $("input[name='type']:checked").val();
+		// $("#inputHighlights")
 	});
 });
 </script>

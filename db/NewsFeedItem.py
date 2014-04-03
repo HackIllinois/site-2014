@@ -7,11 +7,11 @@ from google.appengine.ext.db import BadValueError
 class NewsFeedItem(Model):
 	Model._automatically_add_event_as_ancestor()
 
-	description = StringProperty()
-	time = IntegerProperty()
-	icon_url = TextProperty()
-	highlighted = JsonProperty() #[[range,color],[range,color]],
-	emergency = BooleanProperty()
+	description = ndb.StringProperty()
+	time = ndb.IntegerProperty()
+	icon_url = ndb.TextProperty()
+	highlighted = ndb.JsonProperty() #[[range,color],[range,color]],
+	emergency = ndb.BooleanProperty()
 
 
 	@classmethod
