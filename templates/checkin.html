@@ -1,0 +1,161 @@
+{% extends "base/admin_base.html" %}
+{% set active_page = "approve" %}
+
+{% block head %}
+    <style type="text/css">
+        .page-header {
+            margin-top: 0;
+        }
+        .t-centered {
+            text-align: center;
+        }
+        .dropdown_buttons {
+            margin-bottom: 20px;
+        }
+
+        table {
+            table-layout: fixed;
+        }
+        td, th {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        td:hover, th:hover {
+            white-space: normal;
+            overflow: visible;
+            word-wrap:break-word;
+        }
+        .width100 {
+            width:100%;
+        }
+        .width50 {
+            width:50%;
+        }
+        .t-centered {
+            text-align: center;
+        }
+        .toggle-columns {
+            margin-bottom:20px;
+        }
+    </style>
+{% endblock head %}
+
+
+{% block body %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div id="hackers" class="table-responsive">
+                    <table id="usertable" class="table table-bordered table-hover table-condensed">
+                        <thead>
+                            <tr name="search_params">
+                                <th><input id="search_name"   type="text" class="width100" placeholder="Search Names" ></th>
+                                <th name="tgender"></th>
+                                <th name="tschool"></th>
+                                <th name="tshirt"></th>
+                                <th name="tcheckin"></th>
+                                <th name="tnumber"></th>
+                                <th name="tnotes"></th>
+                            </tr>
+                            <tr>
+                                <th name="tname"     class="sort" data-sort="name"   >Name</th>
+                                <th name="tgender"                                   >Gender</th>
+                                <th name="tschool"                                   >School</th>
+                                <th name="tshirt"                                    >Shirt</th>
+                                <th name="tcheckin"                                  >Check In</th>
+                                <th name="tnumber"                                   >Phone Number</th>
+                                <th name="tnotes"                                    >Notes</th>
+                            </tr>
+                        </thead>
+                        <tbody class="list">
+                            {% for h in data.hackers %}
+                            <tr name="hackerData" id="{{ h.userId }}">
+                                <td name="tname"     class="name"    >{{ h.nameFirst }} {{ h.nameLast }}</td>
+                                <td name="tgender"   class="gender"  >{{ h.gender }}</td>
+                                <td name="tschool"   class="school"  >{{ h.school }}</td>
+                                <td name="tshirt"   class="shirt"    >{{ h.shirt }}</td>
+								<td name="tcheckin"  class="checkin" ><button class="btn btn-success status-btn aButton width100">Check In!</button></td>
+                                <td name="tnumber"   class="number"  ><input type="text" class="width100" placeholder="Phone Number" id="input_number"></td>
+                                <td name="tnotes"    class="notes"   ><input type="text" class="width100" placeholder="Notes" id="input_notes"></td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    <ul class="pagination"></ul>
+                </div><!-- table-responsive -->
+            </div><!-- col-md-12 -->
+        </div><!-- row -->
+    </div><!-- container-fluid -->
+{% endblock body %}
+
+
+{% block scripts %}
+    <script src="//cdnjs.cloudflare.com/ajax/libs/list.js/1.1.0/list.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/list.pagination.js/0.1.0/list.pagination.min.js"></script>
+    <script type="text/javascript">
+        var paginationOptions = {
+            name: "pagination",
+            paginationClass: "pagination",
+            innerWindow: 2,
+            outerWindow: 1
+        };
+        var options = {
+            // http://listjs.com/docs/options
+            valueNames: ['name'],
+            page: 20,
+            plugins: [
+                ListPagination(paginationOptions)
+            ]
+        };
+        var hackerList = null;
+
+
+        function colToggleCallbacks() {
+            $('.column-btn').click(function () {
+                var name = $(this).find('input').attr('name');
+                q = '[name="t' + name + '"]';
+                if ($(this).hasClass('active')) {
+                    $(q).addClass("hidden");
+                } else {
+                    $(q).removeClass("hidden");
+                }
+            });
+        }
+
+        function updateColumVisibility() {
+            $('.column-btn').each(function(index) {
+                var name = $(this).find('input').attr('name');
+                q = '[name="t' + name + '"]';
+                if ($(this).hasClass('active')) {
+                    $(q).removeClass("hidden");
+                } else {
+                    $(q).addClass("hidden");
+                }
+            });
+        }
+
+        
+
+        function searchCallbacks() {
+            $('#search_name').keyup(function() {
+                hackerList.search($('#search_name').val(), ['name']);
+            });
+        }
+
+
+
+        $(document).ready(function () {
+		    // Do before list created so applied to all
+            
+            hackerList = new List('hackers', options);
+
+            colToggleCallbacks();
+            searchCallbacks();
+
+            hackerList.on('updated', function() {
+                updateColumVisibility();
+            });
+        });
+    </script>
+{% endblock scripts%}
