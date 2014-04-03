@@ -2,6 +2,8 @@ from google.appengine.ext import ndb
 from Model import Model
 import constants
 
+import json
+
 class Admin(Model):
     Model._automatically_add_event_as_ancestor()
 
@@ -24,15 +26,17 @@ class Admin(Model):
     database_key = ndb.IntegerProperty(default=0)
     status_list = ndb.JsonProperty(default=[])
 
-
-    # For people who have access to approve and disapprove attendees
+    statsAccess = ndb.BooleanProperty(default=False)
     approveAccess = ndb.BooleanProperty(default=False)
-
-    # For people who have access to change mobile things
+    approveAdminAccess = ndb.BooleanProperty(default=False)
     mobileAccess = ndb.BooleanProperty(default=False)
+    managerAccess = ndb.BooleanProperty(default=False)
 
-    # Only Systems-Core and Matthew have this
-    fullAccess = ndb.BooleanProperty(default=False)
+    access = ndb.ComputedProperty(lambda self: json.dumps({ 'stats':self.statsAccess,
+                                                            'approve':self.approveAccess,
+                                                            'approveAdmin':self.approveAdminAccess,
+                                                            'mobile':self.mobileAccess,
+                                                            'manager':self.managerAccess }))
 
     @classmethod
     def new(cls, data):

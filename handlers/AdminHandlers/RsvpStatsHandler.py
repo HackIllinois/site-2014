@@ -8,6 +8,7 @@ import logging
 import urllib
 from collections import defaultdict
 from itertools import izip
+import json
 
 class RsvpStatsHandler(MainAdminHandler.BaseAdminHandler):
     def get(self, status=None):
@@ -17,7 +18,7 @@ class RsvpStatsHandler(MainAdminHandler.BaseAdminHandler):
         data = {}
         data['tables'] = self.get_rsvp_stats_memcache(constants.USE_ADMIN_MEMCACHE)
 
-        return self.render('admin_rsvp_stats.html', data=data, approveAccess=admin_user.approveAccess, mobileAccess=admin_user.mobileAccess, fullAccess=admin_user.fullAccess)
+        return self.render('admin_rsvp_stats.html', data=data, access=json.loads(admin_user.access))
 
     def get_rsvp_stats_memcache(self, use_memcache=True):
         """Gets the 'rsvp_stats' key from memcache"""

@@ -1,4 +1,5 @@
 import MainAdminHandler
+import json
 
 class NewsFeedHandler(MainAdminHandler.BaseAdminHandler):
     def get(self):
@@ -9,7 +10,7 @@ class NewsFeedHandler(MainAdminHandler.BaseAdminHandler):
             return self.abort(401, detail='User does not have permission to update the mobile newsfeed.')
 
         data = {}
-        return self.render("admin_mobile_news_feed.html", data=data, approveAccess=admin_user.approveAccess, mobileAccess=admin_user.mobileAccess, fullAccess=admin_user.fullAccess)
+        return self.render("admin_mobile_news_feed.html", data=data, access=json.loads(admin_user.access))
 
     def post(self):
         pass

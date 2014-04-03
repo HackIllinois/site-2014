@@ -98,4 +98,4 @@ class BusRouteStatsHandler(MainAdminHandler.BaseAdminHandler):
         stats = memcache.get_stats()
         logging.info('Basic Stats:: Cache Hits:%s  Cache Misses:%s' % (stats['hits'], stats['misses']))
 
-        return self.render('bus_stats.html', data=data, approveAccess=admin_user.approveAccess, mobileAccess=admin_user.mobileAccess, fullAccess=admin_user.fullAccess)
+        return self.render('bus_stats.html', data=data, access=json.loads(admin_user.access))

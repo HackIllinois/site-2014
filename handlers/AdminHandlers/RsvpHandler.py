@@ -6,6 +6,7 @@ from db import constants
 from google.appengine.api import memcache
 import logging
 from datetime import datetime
+import json
 
 class RsvpHandler(MainAdminHandler.BaseAdminHandler):
     def get(self, status=None, category=None, route=None):
@@ -105,4 +106,4 @@ class RsvpHandler(MainAdminHandler.BaseAdminHandler):
             elif st == 'No Rsvp':
                 data['noresponseCount'] += 1
 
-        return self.render("admin_rsvp.html", data=data, approveAccess=admin_user.approveAccess, mobileAccess=admin_user.mobileAccess, fullAccess=admin_user.fullAccess)
+        return self.render("admin_rsvp.html", data=data, access=json.loads(admin_user.access))
