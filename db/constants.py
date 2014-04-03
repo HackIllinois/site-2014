@@ -30,7 +30,7 @@ RSVP_NO_HEADER = 'RSVP Complete.'
 RSVP_NO_MESSAGE = 'Thanks for RSVPing! We are sorry that you cannot make it.<br>To keep in touch for the next HackIllinois, follow us on Facebook and Twitter.'
 
 RSVP_CLOSED_HEADER = 'RSVP Deadline Passed'
-RSVP_CLOSED_MESSAGE = 'We\'re sorry, but your RSVP deadline for HackIllinois has past.<br>We have released your spot to another hacker on the waitlist.<br>Please apply again for the next HackIllinois. Happy hacking!'
+RSVP_CLOSED_MESSAGE = 'We\'re sorry, but your RSVP deadline for HackIllinois has past.<br>We may have released your spot to another hacker on the waitlist. <a href="mailto:contact@hackillinois.org">Email us</a> to see if there\'s still space available.<br>Happy hacking!'
 
 ERROR_MESSAGE_PREFIX = 'Please provide '
 ERROR_MESSAGE_SUFFIX = '.'
