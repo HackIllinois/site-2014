@@ -22,3 +22,4 @@ import AllHackersHandler
 import NewsFeedHandler
 import ScheduleHandler
 import WhiteListControlHandler
+import MassRsvpInvalidateHandler

@@ -65,6 +65,7 @@ handlers = [
     RedirectRoute('/admin/whitelist', handler=AdminHandlers.WhiteListControlHandler.WhitelistControlHandler, name='AdminWhitelist', strict_slash=True),
     RedirectRoute('/admin/send', handler=AdminHandlers.MarkSentEmailHandler.MarkSentEmailHandler, name='AdminMarkSentEmail', strict_slash=True),
     RedirectRoute('/admin/massapproval', handler=AdminHandlers.MassApprovalHandler.MassApprovalHandler, name='AdminMassApproval', strict_slash=True),
+    RedirectRoute('/admin/massinvalidate', handler=AdminHandlers.MassRsvpInvalidateHandler.MassRsvpInvalidateHandler, name='AdminMassRsvpInvalidate', strict_slash=True),
 
     RedirectRoute('/admin/basicstats',          handler=AdminHandlers.BasicStatsHandler.BasicStatsHandler, name='AdminBasicStats0', strict_slash=True),
     RedirectRoute('/admin/basicstats/<status>', handler=AdminHandlers.BasicStatsHandler.BasicStatsHandler, name='AdminBasicStats1', strict_slash=True),
