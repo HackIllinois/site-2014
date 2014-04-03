@@ -9,15 +9,96 @@
     .t-centered {
         text-align: center;
     }
+	.underBoldItalic { 
+		font-weight: bold; 
+		font-style: italic; 
+		text-decoration: underline; 
+	}
 </style>
 {% endblock head %}
 
 
 {% block body %}
-<h1 class="page-header">Mobile News Feed</h1>
+<div class="row">
+	<div class="col-md-9">
+	    <h1 class="page-header">Mobile News Feed</h1>
+	</div>
+	<div class="col-md-3">
+	    <button id="addFeedItem-button" type="button" class="btn btn-primary btn-lg btn-block">Add to News Feed</button>
+	</div>
+</div>
+
+<div class="feedform-container row">
+	<form class="form-horizontal" role="form" id="addFeedItem-form" method="post">
+		<div class="form-group">
+			<label for="inputHeader" class="col-sm-1 control-label">Header</label>
+			<div class="col-sm-10">
+				<input type="text" class="form-control" id="inputHeader">
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="inputDescription" class="col-sm-1 control-label">Description</label>
+			<div class="col-sm-10">
+				<textarea class="form-control" id="inputDescription" rows="5" required></textarea>
+			</div>
+		</div>
+
+		<div class="form-group">
+			<label for="radioType" class="col-sm-1 control-label">Type</label>
+			<div class="col-sm-10">
+				<label for="radio1" class="radio-inline">
+					<input type="radio" name="type" id="radio1" value="emergency" required> Emergency
+				</label>
+				<label for="radio2" class="radio-inline">
+					<input type="radio" name="type" id="radio2" value="announcement" required> Announcement
+				</label>
+				<label for="radio3" class="radio-inline">
+					<input type="radio" name="type" id="radio3" value="hackillinois" required> HackIllinois
+				</label>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="inputHighlights" class="col-sm-1 control-label">Highlights</label>
+			<div class="col-sm-10">
+				<input type="text" class="form-control" id="inputHighlights">
+				<span class="help-block">
+					Enter a <span class="underBoldItalic">semi-colon</span> separated list of
+					text to be highlighted from the description.
+				</span>
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-sm-offset-1 col-sm-10">
+				<button type="button" id="render-feeditem" class="btn btn-success">Render</button>
+				<button type="submit" class="btn btn-primary">Send to everyone</button>
+			</div>
+		</div>
+	</form>
+</div>
+
+<div class="row rendered-container" style="display: none;">
+	<p>Rendered</p>
+</div>
+
+<div class="feed-container row">
+	<p>Container</p>
+</div>
 {% endblock body %}
 
 
 {% block scripts %}
-<script type="text/javascript"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+    $("#addFeedItem-form").submit(function(event) {
+        // event.preventDefault();
+    });
+
+	$("#addFeedItem-button").click(function() {
+		$(".feedform-container").slideToggle();
+	});
+	$("#render-feeditem").click(function() {
+		$(".rendered-container").slideToggle();
+	});
+});
+</script>
 {% endblock scripts%}

@@ -11,6 +11,7 @@ class Status(Model):
     waitlistedTime = ndb.DateTimeProperty()
     emailedTime = ndb.DateTimeProperty()
     rsvpTime = ndb.DateTimeProperty()
+    rsvpInvalidTime = ndb.DateTimeProperty()
 
     @classmethod
     def new(cls, data):

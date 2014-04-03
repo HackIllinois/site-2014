@@ -13,4 +13,11 @@ class NewsFeedHandler(MainAdminHandler.BaseAdminHandler):
         return self.render("admin_mobile_news_feed.html", data=data, access=json.loads(admin_user.access))
 
     def post(self):
+        
+        # description
+        # time
+        # icon_url
+        # highlighted
+        # emergency
+
         pass
