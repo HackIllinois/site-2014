@@ -71,10 +71,11 @@
                         <tbody class="list">
                             {% for h in data.hackers %}
                             <tr name="hackerData" id="{{ h.userId }}">
+							    <td                  class="id"     style="display:none;">{{ h.userId }}</td>
                                 <td name="tname"     class="name"    >{{ h.nameFirst }} {{ h.nameLast }}</td>
                                 <td name="tgender"   class="gender"  >{{ h.gender }}</td>
                                 <td name="tschool"   class="school"  >{{ h.school }}</td>
-                                <td name="tshirt"   class="shirt"    >{{ h.shirt }}</td>
+                                <td name="tshirt"    class="shirt"   >{{ h.shirt }}</td>
 								<td name="tcheckin"  class="checkin" ><button class="btn btn-success status-btn aButton width100">Check In!</button></td>
                                 <td name="tnumber"   class="number"  ><input type="text" class="width100" placeholder="Phone Number" id="input_number"></td>
                                 <td name="tnotes"    class="notes"   ><input type="text" class="width100" placeholder="Notes" id="input_notes"></td>
@@ -102,7 +103,7 @@
         };
         var options = {
             // http://listjs.com/docs/options
-            valueNames: ['name'],
+            valueNames: ['name', 'id'],
             page: 20,
             plugins: [
                 ListPagination(paginationOptions)
@@ -143,13 +144,32 @@
             });
         }
 
+        function checkInBtnCallbacks() {
+            $('.status-btn').click(function () {
+				alert("FSD");
+                var name = $(this).closest('tr').find('.name').text(),
+				    number = $(this).closest('tr').find('.number').text(),
+                    notes = $(this).closest('tr').find('.notes').text(),
+                    userId = $(this).closest('tr').get(0).id,
+                    r = confirm("Check In " + name + "?");
+                if (r == true) {
+					 hackerList.remove('id', userId);
+                }
+				else {
+					return;
+                }
+                
+            });
+		}
 
 
         $(document).ready(function () {
+			alert("AFD");
 		    // Do before list created so applied to all
-            
             hackerList = new List('hackers', options);
-
+			
+			checkInBtnCallbacks();
+			
             colToggleCallbacks();
             searchCallbacks();
 
