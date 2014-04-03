@@ -49,14 +49,15 @@ class MassApprovalHandler(MainAdminHandler.BaseAdminHandler):
         already_approved_emails = []
         already_emailed_emails = []
         error_emails = []
-        for email in valid_emails:
-            person = Attendee.search_database({'email': email}).get()
-            if not person:
-                person = Attendee.search_database({'userEmail': email}).get()
-                if not person:
-                    not_found_emails.append(email)
-                    continue
 
+        found_emails = {}
+        for email in valid_emails:
+            found_emails[email] = True
+
+        hackers = Attendee.query(Attendee.email.IN(valid_emails))
+
+        for person in hackers:
+            del found_emails[person.email]
             if person.approvalStatus.status in ["Not Approved", "Waitlisted"]:
                 successful_emails.append(email)
                 if action == "approve":
@@ -75,6 +76,9 @@ class MassApprovalHandler(MainAdminHandler.BaseAdminHandler):
                 already_emailed_emails.append(email)
             else:
                 error_emails.append(email)
+
+        for email in found_emails:
+            not_found_emails.append(email)
 
         self.write("Successful Emails: %s<br>" % str(successful_emails))
         self.write("Not Found Emails: %s<br>" % str(not_found_emails))
