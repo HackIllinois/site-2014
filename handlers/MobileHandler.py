@@ -186,18 +186,39 @@ class ScheduleHandler(MainHandler.BaseMobileHandler):
     
     # Eventually we will have to pull this from a database when this is set up
     def get(self):
+        valid_email = False
+        if 'Email' in self.request.headers:
+            valid_email = check_email_for_login(self.request.headers['Email'])
+
+        if not valid_email:
+            return self.write(json.dumps({}))
+
         return self.write(json.dumps(MobileConstants.SCHEDULE))
 
 
 class SupportHandler(MainHandler.BaseMobileHandler):
     
     def get(self):
+        valid_email = False
+        if 'Email' in self.request.headers:
+            valid_email = check_email_for_login(self.request.headers['Email'])
+
+        if not valid_email:
+            return self.write(json.dumps({}))
+
         return self.write(json.dumps(MobileConstants.SUPPORT))
 
 class MapHandler(MainHandler.BaseMobileHandler):
     
     # Eventually we will have to pull this from a database when it is set up
     def get(self):
+        valid_email = False
+        if 'Email' in self.request.headers:
+            valid_email = check_email_for_login(self.request.headers['Email'])
+
+        if not valid_email:
+            return self.write(json.dumps([]))
+
         return self.write(json.dumps(MobileConstants.MAP))
 
 
@@ -209,22 +230,24 @@ class NewsfeedHandler(MainHandler.BaseMobileHandler):
         @return The NewFeed models that are between the before and since parameters
         '''
     def get(self):
-        mobile_last_updated = self.request.get('last_updated')
+        valid_email = False
+        if 'Email' in self.request.headers:
+            valid_email = check_email_for_login(self.request.headers['Email'])
+
+        if not valid_email:
+            return self.write(json.dumps([]))
         
-        if mobile_last_updated:
-            pass
-        else:
-            empty_list = []
-            list_of_news_feed_items = [{'description':'ANNOUNCEMENT - Interactive Itelligence is hiring! Check out our jobs at inin.jobs.', 'time':1396269004, 'icon_url':'https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcSNwVLUS8TsSni5_gXYPWDVBehYxMHnQj5RIWITO11uACXHhky5', 'highlighted':[[[0,12],[30,75,102]]], 'emergency':False},
-                                       {'description':'WIFI Problems - Houston, we are experience Wifi problems on the first floor.', 'time':1396269010, 'icon_url':'http://www.tarkettsportsindoor.com/sites/tarkett_indoor/assets/Resicore-PU-Midnight-Blue.png', 'highlighted':[[[0,13],[167,65,46]]], 'emergency':True},
-                                       {'description':'A spontaneous game of finger blasters is going to start in SC1404 in 5 minutes!', 'time':1396269923, 'icon_url':'http://www.tarkettsportsindoor.com/sites/tarkett_indoor/assets/Resicore-PU-Midnight-Blue.png', 'highlighted':[[[59,65],[19,38,51]]], 'emergency':False},
-                                       {'description':'The first 100 people to tweet something to @hackillinois will win a Hack Illinois blanket', 'time':1396269876, 'icon_url':'http://www.tarkettsportsindoor.com/sites/tarkett_indoor/assets/Resicore-PU-Midnight-Blue.png', 'highlighted':[[[43,56],[19,38,51]]], 'emergency':False}]
-                                       # {'description':'', 'time':9923223, 'icon_url':'http://www.tarkettsportsindoor.com/sites/tarkett_indoor/assets/Resicore-PU-Midnight-Blue.png', 'highlighted':[], 'emergency':False},
-                                       # {'description':'', 'time':23423, 'icon_url':'http://www.tarkettsportsindoor.com/sites/tarkett_indoor/assets/Resicore-PU-Midnight-Blue.png', 'highlighted':[], 'emergency':False},
-                                       # {'description':'', 'time':765524333, 'icon_url':'https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcSNwVLUS8TsSni5_gXYPWDVBehYxMHnQj5RIWITO11uACXHhky5', 'highlighted':[[[0,5],[25,25,112]]], 'emergency':True},
-                                       # {'description':'', 'time':88923443, 'icon_url':'http://www.tarkettsportsindoor.com/sites/tarkett_indoor/assets/Resicore-PU-Midnight-Blue.png', 'highlighted':[[[7,12],[139,0,0]]], 'emergency':False}]
-                                       
-            return self.write(json.dumps(list_of_news_feed_items))
+        empty_list = []
+        list_of_news_feed_items = [{'description':'ANNOUNCEMENT - Interactive Itelligence is hiring! Check out our jobs at inin.jobs.', 'time':1396269004, 'icon_url':'https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcSNwVLUS8TsSni5_gXYPWDVBehYxMHnQj5RIWITO11uACXHhky5', 'highlighted':[[[0,12],[30,75,102]]], 'emergency':False},
+                                   {'description':'WIFI Problems - Houston, we are experience Wifi problems on the first floor.', 'time':1396269010, 'icon_url':'http://www.tarkettsportsindoor.com/sites/tarkett_indoor/assets/Resicore-PU-Midnight-Blue.png', 'highlighted':[[[0,13],[167,65,46]]], 'emergency':True},
+                                   {'description':'A spontaneous game of finger blasters is going to start in SC1404 in 5 minutes!', 'time':1396269923, 'icon_url':'http://www.tarkettsportsindoor.com/sites/tarkett_indoor/assets/Resicore-PU-Midnight-Blue.png', 'highlighted':[[[59,65],[19,38,51]]], 'emergency':False},
+                                   {'description':'The first 100 people to tweet something to @hackillinois will win a Hack Illinois blanket', 'time':1396269876, 'icon_url':'http://www.tarkettsportsindoor.com/sites/tarkett_indoor/assets/Resicore-PU-Midnight-Blue.png', 'highlighted':[[[43,56],[19,38,51]]], 'emergency':False}]
+                                   # {'description':'', 'time':9923223, 'icon_url':'http://www.tarkettsportsindoor.com/sites/tarkett_indoor/assets/Resicore-PU-Midnight-Blue.png', 'highlighted':[], 'emergency':False},
+                                   # {'description':'', 'time':23423, 'icon_url':'http://www.tarkettsportsindoor.com/sites/tarkett_indoor/assets/Resicore-PU-Midnight-Blue.png', 'highlighted':[], 'emergency':False},
+                                   # {'description':'', 'time':765524333, 'icon_url':'https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcSNwVLUS8TsSni5_gXYPWDVBehYxMHnQj5RIWITO11uACXHhky5', 'highlighted':[[[0,5],[25,25,112]]], 'emergency':True},
+                                   # {'description':'', 'time':88923443, 'icon_url':'http://www.tarkettsportsindoor.com/sites/tarkett_indoor/assets/Resicore-PU-Midnight-Blue.png', 'highlighted':[[[7,12],[139,0,0]]], 'emergency':False}]
+                                   
+        return self.write(json.dumps(list_of_news_feed_items))
 
 
 class PersonHandler(MainHandler.BaseMobileHandler):
@@ -314,13 +337,25 @@ class PersonHandler(MainHandler.BaseMobileHandler):
             for memcache_profile in all_profiles:
                 if memcache_profile['email'] == email:
                     if 'skills' in updatedKeys:
-                        memcache_hacker_profile['skills'] = updatedProfileDict['skills']
+                        if isinstance(updatedProfileDict['skills'],list) and all(isinstance(idx, str) for idx in updatedProfileDict['skills']):
+                            memcache_hacker_profile['skills'] = updatedProfileDict['skills']
+                        else:
+                            return self.write(json.dumps({'message':'Invalid skills'}))
                     elif 'homebase' in updatedKeys:
-                        memcache_hacker_profile['homebase'] = updatedProfileDict['homebase']
+                        if isinstance(updatedProfileDict['homebase'],str):
+                            memcache_hacker_profile['homebase'] = updatedProfileDict['homebase']
+                        else:
+                            return self.write(json.dumps({'message':'Invalid homebase'}))
                     elif 'fb_url' in updatedKeys:
-                        memcache_hacker_profile['fb_url'] =  updatedProfileDict['fb_url']
+                        if isinstance(updatedProfileDict['fb_url'],str):
+                            memcache_hacker_profile['fb_url'] =  updatedProfileDict['fb_url']
+                        else:
+                            return self.write(json.dumps({'message':'Invalid fb_url'}))
                     elif 'status' in updatedKeys:
-                        memcache_hacker_profile['status'] = updatedProfileDict['status']
+                        if isinstance(updatedProfileDict['status'],dict):
+                            memcache_hacker_profile['status'] = updatedProfileDict['status']
+                        else:
+                            return self.write(json.dumps({'message':'Invalid status'}))
                     
             if not memcache.replace('all', all_profiles, time=constants.MOBILE_MEMCACHE_TIMEOUT):
                 logging.error('Memcache set failed for all')
@@ -335,18 +370,27 @@ class PersonHandler(MainHandler.BaseMobileHandler):
 # DONE
 class SkillsHandler(MainHandler.BaseMobileHandler):
     def get(self):
+        valid_email = False
+        if 'Email' in self.request.headers:
+            valid_email = check_email_for_login(self.request.headers['Email'])
+
+        if not valid_email:
+            return self.write(json.dumps([]))
+
         querySkills = Skills.search_database({})
         listOfSkills = []
         
         for skill in querySkills:
             skillDict = {'name':skill.name}
-            if (skill.alias[0] != "") and (skill.alias[0] != " "):
-                skillDict['alias'] = skill.alias
+            if len(skill.alias) == 1:
+                if (skill.alias[0] != "") and (skill.alias[0] != " "):
+                    skillDict['alias'] = skill.alias
             else:
                 skillDict['alias'] = []
             
-            if (skill.tags[0] != "") and (skill.tags[0] != " "):
-                skillDict['tags'] = skill.tags
+            if len(skill.tags) == 1:
+                if (skill.tags[0] != "") and (skill.tags[0] != " "):
+                    skillDict['tags'] = skill.tags
             else:
                 skillDict['tags'] = []
 
@@ -386,7 +430,7 @@ class LoginHandler(MainHandler.BaseMobileHandler):
             'time':hackerProfile.updatedTime,
             'type':'hacker'}
 
-            if hackerProfile.skills[0] != "":
+            if len(hackerProfile.skills) == 1 and hackerProfile.skills[0] != "":
                 profile['skills'] = hackerProfile.skills
             else:
                 profile['skills'] = []
@@ -406,7 +450,7 @@ class LoginHandler(MainHandler.BaseMobileHandler):
             'time':staffProfile.updatedTime,
             'type':'staff'}
 
-            if staffProfile.skills[0] != "":
+            if len(staffProfile.skills) == 1 and staffProfile.skills[0] != "":
                 profile['skills'] = staffProfile.skills
             else:
                 profile['skills'] = []
@@ -435,7 +479,7 @@ class LoginHandler(MainHandler.BaseMobileHandler):
             # 'time':mentorProfile.updatedTime,
             # 'type':'mentor'}
             #
-            #if mentorProfile.skills[0] != "":
+            # if len(mentorProfile.skills) == 1 and mentorProfile.skills[0] != "":
             #     profile['skills'] = mentorProfile.skills
             # else:
             #     profile['skills'] = []
