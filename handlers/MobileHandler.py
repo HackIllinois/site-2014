@@ -10,6 +10,21 @@ from google.appengine.api import users, memcache
 import json
 import time
 
+# def filter_status(profile_status_list):
+#     if len(profile_status_list) <= 3:
+#         return profile_status_list
+#     else:
+#         # filter the 3 most recent and add them into the profile
+#         third_most_recent_time = 0
+#         status_list = []
+#         for status_dict in profile_status_list:
+#             if third_most_recent_time <= 3:
+#                 status_list.append(status_dict)
+#                 if third_most_recent_time > status_dict['time']:
+#                     third_most_recent_time = status_dict['time']
+#             elif status_dict['time'] > third_most_recent_time:
+#                 for 
+
 def _decode_list(data):
     rv = []
     for item in data:
@@ -36,16 +51,6 @@ def _decode_dict(data):
         rv[key] = value
     return rv
 
-def update_profile_dict(profile, updated_dict):
-    if 'skills' in updatedKeys:
-        memcache_profile['skills'] = updatedProfileDict['skills']
-    elif 'homebase' in updatedKeys:
-        memcache_profile['homebase'] = updatedProfileDict['homebase']
-    elif 'status' in updatedKeys:
-        memcache_profile['status'] = updatedProfileDict['status']
-    elif 'fb_url' in updatedKeys:
-        memcache_profile['fb_url'] = updatedProfileDict['fb_url']
-
 def check_email_for_login(email):
     if not email:
         return False
@@ -61,8 +66,7 @@ def check_email_for_login(email):
 
 def get_hacker_data():
     """Sets the 'hacker_mobile' key in the memcache"""
-    # change to search for accepted hackers
-    # hackers = Attendee.search_database({'isApproved':True})
+    # hackers = Attendee.query(Attendee.approvalStatus.status == "Rsvp Coming", ancestor=Attendee.get_default_event_parent_key())
     hackers = Attendee.search_database({})
     data = []
     for hackerProfile in hackers:
@@ -76,7 +80,6 @@ def get_hacker_data():
                     'year':hackerProfile.year, 
                     'homebase':hackerProfile.homebase, 
                     'fb_url':hackerProfile.pictureURL, 
-                    'status':hackerProfile.status_list, 
                     'database_key':hackerProfile.database_key,
                     'time':hackerProfile.updatedTime, 
                     'type':'hacker'}
@@ -84,6 +87,11 @@ def get_hacker_data():
             profile['skills'] = hackerProfile.skills
         else:
             profile['skills'] = []
+
+        # if len(hackerProfile.status_list) <= 3:
+        #     profile['status'] = hackerProfile.status_list
+        # else:
+            # filter the 3 most recent and add them into the profile
 
         if name != "":
             profile['name'] = name
@@ -103,7 +111,6 @@ def get_staff_data():
                     'year':staff_profile.year, 
                     'homebase':staff_profile.homebase, 
                     'fb_url':staff_profile.pictureURL, 
-                    'status':staff_profile.status_list, 
                     'database_key':staff_profile.database_key, 
                     'time':staff_profile.updatedTime, 
                     'type':'staff'}
@@ -111,6 +118,11 @@ def get_staff_data():
             profile['skills'] = staff_profile.skills
         else:
             profile['skills'] = []
+
+        # if len(staff_profile.status_list) <= 3:
+        #     profile['status'] = staff_profile.status
+        # else:
+            # filter the 3 most recent and add them into the profile
 
         data.append(profile)
 
@@ -134,6 +146,12 @@ def get_mentor_data():
             profile['skills'] = mentor_profile.skills
         else:
             profile['skills'] = []
+
+        # if len(mentor_profile.status_list) <= 3:
+        #     profile['status'] = mentor_profile.status_list
+        # else
+            # filter the 3 most recent and add them into the profile
+
 
         data.append(profile)
 
@@ -308,11 +326,16 @@ class PersonHandler(MainHandler.BaseMobileHandler):
         except ValueError, e:
             return self.write(json.dumps({'message':'Invalid JSON'}))
             
-
         updatedProfileDict = {}
         updatedKeys = []
         for _key in updatedProfile:
-            updatedProfileDict[_key] = updatedProfile[_key]
+            if _key == 'status':
+                updatedProfileDict['status_list'] = updatedProfile[_key]
+            if _key == 'fb_url':
+                updatedProfileDict['pictureURL'] = updatedProfile[_key]
+            else:
+                updatedProfileDict[_key] = updatedProfile[_key]
+            
             updatedKeys.append(_key)
         
         if email:
@@ -347,22 +370,22 @@ class PersonHandler(MainHandler.BaseMobileHandler):
                         else:
                             return self.write(json.dumps({'message':'Invalid homebase'}))
                     elif 'fb_url' in updatedKeys:
-                        if isinstance(updatedProfileDict['fb_url'],str):
-                            memcache_profile['fb_url'] =  updatedProfileDict['fb_url']
+                        if isinstance(updatedProfileDict['pictureURL'],str):
+                            memcache_profile['fb_url'] =  updatedProfileDict['pictureURL']
                         else:
                             return self.write(json.dumps({'message':'Invalid fb_url'}))
                     elif 'status' in updatedKeys:
-                        if isinstance(updatedProfileDict['status'],list) and all(isinstance(idx,dict) for idx in updatedProfileDict['status']):
-                            memcache_profile['status'] = updatedProfileDict['status']
+                        if isinstance(updatedProfileDict['status_list'],list) and all(isinstance(idx,dict) for idx in updatedProfileDict['status_list']):
+                            memcache_profile['status'] = updatedProfileDict['status_list']
                         else:
                             return self.write(json.dumps({'message':'Invalid status'}))
                     
-            if not memcache.replace('all', all_profiles, time=constants.MOBILE_MEMCACHE_TIMEOUT):
-                logging.error('Memcache set failed for all')
-                
+            if memcache.replace('all', all_profiles, time=constants.MOBILE_MEMCACHE_TIMEOUT):
                 return self.write(json.dumps({'message':'Updated Profile'}))
             else:
-                return self.write(json.dumps({'message':'No user found that matches userid passed'}))            
+                logging.error('Memcache set failed for all')
+
+                return self.write(json.dumps({'message':'Memcache replace failed'}))
 
         else:
             return self.write(json.dumps({'message':'No user'}))
