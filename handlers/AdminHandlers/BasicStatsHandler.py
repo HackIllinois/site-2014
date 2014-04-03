@@ -4,6 +4,7 @@ from db import constants
 
 from google.appengine.api import memcache
 
+import json
 import logging
 import urllib
 from collections import defaultdict
@@ -26,7 +27,7 @@ class BasicStatsHandler(MainAdminHandler.BaseAdminHandler):
         elif status == 'rsvpd': data['status_dropdown_text'] = 'RSVP\'d Hackers'
         else: data['status_dropdown_text'] = 'Select One...'
 
-        return self.render('basic_stats.html', data=data, approveAccess=admin_user.approveAccess, mobileAccess=admin_user.mobileAccess, fullAccess=admin_user.fullAccess)
+        return self.render('basic_stats.html', data=data, access=json.loads(admin_user.access))
 
     def get_basic_stats_memcache(self, status, use_memcache=False):
         """Gets the 'basic_stats' key from memcache"""

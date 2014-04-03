@@ -3,6 +3,7 @@ import logging
 from db.Attendee import Attendee
 from db import constants
 from google.appengine.api import memcache
+import json
 
 
 class StatsHandler(MainAdminHandler.BaseAdminHandler):
@@ -153,4 +154,4 @@ class StatsHandler(MainAdminHandler.BaseAdminHandler):
         stats = memcache.get_stats()
         logging.info('Advanced Stats:: Cache Hits:%s  Cache Misses:%s' % (stats['hits'], stats['misses']))
 
-        self.render("stats.html", schools=schools, approveAccess=admin_user.approveAccess, mobileAccess=admin_user.mobileAccess, fullAccess=admin_user.fullAccess)
+        self.render("stats.html", schools=schools, access=json.loads(admin_user.access))

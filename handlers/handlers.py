@@ -62,8 +62,7 @@ handlers = [
     RedirectRoute('/admin/schoolcount', handler=AdminHandlers.SchoolCountHandler.SchoolCountHandler, name='AdminSchoolCount', strict_slash=True),
     RedirectRoute('/admin/profile/<userId>', handler=AdminHandlers.ProfileHandler.ProfileHandler, name='AdminProfile', strict_slash=True),
     RedirectRoute('/admin/manager', handler=AdminHandlers.ManagerHandler.ManagerHandler, name='AdminManager', strict_slash=True),
-    RedirectRoute('/admin/manager/accesscontrol', handler=AdminHandlers.AccessControlHandler.AccessControlHandler, name='AdminAccessControl', strict_slash=True),
-    RedirectRoute('/admin/manager/whitelistcontrol', handler=AdminHandlers.ManagerHandler.WhitelistControlHandler, name='AdminWhitelistControl', strict_slash=True),
+    RedirectRoute('/admin/whitelist', handler=AdminHandlers.WhiteListControlHandler.WhitelistControlHandler, name='AdminWhitelist', strict_slash=True),
     RedirectRoute('/admin/send', handler=AdminHandlers.MarkSentEmailHandler.MarkSentEmailHandler, name='AdminMarkSentEmail', strict_slash=True),
     RedirectRoute('/admin/massapproval', handler=AdminHandlers.MassApprovalHandler.MassApprovalHandler, name='AdminMassApproval', strict_slash=True),
 

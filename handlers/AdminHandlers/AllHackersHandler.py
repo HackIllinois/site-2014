@@ -6,6 +6,7 @@ from db import constants
 from google.appengine.api import memcache
 import logging
 from datetime import datetime
+import json
 
 class AllHackersHandler(MainAdminHandler.BaseAdminHandler):
     def get(self, status=None, category=None, route=None):
@@ -89,4 +90,4 @@ class AllHackersHandler(MainAdminHandler.BaseAdminHandler):
 
         data['num_people'] = len(data['hackers'])
 
-        return self.render("admin_all_hackers.html", data=data, approveAccess=admin_user.approveAccess, mobileAccess=admin_user.mobileAccess, fullAccess=admin_user.fullAccess)
+        return self.render("admin_all_hackers.html", data=data, access=json.loads(admin_user.access))

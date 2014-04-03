@@ -1,5 +1,5 @@
 import MainAdminHandler
-import urllib, logging
+import urllib, logging, json
 from db.Attendee import Attendee
 from db import constants
 
@@ -42,7 +42,7 @@ class ProfileHandler(MainAdminHandler.BaseAdminHandler, blobstore_handlers.Blobs
 
         data['status'] = db_user.approvalStatus.status if db_user.approvalStatus is not None else None
 
-        return self.render("admin_profile.html", data=data, approveAccess=admin_user.approveAccess, mobileAccess=admin_user.mobileAccess, fullAccess=admin_user.fullAccess)
+        return self.render("admin_profile.html", data=data, access=json.loads(admin_user.access))
 
 
 

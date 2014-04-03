@@ -1,5 +1,7 @@
 {% set navigation_sidebar = [
     ('/admin', 'admin', 'Admin'),
+] %}
+{% set navigation_sidebar_stats = [
     ('/admin/rsvpstats', 'rsvpstats', 'RSVP Stats'),
     ('/admin/basicstats/approved', 'basicstats', 'Basic Stats'),
     ('/admin/stats', 'stats', 'Advanced Stats'),
@@ -11,15 +13,18 @@
     ('/admin/rsvp', 'rsvp', 'RSVP'),
     ('/admin/approve', 'profile', 'Profile'),
 ] %}
+{% set navigation_sidebar_approve_admin = [
+    ('/admin/massapproval', 'massapproval', 'Mass Approval/Waitlist'),
+    ('/admin/send', 'send', 'Mark Sent Email'),
+] %}
 {% set navigation_sidebar_mobile = [
     ('/admin/mobile/skills', 'skills', 'Mobile Skills'),
     ('/admin/mobile/newsfeed', 'newsfeed', 'Mobile Newsfeed'),
     ('/admin/mobile/schedule', 'schedule', 'Mobile Schedule'),
 ] %}
-{% set navigation_sidebar_full = [
-    ('/admin/massapproval', 'massapproval', 'Mass Approval/Waitlist'),
-    ('/admin/send', 'send', 'Mark Sent Email'),
+{% set navigation_sidebar_manager = [
     ('/admin/testsjs', 'tests', 'URL Tests'),
+    ('/admin/whitelist', 'whitelist', 'White List URLs'),
     ('/admin/manager', 'manager', 'Manager'),
 ] %}
 
@@ -177,20 +182,32 @@
                             <li{% if id == active_page %} class="active"{% endif %}><a href="{{ href|e }}">{{ caption|e }}</a></li>
                             {% endfor %}
 
-                            {% if approveAccess %}
+                            {% if access.stats %}
+                            {% for href, id, caption in navigation_sidebar_stats %}
+                            <li{% if id == active_page %} class="active"{% endif %}><a href="{{ href|e }}">{{ caption|e }}</a></li>
+                            {% endfor %}
+                            {% endif %}                            
+
+                            {% if access.approve %}
                             {% for href, id, caption in navigation_sidebar_approve %}
                             <li{% if id == active_page %} class="active"{% endif %}><a href="{{ href|e }}">{{ caption|e }}</a></li>
                             {% endfor %}
                             {% endif %}
 
-                            {% if mobileAccess %}
+                            {% if access.approveAdmin %}
+                            {% for href, id, caption in navigation_sidebar_approve_admin %}
+                            <li{% if id == active_page %} class="active"{% endif %}><a href="{{ href|e }}">{{ caption|e }}</a></li>
+                            {% endfor %}
+                            {% endif %}
+
+                            {% if access.mobile %}
                             {% for href, id, caption in navigation_sidebar_mobile %}
                             <li{% if id == active_page %} class="active"{% endif %}><a href="{{ href|e }}">{{ caption|e }}</a></li>
                             {% endfor %}
                             {% endif %}
 
-                            {% if fullAccess %}
-                            {% for href, id, caption in navigation_sidebar_full %}
+                            {% if access.manager %}
+                            {% for href, id, caption in navigation_sidebar_manager %}
                             <li{% if id == active_page %} class="active"{% endif %}><a href="{{ href|e }}">{{ caption|e }}</a></li>
                             {% endfor %}
                             {% endif %}
@@ -209,29 +226,39 @@
             <div class="row">
                 <div class="col-sm-3 col-md-2 sidebar">
                     <ul class="nav nav-sidebar">
-
                         {% for href, id, caption in navigation_sidebar %}
                         <li{% if id == active_page %} class="active"{% endif %}><a href="{{ href|e }}">{{ caption|e }}</a></li>
                         {% endfor %}
 
-                        {% if approveAccess %}
+                        {% if access.stats %}
+                        {% for href, id, caption in navigation_sidebar_stats %}
+                        <li{% if id == active_page %} class="active"{% endif %}><a href="{{ href|e }}">{{ caption|e }}</a></li>
+                        {% endfor %}
+                        {% endif %}                            
+
+                        {% if access.approve %}
                         {% for href, id, caption in navigation_sidebar_approve %}
                         <li{% if id == active_page %} class="active"{% endif %}><a href="{{ href|e }}">{{ caption|e }}</a></li>
                         {% endfor %}
                         {% endif %}
 
-                        {% if mobileAccess %}
+                        {% if access.approveAdmin %}
+                        {% for href, id, caption in navigation_sidebar_approve_admin %}
+                        <li{% if id == active_page %} class="active"{% endif %}><a href="{{ href|e }}">{{ caption|e }}</a></li>
+                        {% endfor %}
+                        {% endif %}
+
+                        {% if access.mobile %}
                         {% for href, id, caption in navigation_sidebar_mobile %}
                         <li{% if id == active_page %} class="active"{% endif %}><a href="{{ href|e }}">{{ caption|e }}</a></li>
                         {% endfor %}
                         {% endif %}
 
-                        {% if fullAccess %}
-                        {% for href, id, caption in navigation_sidebar_full %}
+                        {% if access.manager %}
+                        {% for href, id, caption in navigation_sidebar_manager %}
                         <li{% if id == active_page %} class="active"{% endif %}><a href="{{ href|e }}">{{ caption|e }}</a></li>
                         {% endfor %}
                         {% endif %}
-
                     </ul>
                 </div>
                 <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">

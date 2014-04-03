@@ -1,6 +1,6 @@
 import MainAdminHandler
 from db.Skills import Skills
-
+import json
 
 class SkillsHandler(MainAdminHandler.BaseAdminTableHandler):
     def __init__(self, request, response):
@@ -31,9 +31,7 @@ class SkillsHandler(MainAdminHandler.BaseAdminTableHandler):
                            table_data=self.table_data,
                            form_data=self.form_data,
                            activePage='skills',
-                           approveAccess=admin_user.approveAccess,
-                           mobileAccess=admin_user.mobileAccess,
-                           fullAccess=admin_user.fullAccess)
+                           access=json.loads(admin_user.access))
 
     def post(self):
         self.require_and_get_admin_user()

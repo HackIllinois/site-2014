@@ -5,21 +5,22 @@ import re
 import urllib
 from datetime import datetime
 # import requests
+import json
 
 class MarkSentEmailHandler(MainAdminHandler.BaseAdminHandler):
     def get(self):
         admin_user = self.get_admin_user()
         if not admin_user: return self.abort(500, detail='User not in database')
-        if not admin_user.fullAccess:
+        if not admin_user.managerAccess:
             return self.abort(401, detail='User does not have permission to email attendees.')
 
         data = {}
-        return self.render('admin_send_email.html', data=data, approveAccess=admin_user.approveAccess, mobileAccess=admin_user.mobileAccess, fullAccess=admin_user.fullAccess)
+        return self.render('admin_send_email.html', data=data, access=json.loads(admin_user.access))
 
     def post(self):
         admin_user = self.get_admin_user()
         if not admin_user: return self.abort(500, detail='User not in database')
-        if not admin_user.fullAccess:
+        if not admin_user.managerAccess:
             return self.abort(401, detail='User does not have permission to email attendees.')
 
         orig_str = str(urllib.unquote(self.request.get('emails')))

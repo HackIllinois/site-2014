@@ -1,6 +1,7 @@
 import MainAdminHandler
 import urllib
 from db import constants
+import json
 
 class ApproveSchoolHandler(MainAdminHandler.BaseAdminHandler):
     def get(self, school):
@@ -18,5 +19,4 @@ class ApproveSchoolHandler(MainAdminHandler.BaseAdminHandler):
             if h['school'] == school:
                 data['hackers'].append(h)
 
-        # self.render("approve.html", data=data, approveAccess=admin_user.approveAccess, fullAccess=admin_user.fullAccess)
-        self.render("summary.html", data=data, approveAccess=admin_user.approveAccess, mobileAccess=admin_user.mobileAccess, fullAccess=admin_user.fullAccess)
+        self.render("summary.html", data=data, access=json.loads(admin_user.access))

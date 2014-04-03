@@ -46,21 +46,40 @@ class BaseAdminHandler(MainHandler.Handler):
         admin_user = Admin.search_database({'email': user.email()}).get()
         if admin_user:
             is_admin = True
-            if admin_user.userId is None or admin_user.userId == '':
-                admin_user.userId = user.user_id()
-                admin_user.put()
-            if not admin_user.database_key:
-                admin_user.database_key = self.get_next_key()
-                admin_user.put()
+            if not admin_user.userId: admin_user.userId = user.user_id()
+            if not admin_user.googleUser: admin_user.googleUser = user
+            if not admin_user.email: admin_user.email = user.email()
+            if not admin_user.database_key: admin_user.database_key = self.get_next_key()
+            if email in constants.ADMIN_EMAILS:
+                admin_user.statsAccess = True
+                admin_user.approveAccess = True
+                admin_user.approveAdminAccess = True
+                admin_user.mobileAccess = True
+                admin_user.managerAccess = True
+            admin_user.put()
         elif email in constants.ADMIN_EMAILS:
-            parent = Admin.get_default_event_parent_key()
-            Admin(parent=parent, email=user.email(), googleUser=user, userId=user.user_id(), approveAccess=True,
-                  fullAccess=True, database_key=self.get_next_key()).put()
             is_admin = True
+            Admin(
+                parent=Admin.get_default_event_parent_key(),
+                email=user.email(),
+                googleUser=user,
+                userId=user.user_id(),
+                statsAccess=True,
+                approveAccess=True,
+                approveAdminAccess=True,
+                mobileAccess=True,
+                managerAccess=True,
+                database_key=self.get_next_key()
+            ).put()
         elif domain == 'hackillinois.org':
-            parent = Admin.get_default_event_parent_key()
-            Admin(parent=parent, email=user.email(), googleUser=user, userId=user.user_id(), database_key=self.get_next_key()).put()
             is_admin = True
+            Admin(
+                parent=Admin.get_default_event_parent_key(), 
+                email=user.email(), 
+                googleUser=user, 
+                userId=user.user_id(), 
+                database_key=self.get_next_key()
+            ).put()
 
         if is_admin:
             # Parent class will call the method to be dispatched

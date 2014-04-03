@@ -3,6 +3,7 @@ from google.appengine.api import urlfetch
 from google.appengine.api import users
 from db.Admin import Admin
 from db.constants import TEST_SITE_URLS as all_extensions
+import json
 
 class TestAllHandler(MainAdminHandler.BaseAdminHandler):
 
@@ -36,10 +37,10 @@ class TestAllJsHandler(MainAdminHandler.BaseAdminHandler):
     def get(self):
         admin_user = self.get_admin_user()
         if not admin_user: return self.abort(500, detail='User not in database')
-        if not admin_user.fullAccess:
+        if not admin_user.managerAccess:
             return self.abort(401, detail='User does not have permission to run tests.')
 
         data = {}
         data['base'] = self.request.application_url
         data['extensions'] = all_extensions
-        return self.render('tests.html', data=data, approveAccess=admin_user.approveAccess, mobileAccess=admin_user.mobileAccess, fullAccess=admin_user.fullAccess)
+        return self.render('tests.html', data=data, access=json.loads(admin_user.access))
