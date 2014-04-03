@@ -352,7 +352,7 @@ class PersonHandler(MainHandler.BaseMobileHandler):
                         else:
                             return self.write(json.dumps({'message':'Invalid fb_url'}))
                     elif 'status' in updatedKeys:
-                        if isinstance(updatedProfileDict['status'],dict):
+                        if isinstance(updatedProfileDict['status'],list) and all(isinstance(idx,dict) for idx in updatedProfileDict['status']):
                             memcache_profile['status'] = updatedProfileDict['status']
                         else:
                             return self.write(json.dumps({'message':'Invalid status'}))
