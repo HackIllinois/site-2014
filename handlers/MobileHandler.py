@@ -36,16 +36,6 @@ def _decode_dict(data):
         rv[key] = value
     return rv
 
-def update_profile_dict(profile, updated_dict):
-    if 'skills' in updatedKeys:
-        memcache_profile['skills'] = updatedProfileDict['skills']
-    elif 'homebase' in updatedKeys:
-        memcache_profile['homebase'] = updatedProfileDict['homebase']
-    elif 'status' in updatedKeys:
-        memcache_profile['status'] = updatedProfileDict['status']
-    elif 'fb_url' in updatedKeys:
-        memcache_profile['fb_url'] = updatedProfileDict['fb_url']
-
 def check_email_for_login(email):
     if not email:
         return False
@@ -61,8 +51,7 @@ def check_email_for_login(email):
 
 def get_hacker_data():
     """Sets the 'hacker_mobile' key in the memcache"""
-    # change to search for accepted hackers
-    # hackers = Attendee.search_database({'isApproved':True})
+    # hackers = Attendee.query(Attendee.approvalStatus.status == "Rsvp Coming", ancestor=Attendee.get_default_event_parent_key())
     hackers = Attendee.search_database({})
     data = []
     for hackerProfile in hackers:
@@ -84,6 +73,9 @@ def get_hacker_data():
             profile['skills'] = hackerProfile.skills
         else:
             profile['skills'] = []
+
+        if len(hackerProfile.status_list) <=
+
 
         if name != "":
             profile['name'] = name
@@ -111,6 +103,11 @@ def get_staff_data():
             profile['skills'] = staff_profile.skills
         else:
             profile['skills'] = []
+
+        if len(staff_profile.status_list) <= 3:
+            profile['status'] = staff_profile.status
+        else:
+            # filter the 3 most recent and add them into the profile
 
         data.append(profile)
 
@@ -309,8 +306,6 @@ class PersonHandler(MainHandler.BaseMobileHandler):
         except ValueError, e:
             return self.write(json.dumps({'message':'Invalid JSON'}))
             
-
-        # look at this. Think this is wrong for status
         updatedProfileDict = {}
         updatedKeys = []
         for _key in updatedProfile:
@@ -359,12 +354,12 @@ class PersonHandler(MainHandler.BaseMobileHandler):
                         else:
                             return self.write(json.dumps({'message':'Invalid status'}))
                     
-            if not memcache.replace('all', all_profiles, time=constants.MOBILE_MEMCACHE_TIMEOUT):
-                logging.error('Memcache set failed for all')
-                
+            if memcache.replace('all', all_profiles, time=constants.MOBILE_MEMCACHE_TIMEOUT):
                 return self.write(json.dumps({'message':'Updated Profile'}))
             else:
-                return self.write(json.dumps({'message':'No user found that matches userid passed'}))            
+                logging.error('Memcache set failed for all')
+
+                return self.write(json.dumps({'message':'Memcache replace failed'}))
 
         else:
             return self.write(json.dumps({'message':'No user'}))
