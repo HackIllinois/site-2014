@@ -149,8 +149,9 @@ class BaseAdminHandler(MainHandler.Handler):
         """Uses memcache for everything but the status"""
         key = 'hackers/' + str(status) + '/' + str(category) + '/' + str(route)
         # data = memcache.get(key)
-        data = self.retrieve(key)
-        
+        # data = self.retrieve(key)
+        data = None
+
         stats = memcache.get_stats()
         logging.info('Cache Hits:%s, Cache Misses:%s' % (stats['hits'], stats['misses']))
         
