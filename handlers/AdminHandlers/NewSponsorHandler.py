@@ -5,7 +5,7 @@ from db import constants
 import json
 import re
 import random
-from datetime import datetime
+import time
 
 def csv_split_and_validate(orig_str):
     out = orig_str.strip()
@@ -71,7 +71,7 @@ class NewSponsorHandler(MainAdminHandler.BaseAdminHandler):
 
         if not valid: return
 
-        updatedTime = datetime.now()
+        updatedTime = int(time.time())
         if db_sponsor: db_sponsor.updatedTime = updatedTime
 
         skills = str(urllib.unquote(self.request.get('skills')))
@@ -81,6 +81,7 @@ class NewSponsorHandler(MainAdminHandler.BaseAdminHandler):
 
         status_list = str(urllib.unquote(self.request.get('status_list')))
         status_list = csv_split_and_validate(status_list)
+        status_list = [{'status':s, 'date':updatedTime} for s in status_list]
         if db_sponsor and status_list:
             db_sponsor.status_list = status_list
         
