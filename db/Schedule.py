@@ -7,11 +7,11 @@ from google.appengine.ext.db import BadValueError
 class Schedule(Model):
 	Model._automatically_add_event_as_ancestor()
 
-	event_name = StringProperty()
-	description = TextProperty()
-	location = StructuredProperty(Room)
-	time = IntegerProperty()
-	icon_url = TextProperty()
+	event_name = ndb.StringProperty()
+	description = ndb.TextProperty()
+	location = ndb.StructuredProperty(Room)
+	time = ndb.IntegerProperty()
+	icon_url = ndb.TextProperty()
 
 	@classmethod
 	def new(cls, data):

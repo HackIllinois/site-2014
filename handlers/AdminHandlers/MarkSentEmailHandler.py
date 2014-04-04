@@ -46,27 +46,32 @@ class MarkSentEmailHandler(MainAdminHandler.BaseAdminHandler):
         not_found_emails = []
         not_approved_emails = []
         already_emailed_emails = []
+
+        found_emails = {}
         for email in valid_emails:
-            person = Attendee.search_database({'email': email}).get()
-            if not person:
-                person = Attendee.search_database({'userEmail': email}).get()
-                if not person:
-                    not_found_emails.append(email)
-                    continue
+            found_emails[email] = True
+
+        hackers = Attendee.query(Attendee.email.IN(valid_emails))
+
+        for person in hackers:
+            del found_emails[person.email]
 
             if person.approvalStatus is None:
-                not_approved_emails.append(email)
+                not_approved_emails.append(person.email)
                 continue
 
             if person.approvalStatus.status == "Approved":
-                successful_emails.append(email)
+                successful_emails.append(person.email)
                 person.approvalStatus.status = 'Awaiting Response'
                 person.approvalStatus.emailedTime = datetime.now()
                 person.put()
             elif person.approvalStatus.status in constants.RSVP_STATUSES:
-                already_emailed_emails.append(email)
+                already_emailed_emails.append(person.email)
             else:
-                not_approved_emails.append(email)
+                not_approved_emails.append(person.email)
+
+        for email in found_emails:
+            not_found_emails.append(email)
 
         self.write("Successful Emails: %s<br>" % str(successful_emails))
         self.write("Invalid Emails: %s<br>" % str(invalid_emails))

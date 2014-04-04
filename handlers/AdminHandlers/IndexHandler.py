@@ -15,5 +15,6 @@ class IndexHandler(MainAdminHandler.BaseAdminHandler):
         data['emailedCount'] = self.get_status_count_memcache('Awaiting Response', constants.USE_ADMIN_MEMCACHE)
         data['rsvpYesCount'] = self.get_status_count_memcache('Rsvp Coming', constants.USE_ADMIN_MEMCACHE)
         data['rsvpNoCount'] = self.get_status_count_memcache('Rsvp Not Coming', constants.USE_ADMIN_MEMCACHE)
+        data['rsvpInvalidCount'] = self.get_status_count_memcache('No Rsvp', constants.USE_ADMIN_MEMCACHE)
 
         return self.render('admin.html', data=data, access=json.loads(admin_user.access))
