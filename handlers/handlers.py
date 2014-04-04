@@ -96,6 +96,7 @@ handlers = [
     RedirectRoute('/admin/mobile/skills', handler=AdminHandlers.SkillsHandler.SkillsHandler, name='AdminSkills', strict_slash=True),
     RedirectRoute('/admin/mobile/newsfeed', handler=AdminHandlers.NewsFeedHandler.NewsFeedHandler, name='AdminNewsFeed', strict_slash=True),
     RedirectRoute('/admin/mobile/schedule', handler=AdminHandlers.ScheduleHandler.ScheduleHandler, name='AdminSchedule', strict_slash=True),
+    RedirectRoute('/admin/mobile/newsponsor', handler=AdminHandlers.NewSponsorHandler.NewSponsorHandler, name='AdminNewSponsor', strict_slash=True),
     
     # RedirectRoute('/admin/updateschema', handler=AdminHandlers.UpdateSchemaHandler.UpdateSchemaHandler, name='UpdateSchema', strict_slash=True),
 

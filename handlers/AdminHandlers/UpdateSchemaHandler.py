@@ -20,7 +20,8 @@ def UpdateSchema(cursor=None, count=0):
 
     to_put = []
     for p in data:
-        # Entities to update
+        if not p.approvalStatus:
+            p.approvalStatus = Status()
         to_put.append(p)
 
     if to_put:

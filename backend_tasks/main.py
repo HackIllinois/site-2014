@@ -1,4 +1,13 @@
 #!/usr/bin/python
+import boto
+from gslib.third_party.oauth2_plugin import oauth2_plugin
+from gslib.third_party.oauth2_plugin import oauth2_client
+import multiprocessing
+import shutil
+import StringIO
+import tempfile
+import threading
+import time
 import json
 import urllib
 import httplib2
@@ -7,7 +16,11 @@ from redis import Redis
 from rq import Queue
 import googledatastore as datastore
 from googledatastore.helper import *
-#from worker_functions import *
+from worker_functions import *
+
+STAGING_LOC='/home/Austin/hackillinois-website/backend_tasks/staging/'
+FILES_LOC='/home/Austin/hackillinois-website/backend_tasks/files/'
+SERVE_LOC='/home/Austin/hackillinois-website/backend_tasks/serve/'
 
 METADATA_SERVER = 'http://metadata/computeMetadata/v1/instance/service-accounts'
 SERVICE_ACCOUNT = 'default'
@@ -20,26 +33,34 @@ LOCAL_FILE = 'file'
 BUCKET = 'hackillinois'
 RDq = ''
 
+try:
+  oauth2_client.token_exchange_lock = multiprocessing.Manager().Lock()
+except:
+    oauth2_client.token_exchange_lock = threading.Lock()
+
 def main():
   RDq = Queue(connection=Redis())
   datastore.set_options(dataset='hackillinois')
-  print getData()
-  print downloadAllResumes()
+  enqueue(getData())
+  #downloadAllResumes()
 
 def getData():
   req = datastore.RunQueryRequest()
   q = req.query
   set_kind(q, kind='Task')
   set_composite_filter(q.filter,
-                     datastore.CompositeFilter.AND,
-                     set_property_filter(
-                         datastore.Filter(),
-                         'complete', datastore.PropertyFilter.EQUAL, False))
+                   datastore.CompositeFilter.AND,
+                   set_property_filter(
+                       datastore.Filter(),
+                       'complete', datastore.PropertyFilter.EQUAL, False))
   resp = datastore.run_query(req)
   result = []
   for r in resp.batch.entity_result:
-    # key, jobFunction, data
-    result.append([r.entity.key, r.entity.property[3].value.string_value,json.loads(r.entity.property[4].value.string_value)])
+    try:
+      data = json.loads(r.entity.property[4].value.string_value)
+    except:
+      data = ''
+    result.append([r.entity.key, r.entity.property[3].value.string_value,data])
   return result
 
 #Enqueue to the workers from the datastore here and then save the result back into the datastore
@@ -50,32 +71,18 @@ def enqueue(tasks):
                timeout=30)
 
 def downloadAllResumes():
-  http = httplib2.Http()
-  resp, content = http.request('https://www.googleapis.com/storage/v1beta2/b/hackillinois/o', \
-                                body=None, \
-                                headers={'Authorization': 'OAuth ' + access_token, \
-                                         'x-goog-api-version': '2', \
-                                         'x-goog-project-id': GOOGLE_STORAGE_PROJECT_NUMBER })
-  if resp.status == 200:
-    jsonContent = json.loads(content)
-    for item in jsonContent["items"]:
-      if item["size"] > 0:
-        (resp_headers, content) = http.request(jsonContent["items"][3]["mediaLink"], "GET", body=None, headers={'Authorization': 'OAuth ' + access_token,\
-                                                                                                                'x-goog-api-version': '2','x-goog-project-id': GOOGLE_STORAGE_PROJECT_NUMBER })
-  else:
-     print resp.status
-
-def getToken():
-  token_uri = '%s/%s/token' % (METADATA_SERVER, SERVICE_ACCOUNT)
-  http = httplib2.Http()
-  resp, content = http.request(token_uri, method='GET', body=None, headers={'X-Google-Metadata-Request': 'True'}) # Make request to metadata server
-
-  if resp.status == 200:
-    d = json.loads(content)
-    access_token = d['access_token'] # Save the access token
-    return True
-  else:
-    return False
+  header_values = {"x-goog-project-id": PROJECT}
+  uri = boto.storage_uri(BUCKET, GOOGLE_STORAGE)
+  count = 0
+  for obj in uri.get_bucket():
+    if obj.size > 0:
+      f = open(FILES_LOC+obj.name+'.pdf', 'w')
+      print count
+      count +=1
+        obj.get_contents_to_file(f)
+        f.close()
+    else:
+       print resp.status
 
 
 if __name__ == '__main__':

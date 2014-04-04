@@ -3,6 +3,8 @@ import constants
 from Model import Model
 
 class Sponsor(Model):
+    Model._automatically_add_event_as_ancestor()
+
     companyName = ndb.StringProperty(required=True)
     email = ndb.StringProperty(required=True)
     levelOfSponsorship = ndb.StringProperty()
@@ -18,12 +20,10 @@ class Sponsor(Model):
     status = ndb.TextProperty(default='')
     pictureURL = ndb.TextProperty(default='')
     name = ndb.StringProperty(default='', required=True)
-    updatedTime = ndb.DateTimeProperty()
+    updatedTime = ndb.IntegerProperty()
     email_lower = ndb.ComputedProperty(lambda self: self.email.lower())
     database_key = ndb.IntegerProperty(default=0)
     status_list = ndb.JsonProperty()
-
-
 
     @classmethod
     def new(cls, data):
