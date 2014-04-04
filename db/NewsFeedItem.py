@@ -7,7 +7,7 @@ from google.appengine.ext.db import BadValueError
 class NewsFeedItem(Model):
 	Model._automatically_add_event_as_ancestor()
 
-	description = ndb.StringProperty()
+	description = ndb.TextProperty()
 	time = ndb.IntegerProperty()
 	icon_url = ndb.TextProperty()
 	highlighted = ndb.JsonProperty() #[[range,color],[range,color]],
@@ -20,7 +20,3 @@ class NewsFeedItem(Model):
 		for k in data:
 			setattr(skills, k, data[k])
 		return skills
-
-	@classmethod
-	def unique_properties(cls):
-		return ['description']
