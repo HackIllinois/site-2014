@@ -106,19 +106,33 @@ class BaseAdminHandler(MainHandler.Handler):
             return None
         return admin_user
 
+
+    # http://stackoverflow.com/questions/7111068/split-string-by-count-of-characters
+    def chunks(self, s, n):
+        """Produce `n`-character chunks from `s`."""
+        for start in range(0, len(s), n):
+            yield s[start:start+n]
+
     """http://stackoverflow.com/questions/9127982/avoiding-memcache-1m-limit-of-values"""
     def store(self, key, value, chunksize=950000):
-        serialized = pickle.dumps(value, 2)
+        serialized = pickle.dumps(value)
         values = {}
-        for i in xrange(0, len(serialized), chunksize):
-            values['%s.%s' % (key, i//chunksize)] = serialized[i : i+chunksize]
+        i = 0
+        for chunk in self.chunks(serialized, chunksize):
+            values['%s.%s' % (key, i)] = chunk
+            i += 1
         memcache.set_multi(values, time=constants.MEMCACHE_TIMEOUT)
 
     """http://stackoverflow.com/questions/9127982/avoiding-memcache-1m-limit-of-values"""
     def retrieve(self, key):
         MAX_SPLITS = 32
         result = memcache.get_multi(['%s.%s' % (key, i) for i in xrange(MAX_SPLITS)])
-        serialized = ''.join([v for k, v in sorted(result.items()) if v is not None])
+        serialized = ''
+        for i in xrange(MAX_SPLITS):
+            k = '%s.%s' % (key, i)
+            if k not in result or not result[k]:
+                break
+            serialized += result[k]
         data = None
         if serialized:
             data = pickle.loads(serialized)
@@ -148,12 +162,7 @@ class BaseAdminHandler(MainHandler.Handler):
         """Gets the 'hackers/<status>/<category>/<route>' key from the memcache and updates the memcache if the key is not in the memcache"""
         """Uses memcache for everything but the status"""
         key = 'hackers/' + str(status) + '/' + str(category) + '/' + str(route)
-        # data = memcache.get(key)
-        # data = self.retrieve(key)
-
-        # This is temporary until the server error with the AllHackers handler is fixed.
-        # Dear god someone please delete this code. :P --Matthew
-        data = None
+        data = self.retrieve(key)
 
         stats = memcache.get_stats()
         logging.info('Cache Hits:%s, Cache Misses:%s' % (stats['hits'], stats['misses']))
