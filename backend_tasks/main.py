@@ -46,13 +46,9 @@ def main():
 
 def getData():
   req = datastore.RunQueryRequest()
-  q = req.query
-  set_kind(q, kind='Task')
-  set_composite_filter(q.filter,
-                   datastore.CompositeFilter.AND,
-                   set_property_filter(
-                       datastore.Filter(),
-                       'complete', datastore.PropertyFilter.EQUAL, False))
+  gql_query = req.gql_query
+  gql_query.query_string = 'SELECT * FROM Task WHERE complete = FALSE'
+  gql_query.allow_literal = True
   resp = datastore.run_query(req)
   result = []
   for r in resp.batch.entity_result:
@@ -60,14 +56,14 @@ def getData():
       data = json.loads(r.entity.property[4].value.string_value)
     except:
       data = ''
-    result.append([r.entity.key, r.entity.property[3].value.string_value,data])
+    result.append([r.entity.key, r.entity.property[3].value.string_value,data,r.entity])
   return result
 
 #Enqueue to the workers from the datastore here and then save the result back into the datastore
 def enqueue(tasks):
   for task in tasks:
     RDq.enqueue_call(func=task[1],
-               args=(task[2],task[0]),
+               args=(task[2],task[0],task[3]),
                timeout=30)
 
 def downloadAllResumes():
