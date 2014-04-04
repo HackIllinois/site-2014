@@ -484,7 +484,7 @@ class LoginHandler(MainHandler.BaseMobileHandler):
             'time':staffProfile.updatedTime,
             'type':'staff'}
 
-            if staff_profile.skills or staffProfile.skills[0] != "":
+            if staffProfile.skills or staffProfile.skills[0] != "":
                 profile['skills'] = staffProfile.skills
             else:
                 profile['skills'] = []
