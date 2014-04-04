@@ -347,11 +347,10 @@ class PersonHandler(MainHandler.BaseMobileHandler):
         for _key in updatedProfile:
             if _key == 'status':
                 updatedProfileDict['status_list'] = updatedProfile[_key]
-            if _key == 'fb_url':
+            elif _key == 'fb_url':
                 updatedProfileDict['pictureURL'] = updatedProfile[_key]
             else:
                 updatedProfileDict[_key] = updatedProfile[_key]
-            
             updatedKeys.append(_key)
         
         if email:
