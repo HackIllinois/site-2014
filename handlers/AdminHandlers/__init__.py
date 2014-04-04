@@ -23,3 +23,4 @@ import NewsFeedHandler
 import ScheduleHandler
 import WhiteListControlHandler
 import MassRsvpInvalidateHandler
+import NewSponsorHandler
