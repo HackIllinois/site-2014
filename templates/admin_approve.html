@@ -329,22 +329,22 @@
         }
 
         $(document).ready(function () {
+            hackerList = new List('hackers', options);
 
-            // Do before list created so applied to all
             applyBtnCallbacks();
             schoolClickCallbacks();
-
-            hackerList = new List('hackers', options);
 
             colToggleCallbacks();
             schoolClickCallbacks();
             searchCallbacks();
-            checkBoxCallbacks
+            checkBoxCallbacks();
 
             $('#count').html(hackerList.matchingItems.length);
             hackerList.on('updated', function() {
                 $('#count').html(hackerList.matchingItems.length);
                 updateColumVisibility();
+                applyBtnCallbacks();
+                schoolClickCallbacks();
             });
         });
     </script>
