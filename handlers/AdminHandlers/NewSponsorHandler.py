@@ -81,7 +81,8 @@ class NewSponsorHandler(MainAdminHandler.BaseAdminHandler):
 
         status_list = str(urllib.unquote(self.request.get('status_list')))
         status_list = csv_split_and_validate(status_list)
-        status_list = [{'status':s, 'date':updatedTime} for s in status_list]
+        if status_list:
+            status_list = [{'status':s, 'date':updatedTime} for s in status_list]
         if db_sponsor and status_list:
             db_sponsor.status_list = status_list
         

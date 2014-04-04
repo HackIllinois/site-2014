@@ -130,7 +130,7 @@ def get_staff_data():
                     'fb_url':staff_profile.pictureURL, 
                     'database_key':staff_profile.database_key, 
                     'time':staff_profile.updatedTime, 
-                    'type':personType}
+                    'type':'staff'}
         if staff_profile.skills:
             if staff_profile.skills[0] != "":
                 profile['skills'] = staff_profile.skills
@@ -293,10 +293,10 @@ class NewsfeedHandler(MainHandler.BaseMobileHandler):
             return self.write(json.dumps([]))
         
         empty_list = []
-        list_of_news_feed_items = [{'description':'ANNOUNCEMENT - Interactive Itelligence is hiring! Check out our jobs at inin.jobs.', 'time':1396269004, 'icon_url':'https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcSNwVLUS8TsSni5_gXYPWDVBehYxMHnQj5RIWITO11uACXHhky5', 'highlighted':[[[0,12],[30,75,102]]], 'emergency':False},
-                                   {'description':'WIFI Problems - Houston, we are experience Wifi problems on the first floor.', 'time':1396269010, 'icon_url':'http://www.tarkettsportsindoor.com/sites/tarkett_indoor/assets/Resicore-PU-Midnight-Blue.png', 'highlighted':[[[0,13],[167,65,46]]], 'emergency':True},
-                                   {'description':'A spontaneous game of finger blasters is going to start in SC1404 in 5 minutes!', 'time':1396269923, 'icon_url':'http://www.tarkettsportsindoor.com/sites/tarkett_indoor/assets/Resicore-PU-Midnight-Blue.png', 'highlighted':[[[59,65],[19,38,51]]], 'emergency':False},
-                                   {'description':'The first 100 people to tweet something to @hackillinois will win a Hack Illinois blanket', 'time':1396269876, 'icon_url':'http://www.tarkettsportsindoor.com/sites/tarkett_indoor/assets/Resicore-PU-Midnight-Blue.png', 'highlighted':[[[43,56],[19,38,51]]], 'emergency':False}]
+        list_of_news_feed_items = [{'description':'ANNOUNCEMENT - Interactive Itelligence is hiring! Check out our jobs at inin.jobs.', 'time':1396269004, 'icon_url':'http://www.hackillinois.org/img/icons-iOS/announce.png', 'highlighted':[[[0,12],[30,75,102]]], 'emergency':False},
+                                   {'description':'WIFI Problems - Houston, we are experience Wifi problems on the first floor.', 'time':1396269010, 'icon_url':'http://www.hackillinois.org/img/icons-iOS/emergency.png', 'highlighted':[[[0,13],[167,65,46]]], 'emergency':True},
+                                   {'description':'A spontaneous game of finger blasters is going to start in SC1404 in 5 minutes!', 'time':1396269923, 'icon_url':'http://www.hackillinois.org/img/icons-iOS/hackillinois.png', 'highlighted':[[[59,65],[19,38,51]]], 'emergency':False},
+                                   {'description':'The first 100 people to tweet something to @hackillinois will win a Hack Illinois blanket', 'time':1396269876, 'icon_url':'http://www.hackillinois.org/img/icons-iOS/hackillinois.png', 'highlighted':[[[43,56],[19,38,51]]], 'emergency':False}]
                                    # {'description':'', 'time':9923223, 'icon_url':'http://www.tarkettsportsindoor.com/sites/tarkett_indoor/assets/Resicore-PU-Midnight-Blue.png', 'highlighted':[], 'emergency':False},
                                    # {'description':'', 'time':23423, 'icon_url':'http://www.tarkettsportsindoor.com/sites/tarkett_indoor/assets/Resicore-PU-Midnight-Blue.png', 'highlighted':[], 'emergency':False},
                                    # {'description':'', 'time':765524333, 'icon_url':'https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcSNwVLUS8TsSni5_gXYPWDVBehYxMHnQj5RIWITO11uACXHhky5', 'highlighted':[[[0,5],[25,25,112]]], 'emergency':True},
@@ -335,17 +335,12 @@ class PersonHandler(MainHandler.BaseMobileHandler):
         elif self.request.get('key'):
             keyParams = self.request.get('key')
 
-            person = Attendee.search_database({'database_key':keyParams})
-            if not person:
-                person = Sponsor.search_database({'database_key':keyParams})
-            if not person:
-                person = Admin.search_database({'database_key':keyParams})
-            if not person: 
-                return self.write(json.dumps([]))
+            allProfiles = get_people_memecache('all')
 
-            return self.write(json.dumps([person]))
+            for personProfile in allProfiles:
+                if personProfile['database_key'] == int(keyParams):
+                    return self.write(json.dumps([personProfile]))
 
-            
         else:
             #get all models
             listOfEveryone = get_people_memecache('all')
@@ -523,7 +518,7 @@ class LoginHandler(MainHandler.BaseMobileHandler):
             'status':staffProfile.status_list, 
             'database_key':staffProfile.database_key, 
             'time':staffProfile.updatedTime,
-            'type':staffProfile.personType}
+            'type':'staff'}
 
             if staffProfile.skills:
                 if staffProfile.skills[0] != "":

@@ -29,10 +29,10 @@ MAP = [{'building':'Siebel', 'floor':'Basement', 'room_number':'SC 0216', 'room_
        {'building':'Siebel', 'floor':'4', 'room_number':'SC 4403', 'room_type':'sponsor room' ,'room_name':'', 'image_url':''},
        {'building':'Siebel', 'floor':'4', 'room_number':'SC 4405', 'room_type':'hacker space' ,'room_name':'', 'image_url':''},
        {'building':'Siebel', 'floor':'4', 'room_number':'SC 4407', 'room_type':'sponsor room' ,'room_name':'', 'image_url':''},
-       {'building':'DCL', 'floor':'1', 'room_number':'DC 1310', 'room_type':'tech talks' ,'room_name':'', 'image_url':''},
-       {'building':'DCL', 'floor':'1', 'room_number':'DC 1320', 'room_type':'hacker space' ,'room_name':'', 'image_url':''},
-       {'building':'DCL', 'floor':'2', 'room_number':'DC 2320', 'room_type':'hardware hacker space' ,'room_name':'', 'image_url':''},
-       {'building':'DCL', 'floor':'2', 'room_number':'DC 2436', 'room_type':'hardware hacker space' ,'room_name':'', 'image_url':''}]
+       {'building':'DCL', 'floor':'1', 'room_number':'DCL 1310', 'room_type':'tech talks' ,'room_name':'', 'image_url':''},
+       {'building':'DCL', 'floor':'1', 'room_number':'DCL 1320', 'room_type':'hacker space' ,'room_name':'', 'image_url':''},
+       {'building':'DCL', 'floor':'2', 'room_number':'DCL 2320', 'room_type':'hardware hacker space' ,'room_name':'', 'image_url':''},
+       {'building':'DCL', 'floor':'2', 'room_number':'DCL 2436', 'room_type':'hardware hacker space' ,'room_name':'', 'image_url':''}]
 
 SUPPORT = {
     'General':['Events', 'Schedule', 'Rules', 'Comments or Suggestions'],
@@ -42,51 +42,51 @@ SUPPORT = {
 
 SCHEDULE = {
     'Friday':[{
-              'event_name':'First event',
-              'description':'Lets kickoff hackillinois',
+              'event_name':'Answer Tech Talk',
+              'description':'Tech talk will be about us and what we do',
               'location':
-              {'building':'Siebel', 'floor':'4', 'room_number':4407, 'room_type':'sponsor room' ,'room_name':'', 'image_url':''},
+                {'building':'DCL', 'floor':'1', 'room_number':'DCL 1310', 'room_type':'tech talks' ,'room_name':'', 'image_url':''},
               'time':77782722,
-              'icon_url':'https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcSNwVLUS8TsSni5_gXYPWDVBehYxMHnQj5RIWITO11uACXHhky5'
+              'icon_url':'http://www.hackillinois.org/img/icons-iOS/answers.png'
               },
               {
               'event_name':'First event',
-              'description':'Lets kickoff hackillinois',
+              'description':'Tech talk will be about Machine Learning',
               'location':
-              {'building':'Siebel', 'floor':'4', 'room_number':4407, 'room_type':'sponsor room' ,'room_name':'', 'image_url':''},
+                {'building':'DCL', 'floor':'1', 'room_number':'DCL 1310', 'room_type':'tech talks' ,'room_name':'', 'image_url':''},
               'time':77782725,
-              'icon_url':'https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcSNwVLUS8TsSni5_gXYPWDVBehYxMHnQj5RIWITO11uACXHhky5'
-              },
-              {
-              'event_name':'First event',
-              'description':'Lets kickoff hackillinois',
-              'location':
-              {'building':'Siebel', 'floor':'4', 'room_number':4407, 'room_type':'sponsor room' ,'room_name':'', 'image_url':''},
-              'time':77782727,
-              'icon_url':'https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcSNwVLUS8TsSni5_gXYPWDVBehYxMHnQj5RIWITO11uACXHhky5'
-              }],
+              'icon_url':'http://www.hackillinois.org/img/icons-iOS/bloomberg.png'
+              },],
     'Saturday':[{
-                'event_name':'First event',
-                'description':'Lets kickoff hackillinois',
+                'event_name':'Bank of America Tech Talk',
+                'description':'Talk talk about us and what we do',
                 'location':
-                {'building':'Siebel', 'floor':'4', 'room_number':4407, 'room_type':'sponsor room' ,'room_name':'', 'image_url':''},
+                {'building':'DCL', 'floor':'1', 'room_number':'DCL 1310', 'room_type':'tech talks' ,'room_name':'', 'image_url':''},
                 'time':2342342,
-                'icon_url':'http://www.tarkettsportsindoor.com/sites/tarkett_indoor/assets/Resicore-PU-Midnight-Blue.png'
+                'icon_url':'http://www.hackillinois.org/img/icons-iOS/ba.png'
                 },
                 {
-                'event_name':'First event',
-                'description':'Lets kickoff hackillinois',
+                'event_name':'Allston API talk',
+                'description':'We will be talking about our API',
                 'location':
-                {'building':'Siebel', 'floor':'4', 'room_number':4407, 'room_type':'sponsor room' ,'room_name':'', 'image_url':''},
+                {'building':'DCL', 'floor':'1', 'room_number':'DCL 1310', 'room_type':'tech talks' ,'room_name':'', 'image_url':''},
                 'time':241234134,
-                'icon_url':'http://www.tarkettsportsindoor.com/sites/tarkett_indoor/assets/Resicore-PU-Midnight-Blue.png'
+                'icon_url':'http://www.hackillinois.org/img/icons-iOS/allston.png'
                 }],
     'Sunday':[{
-                'event_name':'First event',
-                'description':'Lets kickoff hackillinois',
+                'event_name':'a16z API talk',
+                'description':'We will be talking about our API',
                 'location':
-                {'building':'Siebel', 'floor':'4', 'room_number':4407, 'room_type':'sponsor room' ,'room_name':'', 'image_url':''},
+                {'building':'DCL', 'floor':'1', 'room_number':'DCL 1310', 'room_type':'tech talks' ,'room_name':'', 'image_url':''},
                 'time':4532452435,
-                'icon_url':'https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcSNwVLUS8TsSni5_gXYPWDVBehYxMHnQj5RIWITO11uACXHhky5'		
+                'icon_url':'http://www.hackillinois.org/img/icons-iOS/a16z.png'		
+                },
+                {
+                'event_name':'3red API talk',
+                'description':'We will be showing off and demoing our API',
+                'location':
+                {'building':'DCL', 'floor':'1', 'room_number':'DCL 1310', 'room_type':'tech talks' ,'room_name':'', 'image_url':''},
+                'time':4532452435,
+                'icon_url':'http://www.hackillinois.org/img/icons-iOS/3red.png'     
                 }]
           }
