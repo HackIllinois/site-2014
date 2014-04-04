@@ -87,7 +87,7 @@ SCHEDULE = {
               'description':'Tech talk will be about us and what we do',
               'location':
                 {'building':'DCL', 'floor':'1', 'room_number':'DCL 1310', 'room_type':'tech talks' ,'room_name':'', 'image_url':''},
-              'time':1397352600,
+              'time':1397395800,
               'icon_url':'http://www.hackillinois.org/img/icons-iOS/answers.png'
               },
               {

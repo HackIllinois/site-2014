@@ -293,27 +293,26 @@ class NewsfeedHandler(MainHandler.BaseMobileHandler):
         if not valid_email:
             return self.write(json.dumps([]))
         
-        # empty_list = []
-        # list_of_news_feed_items = [{'description':'ANNOUNCEMENT - Interactive Itelligence is hiring! Check out our jobs at inin.jobs.', 'time':1396269004, 'icon_url':'http://www.hackillinois.org/img/icons-iOS/announce.png', 'highlighted':[[[0,12],[30,75,102]]], 'emergency':False},
-        #                            {'description':'WIFI Problems - Houston, we are experience Wifi problems on the first floor.', 'time':1396269010, 'icon_url':'http://www.hackillinois.org/img/icons-iOS/emergency.png', 'highlighted':[[[0,13],[167,65,46]]], 'emergency':True},
-        #                            {'description':'A spontaneous game of finger blasters is going to start in SC1404 in 5 minutes!', 'time':1396269923, 'icon_url':'http://www.hackillinois.org/img/icons-iOS/hackillinois.png', 'highlighted':[[[59,65],[19,38,51]]], 'emergency':False},
-        #                            {'description':'The first 100 people to tweet something to @hackillinois will win a Hack Illinois blanket', 'time':1396269876, 'icon_url':'http://www.hackillinois.org/img/icons-iOS/hackillinois.png', 'highlighted':[[[43,56],[19,38,51]]], 'emergency':False},
-        #                            {'description':'Event ends - You have 5 hours left to finish you hacks!', 'time':1396269222, 'icon_url':'http://www.hackillinois.org/img/icons-iOS/emergency.png', 'highlighted':[[[0,10],[167,65,46]]], 'emergency':True}]
-        #                            # {'description':'', 'time':23423, 'icon_url':'http://www.tarkettsportsindoor.com/sites/tarkett_indoor/assets/Resicore-PU-Midnight-Blue.png', 'highlighted':[], 'emergency':False},
-        #                            # {'description':'', 'time':765524333, 'icon_url':'https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcSNwVLUS8TsSni5_gXYPWDVBehYxMHnQj5RIWITO11uACXHhky5', 'highlighted':[[[0,5],[25,25,112]]], 'emergency':True},
-        #                            # {'description':'', 'time':88923443, 'icon_url':'http://www.tarkettsportsindoor.com/sites/tarkett_indoor/assets/Resicore-PU-Midnight-Blue.png', 'highlighted':[[[7,12],[139,0,0]]], 'emergency':False}]
+        empty_list = []
+        newsFeedList = [{'description':'ANNOUNCEMENT - Puppies are available in the main atrium for your delight.', 'time':1396584900, 'icon_url':'http://www.hackillinois.org/img/icons-iOS/announce.png', 'highlighted':[[[0,12],[165,165,165]]], 'emergency':False},
+                                   {'description':'We are having open office hours with HackIllinois Technical Staff in SC 1404! Bring your computers with you!', 'time':1396583100, 'icon_url':'http://www.hackillinois.org/img/icons-iOS/hackillinois.png', 'highlighted':[[[68,76],[27,77,104]]], 'emergency':False},
+                                   {'description':'The first 100 people to tweet something to @hackillinois will win a HackIllinois blanket.', 'time':1396269004, 'icon_url':'http://www.hackillinois.org/img/icons-iOS/hackillinois.png', 'highlighted':[[[43,56],[27,77,104]]], 'emergency':False},
+                                   {'description':'Event ends - You have 5 hours left to finish your hacks!', 'time':1396585500, 'icon_url':'http://www.hackillinois.org/img/icons-iOS/emergency.png', 'highlighted':[[[0,10],[167,65,46]]], 'emergency':True}]
+                                   # {'description':'', 'time':23423, 'icon_url':'http://www.tarkettsportsindoor.com/sites/tarkett_indoor/assets/Resicore-PU-Midnight-Blue.png', 'highlighted':[], 'emergency':False},
+                                   # {'description':'', 'time':765524333, 'icon_url':'https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcSNwVLUS8TsSni5_gXYPWDVBehYxMHnQj5RIWITO11uACXHhky5', 'highlighted':[[[0,5],[25,25,112]]], 'emergency':True},
+                                   # {'description':'', 'time':88923443, 'icon_url':'http://www.tarkettsportsindoor.com/sites/tarkett_indoor/assets/Resicore-PU-Midnight-Blue.png', 'highlighted':[[[7,12],[139,0,0]]], 'emergency':False}]
 
-        newsFeed = NewsFeedItem.search_database({})
-        newsFeedList = []
-        for feedItem in newsFeed:
-            item = {
-                'description':feedItem.description,
-                'time':feedItem.time,
-                'icon_url':feedItem.icon_url,
-                'emergency':feedItem.emergency,
-                'highlighted':[]
-            }
-            newsFeedList.append(item)
+        # newsFeed = NewsFeedItem.search_database({})
+        # newsFeedList = []
+        # for feedItem in newsFeed:
+        #     item = {
+        #         'description':feedItem.description,
+        #         'time':feedItem.time,
+        #         'icon_url':feedItem.icon_url,
+        #         'emergency':feedItem.emergency,
+        #         'highlighted':[]
+        #     }
+        #     newsFeedList.append(item)
 
                                    
         return self.write(json.dumps(newsFeedList))
