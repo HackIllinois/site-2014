@@ -31,6 +31,7 @@ class NewSponsorHandler(MainAdminHandler.BaseAdminHandler):
 	    email = str(urllib.unquote(self.request.get('email')))
 	    name = str(urllib.unquote(self.request.get('name')))
 	    jobTitle = str(urllib.unquote(self.request.get('jobTitle')))
+	    updatedTime
 
 	    skills = str(urllib.unquote(self.request.get('skills')))
 	    skills = csv_split_and_validate(skills)
@@ -39,3 +40,7 @@ class NewSponsorHandler(MainAdminHandler.BaseAdminHandler):
 	    status_list = csv_split_and_validate(status_list)
 	    
 	    database_key = get_next_sponsor_key()
+
+	    Sponsor(
+
+	    ).put()

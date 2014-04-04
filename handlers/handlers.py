@@ -97,7 +97,7 @@ handlers = [
     RedirectRoute('/admin/mobile/newsfeed', handler=AdminHandlers.NewsFeedHandler.NewsFeedHandler, name='AdminNewsFeed', strict_slash=True),
     RedirectRoute('/admin/mobile/schedule', handler=AdminHandlers.ScheduleHandler.ScheduleHandler, name='AdminSchedule', strict_slash=True),
     
-    # RedirectRoute('/admin/updateschema', handler=AdminHandlers.UpdateSchemaHandler.UpdateSchemaHandler, name='UpdateSchema', strict_slash=True),
+    RedirectRoute('/admin/updateschema', handler=AdminHandlers.UpdateSchemaHandler.UpdateSchemaHandler, name='UpdateSchema', strict_slash=True),
 
     RedirectRoute('/mobile/schedule', handler=MobileHandler.ScheduleHandler, name='MobileSchedule', strict_slash=True),
     RedirectRoute('/mobile/map', handler=MobileHandler.MapHandler, name='MobileMap', strict_slash=True),
