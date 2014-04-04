@@ -43,7 +43,7 @@ SUPPORT = {
 SCHEDULE = {
     'Friday':[{
               'event_name':'Registration',
-              'description':'Registration starts at 6pm and ends at 7pm',
+              'description':'Registration starts at 6pm and ends at 7pm. Settle in and update you hacker profile to let us know where you will be working.',
               'location':
                 {'building':'DCL', 'floor':'1', 'room_number':'DCL 1310', 'room_type':'tech talks' ,'room_name':'', 'image_url':''},
               'time':1397239200,
@@ -51,7 +51,7 @@ SCHEDULE = {
               },
               {
               'event_name':'Welcome Ceremony',
-              'description':'Welcome Ceremony starts at 8pm till 9pm',
+              'description':'The Welcome Ceremony starts at 8pm and lasts until 9pm. Come meet our amazing HackIllinois team, our incredible sponsors, and other hackers!',
               'location':
                 {'building':'DCL', 'floor':'1', 'room_number':'DCL 1310', 'room_type':'tech talks' ,'room_name':'', 'image_url':''},
               'time':1397246400,
