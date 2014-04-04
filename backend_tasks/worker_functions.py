@@ -16,7 +16,7 @@ def zip_resumes(data, key):
     os.makedirs(directory)
     for resume in data:
         copy(directoryBase+resume['gsObjectName']+'.pdf', stagingDir)
-    toZip(key.path_element.id[-1], stagingDir)
+    toZip('serve/'+key.path_element.id[-1], stagingDir)
 
 
 #zips a full directory
