@@ -150,6 +150,9 @@ class BaseAdminHandler(MainHandler.Handler):
         key = 'hackers/' + str(status) + '/' + str(category) + '/' + str(route)
         # data = memcache.get(key)
         # data = self.retrieve(key)
+
+        # This is temporary until the server error with the AllHackers handler is fixed.
+        # Dear god someone please delete this code. :P --Matthew
         data = None
 
         stats = memcache.get_stats()
