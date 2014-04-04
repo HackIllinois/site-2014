@@ -365,6 +365,9 @@ class PersonHandler(MainHandler.BaseMobileHandler):
 
             elif staffProfile:
                 # update datastore
+                logging.info(updatedProfileDict)
+                logging.info(email)
+                logging.info(updatedProfile)
                 Admin.update_search(updatedProfileDict, {'email':email})
 
             elif companyProfile:
