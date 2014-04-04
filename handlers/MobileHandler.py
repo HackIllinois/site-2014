@@ -88,8 +88,10 @@ def get_hacker_data():
                     'database_key':hackerProfile.database_key,
                     'time':hackerProfile.updatedTime, 
                     'type':'hacker'}
-        if hackerProfile.skills or hackerProfile.skills[0] != "":
-            profile['skills'] = hackerProfile.skills
+
+        if hackerProfile.skills:
+            if hackerProfile.skills[0] != "":
+                profile['skills'] = hackerProfile.skills
         else:
             profile['skills'] = []
         
@@ -122,8 +124,9 @@ def get_staff_data():
                     'database_key':staff_profile.database_key, 
                     'time':staff_profile.updatedTime, 
                     'type':'staff'}
-        if staff_profile.skills or staff_profile.skills[0] != "":
-            profile['skills'] = staff_profile.skills
+        if staff_profile.skills:
+            if staff_profile.skills[0] != "":
+                profile['skills'] = staff_profile.skills
         else:
             profile['skills'] = []
 
@@ -153,8 +156,10 @@ def get_mentor_data():
                     'database_key':mentor_profile.database_key, 
                     'time':mentor_profile.updatedTime, 
                     'type':'mentor'}
-        if mentor_profile.skills or mentor_profile.skills[0] != "":
-            profile['skills'] = mentor_profile.skills
+
+        if mentor_profile.skills:            
+            if mentor_profile.skills[0] != "":
+                profile['skills'] = mentor_profile.skills
         else:
             profile['skills'] = []
 
@@ -464,8 +469,9 @@ class LoginHandler(MainHandler.BaseMobileHandler):
             'time':hackerProfile.updatedTime,
             'type':'hacker'}
 
-            if hackerProfile.skills or hackerProfile.skills[0] != "":
-                profile['skills'] = hackerProfile.skills
+            if hackerProfile.skills:
+                if hackerProfile.skills[0] != "":
+                    profile['skills'] = hackerProfile.skills
             else:
                 profile['skills'] = []
 
@@ -484,8 +490,9 @@ class LoginHandler(MainHandler.BaseMobileHandler):
             'time':staffProfile.updatedTime,
             'type':'staff'}
 
-            if staff_profile.skills or staffProfile.skills[0] != "":
-                profile['skills'] = staffProfile.skills
+            if staffProfile.skills:
+                if staffProfile.skills[0] != "":
+                    profile['skills'] = staffProfile.skills
             else:
                 profile['skills'] = []
 
@@ -501,8 +508,9 @@ class LoginHandler(MainHandler.BaseMobileHandler):
             'time':mentorProfile.updatedTime,
             'type':'mentor'}
             
-            if mentorProfile.skills or mentorProfile.skills[0] != "":
-                profile['skills'] = mentorProfile.skills
+            if mentorProfile.skills:
+                if mentorProfile.skills[0] != "":
+                    profile['skills'] = mentorProfile.skills
             else:
                 profile['skills'] = []
         
