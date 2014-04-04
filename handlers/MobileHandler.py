@@ -92,11 +92,18 @@ def get_hacker_data():
         if hackerProfile.skills:
             if hackerProfile.skills[0] != "":
                 profile['skills'] = hackerProfile.skills
+            else:
+                profile['skills'] = []
         else:
             profile['skills'] = []
         
         if hackerProfile.status_list:
-            profile['status'] = hackerProfile.status_list
+            if hackerProfile.status_list[0] != "":
+                profile['status'] = hackerProfile.status_list
+            else:
+                profile['status'] = []
+        else:
+            profile['status'] = []
 
         # if len(hackerProfile.status_list) <= 3:
         #     profile['status'] = hackerProfile.status_list
@@ -123,15 +130,22 @@ def get_staff_data():
                     'fb_url':staff_profile.pictureURL, 
                     'database_key':staff_profile.database_key, 
                     'time':staff_profile.updatedTime, 
-                    'type':'staff'}
+                    'type':personType}
         if staff_profile.skills:
             if staff_profile.skills[0] != "":
                 profile['skills'] = staff_profile.skills
+            else:
+                profile['skills'] = []
         else:
             profile['skills'] = []
 
         if staff_profile.status_list:
-            profile['status'] = staff_profile.status_list
+            if staff_profile.status_list[0] != "":
+                profile['status'] = staff_profile.status_list
+            else:
+                profile['status'] = []
+        else:
+            profile['status'] = []
 
         # if len(staff_profile.status_list) <= 3:
         #     profile['status'] = staff_profile.status
@@ -160,11 +174,18 @@ def get_mentor_data():
         if mentor_profile.skills:            
             if mentor_profile.skills[0] != "":
                 profile['skills'] = mentor_profile.skills
+            else:
+                profile['skills'] = []
         else:
             profile['skills'] = []
 
         if mentor_profile.status_list:
-            profile['status'] = mentor_profile.status_list
+            if mentor_profile.status_list[0] != "":
+                profile['status'] = mentor_profile.status_list
+            else:
+                profile['status'] = []
+        else:
+            profile['status'] = []
 
         # if len(mentor_profile.status_list) <= 3:
         #     profile['status'] = mentor_profile.status_list
@@ -314,12 +335,17 @@ class PersonHandler(MainHandler.BaseMobileHandler):
         elif self.request.get('key'):
             keyParams = self.request.get('key')
 
-            allProfiles = get_people_memecache('all')
+            person = Attendee.search_database({'database_key':keyParams})
+            if not person:
+                person = Sponsor.search_database({'database_key':keyParams})
+            if not person:
+                person = Admin.search_database({'database_key':keyParams})
+            if not person: 
+                return self.write(json.dumps([]))
 
-            for personProfile in allProfiles:
-                if personProfile['database_key'] == int(keyParams):
-                    return self.write(json.dumps([personProfile]))
+            return self.write(json.dumps([person]))
 
+            
         else:
             #get all models
             listOfEveryone = get_people_memecache('all')
@@ -471,8 +497,18 @@ class LoginHandler(MainHandler.BaseMobileHandler):
             if hackerProfile.skills:
                 if hackerProfile.skills[0] != "":
                     profile['skills'] = hackerProfile.skills
+                else:
+                    profile['skills'] = []
             else:
                 profile['skills'] = []
+
+            if hackerProfile.status_list:
+                if hackerProfile.status_list[0] != "":
+                    profile['status'] = hackerProfile.status_list
+                else:
+                    profile['status'] = []
+            else:
+                profile['status'] = []
 
 
             list_profile.append(profile)
@@ -487,13 +523,23 @@ class LoginHandler(MainHandler.BaseMobileHandler):
             'status':staffProfile.status_list, 
             'database_key':staffProfile.database_key, 
             'time':staffProfile.updatedTime,
-            'type':'staff'}
+            'type':staffProfile.personType}
 
             if staffProfile.skills:
                 if staffProfile.skills[0] != "":
                     profile['skills'] = staffProfile.skills
+                else:
+                    profile['skills'] = []
             else:
                 profile['skills'] = []
+
+            if staffProfile.status_list:
+                if staffProfile.status_list[0] != "":
+                    profile['status'] = staffProfile.status_list
+                else:
+                    profile['status'] = []
+            else:
+                profile['status'] = []
 
             list_profile.append(profile)
         elif mentorProfile:
@@ -510,7 +556,17 @@ class LoginHandler(MainHandler.BaseMobileHandler):
             if mentorProfile.skills:
                 if mentorProfile.skills[0] != "":
                     profile['skills'] = mentorProfile.skills
+                else:
+                    profile['skills'] = []
             else:
                 profile['skills'] = []
+
+            if mentorProfile.status_list:
+                if mentorProfile.status_list[0] != "":
+                    profile['status'] = mentorProfile.status_list
+                else:
+                    profile['status'] = []
+            else:
+                profile['status'] = []
         
         self.write(json.dumps(list_profile))
