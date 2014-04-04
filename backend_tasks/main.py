@@ -36,7 +36,7 @@ RDq = ''
 try:
   oauth2_client.token_exchange_lock = multiprocessing.Manager().Lock()
 except:
-    oauth2_client.token_exchange_lock = threading.Lock()
+  oauth2_client.token_exchange_lock = threading.Lock()
 
 def main():
   RDq = Queue(connection=Redis())
@@ -67,18 +67,22 @@ def enqueue(tasks):
                timeout=30)
 
 def downloadAllResumes():
-  header_values = {"x-goog-project-id": PROJECT}
   uri = boto.storage_uri(BUCKET, GOOGLE_STORAGE)
   count = 0
+  total = 0
   for obj in uri.get_bucket():
     if obj.size > 0:
-      f = open(FILES_LOC+obj.name+'.pdf', 'w')
-      print count
+      total += 1
+  for obj in uri.get_bucket():
+    if obj.size > 0:
+      filename = FILES_LOC+obj.name+'.pdf'
+      if os.path.isfile(filename):
+        os.remove(filename)
+      f = open(filename, 'w')
+      print 'Downloading: %s of %s (%s %%), %s bits' % (count, total, round((count/float(count+total))*100,2), obj.size)
       count +=1
-        obj.get_contents_to_file(f)
-        f.close()
-    else:
-       print resp.status
+      obj.get_contents_to_file(f)
+      f.close()
 
 
 if __name__ == '__main__':
