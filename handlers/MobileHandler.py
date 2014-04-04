@@ -14,16 +14,21 @@ import time
 #     if len(profile_status_list) <= 3:
 #         return profile_status_list
 #     else:
-#         # filter the 3 most recent and add them into the profile
-#         third_most_recent_time = 0
+#         most_recent_status = None
 #         status_list = []
-#         for status_dict in profile_status_list:
-#             if third_most_recent_time <= 3:
+#         x = 0
+#         while x < 3:
+#             for status_dict in profile_status_list:
+#                 if most_recent_status == None:
+#                     most_recent_status = item
+#                 elif most_recent_status['time'] < item['time']:
+#                     third_most_recent_status = item
+
+#                 status_list.remove(third_most_recent_status)
 #                 status_list.append(status_dict)
-#                 if third_most_recent_time > status_dict['time']:
-#                     third_most_recent_time = status_dict['time']
-#             elif status_dict['time'] > third_most_recent_time:
-#                 for 
+#             x = x + 1
+#         return status_list
+
 
 def _decode_list(data):
     rv = []
@@ -83,10 +88,13 @@ def get_hacker_data():
                     'database_key':hackerProfile.database_key,
                     'time':hackerProfile.updatedTime, 
                     'type':'hacker'}
-        if hackerProfile.skills[0] != "":
+        if hackerProfile.skills or hackerProfile.skills[0] != "":
             profile['skills'] = hackerProfile.skills
         else:
             profile['skills'] = []
+        
+        if hackerProfile.status_list:
+            profile['status'] = hackerProfile.status_list
 
         # if len(hackerProfile.status_list) <= 3:
         #     profile['status'] = hackerProfile.status_list
@@ -114,17 +122,21 @@ def get_staff_data():
                     'database_key':staff_profile.database_key, 
                     'time':staff_profile.updatedTime, 
                     'type':'staff'}
-        if staff_profile.skills[0] != "":
+        if staff_profile.skills or staff_profile.skills[0] != "":
             profile['skills'] = staff_profile.skills
         else:
             profile['skills'] = []
+
+        if staff_profile.status_list:
+            profile['status'] = staff_profile.status_list
 
         # if len(staff_profile.status_list) <= 3:
         #     profile['status'] = staff_profile.status
         # else:
             # filter the 3 most recent and add them into the profile
 
-        data.append(profile)
+        if staff_profile.name != "":
+            data.append(profile)
 
     return data
 
@@ -138,14 +150,16 @@ def get_mentor_data():
                     'company':mentor_profile.companyName, 
                     'job_title':mentor_profile.jobTitle, 
                     'fb_url':mentor_profile.pictureURL, 
-                    'status':mentor_profile.status_list, 
                     'database_key':mentor_profile.database_key, 
                     'time':mentor_profile.updatedTime, 
                     'type':'mentor'}
-        if mentor_profile.skills[0] != "":
+        if mentor_profile.skills or mentor_profile.skills[0] != "":
             profile['skills'] = mentor_profile.skills
         else:
             profile['skills'] = []
+
+        if mentor_profile.status_list:
+            profile['status'] = mentor_profile.status_list
 
         # if len(mentor_profile.status_list) <= 3:
         #     profile['status'] = mentor_profile.status_list
@@ -154,9 +168,6 @@ def get_mentor_data():
 
 
         data.append(profile)
-
-    # This is added to give Rob fake mentor data and act in the same way as going through memcache
-    data = MobileConstants.FAKE_MENTOR_DATA
 
     return data
 
@@ -453,7 +464,7 @@ class LoginHandler(MainHandler.BaseMobileHandler):
             'time':hackerProfile.updatedTime,
             'type':'hacker'}
 
-            if hackerProfile.skills[0] != "":
+            if hackerProfile.skills or hackerProfile.skills[0] != "":
                 profile['skills'] = hackerProfile.skills
             else:
                 profile['skills'] = []
@@ -473,38 +484,26 @@ class LoginHandler(MainHandler.BaseMobileHandler):
             'time':staffProfile.updatedTime,
             'type':'staff'}
 
-            if staffProfile.skills[0] != "":
+            if staff_profile.skills or staffProfile.skills[0] != "":
                 profile['skills'] = staffProfile.skills
             else:
                 profile['skills'] = []
 
             list_profile.append(profile)
         elif mentorProfile:
-            profile = {'name':'Jacob Fuss',
-            'email':'fuss1@illinois.edu', 
-            'company':'Amazon', 
-            'job_title':'SDE', 
-            'skills':['python'], 
-            'fb_url':'', 
-            'status':['available'], 
-            'database_key':30000, 
-            'time':0,
+            profile = {'name':mentorProfile.name,
+            'email':mentorProfile.email, 
+            'company':mentorProfile.companyName, 
+            'job_title':mentorProfile.jobTitle, 
+            'fb_url':mentorProfile.pictureURL, 
+            'status':mentorProfile.status_list, 
+            'database_key':mentorProfile.database_key , 
+            'time':mentorProfile.updatedTime,
             'type':'mentor'}
-            list_profile.append(profile)
-
-            # profile = {'name':mentorProfile.name,
-            # 'email':mentorProfile.email, 
-            # 'company':mentorProfile.companyName, 
-            # 'job_title':mentorProfile.jobTitle, 
-            # 'fb_url':mentorProfile.pictureURL, 
-            # 'status':mentorProfile.status_list, 
-            # 'database_key':mentorProfile.database_key , 
-            # 'time':mentorProfile.updatedTime,
-            # 'type':'mentor'}
-            #
-            # if mentorProfile.skills[0] != "":
-            #     profile['skills'] = mentorProfile.skills
-            # else:
-            #     profile['skills'] = []
+            
+            if mentorProfile.skills or mentorProfile.skills[0] != "":
+                profile['skills'] = mentorProfile.skills
+            else:
+                profile['skills'] = []
         
         self.write(json.dumps(list_profile))
