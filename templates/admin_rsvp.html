@@ -156,7 +156,7 @@
                                 <td name="tproject"  class="project" >{{ h.projectType }}</td>
                                 <td name="tstatus"   class="status"  >
                                     {% if h.approvalStatus %}
-                                        {% if h.approvalStatus.status == 'No Rsvp' %}
+                                        {% if access.approveAdmin and h.approvalStatus.status == 'No Rsvp' %}
                                             <button type="button" class="btn btn-danger status-btn width100">Re-Open RSVP</button>
                                         {% else %}
                                             {{ h.approvalStatus.status }}
