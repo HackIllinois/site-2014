@@ -582,5 +582,7 @@ class LoginHandler(MainHandler.BaseMobileHandler):
                     profile['status'] = []
             else:
                 profile['status'] = []
+
+            list_profile.append(profile)
         
         self.write(json.dumps(list_profile))

@@ -79,7 +79,7 @@ SCHEDULE = {
               'description':'Tech talk will be about Machine Learning',
               'location':
                 {'building':'DCL', 'floor':'1', 'room_number':'DCL 1310', 'room_type':'tech talks' ,'room_name':'', 'image_url':''},
-              'time':1397383200,
+              'time':1397390400,
               'icon_url':'http://www.hackillinois.org/img/icons-iOS/bloomberg.png'
               },
               {
@@ -87,7 +87,7 @@ SCHEDULE = {
               'description':'Tech talk will be about us and what we do',
               'location':
                 {'building':'DCL', 'floor':'1', 'room_number':'DCL 1310', 'room_type':'tech talks' ,'room_name':'', 'image_url':''},
-              'time':1397386800,
+              'time':1397352600,
               'icon_url':'http://www.hackillinois.org/img/icons-iOS/answers.png'
               },
               {
