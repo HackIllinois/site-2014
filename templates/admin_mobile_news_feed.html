@@ -31,7 +31,7 @@
 	</div>
 </div>
 
-<div class="feedform-container row">
+<div class="feedform-container row" style="display: none;">
 	<form class="form-horizontal" role="form" id="addFeedItem-form" method="post">
 		<div class="form-group">
 			<label for="inputDescription" class="col-sm-1 control-label">Description</label>
@@ -120,13 +120,13 @@ $(document).ready(function() {
 		if ($("#inputDescription").val() && $("input[name='type']:checked").val()) {
 			type = $("input[name='type']:checked").val();
 			if (type == "emergency") {
-				$("#rendered-image").attr('src','/img/icons-iOS/emergency.png');
+				$("#rendered-image").attr('src','http://www.hackillinois.org/img/icons-iOS/emergency.png');
 				$("#rendered-image").attr('alt','emergency');
 			} else if (type == "announcement") {
-				$("#rendered-image").attr('src','/img/icons-iOS/announce.png');
+				$("#rendered-image").attr('src','http://www.hackillinois.org/img/icons-iOS/announce.png');
 				$("#rendered-image").attr('alt','announce');
 			} else {
-				$("#rendered-image").attr('src','/img/icons-iOS/hackillinois.png');
+				$("#rendered-image").attr('src','http://www.hackillinois.org/img/icons-iOS/hackillinois.png');
 				$("#rendered-image").attr('alt','hackillinois');
 			}
 			$("#rendered-description").html($("#inputDescription").val());

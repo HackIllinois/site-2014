@@ -37,9 +37,9 @@ class NewsFeedHandler(MainAdminHandler.BaseAdminHandler):
             return self.abort(401, detail='User does not have permission to update the mobile newsfeed.')
 
         icon = {
-            'emergency':'/img/icons-iOS/emergency.png',
-            'announcement':'/img/icons-iOS/announce.png',
-            'hackillinois':'/img/icons-iOS/hackillinois.png',
+            'emergency':'http://www.hackillinois.org/img/icons-iOS/emergency.png',
+            'announcement':'http://www.hackillinois.org/img/icons-iOS/announce.png',
+            'hackillinois':'http://www.hackillinois.org/img/icons-iOS/hackillinois.png',
         }
 
         NewsFeedItem(
