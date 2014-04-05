@@ -26,7 +26,7 @@ class CheckInHandler(MainAdminHandler.BaseAdminHandler):
 			
         db_user.notes = notes
         db_user.phoneNumber = number
-        db_user.isCheckedIn = True
+        db_user.isCheckedIn = False
         db_user.checkInTime = datetime.now()
 		
         db_user.put()

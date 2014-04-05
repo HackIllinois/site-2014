@@ -122,16 +122,14 @@
         function checkInBtnCallbacks() {
             $('.status-btn').click(function () {
                 var name = $(this).closest('tr').find('.name').text(),
-				    number = $(this).closest('tr').find('.number').text(),
-                    notes = $(this).closest('tr').find('.notes').text(),
+				    number = $(this).closest('tr').find('#input_number').val(),
+                    notes = $(this).closest('tr').find('#input_notes').val(),
                     userId = $(this).closest('tr').get(0).id,
                     r = confirm("Check In " + name + "?");
                 if (r == true) {
 					 hackerList.remove('id', userId);
-					 alert("A");
 					 $.post("/checkin", {"userId": userId, "number": number, "notes": notes});
-					 alert("B");
-					 }
+		        }
 				else {
 					return;
                 }
