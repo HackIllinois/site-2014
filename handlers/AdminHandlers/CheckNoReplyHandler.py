@@ -46,7 +46,7 @@ class CheckNoReplyHandler(MainAdminHandler.BaseAdminHandler):
 
         for person in hackers:
             if person.approvalStatus.status == "Awaiting Response":
-                self.write(person.email)
+                self.write(person.email + "<br>\n")
 
         return
 
