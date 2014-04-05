@@ -42,11 +42,10 @@ class CheckNoReplyHandler(MainAdminHandler.BaseAdminHandler):
             else:
                 invalid_emails.append(email)
 
-        hackers = Attendee.query(Attendee.email.IN(valid_emails))
+        hackers = Attendee.query(Attendee.email.IN(valid_emails), Attendee.approvalStatus.status == "Awaiting Response")
 
         for person in hackers:
-            if person.approvalStatus.status == "Awaiting Response":
-                self.write(person.email + "<br>\n")
+            self.write(person.email + "<br>\n")
 
         return
 
