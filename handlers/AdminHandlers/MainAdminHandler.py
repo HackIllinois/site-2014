@@ -148,6 +148,9 @@ class BaseAdminHandler(MainHandler.Handler):
                           'resume':hacker.resume,
                           'registrationTime':hacker.registrationTime.strftime('%x %X'),
                           'isApproved':hacker.isApproved,
+                          'isCheckedIn':hacker.isCheckedIn,	
+                          'notes':hacker.notes,
+                          'phoneNumber':hacker.phoneNumber,
                           'userId':hacker.userId})
 
         if not memcache.add('hackers', data, time=constants.MEMCACHE_TIMEOUT):
@@ -224,6 +227,9 @@ class BaseAdminHandler(MainHandler.Handler):
                           'resume':hacker.resume,
                           'registrationTime':hacker.registrationTime.strftime('%x %X'),
                           'isApproved':hacker.isApproved,
+                          'isCheckedIn':hacker.isCheckedIn,	
+                          'notes':hacker.notes,
+                          'phoneNumber':hacker.phoneNumber,
                           'userId':hacker.userId,
                           'travel':hacker.travel,
                           'busRoute':hacker.busRoute,

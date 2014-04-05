@@ -70,6 +70,7 @@
                         </thead>
                         <tbody class="list">
                             {% for h in data.hackers %}
+							{% if not h.isCheckedIn and h.approvalStatus.status == "Rsvp Coming" %}
                             <tr name="hackerData" id="{{ h.userId }}">
 							    <td                  class="id"     style="display:none;">{{ h.userId }}</td>
                                 <td name="tname"     class="name"    >{{ h.nameFirst }} {{ h.nameLast }}</td>
@@ -80,6 +81,7 @@
                                 <td name="tnumber"   class="number"  ><input type="text" class="width100" placeholder="Phone Number" id="input_number"></td>
                                 <td name="tnotes"    class="notes"   ><input type="text" class="width100" placeholder="Notes" id="input_notes"></td>
                             </tr>
+							{% endif %}
                             {% endfor %}
                         </tbody>
                     </table>
@@ -109,34 +111,7 @@
                 ListPagination(paginationOptions)
             ]
         };
-        var hackerList = null;
-
-
-        function colToggleCallbacks() {
-            $('.column-btn').click(function () {
-                var name = $(this).find('input').attr('name');
-                q = '[name="t' + name + '"]';
-                if ($(this).hasClass('active')) {
-                    $(q).addClass("hidden");
-                } else {
-                    $(q).removeClass("hidden");
-                }
-            });
-        }
-
-        function updateColumVisibility() {
-            $('.column-btn').each(function(index) {
-                var name = $(this).find('input').attr('name');
-                q = '[name="t' + name + '"]';
-                if ($(this).hasClass('active')) {
-                    $(q).removeClass("hidden");
-                } else {
-                    $(q).addClass("hidden");
-                }
-            });
-        }
-
-        
+        var hackerList = null;        
 
         function searchCallbacks() {
             $('#search_name').keyup(function() {
@@ -146,7 +121,6 @@
 
         function checkInBtnCallbacks() {
             $('.status-btn').click(function () {
-				alert("FSD");
                 var name = $(this).closest('tr').find('.name').text(),
 				    number = $(this).closest('tr').find('.number').text(),
                     notes = $(this).closest('tr').find('.notes').text(),
@@ -154,28 +128,23 @@
                     r = confirm("Check In " + name + "?");
                 if (r == true) {
 					 hackerList.remove('id', userId);
-                }
+					 alert("A");
+					 $.post("/checkin", {"userId": userId, "number": number, "notes": notes});
+					 alert("B");
+					 }
 				else {
 					return;
                 }
-                
             });
 		}
 
 
         $(document).ready(function () {
-			alert("AFD");
-		    // Do before list created so applied to all
-            hackerList = new List('hackers', options);
+
+			hackerList = new List('hackers', options);
 			
 			checkInBtnCallbacks();
-			
-            colToggleCallbacks();
-            searchCallbacks();
-
-            hackerList.on('updated', function() {
-                updateColumVisibility();
-            });
+			searchCallbacks();
         });
     </script>
 {% endblock scripts%}

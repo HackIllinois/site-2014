@@ -13,3 +13,22 @@ class CheckInHandler(MainAdminHandler.BaseAdminHandler):
         data['hackers'] = self.get_hackers_new_memecache(status, category, route, constants.USE_ADMIN_MEMCACHE)
 
         return self.render("checkin.html", data=data)
+		
+    def post(self):
+        userId = str(urllib.unquote(self.request.get('userId')))
+        number = str(urllib.unquote(self.request.get('number')))
+        notes = str(urllib.unquote(self.request.get('notes')))
+
+        db_user = Attendee.search_database({'userId':userId}).get()
+
+        if not db_user:
+            return logging.error("Attendee not in Database")
+			
+        db_user.notes = notes
+        db_user.phoneNumber = number
+        db_user.isCheckedIn = True
+        db_user.checkInTime = datetime.now()
+		
+        db_user.put()
+
+        return self.write('success')
