@@ -48,7 +48,7 @@ def setup():
   datastore.set_options(dataset='hackillinois')
 
 def main():
-  if sys.argv[1] = "refresh":
+  if sys.argv[1] == "refresh":
     print "Downloading resumes: "
     downloadAllResumes()
   else:
