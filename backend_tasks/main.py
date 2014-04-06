@@ -81,7 +81,7 @@ def getData():
 #Enqueue to the workers from the datastore here and then save the result back into the datastore
 def enqueue(tasks):
   for task in tasks:
-    RDq.enqueue_call(func=task[1],
+    RDq.enqueue_call(func='worker_functions.'+task[1],
                args=(task[2],task[0],task[3]),
                timeout=30)
 
