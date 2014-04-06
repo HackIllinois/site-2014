@@ -12,6 +12,7 @@ import json
 import urllib
 import httplib2
 import os
+import sys
 from redis import Redis
 from rq import Queue
 import googledatastore as datastore
