@@ -118,7 +118,7 @@
                             <div class="form-group">
                                 <label class="control-label col-sm-3 col-sm-offset-1" for="busRoute">Bus Route<span class="reqd"> *</span></label>
                                 <div class="controls col-sm-4">
-                                    <select name="busRoute" class="form-control" required="required">
+                                    <select name="busRoute" class="form-control">
                                         <option value="">Please select</option>
                                         {% for b in data.busRoutes %}
                                         <option {% if b.selected %}selected{% endif %} value="{{ b.name }}">{{ b.name }}</option>
