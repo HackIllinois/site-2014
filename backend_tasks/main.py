@@ -55,7 +55,11 @@ def main():
   else:
     print "Zipping resumes: "
     setup()
-    enqueue(getData())
+    data = getData()
+    if len(data) != 0:
+      enqueue(data)
+    else:
+      print "No jobs!"
 
 def getData():
   req = datastore.RunQueryRequest()
