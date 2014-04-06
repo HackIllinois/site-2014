@@ -32,7 +32,7 @@ GOOGLE_STORAGE = 'gs'
 # URI scheme for accessing local files.
 LOCAL_FILE = 'file'
 BUCKET = 'hackillinois'
-RDq = ''
+RDq = Queue(connection=Redis())
 
 try:
   oauth2_client.token_exchange_lock = multiprocessing.Manager().Lock()
@@ -45,7 +45,6 @@ def setup():
     oauth2_client.token_exchange_lock = multiprocessing.Manager().Lock()
   except:
     oauth2_client.token_exchange_lock = threading.Lock()
-  RDq = Queue(connection=Redis())
   datastore.set_options(dataset='hackillinois')
 
 def main():
@@ -56,10 +55,11 @@ def main():
   else:
     print "Zipping resumes: "
     setup()
+    data = []
     data = getData()
     if len(data) != 0:
       for item in data:
-        enqueue(item[1],item[2],item[0],item[3])
+        enqueue(data)
     else:
       print "No jobs!"
 
