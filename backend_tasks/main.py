@@ -33,12 +33,12 @@ GOOGLE_STORAGE = 'gs'
 LOCAL_FILE = 'file'
 BUCKET = 'hackillinois'
 RDq = ''
-"""
+
 try:
   oauth2_client.token_exchange_lock = multiprocessing.Manager().Lock()
 except:
   oauth2_client.token_exchange_lock = threading.Lock()
-"""
+
 
 def setup():
   try:
