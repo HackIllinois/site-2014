@@ -58,7 +58,8 @@ def main():
     setup()
     data = getData()
     if len(data) != 0:
-      enqueue(data)
+      for item in data:
+        enqueue(item)
     else:
       print "No jobs!"
 
