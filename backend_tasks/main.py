@@ -59,7 +59,7 @@ def main():
     data = getData()
     if len(data) != 0:
       for item in data:
-        enqueue(item)
+        enqueue(item[1],item[2],item[0],item[3])
     else:
       print "No jobs!"
 
