@@ -79,8 +79,8 @@ def downloadAllResumes():
       if os.path.isfile(filename):
         os.remove(filename)
       f = open(filename, 'w')
-      print 'Downloading: %s of %s (%s %%), %s bits' % (count, total, round((count/float(count+total))*100,2), obj.size)
       count +=1
+      print 'Downloading: %s of %s (%s %%), %s bits' % (count, total, round(count/float(total)*100,2), obj.size)
       obj.get_contents_to_file(f)
       f.close()
 
