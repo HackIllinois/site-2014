@@ -24,25 +24,29 @@ def zip_resumes(data, key, obj):
         print tempLoc
         shutil.copy(tempLoc, stagingDir)
     serve = '%s/serve' % directoryBase
-    toZip(zipName, stagingDir, serve)
-    #set the flag to complete
-    obj.property[0].value.boolean_value = True
-    req = datastore.CommitRequest()
-    datastore.set_options(dataset='hackillinois')
-    req.mode = datastore.CommitRequest.NON_TRANSACTIONAL
-    req.mutation.update.extend([obj])
-    datastore.commit(req)
+    if toZip(stagingDir, stagingDir, serve):
+        #set the flag to complete
+        obj.property[0].value.boolean_value = True
+        req = datastore.CommitRequest()
+        datastore.set_options(dataset='hackillinois')
+        req.mode = datastore.CommitRequest.NON_TRANSACTIONAL
+        req.mutation.update.extend([obj])
+        datastore.commit(req)
 
 
 
 #zips a full directory
 def toZip(name, initialDir, finalDir):
-    zipIt = zipfile.ZipFile(name+".zip", "w", compression=zipfile.ZIP_DEFLATED)
-    listdir = os.listdir(initialDir)
-    for entity in listdir:
-        each = os.path.join(initialDir,entity)
-        if os.path.isfile(each):
-            (head, tail) = os.path.split(each)
-            zipIt.write(each,tail)
-    zipIt.close()
-    shutil.move(name+".zip", finalDir)
+    try:
+        zipIt = zipfile.ZipFile(name+".zip", "w", compression=zipfile.ZIP_DEFLATED)
+        listdir = os.listdir(initialDir)
+        for entity in listdir:
+            each = os.path.join(initialDir,entity)
+            if os.path.isfile(each):
+                (head, tail) = os.path.split(each)
+                zipIt.write(each,tail)
+        zipIt.close()
+        shutil.move(name+".zip", finalDir)
+        return True
+    except:
+        return False

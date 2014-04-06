@@ -32,17 +32,29 @@ GOOGLE_STORAGE = 'gs'
 LOCAL_FILE = 'file'
 BUCKET = 'hackillinois'
 RDq = ''
-
+"""
 try:
   oauth2_client.token_exchange_lock = multiprocessing.Manager().Lock()
 except:
   oauth2_client.token_exchange_lock = threading.Lock()
+"""
 
-def main():
+def setup():
+  try:
+    oauth2_client.token_exchange_lock = multiprocessing.Manager().Lock()
+  except:
+    oauth2_client.token_exchange_lock = threading.Lock()
   RDq = Queue(connection=Redis())
   datastore.set_options(dataset='hackillinois')
-  enqueue(getData())
-  #downloadAllResumes()
+
+def main():
+  if sys.argv[1] = "refresh":
+    print "Downloading resumes: "
+    downloadAllResumes()
+  else:
+    print "Zipping resumes: "
+    setup()
+    enqueue(getData())
 
 def getData():
   req = datastore.RunQueryRequest()
