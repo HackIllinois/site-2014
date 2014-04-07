@@ -64,7 +64,6 @@ class HackersHandler(MainSponsorHandler.BaseSponsorHandler):
         """Gets the 'sponsor/hackers/<isAttending>' key in the memcache"""
         key = 'sponsor/hackers/' + str(isAttending)
         data = self.retrieve(key)
-        data = None
 
         stats = memcache.get_stats()
         logging.info('Cache Hits:%s, Cache Misses:%s' % (stats['hits'], stats['misses']))
@@ -106,7 +105,5 @@ class HackersHandler(MainSponsorHandler.BaseSponsorHandler):
                 'isAttending': True if hacker.approvalStatus and hacker.approvalStatus.status == 'Rsvp Coming' else False,
             }
 
-        # if not memcache.set(key, data, time=constants.MEMCACHE_TIMEOUT):
-        #     logging.error('Memcache set failed.')
         self.store(key, data)
         return data
