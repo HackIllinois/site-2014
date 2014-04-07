@@ -65,4 +65,4 @@ class RegisterHandler(MainHandler.Handler):
         db_url.registerTime = datetime.now()
         db_url.put()
 
-        return self.redirect("/corporate/editprofile")
+        return self.redirect("/corporate")
