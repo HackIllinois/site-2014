@@ -7,7 +7,7 @@ import os, sys
 import json
 import urllib, httplib2
 from redis import Redis
-from rq import Queue
+from rq import Queue, Connection, Worker
 import googledatastore as datastore
 from googledatastore.helper import *
 from worker_functions import *
@@ -19,12 +19,24 @@ GOOGLE_STORAGE = 'gs'
 LOCAL_FILE = 'file'
 BUCKET = 'hackillinois'
 RDq = Queue(connection=Redis())
+workers = []
 
 try:
   oauth2_client.token_exchange_lock = multiprocessing.Manager().Lock()
 except:
   oauth2_client.token_exchange_lock = threading.Lock()
 
+def manageWorkers(cmd):
+  with Connection():
+    if cmd == "start":
+      for range(0,5):
+        w = Worker([Queue()])
+        w.work()
+        workers.append(w)
+    else if cmd == "stop":
+      for worker in workers:
+        os.kill(worker.pid, signal.SIGINT)
+  
 
 def setup():
   try:
@@ -33,12 +45,7 @@ def setup():
     oauth2_client.token_exchange_lock = threading.Lock()
   datastore.set_options(dataset='hackillinois')
 
-def main():
-  if len(sys.argv) > 1:
-    if sys.argv[1] == "refresh":
-      print "Downloading resumes: "
-      downloadAllResumes()
-  else:
+def getTasks():
     print "Zipping resumes: "
     setup()
     data = getData()
@@ -47,6 +54,23 @@ def main():
         enqueue(data)
     else:
       print "No jobs!"
+
+def main():
+  if len(sys.argv) > 1:
+    if sys.argv[1] == "refresh":
+      print "Downloading resumes: "
+      downloadAllResumes()
+    else if sys.argv[1] == "help":
+      print "run refresh to download resumes and start to queue up tasks and start up the workers. Commands: \nstart\nstop\nrefresh\ntasks"
+    else if sys.argv[1] == "tasks":
+      getTasks()
+    else if sys.argv[1] == "start":
+      manageWorkers("start")
+      getTasks()
+    else if sys.argv[1] == "stop":
+      manageWorkers("stop")
+  else:
+
 
 def getData():
   req = datastore.RunQueryRequest()
