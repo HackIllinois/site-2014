@@ -12,7 +12,6 @@ import googledatastore as datastore
 from googledatastore.helper import *
 from worker_functions import *
 
-BASE_LOC = '/home/Austin/hackillinois-website/backend_tasks/'
 # URI scheme for Google Cloud Storage.
 GOOGLE_STORAGE = 'gs'
 # URI scheme for accessing local files.
@@ -73,11 +72,6 @@ def enqueue(tasks):
   print "Enqueue done."
 
 def downloadAllResumes():
-  filesLoc = BASE_LOC+'files/'
-  if !os.path.isdir(filesLoc):
-      os.makedirs(filesLoc)
-      os.makedirs(BASE_LOC+'serve/')
-      os.makedirs(BASE_LOC+'staging/')
   uri = boto.storage_uri(BUCKET, GOOGLE_STORAGE)
   count = 0
   total = 0
@@ -86,7 +80,7 @@ def downloadAllResumes():
       total += 1
   for obj in uri.get_bucket():
     if obj.size > 0:
-      filename = filesLoc+obj.name+'.pdf'
+      filename = FILES_LOC+obj.name+'.pdf'
       if os.path.isfile(filename):
         os.remove(filename)
       f = open(filename, 'w')
