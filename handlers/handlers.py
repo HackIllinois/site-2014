@@ -67,6 +67,7 @@ handlers = [
     RedirectRoute('/admin/send', handler=AdminHandlers.MarkSentEmailHandler.MarkSentEmailHandler, name='AdminMarkSentEmail', strict_slash=True),
     RedirectRoute('/admin/massapproval', handler=AdminHandlers.MassApprovalHandler.MassApprovalHandler, name='AdminMassApproval', strict_slash=True),
     RedirectRoute('/admin/massinvalidate', handler=AdminHandlers.MassRsvpInvalidateHandler.MassRsvpInvalidateHandler, name='AdminMassRsvpInvalidate', strict_slash=True),
+	RedirectRoute('/admin/check-no-reply', handler=AdminHandlers.CheckNoReplyHandler.CheckNoReplyHandler, name='AdminCheckNoReplyHandler', strict_slash=True),
     RedirectRoute('/admin/corporateurl', handler=AdminHandlers.CorporateUrlHandler.CorporateUrlHandler, name='AdminCorporateUrl', strict_slash=True),
 
     RedirectRoute('/admin/basicstats',          handler=AdminHandlers.BasicStatsHandler.BasicStatsHandler, name='AdminBasicStats0', strict_slash=True),
@@ -119,8 +120,6 @@ handlers = [
     RedirectRoute('/401', handler=ErrorHandlers.Error401Handler, name='Error401', strict_slash=True),
     RedirectRoute('/404', handler=ErrorHandlers.Error404Handler, name='Error404', strict_slash=True),
     RedirectRoute('/500', handler=ErrorHandlers.Error500Handler, name='Error500', strict_slash=True),
-
-    # RedirectRoute('/corporate', handler=SponsorHandlers.IndexHandler.IndexHandler, name='SponsorIndex', strict_slash=True),
 ]
 
 errorHandlers = {

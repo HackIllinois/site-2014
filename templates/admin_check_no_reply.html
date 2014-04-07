@@ -1,0 +1,66 @@
+{% extends "base/admin_base.html" %}
+{% set active_page = "send" %}
+
+{% block head %}
+<style type="text/css">
+    .page-header {
+        margin-top: 0;
+    }
+    .t-centered {
+        text-align: center;
+    }
+    .width100 {
+        width:100%;
+    }
+    .email-form {
+        margin-bottom: 20px;
+    }
+</style>
+{% endblock head %}
+
+
+{% block body %}
+<h1 class="page-header">Check for Awaiting Response</h1>
+<p>
+    Paste a list of attendee email addresses to get a list of all attendees from that list who have not replied. This is
+    designed to be used to paste a list of emails that were accepted and get a list of all remaining emails that should
+    be followed up with. Note that the lack of formatting in the reply is intentional, but all emails returned currently
+    have the status "Awaiting Response", meaning they have been emailed and could be accepted.
+</p>
+
+<form id="email-form" role="form" method="post" class="email-form">
+    <div class="form-group">
+        <label for="exampleInputEmail1">Email Addresses</label>
+        <textarea id="emails" class="form-control" name="emails" rows="8" required></textarea>
+    </div>
+    <button id="email-submit" type="submit" class="btn btn-primary" data-loading-text="Thinking...">Submit</button>
+</form>
+
+<p id="result" class="text-info"></p>
+
+{% endblock body %}
+
+
+{% block scripts %}
+<script type="text/javascript">
+$(document).ready(function() {
+    $("#email-form").submit(function(event) {
+        event.preventDefault();
+        $("#email-submit").button('loading');
+
+        var posting = $.post('/admin/check-no-reply', {"emails": $("#emails").val()});
+
+        posting.done(function(data) {
+            $("#result").html(data);
+            $("#emails").val("");
+            $("#email-submit").button('reset');
+        });
+
+        posting.fail(function() {
+            alert("Error submitting data.");
+            $("#email-submit").button('reset');
+        });
+    });
+});
+</script>
+{% endblock scripts%}
