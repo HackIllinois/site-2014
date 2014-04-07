@@ -17,8 +17,13 @@ directoryBase = '/home/Austin/hackillinois-website/backend_tasks/'
 def zip_resumes(data, key, obj):
     stagingDir = '%sstaging/%s' % (directoryBase, key.path_element[-1].id)
     print 'Staging: %s' % stagingDir
+    if os.path.isdir(stagingDir):
+        shutil.rmtree(stagingDir)
     os.makedirs(stagingDir)
-    data = json.loads(data)
+    try:
+        data = json.loads(data)
+    except:
+        data = []
     for resume in data:
         tempLoc = '%sfiles/%s.pdf' % (directoryBase, resume['gsObjectName'])
         print tempLoc

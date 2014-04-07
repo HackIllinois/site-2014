@@ -2,31 +2,16 @@
 import boto
 from gslib.third_party.oauth2_plugin import oauth2_plugin
 from gslib.third_party.oauth2_plugin import oauth2_client
-import multiprocessing
-import shutil
-import StringIO
-import tempfile
-import threading
-import time
+import multiprocessing, threading, time
+import os, sys
 import json
-import urllib
-import httplib2
-import os
-import sys
+import urllib, httplib2
 from redis import Redis
 from rq import Queue
 import googledatastore as datastore
 from googledatastore.helper import *
 from worker_functions import *
 
-STAGING_LOC='/home/Austin/hackillinois-website/backend_tasks/staging/'
-FILES_LOC='/home/Austin/hackillinois-website/backend_tasks/files/'
-SERVE_LOC='/home/Austin/hackillinois-website/backend_tasks/serve/'
-
-METADATA_SERVER = 'http://metadata/computeMetadata/v1/instance/service-accounts'
-SERVICE_ACCOUNT = 'default'
-GOOGLE_STORAGE_PROJECT_NUMBER = '1024924889757'
-access_token = ''
 # URI scheme for Google Cloud Storage.
 GOOGLE_STORAGE = 'gs'
 # URI scheme for accessing local files.
@@ -55,7 +40,6 @@ def main():
   else:
     print "Zipping resumes: "
     setup()
-    data = []
     data = getData()
     if len(data) != 0:
       for item in data:
