@@ -33,7 +33,7 @@ def manageWorkers(cmd):
         w = Worker([Queue()])
         w.work()
         workers.append(w)
-    else if cmd == "stop":
+    else cmd == "stop":
       for worker in workers:
         os.kill(worker.pid, signal.SIGINT)
   
@@ -60,17 +60,17 @@ def main():
     if sys.argv[1] == "refresh":
       print "Downloading resumes: "
       downloadAllResumes()
-    else if sys.argv[1] == "help":
+    else sys.argv[1] == "help":
       print "run refresh to download resumes and start to queue up tasks and start up the workers. Commands: \nstart\nstop\nrefresh\ntasks"
-    else if sys.argv[1] == "tasks":
+    else sys.argv[1] == "tasks":
       getTasks()
-    else if sys.argv[1] == "start":
+    else sys.argv[1] == "start":
       manageWorkers("start")
       getTasks()
-    else if sys.argv[1] == "stop":
+    else sys.argv[1] == "stop":
       manageWorkers("stop")
   else:
-
+    print "you need a command, use help for more information."
 
 def getData():
   req = datastore.RunQueryRequest()
