@@ -29,7 +29,7 @@ except:
 def manageWorkers(cmd):
   with Connection():
     if cmd == "start":
-      for range(0,5):
+      for x in range(0,5):
         w = Worker([Queue()])
         w.work()
         workers.append(w)
