@@ -12,6 +12,7 @@ import googledatastore as datastore
 from googledatastore.helper import *
 from worker_functions import *
 
+NUM_WORKERS = 1
 BASE_LOC = '/home/Austin/hackillinois-website/backend_tasks/'
 # URI scheme for Google Cloud Storage.
 GOOGLE_STORAGE = 'gs'
@@ -29,7 +30,7 @@ except:
 def manageWorkers(cmd):
   with Connection():
     if cmd == "start":
-      for x in range(0,5):
+      for x in range(0,NUM_WORKERS):
         w = Worker([Queue()])
         w.work()
         workers.append(w)
@@ -65,8 +66,8 @@ def main():
     elif sys.argv[1] == "tasks":
       getTasks()
     elif sys.argv[1] == "start":
-      manageWorkers("start")
       getTasks()
+      manageWorkers("start")
     elif sys.argv[1] == "stop":
       manageWorkers("stop")
   else:
