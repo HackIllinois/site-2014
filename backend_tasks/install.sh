@@ -1,5 +1,9 @@
 sudo apt-get install -y git python python-pip gcc python-dev python-setuptools libffi-dev
-sudo apt-get install -y redis-server
+sudo apt-get install -y redis-server apache2
+sudo rm /var/www/index.html
+cd /var/www/
+read -p "Enter serve directory of the backend tasks: " dir
+sudo ln -s $dir
 git clone git@bitbucket.org:hackillinois/hackillinois-website.git
 cd hackillinois-website/backend_tasks
 sudo pip install -r dependencies.txt

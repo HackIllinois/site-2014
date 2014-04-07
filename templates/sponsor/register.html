@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+</head>
+
+<body>
+    <h1>Confirm Registration</h1>
+    <p>You are logged in with [{{ data.email }}].</p>
+    <form method="post"><button type="submit">Click here to register with this email.</button></form><br>
+    <button type="button" onclick="window.location = '{{ data.logoutUrl }}'";>Click here to register with a different email.</button>
+    <!-- <a href="{{ data.logoutUrl }}">Click here to register with a different email.</a> -->
+
+    <script type="text/javascript">
+
+    </script>
+</body>
+</html>

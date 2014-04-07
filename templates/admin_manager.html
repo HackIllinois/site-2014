@@ -42,7 +42,7 @@
             </div>
             <div class="checkbox">
                 <label class="checkbox" for="checkbox3">
-                    <input type="checkbox" name="accessControl" id="checkbox3" value="adminApprove"> Admin Approve Access
+                    <input type="checkbox" name="accessControl" id="checkbox3" value="adminApprove"> Approve Admin Access
                 </label>
             </div>
             <div class="checkbox">
@@ -52,12 +52,17 @@
             </div>
             <div class="checkbox">
                 <label class="checkbox" for="checkbox5">
-                    <input type="checkbox" name="accessControl" id="checkbox5" value="manager"> Manager Access
+                    <input type="checkbox" name="accessControl" id="checkbox5" value="corporate"> Corporate Admin Access
                 </label>
             </div>
             <div class="checkbox">
                 <label class="checkbox" for="checkbox6">
-                    <input type="checkbox" name="accessControl" id="checkbox6" value="all"> All Access
+                    <input type="checkbox" name="accessControl" id="checkbox6" value="manager"> Manager Access
+                </label>
+            </div>
+            <div class="checkbox">
+                <label class="checkbox" for="checkbox7">
+                    <input type="checkbox" name="accessControl" id="checkbox7" value="all"> All Access
                 </label>
             </div>
         </div>
@@ -80,6 +85,7 @@
                         <th class="t-centered">Approve Access</th>
                         <th class="t-centered">Approve Admin Access</th>
                         <th class="t-centered">Mobile Access</th>
+                        <th class="t-centered">Corporate Admin Access</th>
                         <th class="t-centered">Manager Access</th>
                     </tr>
                 </thead>
@@ -91,6 +97,7 @@
                         <td class="t-centered {% if a.access.approve %}info{% endif %}">{% if a.access.approve %}X{% endif %}</td>
                         <td class="t-centered {% if a.access.approveAdmin %}info{% endif %}">{% if a.access.approveAdmin %}X{% endif %}</td>
                         <td class="t-centered {% if a.access.mobile %}info{% endif %}">{% if a.access.mobile %}X{% endif %}</td>
+                        <td class="t-centered {% if a.access.corporate %}info{% endif %}">{% if a.access.corporate %}X{% endif %}</td>
                         <td class="t-centered {% if a.access.manager %}info{% endif %}">{% if a.access.manager %}X{% endif %}</td>
                     </tr>
                     {% endfor %}
