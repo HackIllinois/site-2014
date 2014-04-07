@@ -74,7 +74,7 @@ def enqueue(tasks):
 
 def downloadAllResumes():
   filesLoc = BASE_LOC+'files/'
-  if !os.path.isdir(filesLoc):
+  if os.path.isdir(filesLoc) == False:
       os.makedirs(filesLoc)
       os.makedirs(BASE_LOC+'serve/')
       os.makedirs(BASE_LOC+'staging/')
