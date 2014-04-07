@@ -35,8 +35,10 @@ def manageWorkers(cmd):
         w.work()
         workers.append(w)
     elif cmd == "stop":
-      for worker in workers:
-        os.kill(worker.pid, signal.SIGINT)
+      if len(workers) > 0:
+        for worker in workers:
+          os.kill(worker.pid, signal.SIGINT)
+        workers = []
   
 
 def setup():
