@@ -33,7 +33,7 @@ def manageWorkers(cmd):
         w = Worker([Queue()])
         w.work()
         workers.append(w)
-    else cmd == "stop":
+    elif cmd == "stop":
       for worker in workers:
         os.kill(worker.pid, signal.SIGINT)
   
@@ -60,14 +60,14 @@ def main():
     if sys.argv[1] == "refresh":
       print "Downloading resumes: "
       downloadAllResumes()
-    else sys.argv[1] == "help":
+    elif sys.argv[1] == "help":
       print "run refresh to download resumes and start to queue up tasks and start up the workers. Commands: \nstart\nstop\nrefresh\ntasks"
-    else sys.argv[1] == "tasks":
+    elif sys.argv[1] == "tasks":
       getTasks()
-    else sys.argv[1] == "start":
+    elif sys.argv[1] == "start":
       manageWorkers("start")
       getTasks()
-    else sys.argv[1] == "stop":
+    elif sys.argv[1] == "stop":
       manageWorkers("stop")
   else:
     print "you need a command, use help for more information."
