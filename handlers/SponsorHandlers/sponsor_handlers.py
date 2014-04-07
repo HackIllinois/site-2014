@@ -14,7 +14,10 @@ sponsor_handlers = [
     RedirectRoute('/corporate',                 handler=IndexHandler.IndexHandler,              name='SponsorIndex',            strict_slash=True),
     RedirectRoute('/corporate/editprofile',     handler=EditProfileHandler.EditProfileHandler,  name='SponsorEditProfile',      strict_slash=True),
     RedirectRoute('/corporate/support',         handler=SupportHandler.SupportHandler,          name='SponsorSupport',          strict_slash=True),
+    
     RedirectRoute('/corporate/hackers',         handler=HackersHandler.HackersHandler,          name='SponsorHackers',          strict_slash=True),
+    RedirectRoute('/corporate/hackers/<id>',    handler=HackersHandler.HackersHandler,          name='SponsorHackersProfile',   strict_slash=True),
+    
     RedirectRoute('/corporate/queue',           handler=QueueHandler.QueueHandler,              name='SponsorQueue',            strict_slash=True),
     RedirectRoute('/corporate/notregistered',   handler=SimpleHandlers.NotRegisteredHandler,    name='SponsorNotRegistered',    strict_slash=True),
 

@@ -25,6 +25,21 @@ indexes:
   - name: approvalStatus.waitlistedTime
   - name: userId
 
+- kind: Attendee
+  ancestor: yes
+  properties:
+  - name: isRegistered
+  - name: approvalStatus.status
+  - name: email
+  - name: github
+  - name: linkedin
+  - name: nameFirst
+  - name: nameLast
+  - name: resume.fileName
+  - name: school
+  - name: userId
+  - name: year
+
 - kind: CorporateUrl
   ancestor: yes
   properties:
