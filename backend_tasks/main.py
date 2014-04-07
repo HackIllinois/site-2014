@@ -59,11 +59,19 @@ def getTasks():
 def main():
   if len(sys.argv) > 1:
     if sys.argv[1] == "refresh":
+      print "Stopping workers and downloading resumes: "
+      manageWorkers("stop")
+      if downloadAllResumes():
+        print "Getting tasks: "
+        getTasks()
+        manageWorkers("start")
+    elif sys.argv[1] == "download":
       print "Downloading resumes: "
       downloadAllResumes()
     elif sys.argv[1] == "help":
-      print "run refresh to download resumes and start to queue up tasks and start up the workers. Commands: \nstart\nstop\nrefresh\ntasks"
+      print "Run refresh to download resumes and start to queue up tasks and start up the workers.\nCommands: \nstart\nstop\nrefresh\ndownload\ntasks"
     elif sys.argv[1] == "tasks":
+      print "Getting tasks: "
       getTasks()
     elif sys.argv[1] == "start":
       getTasks()
@@ -71,7 +79,7 @@ def main():
     elif sys.argv[1] == "stop":
       manageWorkers("stop")
   else:
-    print "you need a command, use help for more information."
+    print "You need a command, use help for more information."
 
 def getData():
   req = datastore.RunQueryRequest()
@@ -119,7 +127,7 @@ def downloadAllResumes():
       print 'Downloading: %s of %s (%s %%), %sB' % (count, total, round(count/float(total)*100,2), obj.size)
       obj.get_contents_to_file(f)
       f.close()
-
+  return True
 
 if __name__ == '__main__':
   main()
