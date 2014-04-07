@@ -25,6 +25,12 @@ indexes:
   - name: approvalStatus.waitlistedTime
   - name: userId
 
+- kind: CorporateUrl
+  ancestor: yes
+  properties:
+  - name: creationTime
+    direction: desc
+
 - kind: NewsFeedItem
   ancestor: yes
   properties:

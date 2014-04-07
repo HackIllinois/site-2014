@@ -1,39 +1,14 @@
 {% set navigation_sidebar = [
-    ('/admin', 'admin', 'Admin'),
+    ('/corporate', 'corporate', 'Home'),
+    ('/corporate/support', 'support', 'Support'),
 ] %}
-{% set navigation_sidebar_stats = [
-    ('/admin/rsvpstats', 'rsvpstats', 'RSVP Stats'),
-    ('/admin/basicstats/approved', 'basicstats', 'Basic Stats'),
-    ('/admin/stats', 'stats', 'Advanced Stats'),
-    ('/admin/busstats', 'busstats', 'Bus Stats'),
-] %}
-{% set navigation_sidebar_approve = [
-    ('/admin/allhackers', 'all_hackers', 'All Hackers'),
-    ('/admin/approve', 'approve', 'Approve'),
-    ('/admin/rsvp', 'rsvp', 'RSVP'),
-    ('/admin/approve', 'profile', 'Profile'),
-] %}
-{% set navigation_sidebar_approve_admin = [
-    ('/admin/massapproval', 'massapproval', 'Mass Approval/Waitlist'),
-    ('/admin/massinvalidate', 'massinvalidate', 'Mass Invalidate RSVP'),
-    ('/admin/send', 'send', 'Mark Sent Email'),
-] %}
-{% set navigation_sidebar_mobile = [
-    ('/admin/mobile/skills', 'skills', 'Mobile Skills'),
-    ('/admin/mobile/newsfeed', 'newsfeed', 'Mobile Newsfeed'),
-    ('/admin/mobile/schedule', 'schedule', 'Mobile Schedule'),
-] %}
-{% set navigation_sidebar_corporate_admin = [
-    ('/admin/corporateurl', 'corporateurl', 'Sponsor Registration URLs'),
-] %}
-{% set navigation_sidebar_manager = [
-    ('/admin/testsjs', 'tests', 'URL Tests'),
-    ('/admin/whitelist', 'whitelist', 'White List URLs'),
-    ('/admin/manager', 'manager', 'Manager'),
+{% set navigation_sidebar_attendee_data = [
+    ('/corporate/hackers', 'hackers', 'Hackers'),
+    ('/corporate/queue', 'queue', 'Download Queue'),
 ] %}
 
 {% set navigation_topbar = [
-    ('/logout?redirect=/admin', 'Logout'),
+    ('/logout?redirect=/', 'Logout'),
 ] %}
 
 <!DOCTYPE html>
@@ -186,47 +161,17 @@
                             <li{% if id == active_page %} class="active"{% endif %}><a href="{{ href|e }}">{{ caption|e }}</a></li>
                             {% endfor %}
 
-                            {% if access.stats %}
-                            {% for href, id, caption in navigation_sidebar_stats %}
-                            <li{% if id == active_page %} class="active"{% endif %}><a href="{{ href|e }}">{{ caption|e }}</a></li>
-                            {% endfor %}
-                            {% endif %}
-
-                            {% if access.approve %}
-                            {% for href, id, caption in navigation_sidebar_approve %}
-                            <li{% if id == active_page %} class="active"{% endif %}><a href="{{ href|e }}">{{ caption|e }}</a></li>
-                            {% endfor %}
-                            {% endif %}
-
-                            {% if access.approveAdmin %}
-                            {% for href, id, caption in navigation_sidebar_approve_admin %}
-                            <li{% if id == active_page %} class="active"{% endif %}><a href="{{ href|e }}">{{ caption|e }}</a></li>
-                            {% endfor %}
-                            {% endif %}
-
-                            {% if access.mobile %}
-                            {% for href, id, caption in navigation_sidebar_mobile %}
-                            <li{% if id == active_page %} class="active"{% endif %}><a href="{{ href|e }}">{{ caption|e }}</a></li>
-                            {% endfor %}
-                            {% endif %}
-
-                            {% if access.corporateAdmin %}
-                            {% for href, id, caption in navigation_sidebar_corporate_admin %}
-                            <li{% if id == active_page %} class="active"{% endif %}><a href="{{ href|e }}">{{ caption|e }}</a></li>
-                            {% endfor %}
-                            {% endif %}
-
-                            {% if access.manager %}
-                            {% for href, id, caption in navigation_sidebar_manager %}
+                            {% if access.attendeeData %}
+                            {% for href, id, caption in navigation_sidebar_attendee_data %}
                             <li{% if id == active_page %} class="active"{% endif %}><a href="{{ href|e }}">{{ caption|e }}</a></li>
                             {% endfor %}
                             {% endif %}
                         </div>
-                        <!--logout-->
+
+                        <!--top navigation bar-->
                         {% for href, caption in navigation_topbar %}
                         <li><a href="{{ href|e }}">{{ caption|e }}</a></li>
                         {% endfor %}
-
                     </ul>
                 </div>
             </div>
@@ -240,38 +185,8 @@
                         <li{% if id == active_page %} class="active"{% endif %}><a href="{{ href|e }}">{{ caption|e }}</a></li>
                         {% endfor %}
 
-                        {% if access.stats %}
-                        {% for href, id, caption in navigation_sidebar_stats %}
-                        <li{% if id == active_page %} class="active"{% endif %}><a href="{{ href|e }}">{{ caption|e }}</a></li>
-                        {% endfor %}
-                        {% endif %}
-
-                        {% if access.approve %}
-                        {% for href, id, caption in navigation_sidebar_approve %}
-                        <li{% if id == active_page %} class="active"{% endif %}><a href="{{ href|e }}">{{ caption|e }}</a></li>
-                        {% endfor %}
-                        {% endif %}
-
-                        {% if access.approveAdmin %}
-                        {% for href, id, caption in navigation_sidebar_approve_admin %}
-                        <li{% if id == active_page %} class="active"{% endif %}><a href="{{ href|e }}">{{ caption|e }}</a></li>
-                        {% endfor %}
-                        {% endif %}
-
-                        {% if access.mobile %}
-                        {% for href, id, caption in navigation_sidebar_mobile %}
-                        <li{% if id == active_page %} class="active"{% endif %}><a href="{{ href|e }}">{{ caption|e }}</a></li>
-                        {% endfor %}
-                        {% endif %}
-
-                        {% if access.corporateAdmin %}
-                        {% for href, id, caption in navigation_sidebar_corporate_admin %}
-                        <li{% if id == active_page %} class="active"{% endif %}><a href="{{ href|e }}">{{ caption|e }}</a></li>
-                        {% endfor %}
-                        {% endif %}
-
-                        {% if access.manager %}
-                        {% for href, id, caption in navigation_sidebar_manager %}
+                        {% if access.attendeeData %}
+                        {% for href, id, caption in navigation_sidebar_attendee_data %}
                         <li{% if id == active_page %} class="active"{% endif %}><a href="{{ href|e }}">{{ caption|e }}</a></li>
                         {% endfor %}
                         {% endif %}
