@@ -26,7 +26,7 @@ def zip_resumes(data, key, obj):
         data = []
     for resume in data:
         tempLoc = '%sfiles/%s.pdf' % (directoryBase, resume['gsObjectName'])
-        print tempLoc
+        print " - %s.pdf" % resume['gsObjectName']
         shutil.copy(tempLoc, stagingDir)
     serve = '%s/serve' % directoryBase
     if toZip(stagingDir, stagingDir, serve):
@@ -43,6 +43,7 @@ def zip_resumes(data, key, obj):
 #zips a full directory
 def toZip(name, initialDir, finalDir):
     try:
+        print "Zipping."
         zipIt = zipfile.ZipFile(name+".zip", "w", compression=zipfile.ZIP_DEFLATED)
         listdir = os.listdir(initialDir)
         for entity in listdir:
@@ -52,6 +53,8 @@ def toZip(name, initialDir, finalDir):
                 zipIt.write(each,tail)
         zipIt.close()
         shutil.move(name+".zip", finalDir)
+        (head, tail) = os.path.split(finalDir)
+        print "Serving %s." % tail
         return True
     except:
         return False

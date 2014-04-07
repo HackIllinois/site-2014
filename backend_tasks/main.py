@@ -53,6 +53,7 @@ def getData():
   gql_query.query_string = 'SELECT * FROM Task WHERE complete = FALSE'
   gql_query.allow_literal = True
   resp = datastore.run_query(req)
+  print "%s new incomplete requests found." % len(resp.batch.entity_result)
   result = []
   for r in resp.batch.entity_result:
     try:
@@ -68,6 +69,7 @@ def enqueue(tasks):
     RDq.enqueue_call(func='worker_functions.'+task[1],
                args=(task[2],task[0],task[3]),
                timeout=30)
+  print "Enqueue done."
 
 def downloadAllResumes():
   uri = boto.storage_uri(BUCKET, GOOGLE_STORAGE)
@@ -83,7 +85,7 @@ def downloadAllResumes():
         os.remove(filename)
       f = open(filename, 'w')
       count +=1
-      print 'Downloading: %s of %s (%s %%), %s bits' % (count, total, round(count/float(total)*100,2), obj.size)
+      print 'Downloading: %s of %s (%s %%), %sB' % (count, total, round(count/float(total)*100,2), obj.size)
       obj.get_contents_to_file(f)
       f.close()
 
