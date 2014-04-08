@@ -1,0 +1,1 @@
+*/2 * * * * python /home/Austin/hackillinois-website/backend_tasks/main.py tasks
