@@ -97,8 +97,8 @@ def getData():
     for thing in r.entity.property:
       lookup = thing.name
       if lookup == "data":
-        print thing.value.string_value
-        data = json.loads(thing.value.string_value)
+        print thing.value.blob_value
+        data = json.loads(thing.value.blob_value)
       elif lookup == "jobFunction":
         func = thing.value.string_value
     result.append([r.entity.key, func, data, r.entity])
