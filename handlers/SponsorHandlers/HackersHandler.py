@@ -55,9 +55,11 @@ class HackersHandler(MainSponsorHandler.BaseSponsorHandler):
 
         logging.info("Download Ids: %s" % str(ids))
 
+        q = Attendee.query(ancestor=Attendee.get_default_event_parent_key())
+
         data = []
         for i in ids:
-            hacker = Attendee.search_database({'userId': i}).get()
+            hacker = q.filter(Attendee.userId == i).get()
             if not hacker:
                 # TODO: error of some sort
                 continue
