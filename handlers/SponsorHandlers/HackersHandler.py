@@ -14,6 +14,7 @@ from google.appengine.api import urlfetch
 from google.appengine.api import memcache
 
 from db.Attendee import Attendee
+from db.Task import Task
 
 class HackersHandler(MainSponsorHandler.BaseSponsorHandler):
     def get(self, key=None):
@@ -46,6 +47,45 @@ class HackersHandler(MainSponsorHandler.BaseSponsorHandler):
             data['hackers'] = [ hackers[i] for i in hackers ]
             data['num_people'] = len(data['hackers'])
             return self.render('sponsor/hackers.html', data=data, access=json.loads(self.db_user.access))
+
+    def post(self, key=None):
+
+        ids = json.loads(self.request.body)['ids']
+
+        logging.info("Download Ids: %s" % str(ids))
+
+        data = []
+        for i in ids:
+            hacker = Attendee.search_database({'userId': i}).get()
+            if not hacker:
+                # TODO: error of some sort
+                continue
+            if not hacker.resume or (hacker.resume and not hacker.resume.gsObjectName):
+                # hacker does not have a resume
+                continue
+            fileName = hacker.nameLast + '_' + hacker.nameFirst
+            gsObjectName = hacker.resume.gsObjectName[17:]
+
+            data.append({'fileName': fileName, 'gsObjectName': gsObjectName})
+
+        t = Task(
+            parent=Task.get_default_event_parent_key(),
+            jobFunction='zip_resumes',
+            data=data
+        )
+
+        t.put()
+
+        logging.info("Download Task created")
+
+        if not self.db_user.task_queue:
+            self.db_user.task_queue = [t.key]
+        else:
+            self.db_user.task_queue.append(t.key)
+        self.db_user.put()
+
+        return self.write(json.dumps({"status": "success"}))
+
 
     # http://stackoverflow.com/questions/7111068/split-string-by-count-of-characters
     def chunks(self, s, n):

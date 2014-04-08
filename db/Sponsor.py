@@ -1,6 +1,7 @@
 from google.appengine.ext import ndb
 import constants
 from Model import Model
+from Task import Task
 import json
 
 class Sponsor(Model):
@@ -33,6 +34,8 @@ class Sponsor(Model):
     database_key = ndb.IntegerProperty(default=0)
     status_list = ndb.JsonProperty()
     # personType = 'mentor'
+
+    task_queue = ndb.KeyProperty(kind=Task, repeated=True)
 
     attendeeDataAccess = ndb.BooleanProperty(default=False)
 
