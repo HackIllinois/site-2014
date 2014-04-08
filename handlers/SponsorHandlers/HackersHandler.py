@@ -43,6 +43,7 @@ class HackersHandler(MainSponsorHandler.BaseSponsorHandler):
 
         else:
             data = {}
+            data['export_url'] = '/sponsor/export'
             hackers = self.get_hackers_memcache()
             data['hackers'] = [ hackers[i] for i in hackers ]
             data['num_people'] = len(data['hackers'])
