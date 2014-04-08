@@ -32,8 +32,8 @@ def zip_resumes(data, key, obj):
             print " - %s.pdf" % resume['fileName']
         else:
             errors.append('No resume %s(%s).' % (resume['fileName'],resume['gsObjectName'])
-    serve = '%s/serve' % directoryBase
-    if toZip(stagingDir, stagingDir, serve):
+    serveLoc = '%s/serve' % (directoryBase)
+    if toZip(stagingDir, stagingDir, serveLoc):
         #set the flag to complete
         obj.property[0].value.boolean_value = True
         obj.property[2].value.timestamp_microseconds_value  = long(time.time() * 1000000.0)
@@ -43,8 +43,6 @@ def zip_resumes(data, key, obj):
         req.mode = datastore.CommitRequest.NON_TRANSACTIONAL
         req.mutation.update.extend([obj])
         datastore.commit(req)
-
-
 
 #zips a full directory
 def toZip(name, initialDir, finalDir):
