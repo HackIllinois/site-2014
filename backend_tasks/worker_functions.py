@@ -31,7 +31,7 @@ def zip_resumes(data, key, obj):
             shutil.copy(tempLoc, stagingDir+'/'+resume['fileName']+'.pdf')
             print " - %s.pdf" % resume['fileName']
         else:
-            errors.append('No resume %s(%s).' % (resume['fileName'],resume['gsObjectName'])
+            errors.append("No resume %s(%s)." % (resume['fileName'],resume['gsObjectName']))
     serveLoc = "%s/serve" % (directoryBase)
     if toZip(stagingDir, stagingDir, serveLoc):
         #set the flag to complete
