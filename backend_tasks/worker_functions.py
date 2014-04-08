@@ -53,7 +53,6 @@ def toZip(name, initialDir, finalDir):
         zipIt = zipfile.ZipFile(name+".zip", "w", compression=zipfile.ZIP_DEFLATED)
         listdir = os.listdir(initialDir)
         for entity in listdir:
-            print "Zipping: %s" % each
             each = os.path.join(initialDir,entity)
             if os.path.isfile(each):
                 (head, tail) = os.path.split(each)
