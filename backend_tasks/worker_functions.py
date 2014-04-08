@@ -60,8 +60,8 @@ def toZip(name, initialDir, finalDir):
         zipIt.close()
         print "Moving to serve."
         shutil.move(name+".zip", finalDir)
-        (head, tail) = os.path.split(finalDir)
-        print "Serving @ http://23.236.61.209/serve/%s.zip" % (name)
+        (head, tail) = os.path.split(name)
+        print "Serving @ http://23.236.61.209/serve/%s.zip" % (tail)
         return True
     except:
         return False
