@@ -21,12 +21,6 @@ def zip_resumes(data, key, obj):
     if os.path.isdir(stagingDir):
         shutil.rmtree(stagingDir)
     os.makedirs(stagingDir)
-    try:
-        data = json.loads(data)
-        print "loads"
-    except:
-        data = []
-    print data
     for resume in data:
         tempLoc = '%sfiles/%s.pdf' % (directoryBase, resume['gsObjectName'])
         print "Trying %s" % (resume['gsObjectName'])
