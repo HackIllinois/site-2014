@@ -15,6 +15,70 @@
 
 {% block body %}
 <h1 class="page-header">Queue</h1>
+
+<div class="row">
+    <div class="col-md-12">
+        <p>Your results can take up to 1 minute to process.</p>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <h2>Running Tasks</h2>
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Task ID</th>
+                        <th>Creation Time</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for t in tasks %}
+                    {% if not t.complete %}
+                    <tr>
+                        <td>{{ t.id }}</td>
+                        <td>{{ t.creationTime }}</td>
+                    </tr>
+                    {% endif %}
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <h2>Complete Tasks</h2>
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Task ID</th>
+                        <th>Download Link</th>
+                        <th>Creation Time</th>
+                        <th>Complete Time</th>
+                        <th>Error Messages</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for t in tasks %}
+                    {% if t.complete %}
+                    <tr>
+                        <td>{{ t.id }}</td>
+                        <td>{{ t.url }}</td>
+                        <td>{{ t.creationTime }}</td>
+                        <td>{{ t.completeTime }}</td>
+                        <td>{{ t.errorMessages }}</td>
+                    </tr>
+                    {% endif %}
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
 {% endblock body %}
 
 
