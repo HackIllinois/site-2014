@@ -46,16 +46,19 @@
 
 <div class="container-fluid">
     <div class="row toggle-columns">
-        <div class="col-md-12">
+        <div class="col-md-8">
             <label>Show columns:&nbsp;&nbsp;</label>
             <div class="btn-group" data-toggle="buttons">
-                {% for name, text in [('email', 'Email'), ('school', 'School'), ('year', 'Year'), ('resume', 'Resume'), ('attending', 'Attending')] %}
+                {% for name, text in [('email', 'Email'), ('school', 'School'), ('year', 'Year'), ('resume', 'Resume'), ('attending', 'Attending'), ('download', 'Download')] %}
                 <label class="btn btn-default column-btn active">
                     <input type="checkbox" name="{{ name }}"> {{ text }}
                 </label>
                 {% endfor %}
             </div>
-        </div><!-- col-md-12 -->
+        </div><!-- col-md-8 -->
+        <div class="col-md-4">
+            <button id="download-button" class="btn btn-primary btn-block" data-loading-text="Thinking...">Download</button>
+        </div>
     </div><!-- row -->
 
     <div class="row">
@@ -74,6 +77,10 @@
                             <th name="tattending">
                                 <input type="checkbox" class="cattending" name="Is Attending"> Is Attending
                             </th>
+                            <th name="tdownload">
+                                <!-- <input type="checkbox" class="cdownload" name="Download"> Download -->
+                            </th>
+
                         </tr>
                         <tr>
                             <th name="tname"        class="sort" data-sort="name"       >Name</th>
@@ -82,6 +89,7 @@
                             <th name="tyear"        class="sort" data-sort="year"       >Year</th>
                             <th name="tresume"      class="sort" data-sort="resume"     >Resume</th>
                             <th name="tattending"   class="sort" data-sort="attending"  >Attending</th>
+                            <th name="tdownload"    class="sort" data-sort="download"   >Download</th>
                         </tr>
                     </thead>
                     <tbody class="list">
@@ -94,6 +102,9 @@
                             <td name="tyear"        class="year clickable"              >{{ h.year }}</td>
                             <td name="tresume"      class="resume"                      >{% if h.hasResume %}<a href='/corporate/resume?userId={{ h.userId }}'>Resume</a>{% endif %}</td>
                             <td name="tattending"   class="attending"                   >{% if h.isAttending %}Yes{% else %}No{% endif %}</td>
+                            <td name="tdownload"    class="download"                    >
+                                <input type="checkbox" class="download-checkbox">
+                            </td>
                         </tr>
                         {% endfor %}
                     </tbody>
@@ -171,7 +182,7 @@
             hackerList.search($('#search_school').val(), ['school']);
         });
     }
-    
+
     function yearClickCallbacks() {
         $('.year').click(function () {
             $('#search_year').val($(this).html());
@@ -208,7 +219,49 @@
             document.location = '/corporate/hackers/' + id;
         });
     }
-    
+
+    function getDownloadChecked() {
+        var download_checked = $('.download-checkbox:checked').map(function () {
+            return $(this).closest('tr').get(0).id
+        }).get();
+        return download_checked;
+    }
+
+    // http://rohanradio.com/blog/2011/02/22/posting-json-with-jquery/
+    jQuery.extend({
+        postJSON: function(params) {
+            return jQuery.ajax(jQuery.extend(params, {
+                type: "POST",
+                data: JSON.stringify(params.data),
+                dataType: "json",
+                contentType: "application/json",
+                processData: false
+            }));
+        }
+    });
+
+    function downloadButtonCallback() {
+        $('#download-button').click(function () {
+            checked = getDownloadChecked();
+
+            $("#download-button").button('loading');
+
+            request = $.postJSON({
+                url: '/corporate/hackers',
+                data: {ids: checked},
+            });
+
+            request.done(function(data) {
+                $("#download-button").button('reset');
+                window.location.href = "/corporate/queue";
+            });
+            request.fail(function( jqXHR, textStatus ) {
+                alert( "Request failed: " + textStatus );
+                $("#download-button").button('reset');
+            });
+        });
+    }
+
     $(document).ready(function () {
         hackerList = new List('hackers', options);
 
@@ -218,6 +271,7 @@
         searchCallbacks();
         checkBoxCallbacks();
         profileClickCallbacks();
+        downloadButtonCallback();
 
         $('#count').html(hackerList.matchingItems.length);
         hackerList.on('updated', function() {
@@ -227,6 +281,8 @@
             yearClickCallbacks();
             profileClickCallbacks();
         });
+
+
     });
 </script>
 {% endblock scripts%}
