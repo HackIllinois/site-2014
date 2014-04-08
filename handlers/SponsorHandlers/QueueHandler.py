@@ -20,7 +20,7 @@ class QueueHandler(MainSponsorHandler.BaseSponsorHandler):
             tasks.append({
                 'complete':task.complete,
                 'id':task.key.id(),
-                'url':'http://23.236.61.209/serve/' + str(task.key.id()),
+                'url':'http://23.236.61.209/serve/HackIllinois-' + str(task.key.id()) + '.zip',
                 'creationTime':task.creationTime.strftime('%x %X'),
                 'completeTime':task.completeTime.strftime('%x %X') if task.completeTime else '',
                 'errorMessages':errors if errors else '',
