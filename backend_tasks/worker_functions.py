@@ -36,13 +36,13 @@ def zip_resumes(data, key, obj):
     serveLoc = "%s/serve" % (directoryBase)
     if toZip(stagingDir, stagingDir, serveLoc):
         #set the flag to complete
-        for thing in obj.property
+        for thing in obj.property:
             lookup = thing.name
-            if lookup == "complete"
+            if lookup == "complete":
                 thing.value.boolean_value = True
-            elif lookup == "completeTime"
+            elif lookup == "completeTime":
                 thing.value.timestamp_microseconds_value  = long(time.time() * 1000000.0)
-            elif lookup == "errorMessages"
+            elif lookup == "errorMessages":
                 thing.value.string_value = json.dumps(errors)
         req = datastore.CommitRequest()
         datastore.set_options(dataset='hackillinois')
