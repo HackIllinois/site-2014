@@ -27,6 +27,7 @@ def zip_resumes(data, key, obj):
         data = []
     for resume in data:
         tempLoc = '%sfiles/%s.pdf' % (directoryBase, resume['gsObjectName'])
+        print "Trying %s" % (resume['gsObjectName'])
         if os.path.isfile(tempLoc):
             shutil.copy(tempLoc, stagingDir+'/'+resume['fileName']+'.pdf')
             print " - %s.pdf" % resume['fileName']
@@ -35,9 +36,14 @@ def zip_resumes(data, key, obj):
     serveLoc = "%s/serve" % (directoryBase)
     if toZip(stagingDir, stagingDir, serveLoc):
         #set the flag to complete
-        obj.property[0].value.boolean_value = True
-        obj.property[2].value.timestamp_microseconds_value  = long(time.time() * 1000000.0)
-        obj.property[4].value.string_value = json.dumps(errors)
+        for thing in obj.property
+            lookup = thing.name
+            if lookup == "complete"
+                thing.value.boolean_value = True
+            elif lookup == "completeTime"
+                thing.value.timestamp_microseconds_value  = long(time.time() * 1000000.0)
+            elif lookup == "errorMessages"
+                thing.value.string_value = json.dumps(errors)
         req = datastore.CommitRequest()
         datastore.set_options(dataset='hackillinois')
         req.mode = datastore.CommitRequest.NON_TRANSACTIONAL
