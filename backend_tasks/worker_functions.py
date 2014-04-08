@@ -1,4 +1,4 @@
-import zipfile, os, json
+import zipfile, os, json, time
 import googledatastore as datastore
 import shutil
 from googledatastore.helper import *
@@ -15,6 +15,7 @@ directoryBase = '/home/Austin/hackillinois-website/backend_tasks/'
 #serve it
 #update the database with the key
 def zip_resumes(data, key, obj):
+    errors = []
     stagingDir = '%sstaging/%s' % (directoryBase, key.path_element[-1].id)
     print 'Staging: %s' % stagingDir
     if os.path.isdir(stagingDir):
@@ -26,19 +27,28 @@ def zip_resumes(data, key, obj):
         data = []
     for resume in data:
         tempLoc = '%sfiles/%s.pdf' % (directoryBase, resume['gsObjectName'])
-        print " - %s.pdf" % resume['gsObjectName']
-        shutil.copy(tempLoc, stagingDir)
-    serve = '%s/serve' % directoryBase
-    if toZip(stagingDir, stagingDir, serve):
+        print "Trying %s" % (resume['gsObjectName'])
+        if os.path.isfile(tempLoc):
+            shutil.copy(tempLoc, stagingDir+'/'+resume['fileName']+'.pdf')
+            print " - %s.pdf" % resume['fileName']
+        else:
+            errors.append("No resume %s(%s)." % (resume['fileName'],resume['gsObjectName']))
+    serveLoc = "%s/serve" % (directoryBase)
+    if toZip(stagingDir, stagingDir, serveLoc):
         #set the flag to complete
-        obj.property[0].value.boolean_value = True
+        for thing in obj.property:
+            lookup = thing.name
+            if lookup == "complete":
+                thing.value.boolean_value = True
+            elif lookup == "completeTime":
+                thing.value.timestamp_microseconds_value  = long(time.time() * 1000000.0)
+            elif lookup == "errorMessages":
+                thing.value.string_value = json.dumps(errors)
         req = datastore.CommitRequest()
         datastore.set_options(dataset='hackillinois')
         req.mode = datastore.CommitRequest.NON_TRANSACTIONAL
         req.mutation.update.extend([obj])
         datastore.commit(req)
-
-
 
 #zips a full directory
 def toZip(name, initialDir, finalDir):
