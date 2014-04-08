@@ -44,11 +44,11 @@
 {% block body %}
 <div class="row">
     <div class="col-md-9">
-		<h1 class="page-header">Hackers<small>&nbsp;&nbsp;</small><small id="count">{{ data.num_people }}</small><small>&nbsp;people</small></h1>
+        <h1 class="page-header">Hackers<small>&nbsp;&nbsp;</small><small id="count">{{ data.num_people }}</small><small>&nbsp;people</small></h1>
     </div>
-	<div class="col-md-3">
+<!--     <div class="col-md-3">
         <a href="{{ data.export_url }}" role="button" class="btn btn-success btn-lg btn-block">Download as CSV</a>
-    </div>
+    </div> -->
 </div>
 
 <div class="container-fluid">
@@ -109,9 +109,7 @@
                             <td name="tyear"        class="year clickable"              >{{ h.year }}</td>
                             <td name="tresume"      class="resume"                      >{% if h.hasResume %}<a href='/corporate/resume?userId={{ h.userId }}'>Resume</a>{% endif %}</td>
                             <td name="tattending"   class="attending"                   >{% if h.isAttending %}Yes{% else %}No{% endif %}</td>
-                            <td name="tdownload"    class="download"                    >
-                                <input type="checkbox" class="download-checkbox">
-                            </td>
+                            <td name="tdownload"    class="download"                    ><input type="checkbox" class="download-checkbox"></td>
                         </tr>
                         {% endfor %}
                     </tbody>
@@ -136,7 +134,7 @@
     };
     var options = {
         // http://listjs.com/docs/options
-        valueNames: [ 'id', 'name', 'email', 'school', 'year', 'resume', 'attending' ],
+        valueNames: [ 'id', 'name', 'email', 'school', 'year', 'resume', 'attending', 'download' ],
         page: 20,
         plugins: [
             ListPagination(paginationOptions)
@@ -228,9 +226,19 @@
     }
 
     function getDownloadChecked() {
-        var download_checked = $('.download-checkbox:checked').map(function () {
-            return $(this).closest('tr').get(0).id
-        }).get();
+        var download_checked = [];
+        for (var i=0, len=hackerList.items.length; i<len; i++){
+            var id = hackerList.items[i].elm.id,
+                checked = hackerList.items[i].elm.getElementsByTagName("td")[7].getElementsByTagName("input")[0].checked;
+            if (checked) {
+                download_checked.push(id);
+            }
+        }
+
+        // var download_checked = $('.download-checkbox:checked').map(function () {
+        //     return $(this).closest('tr').get(0).id
+        // }).get();
+
         return download_checked;
     }
 

@@ -26,4 +26,6 @@ sponsor_handlers = [
     RedirectRoute('/c-registration/<key>',      handler=RegistrationHandler.RegistrationHandler, name='SponsorRegistration',    strict_slash=True),
 
     RedirectRoute('/corporate/register/<key>',  handler=RegisterHandler.RegisterHandler,        name='SponsorRegister',         strict_slash=True),
+
+    RedirectRoute('/corporate/export',          handler=ExportHandler.ExportHandler,            name='SponsorExport',           strict_slash=True),
 ]

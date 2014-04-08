@@ -14,7 +14,6 @@ import SubpageHandlers
 import AdminHandlers
 import MobileHandler
 import ErrorHandlers
-import SponsorHandlers
 
 handlers = [
     RedirectRoute('/', handler=IndexHandler, name='Index', strict_slash=True),
@@ -51,7 +50,6 @@ handlers = [
     RedirectRoute('/tropo', handler=TropoHandler, name='Tropo', strict_slash=True),
 
     RedirectRoute('/sponsor/download', handler=SponsorDownloadHandler, name='SponsorDownload', strict_slash=True),
-    RedirectRoute('/sponsor/export',  handler=SponsorHandlers.ExportHandler.ExportHandler, name='SponsorExport', strict_slash=True),
 
     # If you create a new file in AdminHandlers, make sure to add it to AdminHandlers/__init__.py
     RedirectRoute('/admin', handler=AdminHandlers.IndexHandler.IndexHandler, name='AdminIndex', strict_slash=True),
