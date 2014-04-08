@@ -98,7 +98,7 @@ def getData():
       lookup = thing.name
       if lookup == "data":
         data = json.loads(thing.value.string_value)
-      elif lookup == "jobFunction"
+      elif lookup == "jobFunction":
         func = thing.value.string_value
     result.append([r.entity.key, func, data, r.entity])
   return result
