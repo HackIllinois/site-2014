@@ -40,7 +40,7 @@ class BaseSponsorHandler(MainHandler.Handler):
 
         logging.info('Sponsor user %s is online.', self.google_user.email())
         super(BaseSponsorHandler, self).dispatch()
-		
+
     def get_sponsor_user(self):
         """Returns the database Sponsor model for the current logged-in user"""
         user = users.get_current_user()
@@ -50,46 +50,24 @@ class BaseSponsorHandler(MainHandler.Handler):
         if not sponsor_user:
             return None
         return sponsor_user
-		
-    def get_hackers_better_memcache(self, status=None, category=None, route=None):
-        """Gets the 'hackers/<status>/<category>/<route>' key from the memcache and updates the memcache if the key is not in the memcache"""
-        """Uses memcache for everything but the status"""
-        key = 'hackers/' + str(status) + '/' + str(category) + '/' + str(route)
-        data = self.retrieve(key)
 
-        stats = memcache.get_stats()
-        logging.info('Cache Hits:%s, Cache Misses:%s' % (stats['hits'], stats['misses']))
 
-        if data is None:
-            data =  self.set_hackers_better_memcache(status, category, route)
-            return [ data[i] for i in data ]
+    # http://stackoverflow.com/questions/7111068/split-string-by-count-of-characters
+    def chunks(self, s, n):
+        """Produce `n`-character chunks from `s`."""
+        for start in range(0, len(s), n):
+            yield s[start:start+n]
 
-        hackers = Attendee.query(
-            Attendee.isRegistered == True,
-            projection=[
-                Attendee.userId,
-                Attendee.approvalStatus.status,
-                Attendee.approvalStatus.approvedTime,
-                Attendee.approvalStatus.waitlistedTime,
-                Attendee.approvalStatus.rsvpTime,
-            ],
-            ancestor=Attendee.get_default_event_parent_key()
-        )
-        for hacker in hackers:
-            if hacker.userId not in data:
-                continue
-            if hacker.approvalStatus:
-                data[hacker.userId]['approvalStatus'] = {
-                    'status': hacker.approvalStatus.status,
-                    'approvedTime': hacker.approvalStatus.approvedTime.strftime('%x %X') if hacker.approvalStatus.approvedTime else None,
-                    'waitlistedTime': hacker.approvalStatus.waitlistedTime.strftime('%x %X') if hacker.approvalStatus.waitlistedTime else None,
-                    'rsvpTime': hacker.approvalStatus.rsvpTime.strftime('%x %X') if hacker.approvalStatus.rsvpTime else None
-                }
-            else:
-                data[hacker.userId]['approvalStatus'] = None
-        return [ data[i] for i in data ]
+    """http://stackoverflow.com/questions/9127982/avoiding-memcache-1m-limit-of-values"""
+    def store(self, key, value, chunksize=950000):
+        serialized = pickle.dumps(value)
+        values = {}
+        i = 0
+        for chunk in self.chunks(serialized, chunksize):
+            values['%s.%s' % (key, i)] = chunk
+            i += 1
+        memcache.set_multi(values, time=constants.MEMCACHE_TIMEOUT)
 
-		
     """http://stackoverflow.com/questions/9127982/avoiding-memcache-1m-limit-of-values"""
     def retrieve(self, key):
         MAX_SPLITS = 32
@@ -103,4 +81,52 @@ class BaseSponsorHandler(MainHandler.Handler):
         data = None
         if serialized:
             data = pickle.loads(serialized)
+        return data
+
+    def get_hackers_memcache(self, isAttending=None):
+        """Gets the 'sponsor/hackers/<isAttending>' key in the memcache"""
+        key = 'sponsor/hackers/' + str(isAttending)
+        data = self.retrieve(key)
+
+        stats = memcache.get_stats()
+        logging.info('Cache Hits:%s, Cache Misses:%s' % (stats['hits'], stats['misses']))
+
+        if data is None:
+            data =  self.set_hackers_memcache(isAttending)
+
+        return data
+
+    def set_hackers_memcache(self, isAttending=None):
+        """Sets the 'sponsor/hackers/<isAttending>' key in the memcache"""
+        key = 'sponsor/hackers/' + str(isAttending)
+        hackers = None
+
+        if isAttending is None:
+            hackers = Attendee.query(Attendee.isRegistered == True,
+                                     ancestor=Attendee.get_default_event_parent_key())
+        elif isAttending is True:
+            hackers = Attendee.query(Attendee.isRegistered == True,
+                                     Attendee.approvalStatus.status == 'Rsvp Coming',
+                                     ancestor=Attendee.get_default_event_parent_key())
+        else:
+            hackers = Attendee.query(Attendee.isRegistered == True,
+                                     Attendee.approvalStatus.status != 'Rsvp Coming',
+                                     ancestor=Attendee.get_default_event_parent_key())
+
+        data = {}
+        for hacker in hackers:
+            data[hacker.userId] = {
+                'nameFirst': hacker.nameFirst,
+                'nameLast': hacker.nameLast,
+                'email': hacker.email,
+                'school': hacker.school,
+                'year': hacker.year,
+                'linkedin': hacker.linkedin,
+                'github': hacker.github,
+                'hasResume': True if hacker.resume and hacker.resume.fileName else False,
+                'userId': hacker.userId,
+                'isAttending': True if hacker.approvalStatus and hacker.approvalStatus.status == 'Rsvp Coming' else False,
+            }
+
+        self.store(key, data)
         return data
