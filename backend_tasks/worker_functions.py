@@ -17,13 +17,13 @@ directoryBase = '/home/Austin/hackillinois-website/backend_tasks/'
 def zip_resumes(data, key, obj):
     errors = []
     stagingDir = '%sstaging/%s' % (directoryBase, key.path_element[-1].id)
-    print 'Staging: %s' % stagingDir
+    print 'Staging directory: %s' % stagingDir
     if os.path.isdir(stagingDir):
         shutil.rmtree(stagingDir)
     os.makedirs(stagingDir)
     for resume in data:
         tempLoc = '%sfiles/%s.pdf' % (directoryBase, resume['gsObjectName'])
-        print "Trying %s" % (resume['gsObjectName'])
+        print "Staging: %s" % (resume['gsObjectName'])
         if os.path.isfile(tempLoc):
             shutil.copy(tempLoc, stagingDir+'/'+resume['fileName']+'.pdf')
             print " - %s.pdf" % resume['fileName']
@@ -49,18 +49,20 @@ def zip_resumes(data, key, obj):
 #zips a full directory
 def toZip(name, initialDir, finalDir):
     try:
-        print "Zipping."
+        print "Starting zipping."
         zipIt = zipfile.ZipFile(name+".zip", "w", compression=zipfile.ZIP_DEFLATED)
         listdir = os.listdir(initialDir)
         for entity in listdir:
+            print "Zipping: %s" % each
             each = os.path.join(initialDir,entity)
             if os.path.isfile(each):
                 (head, tail) = os.path.split(each)
                 zipIt.write(each,tail)
         zipIt.close()
+        print "Moving to serve."
         shutil.move(name+".zip", finalDir)
         (head, tail) = os.path.split(finalDir)
-        print "Serving %s." % tail
+        print "Serving @ http://23.236.61.209/serve/%s.zip" % (name)
         return True
     except:
         return False
