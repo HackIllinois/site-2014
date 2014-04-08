@@ -16,7 +16,7 @@ directoryBase = '/home/Austin/hackillinois-website/backend_tasks/'
 #update the database with the key
 def zip_resumes(data, key, obj):
     errors = []
-    stagingDir = '%sstaging/%s' % (directoryBase, key.path_element[-1].id)
+    stagingDir = '%sstaging/HackIllinois-%s' % (directoryBase, key.path_element[-1].id)
     print 'Staging directory: %s' % stagingDir
     if os.path.isdir(stagingDir):
         shutil.rmtree(stagingDir)
