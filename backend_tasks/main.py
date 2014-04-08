@@ -92,11 +92,15 @@ def getData():
   print "%s new incomplete requests found." % len(resp.batch.entity_result)
   result = []
   for r in resp.batch.entity_result:
-    try:
-      data = json.loads(r.entity.property[4].value.string_value)
-    except:
-      data = ''
-    result.append([r.entity.key, r.entity.property[3].value.string_value,data,r.entity])
+    data = []
+    func = ''
+    for thing in r.entity.property:
+      lookup = thing.name
+      if lookup == "data":
+        data = json.loads(thing.value.blob_value)
+      elif lookup == "jobFunction":
+        func = thing.value.string_value
+    result.append([r.entity.key, func, data, r.entity])
   return result
 
 #Enqueue to the workers from the datastore here and then save the result back into the datastore
