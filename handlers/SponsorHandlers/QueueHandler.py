@@ -12,17 +12,18 @@ class QueueHandler(MainSponsorHandler.BaseSponsorHandler):
             if not task: continue
 
             errors = task.errorMessages
-            errors = errors[1:]
-            errors = errors[:-1]
-            if len(errors) > 50: errors = errors[:50] + '...'
+            if errors:
+                errors = errors[1:]
+                errors = errors[:-1]
+                if len(errors) > 50: errors = errors[:50] + '...'
 
             tasks.append({
                 'complete':task.complete,
                 'id':task.key.id(),
                 'url':'http://23.236.61.209/serve/' + str(task.key.id()),
                 'creationTime':task.creationTime.strftime('%x %X'),
-                'completeTime':task.completeTime.strftime('%x %X'),
-                'errorMessages':errors,
+                'completeTime':task.completeTime.strftime('%x %X') if task.completeTime else '',
+                'errorMessages':errors if errors else '',
                 'sort':task.creationTime,
             })
 
