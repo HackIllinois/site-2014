@@ -8,7 +8,7 @@ class QueueHandler(MainSponsorHandler.BaseSponsorHandler):
     def get(self):
         tasks = []
         for t in self.db_user.task_queue:
-            task = t.get()
+            task = t.get(use_cache=False, use_memcache=False)
             if not task: continue
 
             errors = task.errorMessages
