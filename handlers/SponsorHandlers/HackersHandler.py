@@ -8,6 +8,7 @@ import cStringIO
 import random
 import pickle
 import urllib
+from datetime import datetime
 
 from google.appengine.api import users
 from google.appengine.api import urlfetch
@@ -19,16 +20,14 @@ from db.Task import Task
 class HackersHandler(MainSponsorHandler.BaseSponsorHandler):
     def get(self, key=None):
         if key:
-            # TODO: profile page
-            # return self.write(id)
             userId = str(urllib.unquote(key))
             db_user = Attendee.search_database({'userId':key}).get()
 
             hacker = {}
 
             text_fields = [
-                'nameFirst', 'nameLast', 'email', 'school',
-                'year', 'userId'
+                'nameFirst', 'nameLast', 'email',
+                'school', 'year', 'userId'
             ]
 
             for field in text_fields:
@@ -43,48 +42,7 @@ class HackersHandler(MainSponsorHandler.BaseSponsorHandler):
 
         else:
             data = {}
-            data['export_url'] = '/sponsor/export'
-            hackers = self.get_hackers_memcache()
+            hackers = self.get_hackers_memcache(True)
             data['hackers'] = [ hackers[i] for i in hackers ]
             data['num_people'] = len(data['hackers'])
             return self.render('sponsor/hackers.html', data=data, access=json.loads(self.db_user.access))
-
-    def post(self, key=None):
-
-        ids = json.loads(self.request.body)['ids']
-
-        logging.info("Download Ids: %s" % str(ids))
-
-        q = Attendee.query(ancestor=Attendee.get_default_event_parent_key())
-
-        data = []
-        for i in ids:
-            hacker = q.filter(Attendee.userId == i).get()
-            if not hacker:
-                # TODO: error of some sort
-                continue
-            if not hacker.resume or (hacker.resume and not hacker.resume.gsObjectName):
-                # hacker does not have a resume
-                continue
-            fileName = hacker.nameLast + '_' + hacker.nameFirst
-            gsObjectName = hacker.resume.gsObjectName[17:]
-
-            data.append({'fileName': fileName, 'gsObjectName': gsObjectName})
-
-        t = Task(
-            parent=Task.get_default_event_parent_key(),
-            jobFunction='zip_resumes',
-            data=data
-        )
-
-        t.put()
-
-        logging.info("Download Task created")
-
-        if not self.db_user.task_queue:
-            self.db_user.task_queue = [t.key]
-        else:
-            self.db_user.task_queue.append(t.key)
-        self.db_user.put()
-
-        return self.write(json.dumps({"status": "success"}))

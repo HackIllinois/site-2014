@@ -38,6 +38,7 @@
         cursor: pointer;
     }
     .download-btn {
+        white-space: normal;
         margin-bottom: 5px;
     }
 </style>
@@ -49,49 +50,22 @@
     <div class="col-md-12">
         <h1 class="page-header">Hackers<small>&nbsp;&nbsp;</small><small id="count">{{ data.num_people }}</small><small>&nbsp;people</small></h1>
     </div>
-<!--     <div class="col-md-3">
-        <a href="{{ data.export_url }}" role="button" class="btn btn-success btn-lg btn-block">Download as CSV</a>
-    </div> -->
 </div>
 
 <div class="container-fluid">
-    <!-- Option 1 -->
-<!--     <div class="row">
-        <div class="col-md-4 col-md-offset-8">
+    <div class="row">
+        <div class="col-sm-4 col-sm-offset-4">
             <button id="download-all-csv-button" class="btn btn-success btn-block download-btn" data-loading-text="Thinking...">Download All as CSV</button>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-md-4 col-md-offset-8">
-            <button id="download-all-resumes-button" class="btn btn-success btn-block download-btn" data-loading-text="Thinking...">Download All Resumes</button>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-4 col-md-offset-8">
-            <button id="download-selected-csv-button" class="btn btn-primary btn-block download-btn" data-loading-text="Thinking...">Download Selected as CSV</button>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-4 col-md-offset-8">
-            <button id="download-selected-resumes-button" class="btn btn-primary btn-block download-btn" data-loading-text="Thinking...">Download Selected Resumes</button>
-        </div>
-    </div>
- -->
-
-    <!-- Option 2 -->
-    <div class="row">
-        <div class="col-md-4 col-md-offset-4">
-            <button id="download-all-csv-button" class="btn btn-success btn-block download-btn" data-loading-text="Thinking...">Download All as CSV</button>
-        </div>
-        <div class="col-md-4">
+        <div class="col-sm-4">
             <button id="download-all-resumes-button" class="btn btn-primary btn-block download-btn" data-loading-text="Thinking...">Download All Resumes</button>
         </div>
     </div>
     <div class="row">
-        <div class="col-md-4 col-md-offset-4">
+        <div class="col-sm-4 col-sm-offset-4">
             <button id="download-selected-csv-button" class="btn btn-success btn-block download-btn" data-loading-text="Thinking...">Download Selected as CSV</button>
         </div>
-        <div class="col-md-4">
+        <div class="col-sm-4">
             <button id="download-selected-resumes-button" class="btn btn-primary btn-block download-btn" data-loading-text="Thinking...">Download Selected Resumes</button>
         </div>
     </div>
@@ -102,7 +76,8 @@
         <div class="col-md-12">
             <label>Show columns:&nbsp;&nbsp;</label>
             <div class="btn-group" data-toggle="buttons">
-                {% for name, text in [('email', 'Email'), ('school', 'School'), ('year', 'Year'), ('resume', 'Resume'), ('attending', 'Attending'), ('download', 'Download')] %}
+                {# {% for name, text in [('email', 'Email'), ('school', 'School'), ('year', 'Year'), ('resume', 'Resume'), ('attending', 'Attending'), ('download', 'Download')] %} #}
+                {% for name, text in [('email', 'Email'), ('school', 'School'), ('year', 'Year'), ('resume', 'Resume'), ('download', 'Download')] %}
                 <label class="btn btn-default column-btn active">
                     <input type="checkbox" name="{{ name }}"> {{ text }}
                 </label>
@@ -124,22 +99,22 @@
                             <th name="tresume">
                                 <input type="checkbox" class="cresume" name="Has Resume"> Has Resume
                             </th>
-                            <th name="tattending">
+                            <!-- <th name="tattending">
                                 <input type="checkbox" class="cattending" name="Is Attending"> Is Attending
-                            </th>
+                            </th> -->
                             <th name="tdownload">
                                 <!-- <input type="checkbox" class="cdownload" name="Download"> Download -->
                             </th>
 
                         </tr>
                         <tr>
-                            <th name="tname"        class="sort" data-sort="name"       >Name</th>
-                            <th name="temail"       class="sort" data-sort="email"      >Email</th>
-                            <th name="tschool"      class="sort" data-sort="school"     >School</th>
-                            <th name="tyear"        class="sort" data-sort="year"       >Year</th>
-                            <th name="tresume"      class="sort" data-sort="resume"     >Resume</th>
-                            <th name="tattending"   class="sort" data-sort="attending"  >Attending</th>
-                            <th name="tdownload"    class="sort" data-sort="download"   >Download</th>
+                            <th name="tname"        class="sort clickable" data-sort="name"       >Name</th>
+                            <th name="temail"       class="sort clickable" data-sort="email"      >Email</th>
+                            <th name="tschool"      class="sort clickable" data-sort="school"     >School</th>
+                            <th name="tyear"        class="sort clickable" data-sort="year"       >Year</th>
+                            <th name="tresume"      class="sort clickable" data-sort="resume"     >Resume</th>
+                            <!-- <th name="tattending"   class="sort clickable" data-sort="attending"  >Attending</th> -->
+                            <th name="tdownload"    class="sort clickable text-center" data-sort="download">Download</th>
                         </tr>
                     </thead>
                     <tbody class="list">
@@ -150,9 +125,9 @@
                             <td name="temail"       class="email clickable goto-profile">{{ h.email }}</td>
                             <td name="tschool"      class="school clickable"            >{{ h.school }}</td>
                             <td name="tyear"        class="year clickable"              >{{ h.year }}</td>
-                            <td name="tresume"      class="resume"                      >{% if h.hasResume %}<a href='/corporate/resume?userId={{ h.userId }}'>Resume</a>{% endif %}</td>
-                            <td name="tattending"   class="attending"                   >{% if h.isAttending %}Yes{% else %}No{% endif %}</td>
-                            <td name="tdownload"    class="download"                    ><input type="checkbox" class="download-checkbox"></td>
+                            <td name="tresume"      class="resume"                      >{% if h.hasResume %}<a href='/corporate/resume?userId={{ h.userId }}' target="_blank">Resume</a>{% endif %}</td>
+                            <!-- <td name="tattending"   class="attending"                   >{% if h.isAttending %}Yes{% else %}No{% endif %}</td> -->
+                            <td name="tdownload"    class="download text-center"        ><input type="checkbox" class="download-checkbox"></td>
                         </tr>
                         {% endfor %}
                     </tbody>
@@ -162,6 +137,9 @@
         </div><!-- col-md-12 -->
     </div><!-- row -->
 </div><!-- container-fluid -->
+
+<div class="hidden"><form id="post-form" method="post"><textarea name="data"></textarea></form></div>
+
 {% endblock body %}
 
 
@@ -177,7 +155,8 @@
     };
     var options = {
         // http://listjs.com/docs/options
-        valueNames: [ 'id', 'name', 'email', 'school', 'year', 'resume', 'attending', 'download' ],
+        // valueNames: [ 'id', 'name', 'email', 'school', 'year', 'resume', 'attending', 'download' ],
+        valueNames: [ 'id', 'name', 'email', 'school', 'year', 'resume', 'download' ],
         page: 20,
         plugins: [
             ListPagination(paginationOptions)
@@ -240,16 +219,10 @@
 
     function checkBoxCallback() {
         var resume_checked = $('.cresume').prop('checked');
-        var attending_checked = $('.cattending').prop('checked');
         hackerList.filter(function(item) {
-            var res = item.values().resume,
-                att = item.values().attending;
-            if (resume_checked && attending_checked) {
-                return res != null && res != '' && att != null && att != '' && att != 'No';
-            } else if (resume_checked) {
+            var res = item.values().resume;
+            if (resume_checked) {
                 return res != null && res != '';
-            } else if (attending_checked) {
-                return att != null && att != '' && att != 'No';
             } else {
                 return true;
             }
@@ -258,7 +231,6 @@
 
     function checkBoxCallbacks() {
         $('.cresume').click(checkBoxCallback);
-        $('.cattending').click(checkBoxCallback);
     }
 
     function profileClickCallbacks() {
@@ -272,7 +244,7 @@
         var download_checked = [];
         for (var i=0, len=hackerList.items.length; i<len; i++){
             var id = hackerList.items[i].elm.id,
-                checked = hackerList.items[i].elm.getElementsByTagName("td")[7].getElementsByTagName("input")[0].checked;
+                checked = hackerList.items[i].elm.getElementsByTagName("td")[6].getElementsByTagName("input")[0].checked;
             if (checked) {
                 download_checked.push(id);
             }
@@ -285,38 +257,67 @@
         return download_checked;
     }
 
-    // http://rohanradio.com/blog/2011/02/22/posting-json-with-jquery/
-    jQuery.extend({
-        postJSON: function(params) {
-            return jQuery.ajax(jQuery.extend(params, {
-                type: "POST",
-                data: JSON.stringify(params.data),
-                dataType: "json",
-                contentType: "application/json",
-                processData: false
-            }));
-        }
-    });
+    function downloadButtonsCallback() {
+        $('#download-selected-csv-button').click(function () {
+            $("#download-selected-csv-button").button('loading');
 
-    function downloadButtonCallback() {
+            $("#post-form").attr("action", "/corporate/csv")
+            $("#post-form").attr("method", "post")
+            $("#post-form").attr("target", "_blank")
+
+            var checked = getDownloadChecked();
+            var data = JSON.stringify({ "all": false, "ids": checked });
+            $("#post-form > textarea").val(data);
+
+            $("#post-form").submit();
+
+            $("#download-selected-csv-button").button('reset');
+        });
+
+        $('#download-all-csv-button').click(function () {
+            $("#download-all-csv-button").button('loading');
+
+            $("#post-form").attr("action", "/corporate/csv")
+            $("#post-form").attr("method", "post")
+            $("#post-form").attr("target", "_blank")
+
+            var data = JSON.stringify({ "all": true });
+            $("#post-form > textarea").val(data);
+
+            $("#post-form").submit();
+
+            $("#download-all-csv-button").button('reset');
+        });
+
         $('#download-selected-resumes-button').click(function () {
-            checked = getDownloadChecked();
-
             $("#download-selected-resumes-button").button('loading');
 
-            request = $.postJSON({
-                url: '/corporate/hackers',
-                data: {ids: checked},
-            });
+            $("#post-form").attr("action", "/corporate/resumes")
+            $("#post-form").attr("method", "post")
+            $("#post-form").attr("target", "")
 
-            request.done(function(data) {
-                $("#download-selected-resumes-button").button('reset');
-                window.location.href = "/corporate/queue";
-            });
-            request.fail(function( jqXHR, textStatus ) {
-                alert( "Request failed: " + textStatus );
-                $("#download-selected-resumes-button").button('reset');
-            });
+            var checked = getDownloadChecked();
+            var data = JSON.stringify({ "all": false, "ids": checked });
+            $("#post-form > textarea").val(data);
+
+            $("#post-form").submit();
+
+            $("#download-selected-resumes-button").button('reset');
+        });
+
+        $('#download-all-resumes-button').click(function () {
+            $("#download-all-resumes-button").button('loading');
+
+            $("#post-form").attr("action", "/corporate/resumes")
+            $("#post-form").attr("method", "post")
+            $("#post-form").attr("target", "")
+
+            var data = JSON.stringify({ "all": true });
+            $("#post-form > textarea").val(data);
+
+            $("#post-form").submit();
+
+            $("#download-all-resumes-button").button('reset');
         });
     }
 
@@ -329,7 +330,7 @@
         searchCallbacks();
         checkBoxCallbacks();
         profileClickCallbacks();
-        downloadButtonCallback();
+        downloadButtonsCallback();
 
         $('#count').html(hackerList.matchingItems.length);
         hackerList.on('updated', function() {
@@ -339,8 +340,6 @@
             yearClickCallbacks();
             profileClickCallbacks();
         });
-
-
     });
 </script>
 {% endblock scripts%}

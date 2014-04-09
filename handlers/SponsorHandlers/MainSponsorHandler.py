@@ -123,6 +123,7 @@ class BaseSponsorHandler(MainHandler.Handler):
                 'year': hacker.year,
                 'linkedin': hacker.linkedin,
                 'github': hacker.github,
+                'resumeLocation': hacker.resume.gsObjectName if hacker.resume and hacker.resume.gsObjectName else None,
                 'hasResume': True if hacker.resume and hacker.resume.fileName else False,
                 'userId': hacker.userId,
                 'isAttending': True if hacker.approvalStatus and hacker.approvalStatus.status == 'Rsvp Coming' else False,

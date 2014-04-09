@@ -6,7 +6,9 @@ import SupportHandler
 import HackersHandler
 import QueueHandler
 import SimpleHandlers
-import ExportHandler
+import ResumeHandler
+import CsvHandler
+import ResumesHandler
 
 import RegistrationHandler
 import RegisterHandler
@@ -19,6 +21,11 @@ sponsor_handlers = [
     RedirectRoute('/corporate/hackers',         handler=HackersHandler.HackersHandler,          name='SponsorHackers',          strict_slash=True),
     RedirectRoute('/corporate/hackers/<key>',   handler=HackersHandler.HackersHandler,          name='SponsorHackersProfile',   strict_slash=True),
 
+    RedirectRoute('/corporate/resume',          handler=ResumeHandler.ResumeHandler,            name='SponsorResume',           strict_slash=True),
+
+    RedirectRoute('/corporate/csv',             handler=CsvHandler.CsvHandler,                  name='SponsorCsv',              strict_slash=True),
+    RedirectRoute('/corporate/resumes',         handler=ResumesHandler.ResumesHandler,          name='SponsorResumes',          strict_slash=True),
+
     RedirectRoute('/corporate/queue',           handler=QueueHandler.QueueHandler,              name='SponsorQueue',            strict_slash=True),
     RedirectRoute('/corporate/notregistered',   handler=SimpleHandlers.NotRegisteredHandler,    name='SponsorNotRegistered',    strict_slash=True),
 
@@ -26,6 +33,4 @@ sponsor_handlers = [
     RedirectRoute('/c-registration/<key>',      handler=RegistrationHandler.RegistrationHandler, name='SponsorRegistration',    strict_slash=True),
 
     RedirectRoute('/corporate/register/<key>',  handler=RegisterHandler.RegisterHandler,        name='SponsorRegister',         strict_slash=True),
-
-    RedirectRoute('/corporate/export',          handler=ExportHandler.ExportHandler,            name='SponsorExport',           strict_slash=True),
 ]
