@@ -41,6 +41,16 @@
         white-space: normal;
         margin-bottom: 5px;
     }
+    #num-selected {
+        color: red;
+    }
+    #select-all-btn, #clear-all-btn {
+        white-space: normal;
+        margin-bottom: 5px;
+    }
+    .column-toggle-btns {
+        margin-bottom: 5px;
+    }
 </style>
 {% endblock head %}
 
@@ -73,18 +83,23 @@
     <br>
 
     <div class="row toggle-columns">
-        <div class="col-md-12">
+        <div class="col-sm-8">
             <label>Show columns:&nbsp;&nbsp;</label>
             <div class="btn-group" data-toggle="buttons">
-                {# {% for name, text in [('email', 'Email'), ('school', 'School'), ('year', 'Year'), ('resume', 'Resume'), ('attending', 'Attending'), ('download', 'Download')] %} #}
                 {% for name, text in [('email', 'Email'), ('school', 'School'), ('year', 'Year'), ('resume', 'Resume'), ('download', 'Download')] %}
-                <label class="btn btn-default column-btn active">
+                <label class="btn btn-default column-btn active column-toggle-btns">
                     <input type="checkbox" name="{{ name }}"> {{ text }}
                 </label>
                 {% endfor %}
             </div>
-        </div><!-- col-md-12 -->
-    </div><!-- row -->
+        </div>
+        <div class="col-sm-2">
+            <button id="clear-all-btn" class="btn btn-warning btn-block">Clear All</button>
+        </div>
+        <div class="col-sm-2">
+            <button id="select-all-btn" class="btn btn-warning btn-block">Select All</button>
+        </div>
+    </div>
 
     <div class="row">
         <div class="col-md-12">
@@ -96,16 +111,8 @@
                             <th name="temail"       ><input id="search_email"   type="text" class="width100" placeholder="Search Email" ></th>
                             <th name="tschool"      ><input id="search_school"  type="text" class="width100" placeholder="Search School"></th>
                             <th name="tyear"        ><input id="search_year"    type="text" class="width100" placeholder="Search Year"  ></th>
-                            <th name="tresume">
-                                <input type="checkbox" class="cresume" name="Has Resume"> Has Resume
-                            </th>
-                            <!-- <th name="tattending">
-                                <input type="checkbox" class="cattending" name="Is Attending"> Is Attending
-                            </th> -->
-                            <th name="tdownload">
-                                <!-- <input type="checkbox" class="cdownload" name="Download"> Download -->
-                            </th>
-
+                            <th name="tresume"><input type="checkbox" class="cresume" name="Has Resume"> Has Resume</th>
+                            <th id="num-selected" name="tdownload" class="text-center">0 Selected</th>
                         </tr>
                         <tr>
                             <th name="tname"        class="sort clickable" data-sort="name"       >Name</th>
@@ -113,7 +120,6 @@
                             <th name="tschool"      class="sort clickable" data-sort="school"     >School</th>
                             <th name="tyear"        class="sort clickable" data-sort="year"       >Year</th>
                             <th name="tresume"      class="sort clickable" data-sort="resume"     >Resume</th>
-                            <!-- <th name="tattending"   class="sort clickable" data-sort="attending"  >Attending</th> -->
                             <th name="tdownload"    class="sort clickable text-center" data-sort="download">Download</th>
                         </tr>
                     </thead>
@@ -126,7 +132,6 @@
                             <td name="tschool"      class="school clickable"            >{{ h.school }}</td>
                             <td name="tyear"        class="year clickable"              >{{ h.year }}</td>
                             <td name="tresume"      class="resume"                      >{% if h.hasResume %}<a href='/corporate/resume?userId={{ h.userId }}' target="_blank">Resume</a>{% endif %}</td>
-                            <!-- <td name="tattending"   class="attending"                   >{% if h.isAttending %}Yes{% else %}No{% endif %}</td> -->
                             <td name="tdownload"    class="download text-center"        ><input type="checkbox" class="download-checkbox"></td>
                         </tr>
                         {% endfor %}
@@ -155,7 +160,6 @@
     };
     var options = {
         // http://listjs.com/docs/options
-        // valueNames: [ 'id', 'name', 'email', 'school', 'year', 'resume', 'attending', 'download' ],
         valueNames: [ 'id', 'name', 'email', 'school', 'year', 'resume', 'download' ],
         page: 20,
         plugins: [
@@ -190,15 +194,19 @@
 
     function searchCallbacks() {
         $('#search_name').keyup(function() {
+            $('#search_email').val("");$('#search_school').val("");$('#search_year').val("");
             hackerList.search($('#search_name').val(), ['name']);
         });
         $('#search_email').keyup(function() {
+            $('#search_name').val("");$('#search_school').val("");$('#search_year').val("");
             hackerList.search($('#search_email').val(), ['email']);
         });
         $('#search_school').keyup(function() {
+            $('#search_name').val("");$('#search_email').val("");$('#search_year').val("");
             hackerList.search($('#search_school').val(), ['school']);
         });
         $('#search_year').keyup(function() {
+            $('#search_name').val("");$('#search_email').val("");$('#search_school').val("");
             hackerList.search($('#search_year').val(), ['year']);
         });
     }
@@ -206,6 +214,7 @@
     function schoolClickCallbacks() {
         $('.school').click(function () {
             $('#search_school').val($(this).html());
+            $('#search_name').val("");$('#search_email').val("");$('#search_year').val("");
             hackerList.search($('#search_school').val(), ['school']);
         });
     }
@@ -213,6 +222,7 @@
     function yearClickCallbacks() {
         $('.year').click(function () {
             $('#search_year').val($(this).html());
+            $('#search_name').val("");$('#search_email').val("");$('#search_school').val("");
             hackerList.search($('#search_year').val(), ['year']);
         });
     }
@@ -321,6 +331,33 @@
         });
     }
 
+    function updateNumSelected() {
+        var num = getDownloadChecked().length;
+        $("#num-selected").html(num.toString() + " Selected");
+    }
+
+    function downloadCheckboxClickCallbacks() {
+        $('.download-checkbox').click(updateNumSelected);
+    }
+
+    function selectAllVisibleCallback() {
+        $("#select-all-btn").click(function () {
+            for (var i=0, len=hackerList.matchingItems.length; i<len; i++){
+                hackerList.matchingItems[i].elm.getElementsByTagName("td")[6].getElementsByTagName("input")[0].checked = true;
+            }
+            updateNumSelected();
+        });
+    }
+
+    function clearAllVisibleCallback() {
+        $("#clear-all-btn").click(function () {
+            for (var i=0, len=hackerList.matchingItems.length; i<len; i++){
+                hackerList.matchingItems[i].elm.getElementsByTagName("td")[6].getElementsByTagName("input")[0].checked = false;
+            }
+            updateNumSelected();
+        });
+    }
+
     $(document).ready(function () {
         hackerList = new List('hackers', options);
 
@@ -331,6 +368,10 @@
         checkBoxCallbacks();
         profileClickCallbacks();
         downloadButtonsCallback();
+        updateNumSelected();
+        downloadCheckboxClickCallbacks();
+        selectAllVisibleCallback();
+        clearAllVisibleCallback();
 
         $('#count').html(hackerList.matchingItems.length);
         hackerList.on('updated', function() {
@@ -339,6 +380,7 @@
             schoolClickCallbacks();
             yearClickCallbacks();
             profileClickCallbacks();
+            downloadCheckboxClickCallbacks();
         });
     });
 </script>
