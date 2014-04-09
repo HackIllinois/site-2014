@@ -38,7 +38,7 @@ class Admin(Model):
                                                             'approve':self.approveAccess,
                                                             'approveAdmin':self.approveAdminAccess,
                                                             'mobile':self.mobileAccess,
-                                                            'corporateAdmin':self.corporateAdminAccess,
+                                                            'corporate':self.corporateAdminAccess,
                                                             'manager':self.managerAccess }))
 
     @classmethod
