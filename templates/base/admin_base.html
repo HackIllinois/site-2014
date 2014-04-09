@@ -211,7 +211,7 @@
                             {% endfor %}
                             {% endif %}
 
-                            {% if access.corporateAdmin %}
+                            {% if access.corporate %}
                             {% for href, id, caption in navigation_sidebar_corporate_admin %}
                             <li{% if id == active_page %} class="active"{% endif %}><a href="{{ href|e }}">{{ caption|e }}</a></li>
                             {% endfor %}
@@ -265,7 +265,7 @@
                         {% endfor %}
                         {% endif %}
 
-                        {% if access.corporateAdmin %}
+                        {% if access.corporate %}
                         {% for href, id, caption in navigation_sidebar_corporate_admin %}
                         <li{% if id == active_page %} class="active"{% endif %}><a href="{{ href|e }}">{{ caption|e }}</a></li>
                         {% endfor %}
