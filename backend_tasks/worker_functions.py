@@ -8,7 +8,7 @@ All Task functions go here, to be executed from the queue and Rq workers
 """
 
 #Base directory where all of the resume's are held (needs a trailing slash)
-directoryBase = '/home/Austin/hackillinois-website/backend_tasks/'
+directoryBase = '/mnt/pd0/hackillinois/'
 
 #copy resume files to a staging directory
 #zip that directory

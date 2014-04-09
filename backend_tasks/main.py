@@ -13,7 +13,7 @@ from googledatastore.helper import *
 from worker_functions import *
 
 NUM_WORKERS = 1
-BASE_LOC = '/home/Austin/hackillinois-website/backend_tasks/'
+BASE_LOC = '/mnt/pd0/hackillinois/'
 # URI scheme for Google Cloud Storage.
 GOOGLE_STORAGE = 'gs'
 # URI scheme for accessing local files.
