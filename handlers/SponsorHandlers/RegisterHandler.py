@@ -19,21 +19,18 @@ class RegisterHandler(MainHandler.Handler):
             return None
 
         if not key:
-            # TODO: Error page
-            self.write('URL Not Valid')
+            self.redirect('/corporate/invalidurl')
             return None
 
         key = str(key)
 
         db_url = CorporateUrl.search_database({'uniqueString': key}).get()
         if not db_url:
-            # TODO: Error page
-            self.write('URL Not Valid')
+            self.redirect('/corporate/invalidurl')
             return None
 
         if db_url.enabled == False:
-            # TODO: Error page
-            self.write('URL Already Used')
+            self.redirect('/corporate/urlalreadyused')
             return None
 
         return google_user, db_url

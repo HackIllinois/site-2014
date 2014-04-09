@@ -13,19 +13,16 @@ class RegistrationHandler(MainHandler.Handler):
         # 4. Button that confirms they understand and redirects to /corporate/register/<key>
 
         if not key:
-            # TODO: Error page
-            return self.write('URL Not Valid')
+            return self.redirect('/corporate/invalidurl')
 
         key = str(key)
 
         db_url = CorporateUrl.search_database({'uniqueString': key}).get()
         if not db_url:
-            # TODO: Error page
-            return self.write('URL Not Valid')
+            return self.redirect('/corporate/invalidurl')
 
         if db_url.enabled == False:
-            # TODO: Error page
-            return self.write('URL Already Used')
+            return self.redirect('/corporate/urlalreadyused')
 
         data = {}
         data['redirectUrl'] = '/corporate/register/' + key
