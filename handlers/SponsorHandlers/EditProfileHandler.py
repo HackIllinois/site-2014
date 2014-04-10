@@ -18,7 +18,6 @@ class EditProfileHandler(MainSponsorHandler.BaseSponsorHandler):
         return self.render("sponsor/edit_profile.html", data=data, access=json.loads(self.db_user.access))
 	
     def post(self):
-
         corporate_user = self.get_sponsor_user()
         if not corporate_user: return self.abort(500, detail='User not in database')
 
@@ -31,6 +30,5 @@ class EditProfileHandler(MainSponsorHandler.BaseSponsorHandler):
         corporate_user.email = email
 
         corporate_user.put()
-		
 
-        return 'agf'
+        return self.write("success")

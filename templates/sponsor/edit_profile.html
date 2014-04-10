@@ -77,7 +77,9 @@
 			data['name'] = $("#nameInput").val();
 			data['companyName'] = $("#companyNameInput").val();
 			data['email'] = $("#emailInput").val();
-			$.post('/corporate/editprofile', data);
+			$.post('/corporate/editprofile', data, function(data) {
+                    window.location = "/corporate/profile"
+                });
 		});
 	}
 	
