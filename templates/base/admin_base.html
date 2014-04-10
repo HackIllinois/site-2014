@@ -23,6 +23,9 @@
     ('/admin/mobile/newsfeed', 'newsfeed', 'Mobile Newsfeed'),
     ('/admin/mobile/schedule', 'schedule', 'Mobile Schedule'),
 ] %}
+{% set navigation_sidebar_corporate_admin = [
+    ('/admin/corporateurl', 'corporate', 'Sponsor Registration URLs'),
+] %}
 {% set navigation_sidebar_manager = [
     ('/admin/check-no-reply', 'check-no-reply', 'Check Awaiting Response'),
     ('/admin/testsjs', 'tests', 'URL Tests'),
@@ -188,7 +191,7 @@
                             {% for href, id, caption in navigation_sidebar_stats %}
                             <li{% if id == active_page %} class="active"{% endif %}><a href="{{ href|e }}">{{ caption|e }}</a></li>
                             {% endfor %}
-                            {% endif %}                            
+                            {% endif %}
 
                             {% if access.approve %}
                             {% for href, id, caption in navigation_sidebar_approve %}
@@ -204,6 +207,12 @@
 
                             {% if access.mobile %}
                             {% for href, id, caption in navigation_sidebar_mobile %}
+                            <li{% if id == active_page %} class="active"{% endif %}><a href="{{ href|e }}">{{ caption|e }}</a></li>
+                            {% endfor %}
+                            {% endif %}
+
+                            {% if access.corporate %}
+                            {% for href, id, caption in navigation_sidebar_corporate_admin %}
                             <li{% if id == active_page %} class="active"{% endif %}><a href="{{ href|e }}">{{ caption|e }}</a></li>
                             {% endfor %}
                             {% endif %}
@@ -236,7 +245,7 @@
                         {% for href, id, caption in navigation_sidebar_stats %}
                         <li{% if id == active_page %} class="active"{% endif %}><a href="{{ href|e }}">{{ caption|e }}</a></li>
                         {% endfor %}
-                        {% endif %}                            
+                        {% endif %}
 
                         {% if access.approve %}
                         {% for href, id, caption in navigation_sidebar_approve %}
@@ -252,6 +261,12 @@
 
                         {% if access.mobile %}
                         {% for href, id, caption in navigation_sidebar_mobile %}
+                        <li{% if id == active_page %} class="active"{% endif %}><a href="{{ href|e }}">{{ caption|e }}</a></li>
+                        {% endfor %}
+                        {% endif %}
+
+                        {% if access.corporate %}
+                        {% for href, id, caption in navigation_sidebar_corporate_admin %}
                         <li{% if id == active_page %} class="active"{% endif %}><a href="{{ href|e }}">{{ caption|e }}</a></li>
                         {% endfor %}
                         {% endif %}

@@ -2,6 +2,7 @@ import MainAdminHandler
 import json
 import urllib
 import time
+import re
 from db.NewsFeedItem import NewsFeedItem
 
 class NewsFeedHandler(MainAdminHandler.BaseAdminHandler):
@@ -42,13 +43,51 @@ class NewsFeedHandler(MainAdminHandler.BaseAdminHandler):
             'hackillinois':'http://www.hackillinois.org/img/icons-iOS/hackillinois.png',
         }
 
+        colors = {
+            'emergency':{'r':167, 'g':65, 'b':46},
+            'announcement':{'r':165, 'g':165, 'b':165},
+            'hackillinois':{'r':27, 'g':77, 'b':104},
+        }
+
+        description = str(urllib.unquote(self.request.get("description")))
+
+        hl = str(urllib.unquote(self.request.get("highlight")))
+        hl = hl.strip()
+        if not hl:
+            hl = None
+        else:
+            hl = re.sub(r'[\(\)\[\]]', '', hl)
+            hl = re.split(r'[,; ]', hl)
+            hl = [i.strip() for i in hl]
+            hl = filter(None, hl)
+            try:
+                hl = map(int, hl)
+            except:
+                return self.write(json.dumps({'message':'Error: highlights must be integer values'}))
+
+            strictly_increasing = all(x<y for x, y in zip(hl, hl[1:]))
+            if not strictly_increasing:
+                return self.write(json.dumps({'message':'Error: highlights overlap'}))
+
+            if (len(hl) % 2) != 0:
+                return self.write(json.dumps({'message':'Error: highlights are not paired'}))
+
+            if hl[0] < 0:
+                return self.write(json.dumps({'message':'Error: highlight goes beyond length of description'}))
+
+            if hl[-1] > (len(description)-1):
+                return self.write(json.dumps({'message':'Error: highlight goes beyond length of description'}))
+
+        # [ [ [start,end],[r,g,b] ], [ [start,end],[r,g,b] ] ]
+
+
         NewsFeedItem(
             parent=NewsFeedItem.get_default_event_parent_key(),
-            description=str(urllib.unquote(self.request.get("description"))),
-            highlighted=json.dumps(str(urllib.unquote(self.request.get("highlight")))),
+            description=description,
+            highlighted=hl,
             emergency=str(urllib.unquote(self.request.get("type")))=='emergency',
             time=int(time.time()),
             icon_url=icon[str(urllib.unquote(self.request.get("type")))]
         ).put()
 
-        return self.redirect("/admin/mobile/newsfeed")
+        return self.write(json.dumps({'message':'success'}))

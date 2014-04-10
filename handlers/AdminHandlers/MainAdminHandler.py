@@ -55,6 +55,7 @@ class BaseAdminHandler(MainHandler.Handler):
                 admin_user.approveAccess = True
                 admin_user.approveAdminAccess = True
                 admin_user.mobileAccess = True
+                admin_user.corporateAdminAccess = True
                 admin_user.managerAccess = True
             admin_user.put()
         elif email in constants.ADMIN_EMAILS:
@@ -68,16 +69,17 @@ class BaseAdminHandler(MainHandler.Handler):
                 approveAccess=True,
                 approveAdminAccess=True,
                 mobileAccess=True,
+                corporateAdminAccess=True,
                 managerAccess=True,
                 database_key=self.get_next_key()
             ).put()
         elif domain == 'hackillinois.org':
             is_admin = True
             Admin(
-                parent=Admin.get_default_event_parent_key(), 
-                email=user.email(), 
-                googleUser=user, 
-                userId=user.user_id(), 
+                parent=Admin.get_default_event_parent_key(),
+                email=user.email(),
+                googleUser=user,
+                userId=user.user_id(),
                 database_key=self.get_next_key()
             ).put()
 
@@ -137,7 +139,7 @@ class BaseAdminHandler(MainHandler.Handler):
         if serialized:
             data = pickle.loads(serialized)
         return data
-        
+
     def get_hackers_memcache(self, use_memcache=True):
         """Gets the 'hackers' key from the memcache and updates the memcache if the key is not in the memcache"""
         if use_memcache:
@@ -166,7 +168,7 @@ class BaseAdminHandler(MainHandler.Handler):
 
         stats = memcache.get_stats()
         logging.info('Cache Hits:%s, Cache Misses:%s' % (stats['hits'], stats['misses']))
-        
+
         if data is None:
             data =  self.set_hackers_better_memcache(status, category, route)
             return [ data[i] for i in data ]
@@ -195,7 +197,7 @@ class BaseAdminHandler(MainHandler.Handler):
             else:
                 data[hacker.userId]['approvalStatus'] = None
         return [ data[i] for i in data ]
-            
+
     def get_apply_count_memcache(self, use_memcache=True):
         """Gets the 'apply_count' key from memcache"""
         if use_memcache:
@@ -398,8 +400,8 @@ class BaseAdminHandler(MainHandler.Handler):
         #     logging.error('Memcache set failed.')
 
         return data
-        
-        
+
+
     def set_hackers_better_memcache(self, status=None, category=None, route=None):
         """Sets the 'hackers/<status>/<category>/<route>' key in the memcache"""
         key = 'hackers/' + str(status) + '/' + str(category) + '/' + str(route)
@@ -524,7 +526,7 @@ class BaseAdminHandler(MainHandler.Handler):
         #     logging.error('Memcache set failed.')
         self.store(key, data)
         return data
-    
+
     def set_apply_count_memcache(self):
         """Sets the 'apply_count' key in memcache"""
         q = Attendee.query(Attendee.isRegistered == True)

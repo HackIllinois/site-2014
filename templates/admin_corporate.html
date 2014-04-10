@@ -1,0 +1,134 @@
+{% extends "base/admin_base.html" %}
+{% set active_page = "corporate" %}
+
+{% block head %}
+<style type="text/css">
+    .page-header {
+        margin-top: 0;
+    }
+    .t-centered {
+        text-align: center;
+    }
+    #url-text {
+        margin-bottom: 20px;
+        width: 100%;
+        border: none;
+        background: transparent;
+    }
+    #new-url {
+        margin-left: 20px;
+    }
+</style>
+{% endblock head %}
+
+
+{% block body %}
+<!-- <h1 class="page-header">Corporate URL Control</h1>
+
+<div id="new-button" class="row">
+    <div class="col-md-12">
+        <button id="new-url" type="button" class="btn btn-primary btn-lg" data-loading-text="Thinking...">Create New URL</button>
+    </div>
+</div> -->
+
+
+<h1 class="page-header">Corporate URL Control</h1>
+
+<div id="new-button" class="row">
+    <div class="col-md-12">
+        <form id="url-form" class="form-inline" role="form" action="/admin/corporateurl" method="post">
+            <div class="checkbox">
+                <label class="checkbox-inline" for="checkbox1">
+                    <input type="checkbox" id="checkbox1" name="attendeeDataAccess" value="True"> Attendee Data Access
+                </label>
+            </div>
+            <button id="new-url" type="submit" class="btn btn-primary" data-loading-text="Thinking...">Create New URL</button>
+        </form>
+    </div>
+</div>
+
+<div id="alert-box" class="row" style="display: None;">
+    <div class="col-md-12">
+        <div class="alert alert-info">
+            <input id="url-text" type="text" readonly><br>
+            <a href="/admin/corporateurl" class="btn btn-primary btn-lg" role="button">Close Dialog</a>
+            <a id="url-link" href="#" class="btn btn-success btn-lg" role="button">Goto Generated URL</a>
+        </div>
+    </div>
+</div>
+
+<br>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Enabled</th>
+                        <th>Attendee Access</th>
+                        <th>URL</th>
+                        <th>Creation Time</th>
+                        <th>Registration Email</th>
+                        <th>Registration Time</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr id="new-row" style="display: None;">
+                        <td>True</td>
+                        <td></td>
+                        <td><a href="#"></a></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    {% for w in data.urls %}
+                    <tr class="{% if not w.enabled %}danger{% endif %}">
+                        <td>{% if w.enabled %}True{% else %}False{% endif %}</td>
+                        <td class="{% if w.attendeeDataAccess %}info{% endif %}">{% if w.attendeeDataAccess %}True{% else %}False{% endif %}</td>
+                        <td><a href="{{ w.url }}">{{ w.url }}</a></td>
+                        <td>{{ w.creationTime }}</td>
+                        <td>{% if w.userEmail %}{{ w.userEmail }}{% endif %}</td>
+                        <td>{% if w.registerTime %}{{ w.registerTime }}{% endif %}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock body %}
+
+
+{% block scripts %}
+<script type="text/javascript">
+$(document).ready(function() {
+    $("#url-text").click(function() {
+        $(this).select();
+    });
+
+    $("#url-form").submit(function(event) {
+        event.preventDefault();
+        $("#new-url").button('loading');
+
+        var posting = $.post('/admin/corporateurl', {"attendeeDataAccess": $('input[name=attendeeDataAccess]:checked').val()});
+
+        posting.done(function(data) {
+            $("#new-url").button('reset');
+            $("#url-link").attr('href',data);
+            $("#new-row > td > a").attr('href',data);
+            $("#new-row > td > a").html(data);
+            $("#url-text").val(data);
+            $("#new-button").slideUp();
+            $("#alert-box").slideDown();
+            $("#new-row").show();
+        });
+
+        posting.fail(function() {
+            alert("Error submitting data.");
+            $("#new-url").button('reset');
+        });
+    });
+});
+</script>
+{% endblock scripts%}

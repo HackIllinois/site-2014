@@ -1,0 +1,67 @@
+{% extends "sponsor/base/sponsor_base.html" %}
+{% set active_page = "hackers" %}
+
+{% block head %}
+<style type="text/css">
+    .page-header {
+        margin-top: 0;
+    }
+    .t-centered {
+        text-align: center;
+    }
+</style>
+{% endblock head %}
+
+
+{% block body %}
+<h1 class="page-header">{{ hacker.nameFirst }} {{ hacker.nameLast }}</h1>
+
+<div class="table-responsive">
+    <table class="table">
+        <thead class="invisible">
+            <tr>
+                <th class="col-sm-2"></th>
+                <th class="col-sm-10"></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="pull-right">First Name:</td>
+                <td>{{ hacker.nameFirst }}</td>
+            </tr>
+            <tr>
+                <td class="pull-right">Last Name:</td>
+                <td>{{ hacker.nameLast }}</td>
+            </tr>
+            <tr>
+                <td class="pull-right">Email:</td>
+                <td>{{ hacker.email }}</td>
+            </tr>
+            <tr>
+                <td class="pull-right">School:</td>
+                <td>{{ hacker.school }}</td>
+            </tr>
+            <tr>
+                <td class="pull-right">Year:</td>
+                <td>{{ hacker.year }}</td>
+            </tr>
+            <tr>
+                <td class="pull-right">Resume:</td>
+                <td>{% if hacker.hasResume %}<a href='/corporate/resume?userId={{ hacker.userId }}' target="_blank">Resume</a>{% endif %}</td>
+            </tr>
+            <tr>
+                <td class="pull-right">Is Attending:</td>
+                <td>{% if hacker.isAttending %}Yes{% else %}No{% endif %}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+{% endblock body %}
+
+
+{% block scripts %}
+<script type="text/javascript">
+$(document).ready(function() {
+});
+</script>
+{% endblock scripts%}

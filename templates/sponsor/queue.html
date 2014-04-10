@@ -1,0 +1,93 @@
+{% extends "sponsor/base/sponsor_base.html" %}
+{% set active_page = "queue" %}
+
+{% block head %}
+<style type="text/css">
+    .page-header {
+        margin-top: 0;
+    }
+    .t-centered {
+        text-align: center;
+    }
+    .red {
+        color: red;
+    }
+</style>
+{% endblock head %}
+
+
+{% block body %}
+<h1 class="page-header">Queue</h1>
+
+<div class="row">
+    <div class="col-md-12">
+        <p class="red">Your results can take up to 1 minute to process. Please refresh page to see results.</p>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <h2>Running Tasks</h2>
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Task ID</th>
+                        <th>Creation Time</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for t in tasks %}
+                    {% if not t.complete %}
+                    <tr>
+                        <td>{{ t.id }}</td>
+                        <td>{{ t.creationTime }}</td>
+                    </tr>
+                    {% endif %}
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <h2>Complete Tasks</h2>
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Task ID</th>
+                        <th>Download Link</th>
+                        <th>Creation Time</th>
+                        <th>Complete Time</th>
+                        <th>Error Messages</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for t in tasks %}
+                    {% if t.complete %}
+                    <tr>
+                        <td>{{ t.id }}</td>
+                        <td><a href="{{ t.url }}" target="_blank">{{ t.url }}</a></td>
+                        <td>{{ t.creationTime }}</td>
+                        <td>{{ t.completeTime }}</td>
+                        <td>{{ t.errorMessages|safe }}</td>
+                    </tr>
+                    {% endif %}
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock body %}
+
+
+{% block scripts %}
+<script type="text/javascript">
+$(document).ready(function() {
+});
+</script>
+{% endblock scripts%}

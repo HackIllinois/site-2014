@@ -25,3 +25,4 @@ import ScheduleHandler
 import WhiteListControlHandler
 import MassRsvpInvalidateHandler
 import NewSponsorHandler
+import CorporateUrlHandler
