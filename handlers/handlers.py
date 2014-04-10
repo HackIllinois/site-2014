@@ -46,6 +46,7 @@ handlers = [
     RedirectRoute('/travel', handler=SubpageHandlers.TravelHandler, name='Travel', strict_slash=True),
     RedirectRoute('/sponsor/faq', handler=SubpageHandlers.SponsorFAQHandler, name='SponsorFAQ', strict_slash=True),
     RedirectRoute('/code-of-conduct', handler=SubpageHandlers.CoCHandler, name='CoC', strict_slash=True),
+    RedirectRoute('/staff', handler=SubpageHandlers.StaffHandler, name='Staff', strict_slash=True),
 
     RedirectRoute('/tropo', handler=TropoHandler, name='Tropo', strict_slash=True),
 

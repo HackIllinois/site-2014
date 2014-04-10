@@ -1,0 +1,107 @@
+{% extends "base/subpage.html" %}
+
+{% block subpage_body %}
+
+<style>
+
+.staff-member-container {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+.staff-headshot {
+    width: 160px;
+    height: 160px;
+    border-radius: 160px;
+    background-size: 160px;
+    background-position: center center;
+    margin: 0 auto;
+}
+.spaceman {
+    background-image: url('/img/staff/spacemen.png');
+}
+.staff-data-name {
+    text-align: center;
+    font-weight: bold;
+    font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+.staff-data-title {
+    font-size: 14px;
+    text-align: center;
+    font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+.staff-data-tagline {
+    text-align: center;
+    opacity: 0.8;
+    font-size: 12px;
+    margin-top: 5px;
+    font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+</style>
+
+<div class="wrapper-content sticky-footer-wrapper-fix">
+    <div class="grid-scaffold">
+        <div class="pure-g-r">
+            <div class="pure-u-1 section-divide">
+                <header class="section-title section-text">
+                    <span>Staff</span>
+                </header>
+            </div>
+            <div class="pure-u-1-4">
+                <div class="staff-member-container">
+                    <div class="staff-headshot spaceman"></div>
+                    <br>
+                    <h4 class="staff-data-name">Matthew Dierker</h4>
+                    <h4 class="staff-data-title">Director</h4>
+                    <h4 class="staff-data-tagline">Director-Minion hybrid. Fond of Letting it go.</h4>
+                </div>
+            </div>
+            <div class="pure-u-1-4">
+                <div class="staff-member-container">
+                    <div class="staff-headshot spaceman"></div>
+                    <br>
+                    <h4 class="staff-data-name">Emily Tran</h4>
+                    <h4 class="staff-data-title">Operations</h4>
+                    <h4 class="staff-data-tagline">Emily likes coconuts.</h4>
+                </div>
+            </div>
+            <div class="pure-u-1-4">
+                <div class="staff-member-container">
+                    <div class="staff-headshot spaceman"></div>
+                    <br>
+                    <h4 class="staff-data-name">Sunny Pruthi</h4>
+                    <h4 class="staff-data-title">Corporate Liaison</h4>
+                    <h4 class="staff-data-tagline">8 people once elected Sunny to be Senator.</h4>
+                </div>
+            </div>
+            <div class="pure-u-1-4">
+                <div class="staff-member-container">
+                    <div class="staff-headshot spaceman"></div>
+                    <br>
+                    <h4 class="staff-data-name">Sam Gnesin</h4>
+                    <h4 class="staff-data-title">Design</h4>
+                    <h4 class="staff-data-tagline">Sam makes sure people have fun.</h4>
+                </div>
+            </div>
+            <div class="pure-u-1-4">
+                <div class="staff-member-container">
+                    <div class="staff-headshot spaceman"></div>
+                    <br>
+                    <h4 class="staff-data-name">Alex Burck</h4>
+                    <h4 class="staff-data-title">Systems Lead</h4>
+                    <h4 class="staff-data-tagline">Alex switches between branches in git. A lot.</h4>
+                </div>
+            </div>
+            <div class="pure-u-1-4">
+                <div class="staff-member-container">
+                    <div class="staff-headshot spaceman"></div>
+                    <br>
+                    <h4 class="staff-data-name">Achal Varma</h4>
+                    <h4 class="staff-data-title">Systems/Web</h4>
+                    <h4 class="staff-data-tagline">Achal has the funniest commit messages.</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock subpage_body %}
