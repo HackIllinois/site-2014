@@ -20,14 +20,11 @@
     <div class="col-md-12">
         <h1 class="page-header">
 			{{ data.name }}
-			<button class="btn btn-success confirm-edit-btn">Confirm Edit</button>
-			<a class="btn btn-warning cancle-edit-btn" href="profile">Cancle Edit</a>
+			<a class="btn btn-primary edit-btn" href="editprofile">Edit</a>
 		</h1>
     </div>
 </div>
 
-
-<form id="sponsorEditForm">
 <div class="table-responsive">
     <table class="table">
         <thead class="invisible">
@@ -38,22 +35,16 @@
         </thead>
         <tbody>
 			<tr>
-                <td class="pull-right">Name:</td>				
-				<td id="nameEdit" name="nameEdit">
-					<input id="nameInput" name="nameInput" value="{{ data.name }}"></input>
-				</td>
+                <td class="pull-right">Name:</td>
+                <td id="nameFirst" name="nameFirst">{{ data.name }}</td>
             </tr>
 			<tr>
                 <td class="pull-right">Company Name:</td>
-				<td id="companyNameEdit" name="companyNameEdit">
-					<input id="companyNameInput" name="companyNameInput" value="{{ data.companyName }}"></input>
-				</td>
+                <td id="nameFirst" name="nameFirst">{{ data.companyName }}</td>
             </tr>
             <tr>
                 <td class="pull-right">Contact Email:</td>
-				<td id="emailEdit" name="emailEdit">
-					<input id="emailInput" name="emailInput" value="{{ data.email }}"></input>
-				</td>
+                <td name="email">{{ data.email }}</td>
             </tr>
 			<tr>
                 <td class="pull-right">Login Email:</td>
@@ -62,28 +53,14 @@
         </tbody>
     </table>
 </div>
-</form>
 
 {% endblock body %}
 
 
 {% block scripts %}
-<script type="text/javascript">
-
-
-	function editBtnCallbacks() {
-        $('.confirm-edit-btn').click(function() {
-			data = {};
-			data['name'] = $("#nameInput").val();
-			data['companyName'] = $("#companyNameInput").val();
-			data['email'] = $("#emailInput").val();
-			$.post('/corporate/editprofile', data);
-		});
-	}
-	
-	$(document).ready(function() {
+<script type="text/javascript"> 
+   $(document).ready(function() {
 		editBtnCallbacks();
-	});
-	
+    });
 </script>
 {% endblock scripts%}
