@@ -24,7 +24,8 @@ class Sponsor(Model):
     email_lower = ndb.ComputedProperty(lambda self: self.email.lower())
     database_key = ndb.IntegerProperty(default=0)
     status_list = ndb.JsonProperty()
-    # personType = 'mentor'
+    personType = 'mentor'
+    mac_address = ndb.StringProperty(default='')
 
     @classmethod
     def new(cls, data):

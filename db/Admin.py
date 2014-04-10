@@ -31,7 +31,8 @@ class Admin(Model):
     approveAdminAccess = ndb.BooleanProperty(default=False)
     mobileAccess = ndb.BooleanProperty(default=False)
     managerAccess = ndb.BooleanProperty(default=False)
-    # personType = 'Staff' 
+    personType = 'staff' 
+    mac_address = ndb.StringProperty(default='')
 
     access = ndb.ComputedProperty(lambda self: json.dumps({ 'stats':self.statsAccess,
                                                             'approve':self.approveAccess,
