@@ -2,6 +2,7 @@ from google.appengine.ext import deferred
 from google.appengine.ext import ndb
 
 import logging
+import random
 
 from db.Attendee import Attendee
 from db.Sponsor import Sponsor
@@ -13,15 +14,23 @@ import MainAdminHandler
 
 BATCH_SIZE = 100
 
+def get_next_key():
+    key = None
+    while not key:
+        i = random.randint(constants.SPONSOR_START_COUNT, constants.SPONSOR_START_COUNT+9998)
+        c = Sponsor.query(Sponsor.database_key == i).count()
+        if c == 0: key = i
+    return key
+
 def UpdateSchema(cursor=None, count=0):
-    query = Attendee.query()
+    query = Sponsor.query()
     count += query.count()
     data, next_curs, more = query.fetch_page(BATCH_SIZE, start_cursor=cursor)
 
     to_put = []
     for p in data:
-        if not p.approvalStatus:
-            p.approvalStatus = Status()
+        if not p.database_key:
+            p.database_key = get_next_key()
         to_put.append(p)
 
     if to_put:
