@@ -26,10 +26,10 @@ class ApplyCountHandler(MainHandler.Handler):
             s = '(datastore &#9785; )'
             q = Attendee.query(Attendee.isRegistered == True)
             cached_count = q.count()
-            if not memcache.add('apply_count', cached_count, time=constants.MEMCACHE_COUNT_TIMEOUT):
+            if not memcache.set('apply_count', cached_count, time=constants.MEMCACHE_COUNT_TIMEOUT):
                 logging.error('Memcache set failed.')
 
         stats = memcache.get_stats()
         logging.info('Apply Count:: Cache Hits:%s  Cache Misses:%s' % (stats['hits'], stats['misses']))
-                
+
         self.write(page % (cached_count, s))

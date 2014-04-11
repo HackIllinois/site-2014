@@ -1,17 +1,36 @@
 {% set navigation_sidebar = [
     ('/admin', 'admin', 'Admin'),
+] %}
+{% set navigation_sidebar_stats = [
+    ('/admin/rsvpstats', 'rsvpstats', 'RSVP Stats'),
     ('/admin/basicstats/approved', 'basicstats', 'Basic Stats'),
     ('/admin/stats', 'stats', 'Advanced Stats'),
-    ('/admin/busstats', 'busstats', 'Bus Stats')
+    ('/admin/busstats', 'busstats', 'Bus Stats'),
 ] %}
 {% set navigation_sidebar_approve = [
+    ('/admin/allhackers', 'all_hackers', 'All Hackers'),
     ('/admin/approve', 'approve', 'Approve'),
     ('/admin/rsvp', 'rsvp', 'RSVP'),
     ('/admin/approve', 'profile', 'Profile'),
 ] %}
-{% set navigation_sidebar_full = [
+{% set navigation_sidebar_approve_admin = [
+    ('/admin/massapproval', 'massapproval', 'Mass Approval/Waitlist'),
+    ('/admin/massinvalidate', 'massinvalidate', 'Mass Invalidate RSVP'),
     ('/admin/send', 'send', 'Mark Sent Email'),
+    ('/admin/check-no-reply', 'check-no-reply', 'Check Awaiting Response'),
+] %}
+{% set navigation_sidebar_mobile = [
+    ('/admin/mobile/skills', 'skills', 'Mobile Skills'),
+    ('/admin/mobile/newsfeed', 'newsfeed', 'Mobile Newsfeed'),
+    ('/admin/mobile/schedule', 'schedule', 'Mobile Schedule'),
+] %}
+{% set navigation_sidebar_corporate_admin = [
+    ('/admin/corporateurl', 'corporate', 'Sponsor Registration URLs'),
+] %}
+{% set navigation_sidebar_manager = [
+    ('/admin/staffphonenumbers', 'phone-numbers', 'Staff Phone Numbers'),
     ('/admin/testsjs', 'tests', 'URL Tests'),
+    ('/admin/whitelist', 'whitelist', 'White List URLs'),
     ('/admin/manager', 'manager', 'Manager'),
 ] %}
 
@@ -64,6 +83,8 @@
                     padding: 70px 20px 20px;
                     background-color: #f5f5f5;
                     border-right: 1px solid #eee;
+                    overflow-x: hidden;
+                    overflow-y: auto;
                 }
             }
 
@@ -93,6 +114,26 @@
             }
             .main {
                 margin-top: 0;
+            }
+            .display-dropdown-list-mobile {
+                display: none;
+            }
+            @media only screen
+            and (max-width: 767px) {
+                .display-dropdown-list-mobile {
+                    display: block;
+                }
+                .display-dropdown-list-mobile > li {
+                    padding: 10px 15px;
+                }
+                .display-dropdown-list-mobile > li > a {
+                    line-height: 20px;
+                    color: #999;
+                }
+                .display-dropdown-list-mobile > li > a:hover {
+                    text-decoration: none;
+                    color: #fff;
+                }
             }
         </style>
 
@@ -142,7 +183,48 @@
                 </div>
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav navbar-right">
+                        <div class="display-dropdown-list-mobile">
+                            {% for href, id, caption in navigation_sidebar %}
+                            <li{% if id == active_page %} class="active"{% endif %}><a href="{{ href|e }}">{{ caption|e }}</a></li>
+                            {% endfor %}
 
+                            {% if access.stats %}
+                            {% for href, id, caption in navigation_sidebar_stats %}
+                            <li{% if id == active_page %} class="active"{% endif %}><a href="{{ href|e }}">{{ caption|e }}</a></li>
+                            {% endfor %}
+                            {% endif %}
+
+                            {% if access.approve %}
+                            {% for href, id, caption in navigation_sidebar_approve %}
+                            <li{% if id == active_page %} class="active"{% endif %}><a href="{{ href|e }}">{{ caption|e }}</a></li>
+                            {% endfor %}
+                            {% endif %}
+
+                            {% if access.approveAdmin %}
+                            {% for href, id, caption in navigation_sidebar_approve_admin %}
+                            <li{% if id == active_page %} class="active"{% endif %}><a href="{{ href|e }}">{{ caption|e }}</a></li>
+                            {% endfor %}
+                            {% endif %}
+
+                            {% if access.mobile %}
+                            {% for href, id, caption in navigation_sidebar_mobile %}
+                            <li{% if id == active_page %} class="active"{% endif %}><a href="{{ href|e }}">{{ caption|e }}</a></li>
+                            {% endfor %}
+                            {% endif %}
+
+                            {% if access.corporate %}
+                            {% for href, id, caption in navigation_sidebar_corporate_admin %}
+                            <li{% if id == active_page %} class="active"{% endif %}><a href="{{ href|e }}">{{ caption|e }}</a></li>
+                            {% endfor %}
+                            {% endif %}
+
+                            {% if access.manager %}
+                            {% for href, id, caption in navigation_sidebar_manager %}
+                            <li{% if id == active_page %} class="active"{% endif %}><a href="{{ href|e }}">{{ caption|e }}</a></li>
+                            {% endfor %}
+                            {% endif %}
+                        </div>
+                        <!--logout-->
                         {% for href, caption in navigation_topbar %}
                         <li><a href="{{ href|e }}">{{ caption|e }}</a></li>
                         {% endfor %}
@@ -156,23 +238,45 @@
             <div class="row">
                 <div class="col-sm-3 col-md-2 sidebar">
                     <ul class="nav nav-sidebar">
-
                         {% for href, id, caption in navigation_sidebar %}
                         <li{% if id == active_page %} class="active"{% endif %}><a href="{{ href|e }}">{{ caption|e }}</a></li>
                         {% endfor %}
 
-                        {% if approveAccess %}
+                        {% if access.stats %}
+                        {% for href, id, caption in navigation_sidebar_stats %}
+                        <li{% if id == active_page %} class="active"{% endif %}><a href="{{ href|e }}">{{ caption|e }}</a></li>
+                        {% endfor %}
+                        {% endif %}
+
+                        {% if access.approve %}
                         {% for href, id, caption in navigation_sidebar_approve %}
                         <li{% if id == active_page %} class="active"{% endif %}><a href="{{ href|e }}">{{ caption|e }}</a></li>
                         {% endfor %}
                         {% endif %}
 
-                        {% if fullAccess %}
-                        {% for href, id, caption in navigation_sidebar_full %}
+                        {% if access.approveAdmin %}
+                        {% for href, id, caption in navigation_sidebar_approve_admin %}
                         <li{% if id == active_page %} class="active"{% endif %}><a href="{{ href|e }}">{{ caption|e }}</a></li>
                         {% endfor %}
                         {% endif %}
 
+                        {% if access.mobile %}
+                        {% for href, id, caption in navigation_sidebar_mobile %}
+                        <li{% if id == active_page %} class="active"{% endif %}><a href="{{ href|e }}">{{ caption|e }}</a></li>
+                        {% endfor %}
+                        {% endif %}
+
+                        {% if access.corporate %}
+                        {% for href, id, caption in navigation_sidebar_corporate_admin %}
+                        <li{% if id == active_page %} class="active"{% endif %}><a href="{{ href|e }}">{{ caption|e }}</a></li>
+                        {% endfor %}
+                        {% endif %}
+
+                        {% if access.manager %}
+                        {% for href, id, caption in navigation_sidebar_manager %}
+                        <li{% if id == active_page %} class="active"{% endif %}><a href="{{ href|e }}">{{ caption|e }}</a></li>
+                        {% endfor %}
+                        {% endif %}
                     </ul>
                 </div>
                 <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
@@ -185,6 +289,11 @@
 
         <script src="https://code.jquery.com/jquery.js"></script>
         <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
+        <!-- Make Tooltips work all over the admin panel automatically -->
+        <script type="text/javascript">
+            $('[rel="tooltip"]').tooltip();
+            $('[rel="popover"]').popover();
+        </script>
 
         {% block scripts %}{% endblock %}
 

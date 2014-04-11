@@ -1,0 +1,215 @@
+{% extends "base/admin_base.html" %}
+{% set active_page = "newsfeed" %}
+
+{% block head %}
+<style type="text/css">
+    .page-header {
+        margin-top: 0;
+    }
+    .t-centered {
+        text-align: center;
+    }
+	.underBoldItalic { 
+		font-weight: bold; 
+		font-style: italic; 
+		text-decoration: underline; 
+	}
+	.rendered-container {
+		border: 1px solid red;
+	}
+
+	.media-body {
+		word-wrap: break-word;
+	}
+	.type-hackillinois { 
+		font-weight: bold;
+		text-decoration: underline;
+		color:rgb(27,77,104);
+	}
+	.type-emergency { 
+		font-weight: bold;
+		color:rgb(167,65,46);
+		text-decoration: underline;
+	}
+	.type-announcement { 
+		font-weight: bold;
+		text-decoration: underline;
+		color:rgb(165,165,165);
+	}
+
+</style>
+{% endblock head %}
+
+
+{% block body %}
+<div class="row">
+	<div class="col-md-9">
+	    <h1 class="page-header">Mobile News Feed</h1>
+	</div>
+	<div class="col-md-3">
+	    <button id="addFeedItem-button" type="button" class="btn btn-primary btn-lg btn-block">Add to News Feed</button>
+	</div>
+</div>
+
+<div class="feedform-container row" style="display: none;">
+	<form class="form-horizontal" role="form" id="addFeedItem-form" method="post">
+		<div class="form-group">
+			<label for="inputDescription" class="col-sm-1 control-label">Description</label>
+			<div class="col-sm-10">
+				<textarea class="form-control" id="inputDescription" rows="5" name="description" required></textarea>
+				<pclass="help-block">
+					<span id="current-pos">0</span> (<span id="char-count">0</span>)</span>
+				</p>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="radioType" class="col-sm-1 control-label">Type</label>
+			<div class="col-sm-10">
+				<label for="radio1" class="radio-inline">
+					<input type="radio" name="type" id="radio1" value="emergency" required> Emergency
+				</label>
+				<label for="radio2" class="radio-inline">
+					<input type="radio" name="type" id="radio2" value="announcement" required> Announcement
+				</label>
+				<label for="radio3" class="radio-inline">
+					<input type="radio" name="type" id="radio3" value="hackillinois" required> HackIllinois
+				</label>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="inputHighlights" class="col-sm-1 control-label">Highlights</label>
+			<div class="col-sm-10">
+				<input type="text" class="form-control" id="inputHighlights" name="highlight">
+				<span class="help-block">
+					Enter a <span class="underBoldItalic">semi-colon</span> separated list of
+					text to be highlighted from the description.</br>
+					Example: [0,4],[9,18],[25,60]
+				</span>
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-sm-offset-1 col-sm-10">
+				<button type="button" id="render-feeditem" class="btn btn-success">Render</button>
+				<button type="submit" id="publish-feeditem" class="btn btn-primary">Send to everyone</button>
+			</div>
+		</div>
+	</form>
+</div>
+
+<div class="row rendered-container" style="display: none;">
+	<ul class="media-list">
+		<li class="media">
+			<div class="pull-left">
+				<img id="rendered-image" alt="" src="" class="media-object" style="width: 64px; height: 64px;">
+			</div>
+			<div class="media-body">
+				<p id="rendered-description"></p>
+			</div>
+		</li>
+	</ul>
+</div>
+
+<div class="feed-container row">
+	<ul class="media-list">
+		{% for item in feed %}
+		<li class="media">
+			<div class="pull-left">
+				{% if item.img %}
+				<img class="media-object" alt="{{ item.img.alt }}" src="{{ item.img.src }}" style="width: 64px; height: 64px;">
+				{% else %}
+				<img class="media-object" data-src="holder.js/64x64" alt="64x64" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2NCIgaGVpZ2h0PSI2NCI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiBmaWxsPSIjZWVlIj48L3JlY3Q+PHRleHQgdGV4dC1hbmNob3I9Im1pZGRsZSIgeD0iMzIiIHk9IjMyIiBzdHlsZT0iZmlsbDojYWFhO2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1zaXplOjEycHg7Zm9udC1mYW1pbHk6QXJpYWwsSGVsdmV0aWNhLHNhbnMtc2VyaWY7ZG9taW5hbnQtYmFzZWxpbmU6Y2VudHJhbCI+NjR4NjQ8L3RleHQ+PC9zdmc+" style="width: 64px; height: 64px;">
+				{% endif %}
+			</div>
+			<div class="media-body" >
+				<p>{{ item.description|safe }}</p>
+			</div>
+		</li>
+		{% endfor %}
+	</ul>
+</div>
+{% endblock body %}
+
+
+{% block scripts %}
+<script type="text/javascript">
+function doGetCaretPosition (ctrl) {
+    var CaretPos = 0;
+    // IE Support
+    if (document.selection) {
+        ctrl.focus ();
+        var Sel = document.selection.createRange ();
+        Sel.moveStart ('character', -ctrl.value.length);
+        CaretPos = Sel.text.length;
+    }
+    // Firefox support
+    else if (ctrl.selectionStart || ctrl.selectionStart == '0')
+        CaretPos = ctrl.selectionStart;
+    return (CaretPos);
+}
+
+
+$(document).ready(function() {
+
+    // $("#addFeedItem-form").submit(function(event) { });
+	$("#inputDescription").on("change paste keydown keyup", function() {
+		$("#char-count").text($("#inputDescription").val().length);
+		$("#current-pos").text(doGetCaretPosition(document.getElementById("inputDescription")));
+	});
+	$("#inputDescription").click(function(){
+		$("#current-pos").text(doGetCaretPosition(document.getElementById("inputDescription")));
+	});
+	$("#addFeedItem-button").click(function() {
+		$(".feedform-container").slideToggle();
+		$(".rendered-container").slideUp();
+	});
+	$("#addFeedItem-form").on('submit',function(e) {
+		e.preventDefault();
+		$.post('/admin/mobile/newsfeed',data=$('#addFeedItem-form').serialize(), function(response) {
+				response = $.parseJSON(response);
+		        if(response['message'] != "success")
+		        	alert(response['message']);
+		    	window.location.reload();
+		    });
+	});
+	$("#render-feeditem").click(function() {
+		if ($("#inputDescription").val() && $("input[name='type']:checked").val()) {
+			type = $("input[name='type']:checked").val();
+			if (type == "emergency") {
+				$("#rendered-image").attr('src','http://www.hackillinois.org/img/icons-iOS/emergency.png');
+				$("#rendered-image").attr('alt','emergency');
+			} else if (type == "announcement") {
+				$("#rendered-image").attr('src','http://www.hackillinois.org/img/icons-iOS/announce.png');
+				$("#rendered-image").attr('alt','announce');
+			} else {
+				$("#rendered-image").attr('src','http://www.hackillinois.org/img/icons-iOS/hackillinois.png');
+				$("#rendered-image").attr('alt','hackillinois');
+			}
+			var splitArr = []
+			var result = ''
+			var descText = $("#inputDescription").val();
+			var splits = $("#inputHighlights").val().trim().replace(/[\(\) \[\]]/g,"").split(/[,; ]/);
+			console.log(splits);
+			if(splits[0] != ""){
+				for(var i=0;i<splits.length;i+=2) {
+					if(i == 0)
+						splitArr.push(descText.substring(0,splits[i]));
+					else
+						splitArr.push(descText.substring(splits[i-1],splits[i]));
+					splitArr.push("<span class='type-"+type+"'>"+descText.substring(splits[i],splits[i+1])+"</span>");
+					if (i+2 >= splits.length)
+						splitArr.push(descText.substring(splits[i+1]));
+				}
+				result = splitArr.join("");
+			} else {
+				result = $("#inputDescription").val();
+			}
+			$("#rendered-description").html(result);
+			$(".rendered-container").slideDown();
+		} else {
+			alert("Please fill in the 'Description' and 'Type'.");
+		}
+		// $("#inputHighlights")
+	});
+});
+</script>
+{% endblock scripts%}

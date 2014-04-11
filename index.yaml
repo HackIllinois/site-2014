@@ -14,3 +14,46 @@ indexes:
   properties:
   - name: isRegistered
   - name: school
+
+- kind: Attendee
+  ancestor: yes
+  properties:
+  - name: isRegistered
+  - name: approvalStatus.approvedTime
+  - name: approvalStatus.rsvpTime
+  - name: approvalStatus.status
+  - name: approvalStatus.waitlistedTime
+  - name: userId
+
+- kind: Attendee
+  ancestor: yes
+  properties:
+  - name: isRegistered
+  - name: approvalStatus.status
+  - name: email
+  - name: github
+  - name: linkedin
+  - name: nameFirst
+  - name: nameLast
+  - name: resume.fileName
+  - name: school
+  - name: userId
+  - name: year
+
+- kind: CorporateUrl
+  ancestor: yes
+  properties:
+  - name: creationTime
+    direction: desc
+
+- kind: NewsFeedItem
+  ancestor: yes
+  properties:
+  - name: time
+    direction: desc
+
+- kind: Schedule
+  ancestor: yes
+  properties:
+  - name: time
+    direction: desc

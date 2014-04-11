@@ -1,0 +1,59 @@
+{% extends "base/subpage.html" %}
+
+{% block subpage_body %}
+
+<div class="wrapper-content">
+    <div class="grid-scaffold">
+        <div class="pure-g-r">
+            <div class="pure-u-1 section-divide">
+                <header class="section-title section-text">
+                    <span>Research</span>
+                </header>
+            </div>
+            <div class="pure-u-1">
+              <div class="research-text">
+                  <p>
+                  During the event, the HackIllinois Research Team
+                  will be performing some in-flight experiments to
+                  better understand how participants experience
+                  HackIllinois and hackathons in general.
+                  </p>
+              </div>
+              <div class="research-text">
+                  <p>
+                  The study consists of two surveys: one that opens at
+                  the beginning of the event and one that will open
+                  near the end.
+                  </p>
+              </div>
+              <div class="research-text">
+                  <p>
+                  While we would appreciate your input, please know that you are not required to
+                  complete the survey and the answers will in no way
+                  affect your hackathon submissions. Your identity
+                  will be kept confidential to the research team and
+                  HackIllinois staff.
+                  </p>
+              </div>
+            </div>
+            <div class="pure-u-1">
+              <h3>Confidentiality</h3>
+              <p>
+                  We will keep your information confidential by
+                  storing your response with a unique string. This
+                  string is a hash of your email other secret
+                  information, so your data will not be directly
+                  connected to your personal information from the
+                  HackIllinois profile.
+              </p>
+              <p>
+                  Your specific unique identifier is {{ uid }}.
+              </p>
+              <a href="/research/1">Start Pre-Hack Survey</a>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+{% endblock subpage_body %}

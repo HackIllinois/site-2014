@@ -6,6 +6,7 @@ from db import constants
 from google.appengine.api import memcache
 import logging
 from datetime import datetime
+import json
 
 class ApproveHandler(MainAdminHandler.BaseAdminHandler):
     def get(self, status=None, category=None, route=None):
@@ -85,7 +86,8 @@ class ApproveHandler(MainAdminHandler.BaseAdminHandler):
             data['routes'].append({'text':r, 'link':urllib.quote(link)})
 
 
-        data['hackers'] = self.get_hackers_new_memecache(status, category, route, constants.USE_ADMIN_MEMCACHE)
+        # data['hackers'] = self.get_hackers_new_memcache(status, category, route, constants.USE_ADMIN_MEMCACHE)
+        data['hackers'] = self.get_hackers_better_memcache(status, category, route)
 
         data['num_people'] = len(data['hackers'])
 
@@ -101,7 +103,7 @@ class ApproveHandler(MainAdminHandler.BaseAdminHandler):
             elif st == 'Not Approved':
                 data['notapproveCount'] += 1
 
-        return self.render("admin_approve.html", data=data, approveAccess=admin_user.approveAccess, fullAccess=admin_user.fullAccess)
+        return self.render("admin_approve.html", data=data, access=json.loads(admin_user.access))
 
 
     def post(self):
@@ -134,8 +136,5 @@ class ApproveHandler(MainAdminHandler.BaseAdminHandler):
                 db_user.approvalStatus = Status(status=status)
 
         db_user.put()
-
-        # Delete memcache key so /admin/approve is updated
-        # memcache.delete('hackers')
 
         return self.write('success')

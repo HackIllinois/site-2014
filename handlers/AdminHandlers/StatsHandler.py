@@ -3,6 +3,7 @@ import logging
 from db.Attendee import Attendee
 from db import constants
 from google.appengine.api import memcache
+import json
 
 
 class StatsHandler(MainAdminHandler.BaseAdminHandler):
@@ -147,10 +148,10 @@ class StatsHandler(MainAdminHandler.BaseAdminHandler):
                             'hardware':data['total']['hardware'],
                             'unsure':data['total']['unsure'] })
 
-            if not memcache.add('stats', schools, time=constants.MEMCACHE_TIMEOUT):
+            if not memcache.set('stats', schools, time=constants.MEMCACHE_TIMEOUT):
                 logging.error('Memcache set failed.')
 
         stats = memcache.get_stats()
         logging.info('Advanced Stats:: Cache Hits:%s  Cache Misses:%s' % (stats['hits'], stats['misses']))
 
-        self.render("stats.html", schools=schools, approveAccess=admin_user.approveAccess, fullAccess=admin_user.fullAccess)
+        self.render("stats.html", schools=schools, access=json.loads(admin_user.access))

@@ -6,6 +6,7 @@ from db import constants
 from google.appengine.api import memcache
 import logging
 from datetime import datetime
+import json
 
 class RsvpHandler(MainAdminHandler.BaseAdminHandler):
     def get(self, status=None, category=None, route=None):
@@ -85,7 +86,8 @@ class RsvpHandler(MainAdminHandler.BaseAdminHandler):
             data['routes'].append({'text':r, 'link':urllib.quote(link)})
 
 
-        data['hackers'] = self.get_hackers_new_memecache(status, category, route, constants.USE_ADMIN_MEMCACHE)
+        # data['hackers'] = self.get_hackers_new_memcache(status, category, route, constants.USE_ADMIN_MEMCACHE)
+        data['hackers'] = self.get_hackers_better_memcache(status, category, route)
 
         data['num_people'] = len(data['hackers'])
 
@@ -104,4 +106,27 @@ class RsvpHandler(MainAdminHandler.BaseAdminHandler):
             elif st == 'No Rsvp':
                 data['noresponseCount'] += 1
 
-        return self.render("admin_rsvp.html", data=data, approveAccess=admin_user.approveAccess, fullAccess=admin_user.fullAccess)
+        return self.render("admin_rsvp.html", data=data, access=json.loads(admin_user.access))
+
+    def post(self):
+        admin_user = self.get_admin_user()
+        if not admin_user:
+            return self.abort(500, detail='User not in database')
+        if not admin_user.approveAdminAccess:
+            return self.abort(401, detail='User does not have permission to open rsvp for attendees.')
+
+        userId = str(urllib.unquote(self.request.get('userId')))
+
+        db_user = Attendee.search_database({'userId':userId}).get()
+        if not db_user:
+            return self.abort(500, detail='User not in database')
+
+        if db_user.approvalStatus:
+            db_user.approvalStatus.emailedTime = datetime.now()
+            db_user.approvalStatus.status = "Awaiting Response"
+        else:
+            db_user.approvalStatus = Status(status="Awaiting Response", emailedTime=datetime.now())
+
+        db_user.put()
+
+        return self.write('success')

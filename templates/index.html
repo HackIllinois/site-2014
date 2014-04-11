@@ -89,69 +89,11 @@
 			    <div id="sponsors">
 				    <h2>Sponsors</h2>
 
-					    <!-- Cohost/Supernova -->
-					    <a href="http://www.inin.com/" target="_blank"><img alt="Interactive Intelligence" class="sponsor-supernova" src="/img/logos/resized/inin.png" /></a>
-					    <a href="http://www.e-imo.com/" target="_blank"><img alt="imo" class="sponsor big" src="/img/logos/resized/imo.png" /></a>
-					    <a href="http://www.getpebble.com/" target="_blank"><img alt="pebble" class="sponsor big" src="/img/logos/resized/pebble.png" /></a><br>
-					    <a href="http://www.bloomberg.com" target="_blank"><img alt="bloomberg" class="sponsor big" src="/img/logos/resized/bloomberg.png" /></a>
-					    <a href="http://www.groupon.com" target="_blank"><img alt="groupon" class="sponsor big" src="/img/logos/resized/groupon.png" /></a>
-					    <a href="http://www.neustar.biz" target="_blank"><img alt="neustar" class="sponsor big" src="/img/logos/resized/neustar.png" /></a>
-					    <a href="http://www.statefarm.com" target="_blank"><img alt="state farm" class="sponsor big" src="/img/logos/resized/statefarm.png" /></a>
-					    <a href="http://www.venmo.com/" target="_blank"><img alt="venmo" class="sponsor big venmo" src="/img/logos/resized/venmo.png" /></a>
-					    <a href="http://www.westmonroepartners.com/" target="_blank"><img alt="west monroe partners" class="sponsor big s-padding-fix" src="/img/logos/resized/westmonroe.png" /></a>
-					    <a href="http://www.tcs.com/" target="_blank"><img alt="tcs" class="sponsor big" src="/img/logos/resized/tcs.png" /></a>
-					    <a href="http://www.niksun.com/" target="_blank"><img alt="niksun" class="sponsor big niksun" src="/img/logos/resized/niksun.png" /></a>
-					    <a href="http://www.answers.com/" target="_blank"><img alt="answers" class="sponsor big answers" src="/img/logos/resized/answers.png" /></a>
+                    {% for s in sponsorLogos %}
+                    <a href="{{ s.href }}" target="_blank"><img alt="{{ s.alt }}" class="{{ s.class }}" src="{{ s.src }}"></a>{% if s.br_after %}<br>{% endif %}
+                    {% endfor %}
 
-					    <a href="http://www.goldmansachs.com" target="_blank"><img alt="goldman sachs" class="sponsor big goldmansachs" src="/img/logos/resized/goldman.png" /></a>
-					    <a href="http://www.wolfram.com" target="_blank"><img alt="wolfram" class="sponsor big" src="/img/logos/resized/wolfram.png"/></a>
-					    <a href="http://developer.deere.com" target="_blank"><img alt="john deere" class="sponsor big johndeere" src="/img/logos/resized/deere.png" /></a>
-					    <a href="http://www.trunkclub.com" target="_blank"><img alt="trunk club" class="sponsor big trunkclub" src="/img/logos/resized/trunk_club.png" /></a>
-					    <a href="http://www.yahoo.com" target="_blank"><img alt="yahoo" class="sponsor big" src="/img/logos/resized/yahoo.png" /></a>
-					    <a href="http://www.kcg.com" target="_blank"><img alt="kcg" class="sponsor big" src="/img/logos/kcg.png" /></a>
-					    <a href="http://www.ge.com" target="_blank"><img alt="general electric" class="sponsor big ge" src="/img/logos/g_e.png" /></a>
-					    <a href="http://www.allstontrading.com" target="_blank"><img alt="allston trading" class="sponsor big allston" src="/img/logos/allston.png" /></a>
-					    <a href="http://www.kohls.com" target="_blank"><img alt="kohls" class="sponsor big" src="/img/logos/kohls.png" /></a>
-
-					    <br>
-
-					    <a href="http://www.dropbox.com" target="_blank"><img alt="dropbox" class="sponsor little s-padding-fix" src="/img/logos/resized/dropbox.png" /></a>
-					    <a href="http://www.google.com" target="_blank"><img alt="google" class="sponsor little s-padding-fix" src="/img/logos/resized/google.png" /></a>
-					    <a href="http://www.citadel.com" target="_blank"><img alt="citadel" class="sponsor little" src="/img/logos/resized/citadel.png" /></a>
-					    <a href="http://www.mailgun.com" target="_blank"><img alt="mailgun" class="sponsor little mailgun" src="/img/logos/resized/mailgun.png" /></a>
-					    <a href="http://www.spottradingllc.com" target="_blank"><img alt="spot trading" class="sponsor little spot-trading" src="/img/logos/resized/spottrading.png" /></a>
-					    <a href="http://www.epic.com" target="_blank"><img alt="epic systems" class="sponsor little epic" src="/img/logos/resized/epic.png" /></a>
-					    <a href="http://www.bankofamerica.com" target="_blank"><img alt="bank of america" class="sponsor little" src="/img/logos/bofa.png" /></a>
-					    <a href="http://www.spiceworks.com" target="_blank"><img alt="spiceworks" class="sponsor little" src="/img/logos/spiceworks.png" /></a>
-
-					    <a href="http://www.electricimp.com" target="_blank"><img alt="electric imp" class="sponsor littler" src="/img/logos/resized/electricimp.png" /></a>
-					    <a href="http://www.octopart.com" target="_blank"><img alt="octopart" class="sponsor littler" src="/img/logos/resized/octopart.png" /></a>
-					    <a href="http://www.sparkfun.com" target="_blank"><img alt="sparkfun" class="sponsor littler" src="/img/logos/resized/sparkfun.png" /></a>
-					    <a href="http://www.rdio.com" target="_blank"><img alt="rdio" class="sponsor littler rdio" src="/img/logos/resized/rdio.png" /></a>
-					    <a href="http://www.lob.com" target="_blank"><img alt="lob" class="sponsor littler lob" src="/img/logos/resized/lob.png" /></a>
-					    <a href="http://www.firebase.com" target="_blank"><img alt="firebase" class="sponsor littler firebase" src="/img/logos/resized/firebase.png" /></a>
-					    <a href="http://www.makerlab.illinois.edu" target="_blank"><img alt="makerlab" class="sponsor littler" src="/img/logos/resized/makerlab.png" /></a>
-					    <a href="http://www.etsy.com" target="_blank"><img alt="etsy" class="sponsor littler etsy" src="/img/logos/etsy.png" /></a>
-
-					    <a href="http://www.microsoft.com" target="_blank"><img alt="microsoft" class="sponsor littler microsoft" src="/img/logos/resized/microsoft.png" /></a>
-					    <a href="http://www.facebook.com" target="_blank"><img alt="facebook" class="sponsor littler" src="/img/logos/resized/facebook.png" /></a>
-					    <a href="http://www.intel.com" target="_blank"><img alt="intel" class="sponsor littler intel" src="/img/logos/resized/intel.png" /></a>
-					    <a href="http://www.namecheap.com" target="_blank"><img alt="namecheap" class="sponsor littler" src="/img/logos/resized/namecheap.png" /></a>
-						<a href="http://www.a16z.com" target="_blank"><img alt="Andreessen Horowitz" class="sponsor littler" src="/img/logos/resized/a16z.png" /></a>
-						<a href="http://www.dwolla.com" target="_blank"><img alt="dwolla" class="sponsor littler" src="/img/logos/resized/dwolla.png" /></a>
-						<a href="http://www.twilio.com" target="_blank"><img alt="twilio" class="sponsor littler" src="/img/logos/resized/twilio.png" /></a>
-						<a href="http://www.hudl.com" target="_blank"><img alt="hudl" class="sponsor littler" src="/img/logos/hudl.png" /></a>
-						<a href="http://www.akunacapital.com" target="_blank"><img alt="akuna capital" class="sponsor littler" src="/img/logos/akuna.png" /></a>
-						<a href="http://www.newark.com" target="_blank"><img alt="newark" class="sponsor littler" src="/img/logos/newark.png" /></a>
-
-					    <a href="http://www.stickermule.com" target="_blank"><img alt="stickermule" class="sponsor littler" src="/img/logos/resized/stickermule.png" /></a>
-					    <a href="http://orbitz.com" target="_blank"><img alt="orbitz" class="sponsor littler" src="/img/logos/resized/orbitz.png" /></a>
-					    <a href="http://spark.io" target="_blank"><img alt="spark.io" class="sponsor littler sparkio" src="/img/logos/resized/sparkio.png" /></a>
-					    <a href="http://parrot.com" target="_blank"><img alt="parrot" class="sponsor littler" src="/img/logos/resized/parrot.png" /></a>
-					    <a href="http://pwc.com" target="_blank"><img alt="pwc" class="sponsor littler pwc" src="/img/logos/resized/pwc.png" /></a>
-					    <a href="http://zealousamoeba.com" target="_blank"><img alt="zealous amoeba" class="sponsor littler pwc" src="/img/logos/zealousamoeba.svg" /></a>
-
-					    <p class="sponsor-shoutout-CTA">If you're interested in sponsoring HackIllinois, <a href="/sponsor">view the options</a> and <a href="mailto:sponsor@hackillinois.org">drop us a line</a>!</p>
+                    <p class="sponsor-shoutout-CTA">If you're interested in sponsoring HackIllinois, <a href="/sponsor">view the options</a> and <a href="mailto:sponsor@hackillinois.org">drop us a line</a>!</p>
 
 				</div>
 
@@ -205,7 +147,7 @@
 						</div>
 						<div class="pure-u-1">
 								<h3>I have another question!</h3>
-								<p>Contact us via email (<a href="mailto:contact@hackillinois.org">contact@hackillinois.org</a>), <a href="http://facebook.com/hackillinois" target="blank">Facebook</a>, <a href="http://www.twitter.com/hackillinois" target="blank">Twitter</a>, phone/SMS (<a href="tel://+13127575638">312-757-5638</a>), IRC (<a href="http://webchat.freenode.net/?channels=%23hackillinois">#hackillinois on irc.freenode.net</a>), or <a href="https://www.google.com/maps/preview#!q=siebel+center&data=!1m4!1m3!1d2658!2d-88.2248157!3d40.1141041!2m1!6s0x880cd76a59dfc601%3A0x241c8874383c4540!4m15!2m14!1m13!1s0x880cd76baa8479a9%3A0x4e9f01d40d359630!3m8!1m3!1d96776!2d-95.5290465!3d29.522312!3m2!1i1440!2i669!4f13.1!4m2!3d40.11384!4d-88.224888" target="blank">carrier pigeon</a>.</p>
+								<p>Contact us via email (<a href="mailto:contact@hackillinois.org">contact@hackillinois.org</a>), <a href="http://facebook.com/hackillinois" target="blank">Facebook</a>, <a href="http://www.twitter.com/hackillinois" target="blank">Twitter</a>, IRC (<a href="http://webchat.freenode.net/?channels=%23hackillinois">#hackillinois on irc.freenode.net</a>), or <a href="https://www.google.com/maps/preview#!q=siebel+center&data=!1m4!1m3!1d2658!2d-88.2248157!3d40.1141041!2m1!6s0x880cd76a59dfc601%3A0x241c8874383c4540!4m15!2m14!1m13!1s0x880cd76baa8479a9%3A0x4e9f01d40d359630!3m8!1m3!1d96776!2d-95.5290465!3d29.522312!3m2!1i1440!2i669!4f13.1!4m2!3d40.11384!4d-88.224888" target="blank">carrier pigeon</a>.</p>
 						</div>
 					</div>
 				</div>

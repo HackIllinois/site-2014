@@ -1,0 +1,74 @@
+{% extends "base/admin_base.html" %}
+{% set active_page = "rsvpstats" %}
+
+{% block head %}
+<style type="text/css">
+    .t-centered {
+        text-align: center;
+    }
+    .page-header {
+        margin-top: 0;
+    }
+    table {
+        /*table-layout: auto;*/
+        table-layout: fixed;
+    }
+    .c1{width:50%;}
+    .c2{width:25%;}
+    .c3{width:25%;}
+</style>
+{% endblock head %}
+
+
+{% block body %}
+<div class="row">
+    <div class="col-md-12">
+        <h1 class="page-header">RSVP Stats</h1>
+    </div>
+</div>
+
+<div class="container-fluid">
+    {% for table in data.tables %}
+    <div class="row">
+        <div class="col-md-8">
+            <table class="table table-bordered table-hover table-condensed">
+                <thead>
+                    <tr>
+                        <th class="c1">{{ table.name }}</th>
+                        <th class="c2 t-centered">#</th>
+                        <th class="c3 t-centered">%</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in table.stats %}
+                    <tr>
+                        <td>{{ row.name }}</td>
+                        <td class="t-centered">{{ row.num }}</td>
+                        <td class="t-centered">
+                            {% if table.totalCount != 0 %}
+                                {{ (100 * row.num / table.totalCount)|round(2) }} %
+                            {% else %}
+                                0.0 %
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td class="text-right">Total:</td>
+                        <td class="t-centered">{{ table.totalCount }}</td>
+                        <td class="t-centered">100.0 %</td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock body %}
+
+
+{% block scripts %}
+<script type="text/javascript"></script>
+{% endblock scripts%}

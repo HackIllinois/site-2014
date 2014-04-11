@@ -42,6 +42,11 @@ class Attendee(Model):
     pictureURL = ndb.TextProperty(default='')
     status = ndb.TextProperty(default='')
     updatedTime = ndb.IntegerProperty(default=0)
+    email_lower = ndb.ComputedProperty(lambda self: self.userEmail.lower())
+    database_key = ndb.IntegerProperty(default=0)
+    status_list = ndb.JsonProperty(default=[])
+    personType = 'hacker'
+    mac_address = ndb.StringProperty(default='')
 
     # Not sure how this will be used yet
     pushNotificationToken = ndb.StringProperty(default='')

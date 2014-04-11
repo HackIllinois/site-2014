@@ -1,0 +1,95 @@
+{% extends "sponsor/base/sponsor_base.html" %}
+{% set active_page = "profile" %}
+
+{% block head %}
+<style type="text/css">
+    .page-header {
+        margin-top: 0;
+    }
+    .t-centered {
+        text-align: center;
+    }
+</style>
+{% endblock head %}
+
+
+
+{% block body %}
+
+<div class="row">
+    <div class="col-md-12">
+        <h1 class="page-header">
+            {{ data.name }}
+            <button class="btn btn-success confirm-edit-btn">Confirm Edit</button>
+            <a class="btn btn-warning cancle-edit-btn" href="/corporate/profile">Cancle Edit</a>
+        </h1>
+    </div>
+</div>
+
+
+<form id="sponsorEditForm">
+<div class="table-responsive">
+    <table class="table">
+        <thead class="invisible">
+            <tr>
+                <th class="col-sm-2"></th>
+                <th class="col-sm-10"></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="pull-right">Name:</td>
+                <td id="nameEdit" name="nameEdit">
+                    <input id="nameInput" name="nameInput" value="{{ data.name }}"></input>
+                </td>
+            </tr>
+            <tr>
+                <td class="pull-right">Company Name:</td>
+                <td id="companyNameEdit" name="companyNameEdit">
+                    <input id="companyNameInput" name="companyNameInput" value="{{ data.companyName }}"></input>
+                </td>
+            </tr>
+            <tr>
+                <td class="pull-right">Job Title:</td>
+                <td id="jobTitleEdit" name="jobTitleEdit">
+                    <input id="jobTitleInput" name="jobTitleInput" value="{{ data.jobTitle }}"></input>
+                </td>
+            </tr>
+            <tr>
+                <td class="pull-right">Contact Email:</td>
+                <td id="emailEdit" name="emailEdit">
+                    <input id="emailInput" name="emailInput" value="{{ data.email }}"></input>
+                </td>
+            </tr>
+            <tr>
+                <td class="pull-right">Login Email:</td>
+                <td name="email">{{ data.userEmail }}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+</form>
+
+{% endblock body %}
+
+
+{% block scripts %}
+<script type="text/javascript">
+function editBtnCallbacks() {
+    $('.confirm-edit-btn').click(function() {
+        data = {};
+        data['name'] = $("#nameInput").val();
+        data['companyName'] = $("#companyNameInput").val();
+        data['email'] = $("#emailInput").val();
+        data['jobTitle'] = $("#jobTitleInput").val();
+        $.post('/corporate/editprofile', data, function(data) {
+            window.location = "/corporate/profile"
+        });
+    });
+}
+
+$(document).ready(function() {
+    editBtnCallbacks();
+});
+</script>
+{% endblock scripts%}

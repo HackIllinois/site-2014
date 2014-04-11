@@ -5,7 +5,8 @@ from google.appengine.ext import ereporter
 from db.Attendee import Attendee
 
 template_dir = os.path.join(os.path.dirname(__file__), os.path.join(os.pardir, 'templates'))
-jinja_env = jinja2.Environment(loader = jinja2.FileSystemLoader(template_dir), autoescape = True)
+jinja_env = jinja2.Environment(loader=jinja2.FileSystemLoader(template_dir), autoescape=True)
+jinja_env.filters.update({'is_list':lambda l: isinstance(l, list)})
 
 # https://developers.google.com/appengine/articles/python/recording_exceptions_with_ereporter
 ereporter.register_logger()
@@ -13,11 +14,15 @@ ereporter.register_logger()
 
 class Handler(webapp2.RequestHandler):
     """ Someone should fill in what this is """
+
+    def __init__(self, request, response):
+        super(Handler, self).__init__(request, response)
+
     def write(self, *a, **kw):
         self.response.out.write(*a, **kw)
 
     def render(self, template, **kw):
-        self.write(self.render_str(template,**kw))
+        self.write(self.render_str(template, **kw))
 
     def render_str(self, template, **params):
         t = jinja_env.get_template(template)
@@ -27,6 +32,5 @@ class Handler(webapp2.RequestHandler):
 
 
 class BaseMobileHandler(Handler):
-
     def dispatch(self):
         super(BaseMobileHandler, self).dispatch()

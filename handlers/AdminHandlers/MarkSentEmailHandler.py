@@ -5,35 +5,32 @@ import re
 import urllib
 from datetime import datetime
 # import requests
+import json
 
 class MarkSentEmailHandler(MainAdminHandler.BaseAdminHandler):
     def get(self):
         admin_user = self.get_admin_user()
         if not admin_user: return self.abort(500, detail='User not in database')
-        if not admin_user.fullAccess:
+        if not admin_user.managerAccess:
             return self.abort(401, detail='User does not have permission to email attendees.')
 
         data = {}
-        return self.render('admin_send_email.html', data=data, approveAccess=admin_user.approveAccess, fullAccess=admin_user.fullAccess)
+        return self.render('admin_send_email.html', data=data, access=json.loads(admin_user.access))
 
     def post(self):
         admin_user = self.get_admin_user()
         if not admin_user: return self.abort(500, detail='User not in database')
-        if not admin_user.fullAccess:
+        if not admin_user.managerAccess:
             return self.abort(401, detail='User does not have permission to email attendees.')
 
         orig_str = str(urllib.unquote(self.request.get('emails')))
-        emails = orig_str.strip()
-        if not emails:
+        email_str = orig_str.strip()
+        if not email_str:
             return self.write("Error: No emails entered.")
 
-        split_char = None
-        if ',' in emails: split_char = ','
-        elif ';' in emails: split_char = ';'
-        elif ' ' in emails or re.match(constants.EMAIL_MATCH, emails): split_char = ' '
-        else: return self.write("Error: Could not parse the entered text.")
+        # Split emails by comma, semicolon, space, or newline (or some combination of all of those)
+        emails = re.split(r'[,; \n]', email_str)
 
-        emails = emails.split(split_char)
         for i in xrange(len(emails)):
             emails[i] = emails[i].strip()
 
@@ -49,28 +46,32 @@ class MarkSentEmailHandler(MainAdminHandler.BaseAdminHandler):
         not_found_emails = []
         not_approved_emails = []
         already_emailed_emails = []
+
+        found_emails = {}
         for email in valid_emails:
-            person = Attendee.search_database({'email': email}).get()
-            if not person:
-                person = Attendee.search_database({'userEmail': email}).get()
-                if not person:
-                    not_found_emails.append(email)
-                    continue
+            found_emails[email] = True
+
+        hackers = Attendee.query(Attendee.email.IN(valid_emails))
+
+        for person in hackers:
+            del found_emails[person.email]
 
             if person.approvalStatus is None:
-                not_approved_emails.append(email)
+                not_approved_emails.append(person.email)
                 continue
 
             if person.approvalStatus.status == "Approved":
-                successful_emails.append(email)
+                successful_emails.append(person.email)
                 person.approvalStatus.status = 'Awaiting Response'
                 person.approvalStatus.emailedTime = datetime.now()
-                # debug
-                # person.put()
+                person.put()
             elif person.approvalStatus.status in constants.RSVP_STATUSES:
-                already_emailed_emails.append(email)
+                already_emailed_emails.append(person.email)
             else:
-                not_approved_emails.append(email)
+                not_approved_emails.append(person.email)
+
+        for email in found_emails:
+            not_found_emails.append(email)
 
         self.write("Successful Emails: %s<br>" % str(successful_emails))
         self.write("Invalid Emails: %s<br>" % str(invalid_emails))

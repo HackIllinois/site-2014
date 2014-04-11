@@ -16,7 +16,10 @@
 #
 import webapp2
 from handlers import handlers
+from handlers.SponsorHandlers import sponsor_handlers
 
-app = webapp2.WSGIApplication(handlers.handlers, debug=True)
+all_handlers = handlers.handlers + sponsor_handlers.sponsor_handlers
+
+app = webapp2.WSGIApplication(all_handlers, debug=True)
 for error in handlers.errorHandlers:
 	app.error_handlers[error] = handlers.errorHandlers[error]

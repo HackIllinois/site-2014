@@ -1,0 +1,2 @@
+* * * * * python /home/Austin/hackillinois-website/backend_tasks/main.py tasks
+* * * * * sleep 30 && python /home/Austin/hackillinois-website/backend_tasks/main.py tasks

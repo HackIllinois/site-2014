@@ -1,0 +1,122 @@
+{% extends "base/admin_base.html" %}
+{% set active_page = "schedule" %}
+
+{% block head %}
+<link rel="stylesheet" href="/css/admin.css">
+<link rel="stylesheet" href="/css/bootstrap-datetimepicker.min.css">
+{% endblock head %}
+
+
+{% block body %}
+<div class="row">
+    <header>
+        <h1 class="page-header">Mobile Schedule</h1>
+    </header>
+
+    <section class="event-container col-md-9">
+        <div class="feed-container row">
+            <ul>
+                {% for event in feed %}
+                <li class="row event card">
+                    <section class="icon col-md-1">
+                        {% if event.img %}
+                        <img class="media-object" alt="{{ event.img.alt }}" src="{{ event.img.src }}" style="width: 64px; height: 64px;">
+                        {% else %}
+                        <img class="media-object" data-src="holder.js/64x64" alt="64x64" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2NCIgaGVpZ2h0PSI2NCI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiBmaWxsPSIjZWVlIj48L3JlY3Q+PHRleHQgdGV4dC1hbmNob3I9Im1pZGRsZSIgeD0iMzIiIHk9IjMyIiBzdHlsZT0iZmlsbDojYWFhO2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1zaXplOjEycHg7Zm9udC1mYW1pbHk6QXJpYWwsSGVsdmV0aWNhLHNhbnMtc2VyaWY7ZG9taW5hbnQtYmFzZWxpbmU6Y2VudHJhbCI+NjR4NjQ8L3RleHQ+PC9zdmc+" style="width: 64px; height: 64px;">
+                        {% endif %}
+                    </section>
+                    <section class="main-content col-md-6">
+                        <p class="event-name">{{ event.event_name|safe }}</p>
+                        <p class="description">{{event.description|safe}}</p>
+                    </section>
+                    <section class="logistics col-md-2 pull-right">
+                        <p>{{event.location|safe}}</p>
+                        <p>{{event.time}}</p>
+                    </section>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </section>
+
+  <section class="schedule-panel col-md-3">
+    <header><h3>Create a new Event</h3></header>
+
+    <div class="form-container row">
+
+      <form role="form" id="addFeedItem-form" method="post">
+
+
+        <div class="form-group">
+          <label for="inputEventName" class="control-label">Event Name</label>
+          <div>
+            <input type="text" placeholder="Event Name" class="form-control" id="inputEventName" name="eventName" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="inputDescription" class="control-label">Description</label>
+          <div>
+            <textarea class="form-control" placeholder="Description... (keep this short)" id="inputDescription" rows="5" name="description" required></textarea>
+            <span class="help-block" id="char-count">0</span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="inputEventName" class="control-label">Location</label>
+          <div id="bloodhound">
+            <input class="form-control typeahead" type="text" placeholder="Location" name="location" autocomplete="off">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="companyName" class="control-label">Company Name</label>
+          <div id="bloodhound">
+            <input class="form-control typeahead" type="text" placeholder="Company Name" name="company" autocomplete="off">
+          </div>
+        </div>
+
+
+        <div class="form-group">
+          <label for="time" class="control-label">Time</label>
+          <input size="16" type="text" name="time" value="2014-4-11 14:45"  class="form_datetime form-control">
+        </div>
+
+
+
+
+        <div class="form-group">
+          <label for="radioType" class="control-label">Day</label>
+          <div>
+            <label for="radio1" class="radio-inline">
+              <input type="radio" name="day" id="radio1" value="Friday" required> Friday
+            </label>
+            <label for="radio2" class="radio-inline">
+              <input type="radio" name="day" id="radio2" value="Saturday" required> Saturday
+            </label>
+            <label for="radio3" class="radio-inline">
+              <input type="radio" name="day" id="radio3" value="Sunday" required> Sunday
+            </label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div class="">
+            <button type="button" id="render-feeditem" class="btn btn-success">Preview</button>
+            <button type="submit" class="btn btn-primary">Send to everyone</button>
+          </div>
+        </div>
+
+      </form>
+    </div>
+</section>
+</div>
+    {% endblock body %}
+
+
+    {% block scripts %}
+    <script src="/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="/js/moment.min.js"></script>
+    <script src="/js/typeahead.bundle.min.js"></script>
+    <script src="/js/admin_schedule.js"></script>
+    {% endblock scripts%}

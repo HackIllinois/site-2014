@@ -6,12 +6,12 @@ from google.appengine.ext.db import BadValueError
 class Room(Model):
 	Model._automatically_add_event_as_ancestor()
 
-	building = StringProperty()
-	floor = IntegerProperty()
-	number = IntegerProperty()
-	room_type = StringProperty()
-	name = StringProperty()
-	image_url = TextProperty()
+	building = ndb.StringProperty()
+	floor = ndb.IntegerProperty()
+	number = ndb.IntegerProperty()
+	room_type = ndb.StringProperty()
+	name = ndb.StringProperty()
+	image_url = ndb.TextProperty()
 
 	@classmethod
 	def new(cls, data):
