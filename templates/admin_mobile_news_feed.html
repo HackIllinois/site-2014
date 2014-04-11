@@ -130,7 +130,7 @@ $(document).ready(function() {
 				response = $.parseJSON(response);
 		        if(response['message'] != "success")
 		        	alert(response['message']);
-		        console.log(response);
+		    	window.location.reload();
 		    });
 	});
 	$("#render-feeditem").click(function() {
@@ -146,6 +146,7 @@ $(document).ready(function() {
 				$("#rendered-image").attr('src','http://www.hackillinois.org/img/icons-iOS/hackillinois.png');
 				$("#rendered-image").attr('alt','hackillinois');
 			}
+
 			$("#rendered-description").html($("#inputDescription").val());
 			$(".rendered-container").slideDown();
 		} else {
