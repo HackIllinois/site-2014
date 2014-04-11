@@ -6,6 +6,7 @@ MEMCACHE_TIMEOUT = 10800 # seconds = 3 hours , once we close registration increa
 MOBILE_MEMCACHE_TIMEOUT = 86400 # second = 1 day (24 hours)
 MEMCACHE_COUNT_TIMEOUT = 900 # seconds = 15 min
 USE_ADMIN_MEMCACHE = False
+USE_SPONSOR_MEMCACHE = False
 
 APPLY_TITLE = 'Application'
 PROFILE_TITLE = 'Profile'
@@ -381,11 +382,6 @@ SPONSOR_LOGOS = [
       "class":"sponsor big allston",
       "src":"/img/logos/allston.png",
       "br_after":False },
-    { "href":"http://www.kohls.com",
-      "alt":"kohls",
-      "class":"sponsor big",
-      "src":"/img/logos/kohls.png",
-      "br_after":True },
     { "href":"http://www.dropbox.com",
       "alt":"dropbox",
       "class":"sponsor little s-padding-fix",

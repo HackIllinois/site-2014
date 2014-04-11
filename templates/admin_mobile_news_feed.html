@@ -37,6 +37,7 @@
 			<label for="inputDescription" class="col-sm-1 control-label">Description</label>
 			<div class="col-sm-10">
 				<textarea class="form-control" id="inputDescription" rows="5" name="description" required></textarea>
+				<span class="help-block" id="char-count">0</span>
 			</div>
 		</div>
 		<div class="form-group">
@@ -109,13 +110,15 @@
 {% block scripts %}
 <script type="text/javascript">
 $(document).ready(function() {
-    $("#addFeedItem-form").submit(function(event) {
-    });
-
+    // $("#addFeedItem-form").submit(function(event) { });
+	$("#inputDescription").on("change paste keydown keyup", function() {
+		$("#char-count").text($("#inputDescription").val().length)
+	});
 	$("#addFeedItem-button").click(function() {
 		$(".feedform-container").slideToggle();
 		$(".rendered-container").slideUp();
 	});
+
 	$("#render-feeditem").click(function() {
 		if ($("#inputDescription").val() && $("input[name='type']:checked").val()) {
 			type = $("input[name='type']:checked").val();

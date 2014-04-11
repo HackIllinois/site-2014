@@ -136,10 +136,10 @@
                             {% for h in data.hackers %}
                             <tr name="hackerData" id="{{ h.userId }}">
                                 <td                  class="id"     style="display:none;">{{ loop.index }}</td>
-                                <td name="tname"     class="name"   onclick="document.location='/admin/profile/{{ h.userId }}';">{{ h.nameFirst }} {{ h.nameLast }}</td>
-                                <td name="temail"    class="email"  onclick="document.location='/admin/profile/{{ h.userId }}';">{{ h.email }}</td>
+                                <td name="tname"     class="name"   style="cursor:pointer;"     onclick="document.location='/admin/profile/{{ h.userId }}';">{{ h.nameFirst }} {{ h.nameLast }}</td>
+                                <td name="temail"    class="email"  style="cursor:pointer;"     onclick="document.location='/admin/profile/{{ h.userId }}';">{{ h.email }}</td>
                                 <td name="tgender"   class="gender"  >{{ h.gender }}</td>
-                                <td name="tschool"   class="school"  >{{ h.school }}</td>
+                                <td name="tschool"   class="school" style="cursor:pointer;">{{ h.school }}</td>
                                 <td name="tyear"     class="year"    >{{ h.year }}</td>
                                 <td name="tproject"  class="project" >{{ h.projectType }}</td>
                                 <td name="tstatus"   class="status"  >{% if h.approvalStatus %}{{ h.approvalStatus.status }}{% endif %}</td>

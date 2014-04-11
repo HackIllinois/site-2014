@@ -153,9 +153,9 @@
                             {% for h in data.hackers %}
                             <tr name="hackerData" id="{{ h.userId }}">
                                 <td                  class="id"     style="display:none;">{{ loop.index }}</td>
-                                <td name="tname"     class="name"   onclick="document.location='/admin/profile/{{ h.userId }}';">{{ h.nameFirst }} {{ h.nameLast }}</td>
+                                <td name="tname"     class="name"   style="cursor:pointer;"     onclick="document.location='/admin/profile/{{ h.userId }}';">{{ h.nameFirst }} {{ h.nameLast }}</td>
                                 <td name="tgender"   class="gender"  >{{ h.gender }}</td>
-                                <td name="tschool"   class="school"  >{{ h.school }}</td>
+                                <td name="tschool"   class="school"  style="cursor:pointer;" >{{ h.school }}</td>
                                 <td name="tlinkedin" class="linkedin">{{ h.linkedin }}</td>
                                 <td name="tgithub"   class="github"  >{{ h.github }}</td>
                                 <td name="tproject"  class="project" >{{ h.projectType }}</td>
@@ -329,22 +329,22 @@
         }
 
         $(document).ready(function () {
+            hackerList = new List('hackers', options);
 
-            // Do before list created so applied to all
             applyBtnCallbacks();
             schoolClickCallbacks();
-
-            hackerList = new List('hackers', options);
 
             colToggleCallbacks();
             schoolClickCallbacks();
             searchCallbacks();
-            checkBoxCallbacks
+            checkBoxCallbacks();
 
             $('#count').html(hackerList.matchingItems.length);
             hackerList.on('updated', function() {
                 $('#count').html(hackerList.matchingItems.length);
                 updateColumVisibility();
+                applyBtnCallbacks();
+                schoolClickCallbacks();
             });
         });
     </script>

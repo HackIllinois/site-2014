@@ -46,6 +46,7 @@ handlers = [
     RedirectRoute('/travel', handler=SubpageHandlers.TravelHandler, name='Travel', strict_slash=True),
     RedirectRoute('/sponsor/faq', handler=SubpageHandlers.SponsorFAQHandler, name='SponsorFAQ', strict_slash=True),
     RedirectRoute('/code-of-conduct', handler=SubpageHandlers.CoCHandler, name='CoC', strict_slash=True),
+    RedirectRoute('/staff', handler=SubpageHandlers.StaffHandler, name='Staff', strict_slash=True),
 
     RedirectRoute('/tropo', handler=TropoHandler, name='Tropo', strict_slash=True),
 
@@ -66,6 +67,8 @@ handlers = [
     RedirectRoute('/admin/send', handler=AdminHandlers.MarkSentEmailHandler.MarkSentEmailHandler, name='AdminMarkSentEmail', strict_slash=True),
     RedirectRoute('/admin/massapproval', handler=AdminHandlers.MassApprovalHandler.MassApprovalHandler, name='AdminMassApproval', strict_slash=True),
     RedirectRoute('/admin/massinvalidate', handler=AdminHandlers.MassRsvpInvalidateHandler.MassRsvpInvalidateHandler, name='AdminMassRsvpInvalidate', strict_slash=True),
+	RedirectRoute('/admin/check-no-reply', handler=AdminHandlers.CheckNoReplyHandler.CheckNoReplyHandler, name='AdminCheckNoReplyHandler', strict_slash=True),
+    RedirectRoute('/admin/corporateurl', handler=AdminHandlers.CorporateUrlHandler.CorporateUrlHandler, name='AdminCorporateUrl', strict_slash=True),
 
     RedirectRoute('/admin/basicstats',          handler=AdminHandlers.BasicStatsHandler.BasicStatsHandler, name='AdminBasicStats0', strict_slash=True),
     RedirectRoute('/admin/basicstats/<status>', handler=AdminHandlers.BasicStatsHandler.BasicStatsHandler, name='AdminBasicStats1', strict_slash=True),
@@ -97,7 +100,7 @@ handlers = [
     RedirectRoute('/admin/mobile/newsfeed', handler=AdminHandlers.NewsFeedHandler.NewsFeedHandler, name='AdminNewsFeed', strict_slash=True),
     RedirectRoute('/admin/mobile/schedule', handler=AdminHandlers.ScheduleHandler.ScheduleHandler, name='AdminSchedule', strict_slash=True),
     RedirectRoute('/admin/mobile/newsponsor', handler=AdminHandlers.NewSponsorHandler.NewSponsorHandler, name='AdminNewSponsor', strict_slash=True),
-    
+
     # RedirectRoute('/admin/updateschema', handler=AdminHandlers.UpdateSchemaHandler.UpdateSchemaHandler, name='UpdateSchema', strict_slash=True),
 
     RedirectRoute('/mobile/schedule', handler=MobileHandler.ScheduleHandler, name='MobileSchedule', strict_slash=True),

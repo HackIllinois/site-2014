@@ -30,6 +30,7 @@ class Admin(Model):
     approveAccess = ndb.BooleanProperty(default=False)
     approveAdminAccess = ndb.BooleanProperty(default=False)
     mobileAccess = ndb.BooleanProperty(default=False)
+    corporateAdminAccess = ndb.BooleanProperty(default=False)
     managerAccess = ndb.BooleanProperty(default=False)
     personType = 'staff' 
     mac_address = ndb.StringProperty(default='')
@@ -38,6 +39,7 @@ class Admin(Model):
                                                             'approve':self.approveAccess,
                                                             'approveAdmin':self.approveAdminAccess,
                                                             'mobile':self.mobileAccess,
+                                                            'corporate':self.corporateAdminAccess,
                                                             'manager':self.managerAccess }))
 
     @classmethod

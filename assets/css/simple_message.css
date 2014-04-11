@@ -20,6 +20,10 @@ header.logo{
         display: inline-block;
     }
 
+.message-container {
+    text-align: center;
+}
+
 .reg-message{
     margin: 25px auto 0 auto;
     color: white;

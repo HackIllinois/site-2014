@@ -107,3 +107,26 @@ class RsvpHandler(MainAdminHandler.BaseAdminHandler):
                 data['noresponseCount'] += 1
 
         return self.render("admin_rsvp.html", data=data, access=json.loads(admin_user.access))
+
+    def post(self):
+        admin_user = self.get_admin_user()
+        if not admin_user:
+            return self.abort(500, detail='User not in database')
+        if not admin_user.approveAdminAccess:
+            return self.abort(401, detail='User does not have permission to open rsvp for attendees.')
+
+        userId = str(urllib.unquote(self.request.get('userId')))
+
+        db_user = Attendee.search_database({'userId':userId}).get()
+        if not db_user:
+            return self.abort(500, detail='User not in database')
+
+        if db_user.approvalStatus:
+            db_user.approvalStatus.emailedTime = datetime.now()
+            db_user.approvalStatus.status = "Awaiting Response"
+        else:
+            db_user.approvalStatus = Status(status="Awaiting Response", emailedTime=datetime.now())
+
+        db_user.put()
+
+        return self.write('success')

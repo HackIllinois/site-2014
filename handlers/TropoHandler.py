@@ -26,10 +26,8 @@ class TropoHandler(MainHandler.Handler):
 
     def handleVoiceCall(self, session, t):
         """ Handle an incoming voice call. """
-        t.say("Welcome to HackIllinois! Please wait while we try to connect your call.")
-        # Just transfer the call to Matthew for now. If anyone actually uses
-        # this we'll change it for later
-        t.transfer("+12819001868")
+        # Quick recording saying to email us.
+        t.say("http://cl.ly/2i1W3T1i341z/Email%20Us.mp3")
 
     def handleSms(self, session, t):
         """ Handle an incoming text """

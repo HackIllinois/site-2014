@@ -36,7 +36,7 @@ class ManagerHandler(MainAdminHandler.BaseAdminHandler):
             if re.match(constants.EMAIL_MATCH, email):
                 valid_emails.append(email)
 
-        print valid_emails
+        # print valid_emails
 
         access = self.request.get_all('accessControl')
 
@@ -52,6 +52,7 @@ class ManagerHandler(MainAdminHandler.BaseAdminHandler):
                     approveAccess='approve' in access or allAccess,
                     approveAdminAccess='adminApprove' in access or allAccess,
                     mobileAccess='mobile' in access or allAccess,
+                    corporateAdminAccess='corporate' in access or allAccess,
                     managerAccess='manager' in access or allAccess,
                     database_key=self.get_next_key()
                 ).put()
@@ -60,6 +61,7 @@ class ManagerHandler(MainAdminHandler.BaseAdminHandler):
                 db_user.approveAccess = 'approve' in access or allAccess
                 db_user.approveAdminAccess = 'adminApprove' in access or allAccess
                 db_user.mobileAccess = 'mobile' in access or allAccess
+                db_user.corporateAdminAccess = 'corporate' in access or allAccess
                 db_user.managerAccess = 'manager' in access or allAccess
                 db_user.put()
 

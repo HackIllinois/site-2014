@@ -446,6 +446,11 @@ class PersonHandler(MainHandler.BaseMobileHandler):
                             memcache_profile['status'] = updatedProfileDict['status_list']
                         else:
                             return self.write(json.dumps({'message':'Invalid status'}))
+                    elif 'mac_address' in updatedKeys:
+                        if isinstance(updatedProfileDict['mac_address'],str):
+                            memcache_profile['mac_address'] = updatedProfileDict['mac_address']
+                        else:
+                            return self.write(json.dumps({'message':'Invalid mac_address'}))
                     
             if memcache.replace('all', all_profiles, time=constants.MOBILE_MEMCACHE_TIMEOUT):
                 return self.write(json.dumps({'message':'Updated Profile'}))
@@ -523,6 +528,7 @@ class LoginHandler(MainHandler.BaseMobileHandler):
             'status':hackerProfile.status_list, 
             'database_key':hackerProfile.database_key ,
             'time':hackerProfile.updatedTime,
+            'mac_address':hackerProfile.mac_address,
             'type':'hacker'}
 
             if hackerProfile.skills:
@@ -554,6 +560,7 @@ class LoginHandler(MainHandler.BaseMobileHandler):
             'status':staffProfile.status_list, 
             'database_key':staffProfile.database_key, 
             'time':staffProfile.updatedTime,
+            'mac_address':staffProfile.mac_address,
             'type':'staff'}
 
             if staffProfile.skills:
@@ -582,6 +589,7 @@ class LoginHandler(MainHandler.BaseMobileHandler):
             'status':mentorProfile.status_list, 
             'database_key':mentorProfile.database_key , 
             'time':mentorProfile.updatedTime,
+            'mac_address':mentorProfile.mac_address,
             'type':'mentor'}
             
             if mentorProfile.skills:
