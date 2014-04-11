@@ -57,7 +57,7 @@ class NewsFeedHandler(MainAdminHandler.BaseAdminHandler):
         }
 
         description = str(urllib.unquote(self.request.get("description")))
-
+        highli = []
         hl = str(urllib.unquote(self.request.get("highlight")))
         hl = hl.strip()
         if not hl:
@@ -84,7 +84,7 @@ class NewsFeedHandler(MainAdminHandler.BaseAdminHandler):
 
             if hl[-1] > (len(description)-1):
                 return self.write(json.dumps({'message':'Error: highlight goes beyond length of description'}))
-            highli = []
+            
             colortype = colors[urllib.unquote(self.request.get("type"))]
             rgbcolor = [colortype['r'],colortype['g'],colortype['b']]
             hlpair = []

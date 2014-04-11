@@ -1,6 +1,9 @@
-ADMIN_EMAILS = set(['lx.icomputer@gmail.com','mvd7793@gmail.com','austin.1111h@gmail.com','fishben2@illinois.edu','jacob@hackillinois.org'])
+ADMIN_EMAILS = set(['lx.icomputer@gmail.com','mvd7793@gmail.com','austin.1111h@gmail.com','fishben2@illinois.edu','jacob@hackillinois.org, brendanryan@hackillinois.org'])
 
 BUCKET = 'hackillinois'
+
+TWILIO_ACCOUNT_SID = "ACbb49f22ced63701bdc7e7391489d1720"
+TWILIO_AUTH_TOKEN = "77878e6db49a1635bf767dc64d203a5b"
 
 MEMCACHE_TIMEOUT = 10800 # seconds = 3 hours , once we close registration increase to 1 day
 MOBILE_MEMCACHE_TIMEOUT = 86400 # second = 1 day (24 hours)

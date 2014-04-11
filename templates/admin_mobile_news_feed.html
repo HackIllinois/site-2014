@@ -21,6 +21,21 @@
 	.media-body {
 		word-wrap: break-word;
 	}
+	.type-hackillinois { 
+		font-weight: bold;
+		text-decoration: underline;
+		color:rgb(27,77,104);
+	}
+	.type-emergency { 
+		font-weight: bold;
+		color:rgb(167,65,46);
+		text-decoration: underline;
+	}
+	.type-announcement { 
+		font-weight: bold;
+		text-decoration: underline;
+		color:rgb(165,165,165);
+	}
 
 </style>
 {% endblock head %}
@@ -42,7 +57,9 @@
 			<label for="inputDescription" class="col-sm-1 control-label">Description</label>
 			<div class="col-sm-10">
 				<textarea class="form-control" id="inputDescription" rows="5" name="description" required></textarea>
-				<span class="help-block" id="char-count">0</span>
+				<pclass="help-block">
+					<span id="current-pos">0</span> (<span id="char-count">0</span>)</span>
+				</p>
 			</div>
 		</div>
 		<div class="form-group">
@@ -114,11 +131,31 @@
 
 {% block scripts %}
 <script type="text/javascript">
+function doGetCaretPosition (ctrl) {
+    var CaretPos = 0;
+    // IE Support
+    if (document.selection) {
+        ctrl.focus ();
+        var Sel = document.selection.createRange ();
+        Sel.moveStart ('character', -ctrl.value.length);
+        CaretPos = Sel.text.length;
+    }
+    // Firefox support
+    else if (ctrl.selectionStart || ctrl.selectionStart == '0')
+        CaretPos = ctrl.selectionStart;
+    return (CaretPos);
+}
+
+
 $(document).ready(function() {
 
     // $("#addFeedItem-form").submit(function(event) { });
 	$("#inputDescription").on("change paste keydown keyup", function() {
-		$("#char-count").text($("#inputDescription").val().length)
+		$("#char-count").text($("#inputDescription").val().length);
+		$("#current-pos").text(doGetCaretPosition(document.getElementById("inputDescription")));
+	});
+	$("#inputDescription").click(function(){
+		$("#current-pos").text(doGetCaretPosition(document.getElementById("inputDescription")));
 	});
 	$("#addFeedItem-button").click(function() {
 		$(".feedform-container").slideToggle();
@@ -146,8 +183,26 @@ $(document).ready(function() {
 				$("#rendered-image").attr('src','http://www.hackillinois.org/img/icons-iOS/hackillinois.png');
 				$("#rendered-image").attr('alt','hackillinois');
 			}
-
-			$("#rendered-description").html($("#inputDescription").val());
+			var splitArr = []
+			var result = ''
+			var descText = $("#inputDescription").val();
+			var splits = $("#inputHighlights").val().trim().replace(/[\(\)\[\]]/g,"").split(/[,; ]/);
+			console.log(splits);
+			if(splits[0] != ""){
+				for(var i=0;i<splits.length;i+=2) {
+					if(i == 0)
+						splitArr.push(descText.substring(0,splits[i]));
+					else
+						splitArr.push(descText.substring(splits[i-1],splits[i]));
+					splitArr.push("<span class='type-"+type+"'>"+descText.substring(splits[i],splits[i+1])+"</span>");
+					if (i+2 >= splits.length)
+						splitArr.push(descText.substring(splits[i+1]));
+				}
+				result = splitArr.join("");
+			} else {
+				result = $("#inputDescription").val();
+			}
+			$("#rendered-description").html(result);
 			$(".rendered-container").slideDown();
 		} else {
 			alert("Please fill in the 'Description' and 'Type'.");
