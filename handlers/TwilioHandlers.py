@@ -62,6 +62,7 @@ class MassTextHandler(TwilioHandler):
                     to=number,
                     from_="+17864225451"
                 )
+                print "UGHH"
             logging.info("%s sent a message to the group" % (authorised_msgrs[from_number]))
         else:
             resp = twilio.twiml.Response().message("Eat Shit and Die.")

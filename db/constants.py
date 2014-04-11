@@ -1,4 +1,4 @@
-ADMIN_EMAILS = set(['lx.icomputer@gmail.com','mvd7793@gmail.com','austin.1111h@gmail.com','fishben2@illinois.edu','jacob@hackillinois.org'])
+ADMIN_EMAILS = set(['lx.icomputer@gmail.com','mvd7793@gmail.com','austin.1111h@gmail.com','fishben2@illinois.edu','jacob@hackillinois.org, brendanryan@hackillinois.org'])
 
 BUCKET = 'hackillinois'
 
