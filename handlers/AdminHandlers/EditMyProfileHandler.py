@@ -8,29 +8,25 @@ class EditMyProfileHandler(MainAdminHandler.BaseAdminHandler):
         admin_user = self.get_admin_user()
         if not admin_user: return self.abort(500, detail='User not in database')
 
-        data = {}
-        text_fields = ['email', 'companyName', 'name', 'userEmail', 'jobTitle']
+        admin = {}
+        text_fields = ['email', 'name', 'userEmail']
 
         for field in text_fields:
-            value = getattr(self.db_user, field) # Gets db_user.field using a string
-            if value is not None: data[field] = value
+            value = getattr(admin_user, field) # Gets db_user.field using a string
+            if value is not None: admin[field] = value
 
-        return self.render('admin_edit_my_profile.html', data=data, access=json.loads(admin_user.access))
+        return self.render('admin_edit_my_profile.html', admin=admin, access=json.loads(admin_user.access))
 
     def post(self):
         admin_user = self.get_admin_user()
         if not admin_user: return self.abort(500, detail='User not in database')
 
         name = str(urllib.unquote(self.request.get('name')))
-        companyName = str(urllib.unquote(self.request.get('companyName')))
         email = str(urllib.unquote(self.request.get('email')))
-        jobTitle = str(urllib.unquote(self.request.get('jobTitle')))
 
-        self.db_user.name = name
-        self.db_user.companyName = companyName
-        self.db_user.email = email
-        self.db_user.jobTitle = jobTitle
+        admin_user.name = name
+        admin_user.email = email
 
-        self.db_user.put()
+        admin_user.put()
 
         return self.write("success")
