@@ -3,7 +3,7 @@
 
 {% block head %}
 <link rel="stylesheet" href="/css/admin.css">
-<link rel="stylesheet" href="/css/bootstrap-datetimepicker.min.css">
+<link rel="stylesheet" href="/css/ui-lightness/jquery-ui-1.10.4.min.css">
 {% endblock head %}
 
 
@@ -82,7 +82,7 @@
 
         <div class="form-group">
           <label for="time" class="control-label">Time</label>
-          <input size="16" type="text" name="time" value="2014-4-11 14:45"  class="form_datetime form-control">       
+          <input id="timepicker1" type="text" class="form-control" name="time">
         </div>
 
 
@@ -118,7 +118,8 @@
 
 
     {% block scripts %}
-    <script src="/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="/js/jquery-ui-1.10.4.min.js"></script>
+    <script src="/js/jquery-ui-timepicker-addon.js"></script>
     <script src="/js/moment.min.js"></script>
     <script src="/js/typeahead.bundle.min.js"></script>
     <script src="/js/admin_schedule.js"></script>
