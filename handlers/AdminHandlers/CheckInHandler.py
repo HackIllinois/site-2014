@@ -54,7 +54,8 @@ class CheckInHandler(MainAdminHandler.BaseAdminHandler):
         return self.render("checkin.html", data=data)
 
     def post(self):
-        """
+        if not self.check_access(): return
+
         userId = str(urllib.unquote(self.request.get('userId')))
         number = str(urllib.unquote(self.request.get('number')))
         notes = str(urllib.unquote(self.request.get('notes')))
@@ -62,13 +63,14 @@ class CheckInHandler(MainAdminHandler.BaseAdminHandler):
         db_user = Attendee.search_database({'userId':userId}).get()
 
         if not db_user:
-            return logging.error("Attendee not in Database")
+            logging.error("Attendee not in Database")
+            self.write('Failure: Could not find user in database.')
 
         db_user.notes = notes
         db_user.phoneNumber = number
-        db_user.isCheckedIn = False
+        db_user.isCheckedIn = True
         db_user.checkInTime = datetime.now()
 
         db_user.put()
-        """
-        return self.write('Not yet implemented')
+
+        return self.write('Success')
