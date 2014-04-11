@@ -556,6 +556,11 @@ SPONSOR_LOGOS = [
       "class":"sponsor littler z_a",
       "src":"/img/logos/onenorth.png",
       "br_after":False },
+    { "href":"http://developers.kloudless.com/",
+      "alt":"kloudless",
+      "class":"sponsor littler",
+      "src":"/img/logos/kloudless.png",
+      "br_after":False },
 ]
 
 RESEARCH_PEPPER = "yDbC43w7Xj22LK3Xxh6Z3fy628x8md6w"
