@@ -82,7 +82,8 @@
 				<input type="text" class="form-control" id="inputHighlights" name="highlight">
 				<span class="help-block">
 					Enter a <span class="underBoldItalic">semi-colon</span> separated list of
-					text to be highlighted from the description.
+					text to be highlighted from the description.</br>
+					Example: [0,4],[9,18],[25,60]
 				</span>
 			</div>
 		</div>
@@ -186,7 +187,7 @@ $(document).ready(function() {
 			var splitArr = []
 			var result = ''
 			var descText = $("#inputDescription").val();
-			var splits = $("#inputHighlights").val().trim().replace(/[\(\)\[\]]/g,"").split(/[,; ]/);
+			var splits = $("#inputHighlights").val().trim().replace(/[\(\) \[\]]/g,"").split(/[,; ]/);
 			console.log(splits);
 			if(splits[0] != ""){
 				for(var i=0;i<splits.length;i+=2) {

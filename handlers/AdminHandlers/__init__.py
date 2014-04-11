@@ -26,3 +26,4 @@ import WhiteListControlHandler
 import MassRsvpInvalidateHandler
 import NewSponsorHandler
 import CorporateUrlHandler
+import StaffPhoneNumbersHandler

@@ -67,6 +67,7 @@ TOS_ERROR_MESSAGE = 'Please accept the Terms of Service'
 # READABLE_REQUIRED_FIELDS = ['First Name','Last Name','E-mail','Gender','School','Year in School','T-shirt size','past experience', 'Please accept the Terms of Service']
 
 EMAIL_MATCH = r"^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$"
+PHONE_MATCH = r"\+1\d{10}"
 
 GENDERS = ['Male','Female','Other', 'I choose not to specify']
 YEARS = ['Freshman','Sophomore','Junior','Senior','Grad','HS']
