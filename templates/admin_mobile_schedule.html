@@ -66,15 +66,15 @@
 
         <div class="form-group">
           <label for="inputEventName" class="control-label">Location</label>
-          <div>
-            <input type="text" placeholder="Location" class="form-control" id="inputEventLocation" name="location" required>
+          <div id="bloodhound">
+            <input class="form-control typeahead" type="text" placeholder="Location" name="location" autocomplete="off">
           </div>
         </div>
 
         <div class="form-group">
           <label for="companyName" class="control-label">Company Name</label>
           <div id="bloodhound">
-            <input class="form-control typeahead" type="text" placeholder="Company Name" name="company">
+            <input class="form-control typeahead" type="text" placeholder="Company Name" name="company" autocomplete="off">
           </div>
         </div>
 
@@ -82,13 +82,13 @@
           <label for="radioType" class="control-label">Day</label>
           <div>
             <label for="radio1" class="radio-inline">
-              <input type="radio" name="day" id="radio1" value="friday" required> Friday
+              <input type="radio" name="day" id="radio1" value="Friday" required> Friday
             </label>
             <label for="radio2" class="radio-inline">
-              <input type="radio" name="day" id="radio2" value="saturday" required> Saturday
+              <input type="radio" name="day" id="radio2" value="Saturday" required> Saturday
             </label>
             <label for="radio3" class="radio-inline">
-              <input type="radio" name="day" id="radio3" value="sunday" required> Sunday
+              <input type="radio" name="day" id="radio3" value="Sunday" required> Sunday
             </label>
           </div>
         </div>
@@ -116,12 +116,12 @@
       </ul>
     </div>
   </section>
-
-
+</div>
   {% endblock body %}
 
 
   {% block scripts %}
-  <script src="/js/admin_schedule.js"></script>
+  <script src="/js/moment.min.js"></script>
   <script src="/js/typeahead.bundle.min.js"></script>
+  <script src="/js/admin_schedule.js"></script>
   {% endblock scripts%}
