@@ -2,6 +2,8 @@ from handlers import MainHandler
 from google.appengine.api import users
 from db.Sponsor import Sponsor
 from db.CorporateUrl import CorporateUrl
+from db import constants
+import random
 import urllib
 from datetime import datetime
 
@@ -35,6 +37,14 @@ class RegisterHandler(MainHandler.Handler):
 
         return google_user, db_url
 
+    def get_next_key(self):
+        key = None
+        while not key:
+            i = random.randint(constants.SPONSOR_START_COUNT, constants.SPONSOR_START_COUNT+9998)
+            c = Sponsor.query(Sponsor.database_key == i).count()
+            if c == 0: key = i
+        return key
+
     def get(self, key):
         ret = self.check_user_and_key(key)
         if not ret: return
@@ -54,7 +64,8 @@ class RegisterHandler(MainHandler.Handler):
         Sponsor(
             parent=Sponsor.get_default_event_parent_key(),
             googleUser=google_user,
-            attendeeDataAccess=db_url.attendeeDataAccess
+            attendeeDataAccess=db_url.attendeeDataAccess,
+            database_key=self.get_next_key()
         ).put()
 
         db_url.enabled = False
@@ -62,4 +73,4 @@ class RegisterHandler(MainHandler.Handler):
         db_url.registerTime = datetime.now()
         db_url.put()
 
-        return self.redirect("/corporate")
+        return self.redirect("/corporate/editprofile")

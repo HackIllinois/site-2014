@@ -1,6 +1,5 @@
-<script src="/js/jquery.fittext.js"></script>
 {% extends "base/admin_base.html" %}
-{% set active_page = "editmyprofile" %}
+{% set active_page = "myprofile" %}
 
 {% block head %}
 <style type="text/css">
@@ -10,9 +9,6 @@
     .t-centered {
         text-align: center;
     }
-    .xkcd-container {
-        display: inline-block;
-    }
 </style>
 {% endblock head %}
 
@@ -21,8 +17,8 @@
 <div class="row">
     <div class="col-md-12">
         <h1 class="page-header">
-            {{ data.name }}
-            <button class="btn btn-success confirm-edit-btn">Confirm Edit</button>
+            {{ admin.name }}
+            <button type="button" class="btn btn-success confirm-edit-btn">Confirm Edit</button>
             <a class="btn btn-warning cancle-edit-btn" href="/corporate/profile">Cancle Edit</a>
         </h1>
     </div>
@@ -42,30 +38,18 @@
             <tr>
                 <td class="pull-right">Name:</td>
                 <td id="nameEdit" name="nameEdit">
-                    <input id="nameInput" name="nameInput" value="{{ data.name }}"></input>
-                </td>
-            </tr>
-            <tr>
-                <td class="pull-right">Company Name:</td>
-                <td id="companyNameEdit" name="companyNameEdit">
-                    <input id="companyNameInput" name="companyNameInput" value="{{ data.companyName }}"></input>
-                </td>
-            </tr>
-            <tr>
-                <td class="pull-right">Job Title:</td>
-                <td id="jobTitleEdit" name="jobTitleEdit">
-                    <input id="jobTitleInput" name="jobTitleInput" value="{{ data.jobTitle }}"></input>
+                    <input id="nameInput" name="nameInput" value="{{ admin.name }}"></input>
                 </td>
             </tr>
             <tr>
                 <td class="pull-right">Contact Email:</td>
                 <td id="emailEdit" name="emailEdit">
-                    <input id="emailInput" name="emailInput" value="{{ data.email }}"></input>
+                    <input id="emailInput" name="emailInput" value="{{ admin.email }}"></input>
                 </td>
             </tr>
             <tr>
                 <td class="pull-right">Login Email:</td>
-                <td name="email">{{ data.userEmail }}</td>
+                <td name="email">{{ admin.userEmail }}</td>
             </tr>
         </tbody>
     </table>
@@ -78,13 +62,11 @@
 <script type="text/javascript">
 function editBtnCallbacks() {
     $('.confirm-edit-btn').click(function() {
-        data = {};
-        data['name'] = $("#nameInput").val();
-        data['companyName'] = $("#companyNameInput").val();
-        data['email'] = $("#emailInput").val();
-        data['jobTitle'] = $("#jobTitleInput").val();
-        $.post('/corporate/editprofile', data, function(data) {
-            window.location = "/corporate/profile"
+        admin = {};
+        admin['name'] = $("#nameInput").val();
+        admin['email'] = $("#emailInput").val();
+        $.post('/admin/myprofile/edit', admin, function(admin) {
+            window.location = "/admin/myprofile"
         });
     });
 }

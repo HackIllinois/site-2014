@@ -76,7 +76,11 @@ handlers = [
     RedirectRoute('/admin/massinvalidate', handler=AdminHandlers.MassRsvpInvalidateHandler.MassRsvpInvalidateHandler, name='AdminMassRsvpInvalidate', strict_slash=True),
 	RedirectRoute('/admin/check-no-reply', handler=AdminHandlers.CheckNoReplyHandler.CheckNoReplyHandler, name='AdminCheckNoReplyHandler', strict_slash=True),
     RedirectRoute('/admin/corporateurl', handler=AdminHandlers.CorporateUrlHandler.CorporateUrlHandler, name='AdminCorporateUrl', strict_slash=True),
+    RedirectRoute('/admin/masscorporateurl', handler=AdminHandlers.MassCorporateUrlHandler.MassCorporateUrlHandler, name='AdminMassCorporateUrl', strict_slash=True),
     RedirectRoute('/admin/staffphonenumbers', handler=AdminHandlers.StaffPhoneNumbersHandler.StaffPhoneNumbersHandler, name='AdminStaffPhoneNumbers', strict_slash=True),
+
+    RedirectRoute('/admin/myprofile/edit', handler=AdminHandlers.EditMyProfileHandler.EditMyProfileHandler, name='AdminEditMyProfile', strict_slash=True),
+    RedirectRoute('/admin/myprofile', handler=AdminHandlers.MyProfileHandler.MyProfileHandler, name='AdminMyProfile', strict_slash=True),
 
     RedirectRoute('/admin/basicstats',          handler=AdminHandlers.BasicStatsHandler.BasicStatsHandler, name='AdminBasicStats0', strict_slash=True),
     RedirectRoute('/admin/basicstats/<status>', handler=AdminHandlers.BasicStatsHandler.BasicStatsHandler, name='AdminBasicStats1', strict_slash=True),
