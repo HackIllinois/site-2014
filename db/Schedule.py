@@ -9,7 +9,7 @@ class Schedule(Model):
 
   event_name = ndb.StringProperty()
   description = ndb.TextProperty()
-  #location = ndb.StructuredProperty(Room)
+  location = ndb.StructuredProperty(Room)
   room_obj = ndb.JsonProperty()
   time = ndb.IntegerProperty()
   icon_url = ndb.TextProperty()

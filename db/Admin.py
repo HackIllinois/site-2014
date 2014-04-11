@@ -10,8 +10,15 @@ class Admin(Model):
     email = ndb.StringProperty()
     googleUser = ndb.UserProperty()
 
+    # For user object look at https://developers.google.com/appengine/docs/python/users/userclass
+    '''These are all computed from the googleUser property'''
+    userNickname = ndb.ComputedProperty(lambda self: self.googleUser.nickname())
+    userEmail = ndb.ComputedProperty(lambda self: self.googleUser.email())
+    userId = ndb.ComputedProperty(lambda self: self.googleUser.user_id())
+    '''These are all computed from the googleUser property'''
+
     # these vairables are needed for mobile
-    userId = ndb.StringProperty(default='')
+    # userId = ndb.StringProperty(default='')
     name = ndb.StringProperty(default='')
     school = ndb.TextProperty(default='')
     year = ndb.TextProperty(default='')
@@ -32,7 +39,7 @@ class Admin(Model):
     mobileAccess = ndb.BooleanProperty(default=False)
     corporateAdminAccess = ndb.BooleanProperty(default=False)
     managerAccess = ndb.BooleanProperty(default=False)
-    personType = 'staff' 
+    personType = 'staff'
     mac_address = ndb.StringProperty(default='')
 
     access = ndb.ComputedProperty(lambda self: json.dumps({ 'stats':self.statsAccess,

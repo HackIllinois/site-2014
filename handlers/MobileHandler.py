@@ -68,9 +68,9 @@ def check_email_for_login(email):
 
     if Attendee.search_database({'userEmail':email}).get():
             return Attendee.approvalStatus.status == "Rsvp Coming"
-    elif Sponsor.search_database({'email':email}).get():
+    elif Sponsor.search_database({'userEmail':email}).get():
         return True
-    elif Admin.search_database({'email':email}).get():
+    elif Admin.search_database({'userEmail':email}).get():
         return True
     else:
         return False
@@ -258,19 +258,26 @@ class ScheduleHandler(MainHandler.BaseMobileHandler):
 
         schedule_query = Schedule.search_database({})
 
+        # Note: shitty hacky way to write this
+        schedule_list_friday = []
+        schedule_list_saturday = []
+        schedule_list_sunday = []
         for schedule_item in schedule_query:
             item = {
                     'event_name':schedule_item.event_name,
                     'description':schedule_item.description,
-                    'time':schedule_item.time,
-                    'icon_url':schedule_item.icon_url
-            }
+                    'time':schedule_item.time, # 21600 is 6 hours in unix to compensate for time difference
+                    'icon_url':schedule_item.icon_url,
+                    'location':schedule_item.room_obj
+            }   
+            if schedule_item.day == "Friday":
+                schedule_list_friday.append(item)
+            elif schedule_item.day == "Saturday":
+                schedule_list_saturday.append(item)
+            elif schedule_item.day == "Sunday":
+                schedule_list_sunday.append(item)
 
-            # # TODO: set up loction in schedule json
-            # for map_item in MobileConstants.MAP:
-            #     pass
-
-        return self.write(json.dumps(MobileConstants.SCHEDULE))
+        return self.write(json.dumps({'Friday':schedule_list_friday,'Saturday':schedule_list_saturday,'Sunday':schedule_list_sunday}))
 
 
 class SupportHandler(MainHandler.BaseMobileHandler):
@@ -411,8 +418,8 @@ class PersonHandler(MainHandler.BaseMobileHandler):
         
         if email:
             hackerProfile = Attendee.search_database({'userEmail':email}).get()
-            staffProfile = Admin.search_database({'email':email}).get()
-            companyProfile = Sponsor.search_database({'email':email}).get()
+            staffProfile = Admin.search_database({'userEmail':email}).get()
+            companyProfile = Sponsor.search_database({'userEmail':email}).get()
             
             if hackerProfile:
                 # update datastore
@@ -420,11 +427,11 @@ class PersonHandler(MainHandler.BaseMobileHandler):
 
             elif staffProfile:
                 # update datastore
-                Admin.update_search(updatedProfileDict, {'email':email})
+                Admin.update_search(updatedProfileDict, {'userEmail':email})
 
             elif companyProfile:
                 # update datastore
-                Sponsor.update_search(updatedProfileDict, {'email':email})
+                Sponsor.update_search(updatedProfileDict, {'userEmail':email})
 
             # update memcache
             all_profiles = get_people_memecache('all')
@@ -514,8 +521,8 @@ class LoginHandler(MainHandler.BaseMobileHandler):
 
         # filter by accepted and attending later on
         hackerProfile = Attendee.search_database({'userEmail':email}).get()
-        staffProfile = Admin.search_database({'email':email}).get()
-        mentorProfile = Sponsor.search_database({'email':email}).get()
+        staffProfile = Admin.search_database({'userEmail':email}).get()
+        mentorProfile = Sponsor.search_database({'userEmail':email}).get()
         
         list_profile = []
         
