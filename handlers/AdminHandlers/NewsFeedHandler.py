@@ -3,7 +3,14 @@ import json
 import urllib
 import time
 import re
+import itertools
 from db.NewsFeedItem import NewsFeedItem
+
+def pairwise(iterable):
+    "s -> (s0,s1), (s1,s2), (s2, s3), ..."
+    a, b = itertools.tee(iterable)
+    next(b, None)
+    return itertools.izip(a, b)
 
 class NewsFeedHandler(MainAdminHandler.BaseAdminHandler):
     def highlight_description(self, description, highlight):
@@ -77,15 +84,24 @@ class NewsFeedHandler(MainAdminHandler.BaseAdminHandler):
 
             if hl[-1] > (len(description)-1):
                 return self.write(json.dumps({'message':'Error: highlight goes beyond length of description'}))
-
+            highli = []
+            colortype = colors[urllib.unquote(self.request.get("type"))]
+            rgbcolor = [colortype['r'],colortype['g'],colortype['b']]
+            hlpair = []
+            for x in range(0,len(hl)-1,2):
+                hlpair.append([hl[x],hl[x+1]])
+            for pair in hlpair:
+                highli.append([list(pair),rgbcolor])
         # [ [ [start,end],[r,g,b] ], [ [start,end],[r,g,b] ] ]
 
 
         NewsFeedItem(
             parent=NewsFeedItem.get_default_event_parent_key(),
             description=description,
-            highlighted=hl,
+            highlighted=highli,
             emergency=str(urllib.unquote(self.request.get("type")))=='emergency',
+            hackillinois=str(urllib.unquote(self.request.get("type")))=='hackillinois',
+            announcement=str(urllib.unquote(self.request.get("type")))=='announcement',
             time=int(time.time()),
             icon_url=icon[str(urllib.unquote(self.request.get("type")))]
         ).put()

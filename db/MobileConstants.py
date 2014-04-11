@@ -41,69 +41,7 @@ SUPPORT = {
     }
 
 SCHEDULE = {
-    'Friday':[{
-              'event_name':'Registration',
-              'description':'Registration starts at 6pm and ends at 7pm. Settle in and update you hacker profile to let us know where you will be working.',
-              'location':
-                {'building':'DCL', 'floor':'1', 'room_number':'DCL 1310', 'room_type':'tech talks' ,'room_name':'', 'image_url':''},
-              'time':1397239200,
-              'icon_url':'http://www.hackillinois.org/img/icons-iOS/hackillinois.png'
-              },
-              {
-              'event_name':'Welcome Ceremony',
-              'description':'The Welcome Ceremony starts at 8pm and lasts until 9pm. Come meet our amazing HackIllinois team, our incredible sponsors, and other hackers!',
-              'location':
-                {'building':'DCL', 'floor':'1', 'room_number':'DCL 1310', 'room_type':'tech talks' ,'room_name':'', 'image_url':''},
-              'time':1397246400,
-              'icon_url':'http://www.hackillinois.org/img/icons-iOS/hackillinois.png'
-              }],
-    'Saturday':[{
-                'event_name':'Bank of America Tech Talk',
-                'description':'Talk talk about us and what we do',
-                'location':
-                {'building':'DCL', 'floor':'1', 'room_number':'DCL 1310', 'room_type':'tech talks' ,'room_name':'', 'image_url':''},
-                'time':1397278800,
-                'icon_url':'http://www.hackillinois.org/img/icons-iOS/ba.png'
-                },
-                {
-                'event_name':'Allston API talk',
-                'description':'We will be talking about our API',
-                'location':
-                {'building':'DCL', 'floor':'1', 'room_number':'DCL 1310', 'room_type':'tech talks' ,'room_name':'', 'image_url':''},
-                'time':1397314800,
-                'icon_url':'http://www.hackillinois.org/img/icons-iOS/allston.png'
-                }],
-    'Sunday':[
-              {
-              'event_name':'Bloomberg Talk',
-              'description':'Tech talk will be about Machine Learning',
-              'location':
-                {'building':'DCL', 'floor':'1', 'room_number':'DCL 1310', 'room_type':'tech talks' ,'room_name':'', 'image_url':''},
-              'time':1397390400,
-              'icon_url':'http://www.hackillinois.org/img/icons-iOS/bloomberg.png'
-              },
-              {
-              'event_name':'Answer Tech Talk',
-              'description':'Tech talk will be about us and what we do',
-              'location':
-                {'building':'DCL', 'floor':'1', 'room_number':'DCL 1310', 'room_type':'tech talks' ,'room_name':'', 'image_url':''},
-              'time':1397395800,
-              'icon_url':'http://www.hackillinois.org/img/icons-iOS/answers.png'
-              },
-              {
-                'event_name':'a16z API talk',
-                'description':'We will be talking about our API',
-                'location':
-                {'building':'DCL', 'floor':'1', 'room_number':'DCL 1310', 'room_type':'tech talks' ,'room_name':'', 'image_url':''},
-                'time':1397401200,
-                'icon_url':'http://www.hackillinois.org/img/icons-iOS/a16z.png'		
-                },
-                {
-                'event_name':'3red API talk',
-                'description':'We will be showing off and demoing our API',
-                'location':
-                {'building':'DCL', 'floor':'1', 'room_number':'DCL 1310', 'room_type':'tech talks' ,'room_name':'', 'image_url':''},
-                'time':1397408400,
-                'icon_url':'http://www.hackillinois.org/img/icons-iOS/3red.png'     
-                }]
+    'Friday':[],
+    'Saturday':[],
+    'Sunday':[]
           }

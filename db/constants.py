@@ -553,3 +553,5 @@ SPONSOR_LOGOS = [
       "src":"/img/logos/onenorth.png",
       "br_after":False },
 ]
+
+RESEARCH_PEPPER = "yDbC43w7Xj22LK3Xxh6Z3fy628x8md6w"

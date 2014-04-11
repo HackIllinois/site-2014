@@ -12,6 +12,7 @@ class Schedule(Model):
 	location = ndb.StructuredProperty(Room)
 	time = ndb.IntegerProperty()
 	icon_url = ndb.TextProperty()
+	day = ndb.TextProperty(default='')
 
 	@classmethod
 	def new(cls, data):
