@@ -8,6 +8,7 @@ from db.Admin import Admin
 from db.Skills import Skills
 from db.NewsFeedItem import NewsFeedItem
 from db.Schedule import Schedule
+from db.Room import Room
 from google.appengine.api import users, memcache
 import json
 import time
@@ -68,9 +69,9 @@ def check_email_for_login(email):
 
     if Attendee.search_database({'userEmail':email}).get():
             return Attendee.approvalStatus.status == "Rsvp Coming"
-    elif Sponsor.search_database({'email':email}).get():
+    elif Sponsor.search_database({'userEmail':email}).get():
         return True
-    elif Admin.search_database({'email':email}).get():
+    elif Admin.search_database({'userEmail':email}).get():
         return True
     else:
         return False
@@ -262,13 +263,10 @@ class ScheduleHandler(MainHandler.BaseMobileHandler):
             item = {
                     'event_name':schedule_item.event_name,
                     'description':schedule_item.description,
-                    'time':schedule_item.time,
+                    'time':schedule_item.time - 21600, # 21600 is 6 hours in unix to compensate for time difference
                     'icon_url':schedule_item.icon_url
-            }
-
-            # # TODO: set up loction in schedule json
-            # for map_item in MobileConstants.MAP:
-            #     pass
+                    # 'location':
+            }   
 
         return self.write(json.dumps(MobileConstants.SCHEDULE))
 
@@ -411,8 +409,8 @@ class PersonHandler(MainHandler.BaseMobileHandler):
         
         if email:
             hackerProfile = Attendee.search_database({'userEmail':email}).get()
-            staffProfile = Admin.search_database({'email':email}).get()
-            companyProfile = Sponsor.search_database({'email':email}).get()
+            staffProfile = Admin.search_database({'userEmail':email}).get()
+            companyProfile = Sponsor.search_database({'userEmail':email}).get()
             
             if hackerProfile:
                 # update datastore
@@ -420,11 +418,11 @@ class PersonHandler(MainHandler.BaseMobileHandler):
 
             elif staffProfile:
                 # update datastore
-                Admin.update_search(updatedProfileDict, {'email':email})
+                Admin.update_search(updatedProfileDict, {'userEmail':email})
 
             elif companyProfile:
                 # update datastore
-                Sponsor.update_search(updatedProfileDict, {'email':email})
+                Sponsor.update_search(updatedProfileDict, {'userEmail':email})
 
             # update memcache
             all_profiles = get_people_memecache('all')
@@ -514,8 +512,8 @@ class LoginHandler(MainHandler.BaseMobileHandler):
 
         # filter by accepted and attending later on
         hackerProfile = Attendee.search_database({'userEmail':email}).get()
-        staffProfile = Admin.search_database({'email':email}).get()
-        mentorProfile = Sponsor.search_database({'email':email}).get()
+        staffProfile = Admin.search_database({'userEmail':email}).get()
+        mentorProfile = Sponsor.search_database({'userEmail':email}).get()
         
         list_profile = []
         
