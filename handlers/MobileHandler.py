@@ -134,6 +134,7 @@ def get_staff_data():
         profile = {'name':staff_profile.name.strip().title(),
                     'email':staff_profile.email,
                     'company':staff_profile.companyName,
+                    'school':staff_profile.companyName,
                     'job_title':staff_profile.jobTitle,
                     'year':staff_profile.year,
                     'homebase':staff_profile.homebase,
@@ -176,6 +177,7 @@ def get_mentor_data():
         profile = {'name':mentor_profile.name.strip().title(),
                     'email':mentor_profile.email,
                     'company':mentor_profile.companyName,
+                    'school':mentor_profile.companyName,
                     'job_title':mentor_profile.jobTitle,
                     'fb_url':mentor_profile.pictureURL,
                     'database_key':mentor_profile.database_key,
@@ -546,7 +548,6 @@ class LoginHandler(MainHandler.BaseMobileHandler):
             'type':'hacker'}
 
             if hackerProfile.skills:
-                logging.debug(hackerProfile.skills)
                 if hackerProfile.skills[0] != "":
                     profile['skills'] = hackerProfile.skills
                 else:
@@ -568,6 +569,7 @@ class LoginHandler(MainHandler.BaseMobileHandler):
             profile = {'name':staffProfile.name.strip().title(),
             'email':staffProfile.email,
             'company':staffProfile.companyName,
+            'school':staffProfile.companyName,
             'job_title':staffProfile.jobTitle,
             'year':staffProfile.year,
             'homebase':staffProfile.homebase,
@@ -598,6 +600,7 @@ class LoginHandler(MainHandler.BaseMobileHandler):
             profile = {'name':mentorProfile.name.strip().title(),
             'email':mentorProfile.email,
             'company':mentorProfile.companyName,
+            'school':mentorProfile.companyName,
             'job_title':mentorProfile.jobTitle,
             'fb_url':mentorProfile.pictureURL,
             'database_key':mentorProfile.database_key ,
