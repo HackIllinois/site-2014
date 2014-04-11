@@ -66,11 +66,11 @@ def check_email_for_login(email):
     if not email:
         return False
 
-    if Attendee.search_database({'userEmail':email}).get():
+    if Attendee.search_database({'email_lower':email}).get():
             return Attendee.approvalStatus.status == "Rsvp Coming"
-    elif Sponsor.search_database({'userEmail':email}).get():
+    elif Sponsor.search_database({'email_lower':email}).get():
         return True
-    elif Admin.search_database({'userEmail':email}).get():
+    elif Admin.search_database({'email_lower':email}).get():
         return True
     else:
         return False
@@ -424,21 +424,21 @@ class PersonHandler(MainHandler.BaseMobileHandler):
             updatedKeys.append(_key)
 
         if email:
-            hackerProfile = Attendee.search_database({'userEmail':email}).get()
-            staffProfile = Admin.search_database({'userEmail':email}).get()
-            companyProfile = Sponsor.search_database({'userEmail':email}).get()
+            hackerProfile = Attendee.search_database({'email_lower':email}).get()
+            staffProfile = Admin.search_database({'email_lower':email}).get()
+            companyProfile = Sponsor.search_database({'email_lower':email}).get()
 
             if hackerProfile:
                 # update datastore
-                Attendee.update_search(updatedProfileDict, {'userEmail':email})
+                Attendee.update_search(updatedProfileDict, {'email_lower':email})
 
             elif staffProfile:
                 # update datastore
-                Admin.update_search(updatedProfileDict, {'userEmail':email})
+                Admin.update_search(updatedProfileDict, {'email_lower':email})
 
             elif companyProfile:
                 # update datastore
-                Sponsor.update_search(updatedProfileDict, {'userEmail':email})
+                Sponsor.update_search(updatedProfileDict, {'email_lower':email})
 
             # update memcache
             all_profiles = get_people_memecache('all')
@@ -527,9 +527,9 @@ class LoginHandler(MainHandler.BaseMobileHandler):
             return self.write(json.dumps([]))
 
         # filter by accepted and attending later on
-        hackerProfile = Attendee.search_database({'userEmail':email}).get()
-        staffProfile = Admin.search_database({'userEmail':email}).get()
-        mentorProfile = Sponsor.search_database({'userEmail':email}).get()
+        hackerProfile = Attendee.search_database({'email_lower':email}).get()
+        staffProfile = Admin.search_database({'email_lower':email}).get()
+        mentorProfile = Sponsor.search_database({'email_lower':email}).get()
 
         list_profile = []
 
