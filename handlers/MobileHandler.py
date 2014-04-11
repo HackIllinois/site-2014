@@ -161,7 +161,6 @@ def get_staff_data():
 
         if staff_profile.name != "":
             data.append(profile)
-            logging.info(profile)
 
     return data
 
@@ -203,7 +202,6 @@ def get_mentor_data():
 
         if mentor_profile.name != "":
             data.append(profile)
-            logging.info(profile)
 
     return data
 
