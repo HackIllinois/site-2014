@@ -21,6 +21,18 @@
 	.media-body {
 		word-wrap: break-word;
 	}
+	.type-hackillinois { 
+		font-weight: bold;
+		color:rgb(27,77,104);
+	}
+	.type-emergency { 
+		font-weight: bold;
+		color:rgb(167,65,46);
+	}
+	.type-announcement { 
+		font-weight: bold;
+		color:rgb(165,165,165);
+	}
 
 </style>
 {% endblock head %}
@@ -146,8 +158,22 @@ $(document).ready(function() {
 				$("#rendered-image").attr('src','http://www.hackillinois.org/img/icons-iOS/hackillinois.png');
 				$("#rendered-image").attr('alt','hackillinois');
 			}
-
-			$("#rendered-description").html($("#inputDescription").val());
+			var splitArr = []
+			var result = ''
+			var descText = $("#inputDescription").val();
+			var splits = $("#inputHighlights").val().replace(/[\(\)\[\]]/g,"").split(/[,; ]/);
+			console.log(splits);
+			for(var i=0;i<splits.length;i+=2) {
+				if(i == 0)
+					splitArr.push(descText.substring(0,splits[i]));
+				else
+					splitArr.push(descText.substring(splits[i-1],splits[i]));
+				splitArr.push("<span class='type-"+type+"'>"+descText.substring(splits[i],splits[i+1])+"</span>");
+				if (i+2 >= splits.length)
+					splitArr.push(descText.substring(splits[i+1]));
+			}
+			result = splitArr.join("");
+			$("#rendered-description").html(result);
 			$(".rendered-container").slideDown();
 		} else {
 			alert("Please fill in the 'Description' and 'Type'.");
