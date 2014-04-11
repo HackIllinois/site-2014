@@ -16,21 +16,3 @@ class MyProfileHandler(MainAdminHandler.BaseAdminHandler):
             if value is not None: data[field] = value
 
         return self.render('admin_my_profile.html', data=data, access=json.loads(admin_user.access))
-
-    def post(self):
-        admin_user = self.get_admin_user()
-        if not admin_user: return self.abort(500, detail='User not in database')
-
-        name = str(urllib.unquote(self.request.get('name')))
-        companyName = str(urllib.unquote(self.request.get('companyName')))
-        email = str(urllib.unquote(self.request.get('email')))
-        jobTitle = str(urllib.unquote(self.request.get('jobTitle')))
-
-        self.db_user.name = name
-        self.db_user.companyName = companyName
-        self.db_user.email = email
-        self.db_user.jobTitle = jobTitle
-
-        self.db_user.put()
-
-        return self.write("success")
