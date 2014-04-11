@@ -16,7 +16,6 @@ import AdminHandlers
 import MobileHandler
 import ErrorHandlers
 import TwilioHandlers
-import CheckInHandler
 
 handlers = [
     RedirectRoute('/', handler=IndexHandler, name='Index', strict_slash=True),

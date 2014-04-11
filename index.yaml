@@ -18,6 +18,20 @@ indexes:
 - kind: Attendee
   ancestor: yes
   properties:
+  - name: approvalStatus.status
+  - name: isCheckedIn
+  - name: isRegistered
+  - name: email
+  - name: gender
+  - name: nameFirst
+  - name: nameLast
+  - name: school
+  - name: shirt
+  - name: userId
+
+- kind: Attendee
+  ancestor: yes
+  properties:
   - name: isRegistered
   - name: approvalStatus.approvedTime
   - name: approvalStatus.rsvpTime

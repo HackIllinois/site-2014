@@ -73,12 +73,12 @@ class Attendee(Model):
 
     isRegistered = ndb.BooleanProperty(default=False)
     registrationTime = ndb.DateTimeProperty(auto_now_add=True)
-	
+
+    # All for checkin stuff
     isCheckedIn = ndb.BooleanProperty(default=False)
     checkInTime = ndb.DateTimeProperty()
-	
     notes = ndb.TextProperty()
-    phoneNumber = ndb.TextProperty()
+    phoneNumber = ndb.StringProperty()
 
     applyError = ndb.BooleanProperty()
     errorMessages = ndb.TextProperty()
