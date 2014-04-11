@@ -265,7 +265,11 @@ class BaseAdminHandler(MainHandler.Handler):
                          'resume': hacker.resume,
                          'registrationTime': hacker.registrationTime.strftime('%x %X'),
                          'isApproved': hacker.isApproved,
-                         'userId': hacker.userId})
+                         'userId': hacker.userId,
+
+                         'isCheckedIn':hacker.isCheckedIn,
+                         'notes':hacker.notes,
+                         'phoneNumber':hacker.phoneNumber})
 
         if not memcache.set('hackers', data, time=constants.MEMCACHE_TIMEOUT):
             logging.error('Memcache set failed.')
@@ -391,7 +395,11 @@ class BaseAdminHandler(MainHandler.Handler):
                          'micro2':hacker.micro2,
                          'labEquipment':hacker.labEquipment,
                          'experience':'' if not hacker.experience else hacker.experience.replace('\n', ' ').replace('\r', ''),
-                         'teamMembers':'' if not hacker.teamMembers else hacker.teamMembers.replace('\n', ' ').replace('\r', '')})
+                         'teamMembers':'' if not hacker.teamMembers else hacker.teamMembers.replace('\n', ' ').replace('\r', ''),
+
+                          'isCheckedIn':hacker.isCheckedIn,
+                          'notes':hacker.notes,
+                          'phoneNumber':hacker.phoneNumber })
 
         # Not using memcache at the moment
         # if not memcache.set(key, data, time=constants.MEMCACHE_TIMEOUT):
