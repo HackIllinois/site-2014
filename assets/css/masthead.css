@@ -44,7 +44,7 @@
 }
 
 .bullets-centered {
-    width: 278px;
+    width: 600px;
     padding-top: 25px;
     padding-bottom: 15px;
     margin: 0 auto;
@@ -71,7 +71,18 @@ li.schedule-item > time {
     padding-right: 20px;
     border-right: 2px solid #e7e9ea;
     padding-bottom: 0px;
-    width: 56px;
+    width: 68px;
+    display: inline-block;
+    text-align: right;
+}
+
+li.schedule-item > time.addition {
+    padding: 10px 20px 0px 0px;
+    height: 30px;
+    padding-right: 20px;
+    border-right: 2px solid #e7e9ea;
+    padding-bottom: 0px;
+    width: 68px;
     display: inline-block;
     text-align: right;
 }
@@ -86,7 +97,7 @@ li.schedule-item > h6 {
 li.schedule-item > h6::before {
     position: absolute;
     display: block;
-    left: 72px;
+    left: 84px;
     right: 5px;
     width: 8px;
     height: 8px;
