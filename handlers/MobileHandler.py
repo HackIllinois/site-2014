@@ -181,6 +181,7 @@ def get_mentor_data():
                     'job_title':mentor_profile.jobTitle,
                     'fb_url':mentor_profile.pictureURL,
                     'database_key':mentor_profile.database_key,
+                    'homebase':mentor_profile.homebase,
                     'time':mentor_profile.updatedTime,
                     'mac_address':mentor_profile.mac_address,
                     'type':'mentor'}
@@ -603,6 +604,7 @@ class LoginHandler(MainHandler.BaseMobileHandler):
             'school':mentorProfile.companyName,
             'job_title':mentorProfile.jobTitle,
             'fb_url':mentorProfile.pictureURL,
+            'homebase':mentorProfile.homebase,
             'database_key':mentorProfile.database_key ,
             'time':mentorProfile.updatedTime,
             'mac_address':mentorProfile.mac_address,
