@@ -32,7 +32,7 @@ class Sponsor(Model):
     updatedTime = ndb.IntegerProperty()
     email_lower = ndb.ComputedProperty(lambda self: self.email.lower())
     database_key = ndb.IntegerProperty(default=0)
-    status_list = ndb.JsonProperty()
+    status_list = ndb.JsonProperty(default=[])
     personType = 'mentor'
     mac_address = ndb.StringProperty(default='')
 

@@ -82,11 +82,11 @@ def get_hacker_data():
     for hackerProfile in hackers:
         name = ''
         if hackerProfile.nameFirst: 
-            name+=hackerProfile.nameFirst.strip() + ' '
+            name+=hackerProfile.nameFirst.strip().title() + ' '
         if hackerProfile.nameLast: 
-            name+=hackerProfile.nameLast.strip()
+            name+=hackerProfile.nameLast.strip().title()
         profile = {'email':hackerProfile.email, 
-                    'school':hackerProfile.school, 
+                    'school':hackerProfile.school.title(), 
                     'year':hackerProfile.year, 
                     'homebase':hackerProfile.homebase, 
                     'fb_url':hackerProfile.pictureURL, 
@@ -127,7 +127,7 @@ def get_staff_data():
     data = []
 
     for staff_profile in all_staff:
-        profile = {'name':staff_profile.name, 
+        profile = {'name':staff_profile.name.strip().title(), 
                     'email':staff_profile.email, 
                     'company':staff_profile.companyName,
                     'job_title':staff_profile.jobTitle,
@@ -169,7 +169,7 @@ def get_mentor_data():
     data = []
 
     for mentor_profile in all_mentors:
-        profile = {'name':mentor_profile.name,
+        profile = {'name':mentor_profile.name.strip().title(),
                     'email':mentor_profile.email, 
                     'company':mentor_profile.companyName, 
                     'job_title':mentor_profile.jobTitle, 
@@ -517,15 +517,14 @@ class LoginHandler(MainHandler.BaseMobileHandler):
         
         if hackerProfile:
             name = ''
-            if hackerProfile.nameFirst: name+=hackerProfile.nameFirst + ' '
-            if hackerProfile.nameLast: name+=hackerProfile.nameLast
+            if hackerProfile.nameFirst: name+=hackerProfile.nameFirst.strip().title() + ' '
+            if hackerProfile.nameLast: name+=hackerProfile.nameLast.strip().title()
             profile = {'name':name, 
             'email':hackerProfile.email, 
-            'school':hackerProfile.school, 
+            'school':hackerProfile.school.title(), 
             'year':hackerProfile.year,
             'homebase':hackerProfile.homebase, 
             'fb_url':hackerProfile.pictureURL, 
-            'status':hackerProfile.status_list, 
             'database_key':hackerProfile.database_key ,
             'time':hackerProfile.updatedTime,
             'mac_address':hackerProfile.mac_address,
@@ -550,14 +549,13 @@ class LoginHandler(MainHandler.BaseMobileHandler):
 
             list_profile.append(profile)
         elif staffProfile:
-            profile = {'name':staffProfile.name, 
+            profile = {'name':staffProfile.name.strip().title(), 
             'email':staffProfile.email, 
             'company':staffProfile.companyName,
             'job_title':staffProfile.jobTitle,
             'year':staffProfile.year,
             'homebase':staffProfile.homebase, 
             'fb_url':staffProfile.pictureURL, 
-            'status':staffProfile.status_list, 
             'database_key':staffProfile.database_key, 
             'time':staffProfile.updatedTime,
             'mac_address':staffProfile.mac_address,
@@ -581,12 +579,11 @@ class LoginHandler(MainHandler.BaseMobileHandler):
 
             list_profile.append(profile)
         elif mentorProfile:
-            profile = {'name':mentorProfile.name,
+            profile = {'name':mentorProfile.name.strip().title(),
             'email':mentorProfile.email, 
             'company':mentorProfile.companyName, 
             'job_title':mentorProfile.jobTitle, 
             'fb_url':mentorProfile.pictureURL, 
-            'status':mentorProfile.status_list, 
             'database_key':mentorProfile.database_key , 
             'time':mentorProfile.updatedTime,
             'mac_address':mentorProfile.mac_address,
