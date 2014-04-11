@@ -16,10 +16,9 @@ import RegisterHandler
 
 sponsor_handlers = [
     RedirectRoute('/corporate',                 handler=IndexHandler.IndexHandler,              name='SponsorIndex',            strict_slash=True),
-	
+
     RedirectRoute('/corporate/profile',         handler=ProfileHandler.ProfileHandler,          name='SponsorProfile',          strict_slash=True),
     RedirectRoute('/corporate/editprofile',     handler=EditProfileHandler.EditProfileHandler,  name='SponsorEditProfile',      strict_slash=True),
-    # RedirectRoute('/corporate/editprofile',     handler=EditProfileHandler.EditProfileHandler,  name='SponsorEditProfile',      strict_slash=True),
     # RedirectRoute('/corporate/support',         handler=SupportHandler.SupportHandler,          name='SponsorSupport',          strict_slash=True),
 
     RedirectRoute('/corporate/hackers',         handler=HackersHandler.HackersHandler,          name='SponsorHackers',          strict_slash=True),

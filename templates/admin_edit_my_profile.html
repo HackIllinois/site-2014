@@ -1,5 +1,6 @@
-{% extends "sponsor/base/sponsor_base.html" %}
-{% set active_page = "profile" %}
+<script src="/js/jquery.fittext.js"></script>
+{% extends "base/admin_base.html" %}
+{% set active_page = "editmyprofile" %}
 
 {% block head %}
 <style type="text/css">
@@ -9,13 +10,14 @@
     .t-centered {
         text-align: center;
     }
+    .xkcd-container {
+        display: inline-block;
+    }
 </style>
 {% endblock head %}
 
 
-
 {% block body %}
-
 <div class="row">
     <div class="col-md-12">
         <h1 class="page-header">
@@ -69,7 +71,6 @@
     </table>
 </div>
 </form>
-
 {% endblock body %}
 
 

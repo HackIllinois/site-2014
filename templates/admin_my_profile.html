@@ -1,5 +1,5 @@
-{% extends "sponsor/base/sponsor_base.html" %}
-{% set active_page = "profile" %}
+{% extends "base/admin_base.html" %}
+{% set active_page = "myprofile" %}
 
 {% block head %}
 <style type="text/css">
@@ -9,18 +9,17 @@
     .t-centered {
         text-align: center;
     }
+
 </style>
 {% endblock head %}
 
 
-
 {% block body %}
-
 <div class="row">
     <div class="col-md-12">
         <h1 class="page-header">
             {{ data.name }}
-            <a class="btn btn-primary edit-btn" href="/corporate/editprofile">Edit</a>
+            <a class="btn btn-primary edit-btn" href="/admin/editmyprofile">Edit</a>
         </h1>
     </div>
 </div>
@@ -62,5 +61,6 @@
 
 {% block scripts %}
 <script type="text/javascript">
+$(document).ready(function() { });
 </script>
 {% endblock scripts%}

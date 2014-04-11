@@ -15,6 +15,7 @@ import SubpageHandlers
 import AdminHandlers
 import MobileHandler
 import ErrorHandlers
+import TwilioHandlers
 
 handlers = [
     RedirectRoute('/', handler=IndexHandler, name='Index', strict_slash=True),
@@ -125,6 +126,8 @@ handlers = [
     RedirectRoute('/401', handler=ErrorHandlers.Error401Handler, name='Error401', strict_slash=True),
     RedirectRoute('/404', handler=ErrorHandlers.Error404Handler, name='Error404', strict_slash=True),
     RedirectRoute('/500', handler=ErrorHandlers.Error500Handler, name='Error500', strict_slash=True),
+
+    RedirectRoute('/twilio/sendmasstext', handler=TwilioHandlers.MassTextHandler, name='TwilioMassText', strict_slash=True),
 ]
 
 errorHandlers = {
