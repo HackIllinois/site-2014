@@ -46,9 +46,8 @@ class BaseAdminHandler(MainHandler.Handler):
         admin_user = Admin.search_database({'userEmail': user.email()}).get()
         if admin_user:
             is_admin = True
-            # if not admin_user.userId: admin_user.userId = user.user_id()
             if not admin_user.googleUser: admin_user.googleUser = user
-            # if not admin_user.email: admin_user.email = user.email()
+            if not admin_user.userId: admin_user.googleUser = user
             if not admin_user.database_key: admin_user.database_key = self.get_next_key()
             if email in constants.ADMIN_EMAILS:
                 admin_user.statsAccess = True
@@ -64,7 +63,6 @@ class BaseAdminHandler(MainHandler.Handler):
                 parent=Admin.get_default_event_parent_key(),
                 email=user.email(),
                 googleUser=user,
-                # userId=user.user_id(),
                 statsAccess=True,
                 approveAccess=True,
                 approveAdminAccess=True,
