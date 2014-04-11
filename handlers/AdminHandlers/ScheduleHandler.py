@@ -2,7 +2,10 @@ import MainAdminHandler
 import json
 import urllib
 import time
+
 from db.Schedule import Schedule
+from db.Room import Room
+from db.MobileConstants import MAP
 
 class ScheduleHandler(MainAdminHandler.BaseAdminHandler):
     def get(self):
@@ -26,13 +29,18 @@ class ScheduleHandler(MainAdminHandler.BaseAdminHandler):
             return self.abort(401, detail='User does not have permission to update the mobile newsfeed.')
 
 
+        #create room from request
+        roomnumber = self.request.get('location')
+        rooms = filter(lambda x: x['room_number'] == roomnumber, MAP)
+        #query for room number
+        r = Room.query()
+        #room object from Room ID
 
         #check all fields valid
-
         Schedule(
             event_name=self.request.get('event_name'),
             description=self.request.get('description'),
-            location=self.request.get("location"),
+            location= r,
             time=int(time.time()),
             icon_url= self.request.get('img_src'),
             day = str(urllib.unquote(self.request.get('day')))

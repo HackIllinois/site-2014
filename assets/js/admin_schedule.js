@@ -158,8 +158,8 @@ $("#bloodhound input[name='location']").typeahead({
     $("button[type='submit']").click(function(){
       //send post
       $.post({
+        url: window.location.pathname,
         data: parseForm(),
-        url: '',
         success: function(data, status){
           alert(status);
           //clear form fields
