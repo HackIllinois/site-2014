@@ -60,7 +60,7 @@ class MassTextHandler(TwilioHandler):
                 message = self.client.sms.messages.create(
                     body=body,
                     to=number,
-                    from="+17864225451"
+                    from_="+17864225451"
                 )
             logging.info("%s sent a message to the group" % (authorised_msgrs[from_number]))
         else:
