@@ -8,6 +8,7 @@ from SponsorHandler import SponsorDownloadHandler
 from LogoutHandler import LogoutHandler
 from MGTHandler import MGTHandler, ParticlesHandler
 from RsvpHandler import RsvpHandler, NotApprovedHandler, RsvpYesHandler, RsvpNoHandler, RsvpClosedHandler
+from ResearchHandler import ResearchHandler, ResearchRedirect, ResearchComplete
 import ApplyHandler
 import MentorHandler
 import SubpageHandlers
@@ -36,6 +37,10 @@ handlers = [
     RedirectRoute('/rsvp/yes', handler=RsvpYesHandler, name='RsvpYes', strict_slash=True),
     RedirectRoute('/rsvp/no', handler=RsvpNoHandler, name='RsvpNo', strict_slash=True),
     RedirectRoute('/rsvp/closed', handler=RsvpClosedHandler, name='RsvpClosed', strict_slash=True),
+
+    RedirectRoute('/research', handler=ResearchHandler, name='ResearchHandler', strict_slash=True),
+    RedirectRoute('/research/complete/', handler=ResearchComplete, name='ResearchComplete', strict_slash=True),
+    RedirectRoute('/research/<form>', handler=ResearchRedirect, name='ResearchRedirect', strict_slash=True),
 
     RedirectRoute('/mentor', handler=MentorHandler.RenderHandler, name='Mentor', strict_slash=True),
 
