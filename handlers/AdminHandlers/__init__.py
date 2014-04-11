@@ -28,3 +28,5 @@ import NewSponsorHandler
 import CorporateUrlHandler
 import StaffPhoneNumbersHandler
 import MassCorporateUrlHandler
+import MyProfileHandler
+import EditMyProfileHandler

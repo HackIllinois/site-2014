@@ -33,14 +33,15 @@ class Admin(Model):
     database_key = ndb.IntegerProperty(default=0)
     status_list = ndb.JsonProperty(default=[])
 
+    personType = 'staff'
+    mac_address = ndb.StringProperty(default='')
+
     statsAccess = ndb.BooleanProperty(default=False)
     approveAccess = ndb.BooleanProperty(default=False)
     approveAdminAccess = ndb.BooleanProperty(default=False)
     mobileAccess = ndb.BooleanProperty(default=False)
     corporateAdminAccess = ndb.BooleanProperty(default=False)
     managerAccess = ndb.BooleanProperty(default=False)
-    personType = 'staff'
-    mac_address = ndb.StringProperty(default='')
 
     access = ndb.ComputedProperty(lambda self: json.dumps({ 'stats':self.statsAccess,
                                                             'approve':self.approveAccess,
