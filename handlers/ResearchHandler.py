@@ -5,7 +5,7 @@ from db.Attendee import Attendee
 import hashlib
 
 FIRST_SURVEY_URL = "https://uiuc.qualtrics.com/SE/?SID=SV_9o8VsW4h7QRpUBn&uid={0}"
-SECOND_SURVEY_URL = ""
+SECOND_SURVEY_URL = "https://survey.az1.qualtrics.com/SE/?SID=SV_56B6x4cmftCrGwB&uid={0}"
 
 def get_uid():
     user = users.get_current_user()
