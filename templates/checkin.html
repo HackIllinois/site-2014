@@ -187,28 +187,31 @@
 
         function checkInBtnCallbacks() {
             $('.status-btn').click(function () {
-                var name = $(this).closest('tr').find('.name').text(),
-                    number = $(this).closest('tr').find('#input_number').val(),
-                    notes = $(this).closest('tr').find('#input_notes').val(),
-                    userId = $(this).closest('tr').get(0).id,
-                    r = confirm("Check In " + name + "?");
-                if (r == true) {
-                    var posting = $.post("/admin/checkin", {"userId": userId, "number": number, "notes": notes});
-                    posting.done(function(data) {
-                        if (data != "Success") {
-                            alert(data);
-                        } else {
-                            hackerList.remove('id', userId);
-                            $('#search_box').val("");
-                            hackerList.search();
-                        }
-                    });
-                    posting.fail(function() {
-                        alert("Error submitting data. Try refreshing the page.");
-                    });
-                }
-                else {
-                    return;
+                if(!$(this).hasClass('cant-click')) {
+                    $(this).addClass('cant-click');
+                    var name = $(this).closest('tr').find('.name').text(),
+                        number = $(this).closest('tr').find('#input_number').val(),
+                        notes = $(this).closest('tr').find('#input_notes').val(),
+                        userId = $(this).closest('tr').get(0).id,
+                        r = confirm("Check In " + name + "?");
+                    if (r == true) {
+                        var posting = $.post("/admin/checkin", {"userId": userId, "number": number, "notes": notes});
+                        posting.done(function(data) {
+                            if (data != "Success") {
+                                alert(data);
+                            } else {
+                                hackerList.remove('id', userId);
+                                $('#search_box').val("");
+                                hackerList.search();
+                            }
+                        });
+                        posting.fail(function() {
+                            alert("Error submitting data. Try refreshing the page.");
+                        });
+                    }
+                    else {
+                        return;
+                    }
                 }
             });
         }
@@ -222,7 +225,7 @@
 
             hackerList.on('updated', function() {
                 $('#count').html(hackerList.matchingItems.length);
-                searchCallbacks();
+                checkInBtnCallbacks();
             });
         });
     </script>
