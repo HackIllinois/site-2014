@@ -81,28 +81,29 @@ def get_hacker_data():
     data = []
     for hackerProfile in hackers:
         name = ''
-        if hackerProfile.nameFirst: 
+        if hackerProfile.nameFirst:
             name+=hackerProfile.nameFirst.strip().title() + ' '
-        if hackerProfile.nameLast: 
+        if hackerProfile.nameLast:
             name+=hackerProfile.nameLast.strip().title()
-        profile = {'email':hackerProfile.email, 
-                    'school':hackerProfile.school.title(), 
-                    'year':hackerProfile.year, 
-                    'homebase':hackerProfile.homebase, 
-                    'fb_url':hackerProfile.pictureURL, 
+        profile = {'email':hackerProfile.email,
+                    'school':hackerProfile.school.title(),
+                    'year':hackerProfile.year,
+                    'homebase':hackerProfile.homebase,
+                    'fb_url':hackerProfile.pictureURL,
                     'database_key':hackerProfile.database_key,
-                    'time':hackerProfile.updatedTime, 
+                    'time':hackerProfile.updatedTime,
                     'mac_address':hackerProfile.mac_address,
                     'type':'hacker'}
 
         if hackerProfile.skills:
+            logging.debug("SKILLS: (type=%s) %s" % (type(hackerProfile.skills), str(hackerProfile.skills)))
             if hackerProfile.skills[0] != "":
                 profile['skills'] = hackerProfile.skills
             else:
                 profile['skills'] = []
         else:
             profile['skills'] = []
-        
+
         if hackerProfile.status_list:
             if hackerProfile.status_list[0] != "":
                 profile['status'] = hackerProfile.status_list
@@ -127,16 +128,16 @@ def get_staff_data():
     data = []
 
     for staff_profile in all_staff:
-        profile = {'name':staff_profile.name.strip().title(), 
-                    'email':staff_profile.email, 
+        profile = {'name':staff_profile.name.strip().title(),
+                    'email':staff_profile.email,
                     'company':staff_profile.companyName,
                     'job_title':staff_profile.jobTitle,
-                    'year':staff_profile.year, 
-                    'homebase':staff_profile.homebase, 
-                    'fb_url':staff_profile.pictureURL, 
-                    'database_key':staff_profile.database_key, 
+                    'year':staff_profile.year,
+                    'homebase':staff_profile.homebase,
+                    'fb_url':staff_profile.pictureURL,
+                    'database_key':staff_profile.database_key,
                     'time':staff_profile.updatedTime,
-                    'mac_address':staff_profile.mac_address, 
+                    'mac_address':staff_profile.mac_address,
                     'type':'staff'}
         if staff_profile.skills:
             if staff_profile.skills[0] != "":
@@ -170,16 +171,16 @@ def get_mentor_data():
 
     for mentor_profile in all_mentors:
         profile = {'name':mentor_profile.name.strip().title(),
-                    'email':mentor_profile.email, 
-                    'company':mentor_profile.companyName, 
-                    'job_title':mentor_profile.jobTitle, 
-                    'fb_url':mentor_profile.pictureURL, 
-                    'database_key':mentor_profile.database_key, 
-                    'time':mentor_profile.updatedTime, 
+                    'email':mentor_profile.email,
+                    'company':mentor_profile.companyName,
+                    'job_title':mentor_profile.jobTitle,
+                    'fb_url':mentor_profile.pictureURL,
+                    'database_key':mentor_profile.database_key,
+                    'time':mentor_profile.updatedTime,
                     'mac_address':mentor_profile.mac_address,
                     'type':'mentor'}
 
-        if mentor_profile.skills:            
+        if mentor_profile.skills:
             if mentor_profile.skills[0] != "":
                 profile['skills'] = mentor_profile.skills
             else:
@@ -246,7 +247,7 @@ def get_people_memecache(table_key):
 
 
 class ScheduleHandler(MainHandler.BaseMobileHandler):
-    
+
     # Eventually we will have to pull this from a database when this is set up
     def get(self):
         valid_email = False
@@ -269,7 +270,7 @@ class ScheduleHandler(MainHandler.BaseMobileHandler):
                     'time':schedule_item.time + 18000, # 21600 is 6 hours in unix to compensate for time difference
                     'icon_url':schedule_item.icon_url,
                     'location':schedule_item.room_obj
-            }   
+            }
             if schedule_item.day == "Friday":
                 schedule_list_friday.append(item)
             elif schedule_item.day == "Saturday":
@@ -281,7 +282,7 @@ class ScheduleHandler(MainHandler.BaseMobileHandler):
 
 
 class SupportHandler(MainHandler.BaseMobileHandler):
-    
+
     def get(self):
         valid_email = False
         if 'Email' in self.request.headers:
@@ -293,7 +294,7 @@ class SupportHandler(MainHandler.BaseMobileHandler):
         return self.write(json.dumps(MobileConstants.SUPPORT))
 
 class MapHandler(MainHandler.BaseMobileHandler):
-    
+
     # Eventually we will have to pull this from a database when it is set up
     def get(self):
         valid_email = False
@@ -334,12 +335,12 @@ class NewsfeedHandler(MainHandler.BaseMobileHandler):
 
             newsFeedList.append(item)
 
-                                   
+
         return self.write(json.dumps(newsFeedList))
 
 
 class PersonHandler(MainHandler.BaseMobileHandler):
-    
+
     def get(self):
         valid_email = False
         if 'Email' in self.request.headers:
@@ -347,24 +348,24 @@ class PersonHandler(MainHandler.BaseMobileHandler):
 
         if not valid_email:
             return self.write(json.dumps([]))
-        
+
         time = self.request.get('last_updated')
-        
+
         if self.request.get('type'):
             params = self.request.get('type')
             if 'staff' == params:
                 listOfStaff = get_people_memecache('staff_mobile')
                 return self.write(json.dumps(listOfStaff))
-            
+
             if 'mentor' == params:
                 listOfMentors = get_people_memecache('mentor_mobile')
                 return self.write(json.dumps(listOfMentors))
-            
+
             # add search by accepting flag
             if 'hacker' == params:
                 listOfHackers = get_people_memecache('hacker_mobile')
                 return self.write(json.dumps(listOfHackers))
-            
+
         elif self.request.get('key'):
             keyParams = self.request.get('key')
 
@@ -388,8 +389,8 @@ class PersonHandler(MainHandler.BaseMobileHandler):
             listOfEveryone = get_people_memecache('all')
 
             return self.write(json.dumps(listOfEveryone))
-    
-    
+
+
     def post(self):
         if 'Email' in self.request.headers:
             email = self.request.headers['Email']
@@ -404,7 +405,7 @@ class PersonHandler(MainHandler.BaseMobileHandler):
             updatedProfile = json.loads(params, object_hook=_decode_dict)
         except ValueError, e:
             return self.write(json.dumps({'message':'Invalid JSON'}))
-            
+
         updatedProfileDict = {}
         updatedKeys = []
         for _key in updatedProfile:
@@ -415,12 +416,12 @@ class PersonHandler(MainHandler.BaseMobileHandler):
             else:
                 updatedProfileDict[_key] = updatedProfile[_key]
             updatedKeys.append(_key)
-        
+
         if email:
             hackerProfile = Attendee.search_database({'userEmail':email}).get()
             staffProfile = Admin.search_database({'userEmail':email}).get()
             companyProfile = Sponsor.search_database({'userEmail':email}).get()
-            
+
             if hackerProfile:
                 # update datastore
                 Attendee.update_search(updatedProfileDict, {'userEmail':email})
@@ -462,7 +463,7 @@ class PersonHandler(MainHandler.BaseMobileHandler):
                             memcache_profile['mac_address'] = updatedProfileDict['mac_address']
                         else:
                             return self.write(json.dumps({'message':'Invalid mac_address'}))
-                    
+
             if memcache.replace('all', all_profiles, time=constants.MOBILE_MEMCACHE_TIMEOUT):
                 return self.write(json.dumps({'message':'Updated Profile'}))
             else:
@@ -485,7 +486,7 @@ class SkillsHandler(MainHandler.BaseMobileHandler):
 
         querySkills = Skills.search_database({})
         listOfSkills = []
-        
+
         for skill in querySkills:
             skillDict = {'name':skill.name}
 
@@ -496,7 +497,7 @@ class SkillsHandler(MainHandler.BaseMobileHandler):
                     skillDict['alias'] = []
             else:
                 skillDict['alias'] = []
-            
+
             if skill.tags:
                 if (skill.tags[0] != "") and (skill.tags[0] != " "):
                     skillDict['tags'] = skill.tags
@@ -506,7 +507,7 @@ class SkillsHandler(MainHandler.BaseMobileHandler):
                 skillDict['tags'] = []
 
             listOfSkills.append(skillDict)
-        
+
         return self.write(json.dumps(listOfSkills))
 
 
@@ -523,19 +524,19 @@ class LoginHandler(MainHandler.BaseMobileHandler):
         hackerProfile = Attendee.search_database({'userEmail':email}).get()
         staffProfile = Admin.search_database({'userEmail':email}).get()
         mentorProfile = Sponsor.search_database({'userEmail':email}).get()
-        
+
         list_profile = []
-        
+
         if hackerProfile:
             name = ''
             if hackerProfile.nameFirst: name+=hackerProfile.nameFirst.strip().title() + ' '
             if hackerProfile.nameLast: name+=hackerProfile.nameLast.strip().title()
-            profile = {'name':name, 
-            'email':hackerProfile.email, 
-            'school':hackerProfile.school.title(), 
+            profile = {'name':name,
+            'email':hackerProfile.email,
+            'school':hackerProfile.school.title(),
             'year':hackerProfile.year,
-            'homebase':hackerProfile.homebase, 
-            'fb_url':hackerProfile.pictureURL, 
+            'homebase':hackerProfile.homebase,
+            'fb_url':hackerProfile.pictureURL,
             'database_key':hackerProfile.database_key ,
             'time':hackerProfile.updatedTime,
             'mac_address':hackerProfile.mac_address,
@@ -560,14 +561,14 @@ class LoginHandler(MainHandler.BaseMobileHandler):
 
             list_profile.append(profile)
         elif staffProfile:
-            profile = {'name':staffProfile.name.strip().title(), 
-            'email':staffProfile.email, 
+            profile = {'name':staffProfile.name.strip().title(),
+            'email':staffProfile.email,
             'company':staffProfile.companyName,
             'job_title':staffProfile.jobTitle,
             'year':staffProfile.year,
-            'homebase':staffProfile.homebase, 
-            'fb_url':staffProfile.pictureURL, 
-            'database_key':staffProfile.database_key, 
+            'homebase':staffProfile.homebase,
+            'fb_url':staffProfile.pictureURL,
+            'database_key':staffProfile.database_key,
             'time':staffProfile.updatedTime,
             'mac_address':staffProfile.mac_address,
             'type':'staff'}
@@ -591,15 +592,15 @@ class LoginHandler(MainHandler.BaseMobileHandler):
             list_profile.append(profile)
         elif mentorProfile:
             profile = {'name':mentorProfile.name.strip().title(),
-            'email':mentorProfile.email, 
-            'company':mentorProfile.companyName, 
-            'job_title':mentorProfile.jobTitle, 
-            'fb_url':mentorProfile.pictureURL, 
-            'database_key':mentorProfile.database_key , 
+            'email':mentorProfile.email,
+            'company':mentorProfile.companyName,
+            'job_title':mentorProfile.jobTitle,
+            'fb_url':mentorProfile.pictureURL,
+            'database_key':mentorProfile.database_key ,
             'time':mentorProfile.updatedTime,
             'mac_address':mentorProfile.mac_address,
             'type':'mentor'}
-            
+
             if mentorProfile.skills:
                 if mentorProfile.skills[0] != "":
                     profile['skills'] = mentorProfile.skills
@@ -617,5 +618,5 @@ class LoginHandler(MainHandler.BaseMobileHandler):
                 profile['status'] = []
 
             list_profile.append(profile)
-        
+
         self.write(json.dumps(list_profile))

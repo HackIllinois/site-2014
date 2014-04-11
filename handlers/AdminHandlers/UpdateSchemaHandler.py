@@ -17,13 +17,13 @@ BATCH_SIZE = 100
 def get_next_key():
     key = None
     while not key:
-        i = random.randint(constants.SPONSOR_START_COUNT, constants.SPONSOR_START_COUNT+9998)
-        c = Sponsor.query(Sponsor.database_key == i).count()
+        i = random.randint(constants.ATTENDEE_START_COUNT, constants.ATTENDEE_START_COUNT+9998)
+        c = Attendee.query(Attendee.database_key == i).count()
         if c == 0: key = i
     return key
 
 def UpdateSchema(cursor=None, count=0):
-    query = Sponsor.query()
+    query = Attendee.query()
     count += query.count()
     data, next_curs, more = query.fetch_page(BATCH_SIZE, start_cursor=cursor)
 
