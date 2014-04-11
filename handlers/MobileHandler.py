@@ -96,7 +96,10 @@ def get_hacker_data():
                     'type':'hacker'}
 
         if hackerProfile.skills:
-            logging.debug("SKILLS: (type=%s) %s" % (type(hackerProfile.skills), str(hackerProfile.skills)))
+            if type(hackerProfile.skills) != type([]):
+                logging.error("SKILLS: (type=%s) (userId=%s) %s" % (type(hackerProfile.skills), str(hackerProfile.userId), str(hackerProfile.skills)))
+                hackerProfile.skills = []
+                hackerProfile.put()
             if hackerProfile.skills[0] != "":
                 profile['skills'] = hackerProfile.skills
             else:
