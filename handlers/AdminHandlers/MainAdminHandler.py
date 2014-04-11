@@ -43,7 +43,7 @@ class BaseAdminHandler(MainHandler.Handler):
         email = user.email()
         domain = email.split('@')[1] if len(email.split('@')) == 2 else None  # Sanity check
 
-        admin_user = Admin.search_database({'email': user.email()}).get()
+        admin_user = Admin.search_database({'userEmail': user.email()}).get()
         if admin_user:
             is_admin = True
             # if not admin_user.userId: admin_user.userId = user.user_id()
