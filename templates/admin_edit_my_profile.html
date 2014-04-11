@@ -1,0 +1,78 @@
+{% extends "base/admin_base.html" %}
+{% set active_page = "myprofile" %}
+
+{% block head %}
+<style type="text/css">
+    .page-header {
+        margin-top: 0;
+    }
+    .t-centered {
+        text-align: center;
+    }
+</style>
+{% endblock head %}
+
+
+{% block body %}
+<div class="row">
+    <div class="col-md-12">
+        <h1 class="page-header">
+            {{ admin.name }}
+            <button type="button" class="btn btn-success confirm-edit-btn">Confirm Edit</button>
+            <a class="btn btn-warning cancle-edit-btn" href="/corporate/profile">Cancle Edit</a>
+        </h1>
+    </div>
+</div>
+
+
+<form id="sponsorEditForm">
+<div class="table-responsive">
+    <table class="table">
+        <thead class="invisible">
+            <tr>
+                <th class="col-sm-2"></th>
+                <th class="col-sm-10"></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="pull-right">Name:</td>
+                <td id="nameEdit" name="nameEdit">
+                    <input id="nameInput" name="nameInput" value="{{ admin.name }}"></input>
+                </td>
+            </tr>
+            <tr>
+                <td class="pull-right">Contact Email:</td>
+                <td id="emailEdit" name="emailEdit">
+                    <input id="emailInput" name="emailInput" value="{{ admin.email }}"></input>
+                </td>
+            </tr>
+            <tr>
+                <td class="pull-right">Login Email:</td>
+                <td name="email">{{ admin.userEmail }}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+</form>
+{% endblock body %}
+
+
+{% block scripts %}
+<script type="text/javascript">
+function editBtnCallbacks() {
+    $('.confirm-edit-btn').click(function() {
+        admin = {};
+        admin['name'] = $("#nameInput").val();
+        admin['email'] = $("#emailInput").val();
+        $.post('/admin/myprofile/edit', admin, function(admin) {
+            window.location = "/admin/myprofile"
+        });
+    });
+}
+
+$(document).ready(function() {
+    editBtnCallbacks();
+});
+</script>
+{% endblock scripts%}

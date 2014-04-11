@@ -18,17 +18,17 @@ class Sponsor(Model):
     userId = ndb.ComputedProperty(lambda self: self.googleUser.user_id())
     '''These are all computed from the googleUser property'''
 
+    # these vairables are needed for mobile
     # Note: this is the email that hackers will use to contact the sponsor
     email = ndb.StringProperty(default='')
     companyName = ndb.StringProperty(default='')
-
-    # these vairables are needed for mobile
     name = ndb.StringProperty(default='')
     jobTitle = ndb.TextProperty(default='')
+
     skills = ndb.JsonProperty(default=[''])
     status = ndb.TextProperty(default='')
     pictureURL = ndb.TextProperty(default='')
-    name = ndb.StringProperty(default='')#Delete later
+    homebase = ndb.TextProperty(default='')
     updatedTime = ndb.IntegerProperty()
     email_lower = ndb.ComputedProperty(lambda self: self.email.lower())
     database_key = ndb.IntegerProperty(default=0)

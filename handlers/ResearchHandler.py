@@ -12,7 +12,7 @@ def get_uid():
     if not user:
         return None
     hackers = Attendee.query(Attendee.isRegistered == True,
-                             Attendee.googleUser == user,
+                             Attendee.userId == user.user_id(),
                              Attendee.approvalStatus.status == 'Rsvp Coming',
                              ancestor=Attendee.get_default_event_parent_key())
     if hackers.count() == 0:

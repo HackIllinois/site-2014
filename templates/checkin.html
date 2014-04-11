@@ -1,0 +1,234 @@
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale = 1.0, maximum-scale=1.0, user-scalable=no">
+        <meta name="author" content="HackIllinois Staff">
+        <meta name="description" content="Imagine. Learn. Launch. Join us for a 36-hour hackathon at the University of Illinois at Urbana-Champaign. April 11-13, 2014.">
+
+        <title>HackIllinois</title>
+
+        <link rel="stylesheet" type="text/css" href="/css/reset.css">
+        <link rel="stylesheet" type="text/css" href="/lib/bootstrap/css/bootstrap.min.css">
+        <link rel='stylesheet' type='text/css' href='http://fonts.googleapis.com/css?family=Open+Sans:400,700'>
+        <link rel='stylesheet' type='text/css' href='http://fonts.googleapis.com/css?family=Lato:700'>
+        <link rel="icon" type="image/ico" href="/favicon.ico">
+
+        <style type="text/css">
+            h1, h2, h3, h4, h5, h6 {
+                font-family: 'Open Sans', sans-serif;
+            }
+            p, div {
+                font-family: 'Lato', sans-serif;
+                /*font-size: 2.5em;*/
+            }
+            .page-header {
+                margin-top: 0;
+            }
+            .t-centered {
+                text-align: center;
+            }
+            .dropdown_buttons {
+                margin-bottom: 20px;
+            }
+
+            table {
+                table-layout: fixed;
+            }
+            td, th {
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+            td:hover, th:hover {
+                white-space: normal;
+                overflow: visible;
+                word-wrap:break-word;
+            }
+            .width100 {
+                width:100%;
+            }
+            .width50 {
+                width:50%;
+            }
+            .t-centered {
+                text-align: center;
+            }
+            .toggle-columns {
+                margin-bottom:20px;
+            }
+        </style>
+
+        <meta property="og:title" content="HackIllinois">
+        <meta property="og:url" content="http://www.hackillinois.org">
+        <meta property="og:type" content="website">
+        <meta property="og:site_name" content="HackIllinois">
+        <meta property="og:description" content="Imagine. Learn. Launch. Join us for a 36-hour hackathon at the University of Illinois at Urbana-Champaign. April 11-13, 2014." >
+        <meta property="og:image" content="http://www.hackillinois.org/img/og_logo_astro.png">
+
+        <meta property="fb:app_id" content="198636480343619">
+        <meta property="fb:admins" content="1105870286">
+
+        <meta name="twitter:card" content="summary">
+        <meta name="twitter:site" content="@HackIllinois">
+        <meta name="twitter:title" content="HackIllinois">
+        <meta name="twitter:description" content="Imagine. Learn. Launch. Join us for a 36-hour hackathon at the University of Illinois at Urbana-Champaign. April 11-13, 2014.">
+        <meta name="twitter:creator" content="@HackIllinois">
+        <meta name="twitter:image:src" content="http://www.hackillinois.org/img/og_logo_astro.jpg">
+        <meta name="twitter:domain" content="http://www.hackillinois.org">
+
+        <!-- Google Analytics Tracking -->
+        <script>
+            (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+            })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+            ga('create', 'UA-46010489-1', 'hackillinois.org');
+            ga('send', 'pageview');
+        </script>
+    </head>
+
+
+<body>
+    <div class="row">
+        <div class="col-md-10 col-md-offset-1">
+            <header>
+                <h1 class="page-header">Hacker Check In<small>&nbsp;&nbsp;</small><small id="count">0</small><small>&nbsp;people</small></h1>
+                <p>This page does not dynamically reload so please refresh after checking in a few people.</p>
+                <a class="btn btn-warning pull-right" href="/admin/uncheckin">Un Check In</a>
+            </header>
+        </div>
+    </div>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-10 col-md-offset-1">
+                <div id="hackers" class="table-responsive">
+                    <table id="usertable" class="table table-bordered table-hover table-condensed">
+                        <thead>
+                            <tr name="search_params">
+                                <th name="search-container" colspan="4">
+                                    <input id="search_box" class="width100" type="text" placeholder="Search by Name or Email">
+                                </th>
+                                <!--  <th name="tgender"></th>
+                                <th name="tschool"></th>
+                                <th name="tshirt"></th>
+
+                                <th name="tcheckin"></th>
+                                <th name="tnumber"></th>
+                                <th name="tnotes"></th> -->
+                            </tr>
+                            <tr>
+                                <th name="tname" class="sort" data-sort="name">Name</th>
+                                <th name="temail">Email</th>
+                                <th name="tgender">Gender</th>
+                                <th name="tschool">School</th>
+                                <th name="tshirt">Shirt</th>
+
+                                <th name="tcheckin">Check In</th>
+                                <th name="tnumber">Phone Number</th>
+                                <th name="tnotes">Notes</th>
+                            </tr>
+                        </thead>
+                        <tbody class="list">
+                            {% for h in data.hackers %}
+                            <tr name="hackerData" id="{{ h.userId }}">
+							    <td                  class="id"     style="display:none;">{{ h.userId }}</td>
+                                <td name="tname"     class="name"    >{{ h.name }}</td>
+                                <td name="temail"    class="email"   >{{ h.email }}</td>
+                                <td name="tgender"   class="gender"  >{{ h.gender }}</td>
+                                <td name="tschool"   class="school"  >{{ h.school }}</td>
+                                <td name="tshirt"    class="shirt"   >{{ h.shirt }}</td>
+
+								<td name="tcheckin"  class="checkin" ><button class="btn btn-success status-btn aButton width100">Check In!</button></td>
+                                <td name="tnumber"   class="number"  ><input type="text" class="width100" placeholder="Phone Number" id="input_number"></td>
+                                <td name="tnotes"    class="notes"   ><input type="text" class="width100" placeholder="Notes" id="input_notes"></td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    <ul class="pagination"></ul>
+                </div><!-- table-responsive -->
+            </div><!-- col-md-12 -->
+        </div><!-- row -->
+    </div><!-- container-fluid -->
+
+    <script src="https://code.jquery.com/jquery.js"></script>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
+    <!-- Make Tooltips work all over the admin panel automatically -->
+    <script type="text/javascript">
+        $('[rel="tooltip"]').tooltip();
+        $('[rel="popover"]').popover();
+    </script>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/list.js/1.1.0/list.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/list.pagination.js/0.1.0/list.pagination.min.js"></script>
+    <script type="text/javascript">
+        var paginationOptions = {
+            name: "pagination",
+            paginationClass: "pagination",
+            innerWindow: 2,
+            outerWindow: 1
+        };
+        var options = {
+            // http://listjs.com/docs/options
+            valueNames: ['id', 'name', 'email'],
+            page: 20,
+            plugins: [
+                ListPagination(paginationOptions)
+            ]
+        };
+        var hackerList = null;
+
+        function searchCallbacks() {
+            $('#search_box').keyup(function() {
+                hackerList.search($('#search_box').val(), ['name', 'email']);
+            });
+        }
+
+        function checkInBtnCallbacks() {
+            $('.status-btn').click(function () {
+                if(!$(this).hasClass('cant-click')) {
+                    $(this).addClass('cant-click');
+                    var name = $(this).closest('tr').find('.name').text(),
+                        number = $(this).closest('tr').find('#input_number').val(),
+                        notes = $(this).closest('tr').find('#input_notes').val(),
+                        userId = $(this).closest('tr').get(0).id,
+                        r = confirm("Check In " + name + "?");
+                    if (r == true) {
+                        var posting = $.post("/admin/checkin", {"userId": userId, "number": number, "notes": notes});
+                        posting.done(function(data) {
+                            if (data != "Success") {
+                                alert(data);
+                            } else {
+                                hackerList.remove('id', userId);
+                                $('#search_box').val("");
+                                hackerList.search();
+                            }
+                        });
+                        posting.fail(function() {
+                            alert("Error submitting data. Try refreshing the page.");
+                        });
+                    }
+                    else {
+                        return;
+                    }
+                }
+            });
+        }
+
+
+        $(document).ready(function () {
+            hackerList = new List('hackers', options);
+
+            checkInBtnCallbacks();
+            searchCallbacks();
+
+            hackerList.on('updated', function() {
+                $('#count').html(hackerList.matchingItems.length);
+                checkInBtnCallbacks();
+            });
+        });
+    </script>
+
+</body>

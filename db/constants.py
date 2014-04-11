@@ -1,6 +1,9 @@
-ADMIN_EMAILS = set(['lx.icomputer@gmail.com','mvd7793@gmail.com','austin.1111h@gmail.com','fishben2@illinois.edu','jacob@hackillinois.org'])
+ADMIN_EMAILS = set(['lx.icomputer@gmail.com','mvd7793@gmail.com','austin.1111h@gmail.com','fishben2@illinois.edu','jacob@hackillinois.org, brendanryan@hackillinois.org'])
 
 BUCKET = 'hackillinois'
+
+TWILIO_ACCOUNT_SID = "ACbb49f22ced63701bdc7e7391489d1720"
+TWILIO_AUTH_TOKEN = "77878e6db49a1635bf767dc64d203a5b"
 
 MEMCACHE_TIMEOUT = 10800 # seconds = 3 hours , once we close registration increase to 1 day
 MOBILE_MEMCACHE_TIMEOUT = 86400 # second = 1 day (24 hours)
@@ -64,6 +67,7 @@ TOS_ERROR_MESSAGE = 'Please accept the Terms of Service'
 # READABLE_REQUIRED_FIELDS = ['First Name','Last Name','E-mail','Gender','School','Year in School','T-shirt size','past experience', 'Please accept the Terms of Service']
 
 EMAIL_MATCH = r"^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$"
+PHONE_MATCH = r"\+1\d{10}"
 
 GENDERS = ['Male','Female','Other', 'I choose not to specify']
 YEARS = ['Freshman','Sophomore','Junior','Senior','Grad','HS']
@@ -551,6 +555,11 @@ SPONSOR_LOGOS = [
       "alt":"one north",
       "class":"sponsor littler z_a",
       "src":"/img/logos/onenorth.png",
+      "br_after":False },
+    { "href":"http://developers.kloudless.com/",
+      "alt":"kloudless",
+      "class":"sponsor littler",
+      "src":"/img/logos/kloudless.png",
       "br_after":False },
 ]
 

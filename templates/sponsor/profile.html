@@ -19,9 +19,9 @@
 <div class="row">
     <div class="col-md-12">
         <h1 class="page-header">
-			{{ data.name }}
-			<a class="btn btn-primary edit-btn" href="editprofile">Edit</a>
-		</h1>
+            {{ data.name }}
+            <a class="btn btn-primary edit-btn" href="/corporate/editprofile">Edit</a>
+        </h1>
     </div>
 </div>
 
@@ -34,33 +34,33 @@
             </tr>
         </thead>
         <tbody>
-			<tr>
+            <tr>
                 <td class="pull-right">Name:</td>
                 <td id="nameFirst" name="nameFirst">{{ data.name }}</td>
             </tr>
-			<tr>
+            <tr>
                 <td class="pull-right">Company Name:</td>
-                <td id="nameFirst" name="nameFirst">{{ data.companyName }}</td>
+                <td id="companyName" name="companyName">{{ data.companyName }}</td>
+            </tr>
+            <tr>
+                <td class="pull-right">Job Title:</td>
+                <td id="nameFirst" name="nameFirst">{{ data.jobTitle }}</td>
             </tr>
             <tr>
                 <td class="pull-right">Contact Email:</td>
                 <td name="email">{{ data.email }}</td>
             </tr>
-			<tr>
+            <tr>
                 <td class="pull-right">Login Email:</td>
                 <td name="email">{{ data.userEmail }}</td>
             </tr>
         </tbody>
     </table>
 </div>
-
 {% endblock body %}
 
 
 {% block scripts %}
-<script type="text/javascript"> 
-   $(document).ready(function() {
-		editBtnCallbacks();
-    });
+<script type="text/javascript">
 </script>
 {% endblock scripts%}

@@ -41,14 +41,18 @@ class BaseAdminHandler(MainHandler.Handler):
             return self.abort(401)
 
         email = user.email()
+
+        # if email == "checkin@hackillinois.org":
+        #     if "/admin/checkin" not in self.request.path or "/admin/uncheckin" not in self.request.path:
+        #         return self.redirect("/admin/checkin")
+
         domain = email.split('@')[1] if len(email.split('@')) == 2 else None  # Sanity check
 
-        admin_user = Admin.search_database({'email': user.email()}).get()
+        admin_user = Admin.search_database({'userEmail': user.email()}).get()
         if admin_user:
             is_admin = True
-            if not admin_user.userId: admin_user.userId = user.user_id()
             if not admin_user.googleUser: admin_user.googleUser = user
-            if not admin_user.email: admin_user.email = user.email()
+            if not admin_user.userId: admin_user.googleUser = user
             if not admin_user.database_key: admin_user.database_key = self.get_next_key()
             if email in constants.ADMIN_EMAILS:
                 admin_user.statsAccess = True
@@ -64,7 +68,6 @@ class BaseAdminHandler(MainHandler.Handler):
                 parent=Admin.get_default_event_parent_key(),
                 email=user.email(),
                 googleUser=user,
-                userId=user.user_id(),
                 statsAccess=True,
                 approveAccess=True,
                 approveAdminAccess=True,
@@ -79,7 +82,7 @@ class BaseAdminHandler(MainHandler.Handler):
                 parent=Admin.get_default_event_parent_key(),
                 email=user.email(),
                 googleUser=user,
-                userId=user.user_id(),
+                # userId=user.user_id(),
                 database_key=self.get_next_key()
             ).put()
 
@@ -103,7 +106,7 @@ class BaseAdminHandler(MainHandler.Handler):
         user = users.get_current_user()
         if not user:
             return None
-        admin_user = Admin.search_database({'email': user.email()}).get()
+        admin_user = Admin.search_database({'userEmail': user.email()}).get()
         if not admin_user:
             return None
         return admin_user
@@ -267,7 +270,11 @@ class BaseAdminHandler(MainHandler.Handler):
                          'resume': hacker.resume,
                          'registrationTime': hacker.registrationTime.strftime('%x %X'),
                          'isApproved': hacker.isApproved,
-                         'userId': hacker.userId})
+                         'userId': hacker.userId,
+
+                         'isCheckedIn':hacker.isCheckedIn,
+                         'notes':hacker.notes,
+                         'phoneNumber':hacker.phoneNumber})
 
         if not memcache.set('hackers', data, time=constants.MEMCACHE_TIMEOUT):
             logging.error('Memcache set failed.')
@@ -393,7 +400,11 @@ class BaseAdminHandler(MainHandler.Handler):
                          'micro2':hacker.micro2,
                          'labEquipment':hacker.labEquipment,
                          'experience':'' if not hacker.experience else hacker.experience.replace('\n', ' ').replace('\r', ''),
-                         'teamMembers':'' if not hacker.teamMembers else hacker.teamMembers.replace('\n', ' ').replace('\r', '')})
+                         'teamMembers':'' if not hacker.teamMembers else hacker.teamMembers.replace('\n', ' ').replace('\r', ''),
+
+                          'isCheckedIn':hacker.isCheckedIn,
+                          'notes':hacker.notes,
+                          'phoneNumber':hacker.phoneNumber })
 
         # Not using memcache at the moment
         # if not memcache.set(key, data, time=constants.MEMCACHE_TIMEOUT):

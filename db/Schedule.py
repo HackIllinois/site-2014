@@ -5,22 +5,23 @@ from Room import Room
 from google.appengine.ext.db import BadValueError
 
 class Schedule(Model):
-	Model._automatically_add_event_as_ancestor()
+  Model._automatically_add_event_as_ancestor()
 
-	event_name = ndb.StringProperty()
-	description = ndb.TextProperty()
-	location = ndb.StructuredProperty(Room)
-	time = ndb.IntegerProperty()
-	icon_url = ndb.TextProperty()
-	day = ndb.TextProperty(default='')
+  event_name = ndb.StringProperty()
+  description = ndb.TextProperty()
+  location = ndb.StructuredProperty(Room)
+  room_obj = ndb.JsonProperty()
+  time = ndb.IntegerProperty()
+  icon_url = ndb.TextProperty()
+  day = ndb.TextProperty(default='')
 
-	@classmethod
-	def new(cls, data):
-		skills = cls()
-		for k in data:
-			setattr(skills, k, data[k])
-		return skills
+  @classmethod
+  def new(cls, data):
+    skills = cls()
+    for k in data:
+     setattr(skills, k, data[k])
+     return skills
 
-	@classmethod
-	def unique_properties(cls):
-		return ['event_name']
+  @classmethod
+  def unique_properties(cls):
+    return ['event_name']

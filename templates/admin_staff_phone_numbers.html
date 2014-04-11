@@ -1,0 +1,93 @@
+{% extends "base/admin_base.html" %}
+{% set active_page = "phone-numbers" %}
+
+{% block head %}
+<style type="text/css">
+    .page-header {
+        margin-top: 0;
+    }
+    .t-centered {
+        text-align: center;
+    }
+    #numbers-button {
+        margin-left: 20px;
+    }
+</style>
+{% endblock head %}
+
+
+{% block body %}
+<h1 class="page-header">Staff Phone Numbers</h1>
+
+<div class="row">
+    <div class="col-md-12">
+        <form id="numbers-form" role="form" action="/admin/staffphonenumbers" method="post">
+            <div class="form-group">
+                <label for="phone1">Phone Numbers - of form +19999999999</label>
+                <textarea id="phone1" class="form-control" name="numbers" rows="4" required></textarea>
+            </div>
+            <div class="form-inline">
+                <div class="checkbox">
+                    <label class="checkbox-inline" for="checkbox1">
+                        <input type="checkbox" id="checkbox1" name="sendAccess" value="True"> Send Access
+                    </label>
+                </div>
+                <button id="numbers-button" type="submit" class="btn btn-primary" data-loading-text="Thinking...">Add Numbers to List</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<p id="result" class="text-info"></p>
+
+<br>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Phone Number</th>
+                        <th>Groups</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for n in numbers %}
+                    <tr>
+                        <td>{{ n.number }}</td>
+                        <td>{% for item in n.groups %}{{ item }}{% if not loop.last %}, {% endif %}{% endfor %}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock body %}
+
+
+{% block scripts %}
+<script type="text/javascript">
+$(document).ready(function() {
+    $("#numbers-form").submit(function(event) {
+        event.preventDefault();
+        $("#numbers-button").button('loading');
+
+        var posting = $.post('/admin/staffphonenumbers', $('#numbers-form').serialize());
+
+        posting.done(function(data) {
+            $("#result").html(data);
+            $("#phone1").val("");
+            $("#checkbox1").prop("checked", false);
+            $("#numbers-button").button('reset');
+        });
+
+        posting.fail(function() {
+            alert("Error submitting data.");
+            $("#numbers-button").button('reset');
+        });
+    });
+});
+</script>
+{% endblock scripts%}

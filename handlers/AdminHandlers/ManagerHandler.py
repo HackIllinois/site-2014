@@ -2,6 +2,7 @@ import MainAdminHandler
 from db.Admin import Admin
 from db.Whitelist import Whitelist
 from db import constants
+from google.appengine.api import users
 
 import urllib
 import json
@@ -48,6 +49,7 @@ class ManagerHandler(MainAdminHandler.BaseAdminHandler):
                 Admin(
                     parent=Admin.get_default_event_parent_key(),
                     email=email,
+                    googleUser=users.User(email),
                     statsAccess='stats' in access or allAccess,
                     approveAccess='approve' in access or allAccess,
                     approveAdminAccess='adminApprove' in access or allAccess,

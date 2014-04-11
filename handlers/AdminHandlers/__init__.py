@@ -26,3 +26,9 @@ import WhiteListControlHandler
 import MassRsvpInvalidateHandler
 import NewSponsorHandler
 import CorporateUrlHandler
+import StaffPhoneNumbersHandler
+import MassCorporateUrlHandler
+import MyProfileHandler
+import EditMyProfileHandler
+import CheckInHandler
+import UnCheckInHandler

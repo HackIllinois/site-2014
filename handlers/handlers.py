@@ -15,6 +15,7 @@ import SubpageHandlers
 import AdminHandlers
 import MobileHandler
 import ErrorHandlers
+import TwilioHandlers
 
 handlers = [
     RedirectRoute('/', handler=IndexHandler, name='Index', strict_slash=True),
@@ -74,6 +75,14 @@ handlers = [
     RedirectRoute('/admin/massinvalidate', handler=AdminHandlers.MassRsvpInvalidateHandler.MassRsvpInvalidateHandler, name='AdminMassRsvpInvalidate', strict_slash=True),
 	RedirectRoute('/admin/check-no-reply', handler=AdminHandlers.CheckNoReplyHandler.CheckNoReplyHandler, name='AdminCheckNoReplyHandler', strict_slash=True),
     RedirectRoute('/admin/corporateurl', handler=AdminHandlers.CorporateUrlHandler.CorporateUrlHandler, name='AdminCorporateUrl', strict_slash=True),
+    RedirectRoute('/admin/masscorporateurl', handler=AdminHandlers.MassCorporateUrlHandler.MassCorporateUrlHandler, name='AdminMassCorporateUrl', strict_slash=True),
+    RedirectRoute('/admin/staffphonenumbers', handler=AdminHandlers.StaffPhoneNumbersHandler.StaffPhoneNumbersHandler, name='AdminStaffPhoneNumbers', strict_slash=True),
+
+    RedirectRoute('/admin/checkin', handler=AdminHandlers.CheckInHandler.CheckInHandler, name='CheckIn', strict_slash=True),
+    RedirectRoute('/admin/uncheckin', handler=AdminHandlers.UnCheckInHandler.UnCheckInHandler, name='UnCheckIn', strict_slash=True),
+
+    RedirectRoute('/admin/myprofile/edit', handler=AdminHandlers.EditMyProfileHandler.EditMyProfileHandler, name='AdminEditMyProfile', strict_slash=True),
+    RedirectRoute('/admin/myprofile', handler=AdminHandlers.MyProfileHandler.MyProfileHandler, name='AdminMyProfile', strict_slash=True),
 
     RedirectRoute('/admin/basicstats',          handler=AdminHandlers.BasicStatsHandler.BasicStatsHandler, name='AdminBasicStats0', strict_slash=True),
     RedirectRoute('/admin/basicstats/<status>', handler=AdminHandlers.BasicStatsHandler.BasicStatsHandler, name='AdminBasicStats1', strict_slash=True),
@@ -125,6 +134,8 @@ handlers = [
     RedirectRoute('/401', handler=ErrorHandlers.Error401Handler, name='Error401', strict_slash=True),
     RedirectRoute('/404', handler=ErrorHandlers.Error404Handler, name='Error404', strict_slash=True),
     RedirectRoute('/500', handler=ErrorHandlers.Error500Handler, name='Error500', strict_slash=True),
+
+    RedirectRoute('/twilio/sendmasstext', handler=TwilioHandlers.MassTextHandler, name='TwilioMassText', strict_slash=True),
 ]
 
 errorHandlers = {
