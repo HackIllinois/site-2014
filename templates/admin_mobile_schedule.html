@@ -2,22 +2,98 @@
 {% set active_page = "schedule" %}
 
 {% block head %}
-<style type="text/css">
-    .page-header {
-        margin-top: 0;
-    }
-    .t-centered {
-        text-align: center;
-    }
-</style>
+<link rel="stylesheet" href="/css/admin.css">
 {% endblock head %}
 
 
 {% block body %}
-<h1 class="page-header">Mobile Schedule</h1>
+<div class="row">
+  <div class="col-md-9">
+    <h1 class="page-header">Mobile Schedule</h1>
+  </div>
+  <div class="col-md-3">
+    <button id="addFeedItem-button" type="button" class="btn btn-primary btn-lg btn-block">Add to News Feed</button>
+  </div>
+</div>
+
+<div class="feedform-container row" style="display: none;">
+  <form class="form-horizontal" role="form" id="addFeedItem-form" method="post">
+    <div class="form-group">
+      <label for="inputDescription" class="col-sm-1 control-label">Description</label>
+      <div class="col-sm-10">
+        <textarea class="form-control" id="inputDescription" rows="5" name="description" required></textarea>
+        <span class="help-block" id="char-count">0</span>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="radioType" class="col-sm-1 control-label">Type</label>
+      <div class="col-sm-10">
+        <label for="radio1" class="radio-inline">
+          <input type="radio" name="type" id="radio1" value="emergency" required> Emergency
+        </label>
+        <label for="radio2" class="radio-inline">
+          <input type="radio" name="type" id="radio2" value="announcement" required> Announcement
+        </label>
+        <label for="radio3" class="radio-inline">
+          <input type="radio" name="type" id="radio3" value="hackillinois" required> HackIllinois
+        </label>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="inputHighlights" class="col-sm-1 control-label">Highlights</label>
+      <div class="col-sm-10">
+        <input type="text" class="form-control" id="inputHighlights" name="highlight">
+        <span class="help-block">
+          Enter a <span class="underBoldItalic">semi-colon</span> separated list of
+          text to be highlighted from the description.
+        </span>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-sm-offset-1 col-sm-10">
+        <button type="button" id="render-feeditem" class="btn btn-success">Render</button>
+        <button type="submit" class="btn btn-primary">Send to everyone</button>
+      </div>
+    </div>
+  </form>
+</div>
+
+<div class="row rendered-container" style="display: none;">
+  <ul class="media-list">
+    <li class="media">
+      <div class="pull-left">
+        <img id="rendered-image" alt="" src="" class="media-object" style="width: 64px; height: 64px;">
+      </div>
+      <div class="media-body">
+        <p id="rendered-description"></p>
+      </div>
+    </li>
+  </ul>
+</div>
+
+<div class="feed-container row">
+  <ul class="media-list">
+    {% for item in feed %}
+    <li class="media">
+      <div class="pull-left">
+        {% if item.img %}
+        <img class="media-object" alt="{{ item.img.alt }}" src="{{ item.img.src }}" style="width: 64px; height: 64px;">
+        {% else %}
+        <img class="media-object" data-src="holder.js/64x64" alt="64x64" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2NCIgaGVpZ2h0PSI2NCI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiBmaWxsPSIjZWVlIj48L3JlY3Q+PHRleHQgdGV4dC1hbmNob3I9Im1pZGRsZSIgeD0iMzIiIHk9IjMyIiBzdHlsZT0iZmlsbDojYWFhO2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1zaXplOjEycHg7Zm9udC1mYW1pbHk6QXJpYWwsSGVsdmV0aWNhLHNhbnMtc2VyaWY7ZG9taW5hbnQtYmFzZWxpbmU6Y2VudHJhbCI+NjR4NjQ8L3RleHQ+PC9zdmc+" style="width: 64px; height: 64px;">
+        {% endif %}
+      </div>
+      <div class="media-body">
+        <p>{{ item.description|safe }}</p>
+      </div>
+    </li>
+    {% endfor %}
+  </ul>
+</div>
+
+
 {% endblock body %}
 
 
 {% block scripts %}
-<script type="text/javascript"></script>
+<script src="/js/admin_schedule.js"></script>
 {% endblock scripts%}
