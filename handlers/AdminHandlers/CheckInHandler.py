@@ -5,6 +5,7 @@ from db import constants
 from google.appengine.api import memcache
 import logging
 from datetime import datetime
+from google.appengine.api import users
 
 def serialize_hacker(hacker):
     return {
@@ -18,7 +19,17 @@ def serialize_hacker(hacker):
 
 
 class CheckInHandler(MainAdminHandler.BaseAdminHandler):
+    def check_access(self):
+        access_emails = ["checkin@hackillinois.org", "alex.burck@hackillinois.org"]
+        user = users.get_current_user()
+        if not user: return self.abort(401)
+        email = user.email()
+        if email not in access_emails: return self.abort(401)
+        return True
+
     def get(self):
+        if not self.check_access(): return
+
         data = {}
 
         hackers = Attendee.query(
