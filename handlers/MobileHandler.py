@@ -546,6 +546,7 @@ class LoginHandler(MainHandler.BaseMobileHandler):
             'type':'hacker'}
 
             if hackerProfile.skills:
+                logging.debug(hackerProfile.skills)
                 if hackerProfile.skills[0] != "":
                     profile['skills'] = hackerProfile.skills
                 else:
