@@ -93,9 +93,9 @@
     <div class="row">
         <div class="col-md-10 col-md-offset-1">
             <header>
-                <h1 class="page-header">Hacker Check In<small>&nbsp;&nbsp;</small><small id="count">0</small><small>&nbsp;people</small></h1>
+                <h1 class="page-header">Hacker Un-Check In<small>&nbsp;&nbsp;</small><small id="count">0</small><small>&nbsp;people</small></h1>
                 <p>This page does not dynamically reload so please refresh after checking in a few people.</p>
-                <a class="btn btn-warning pull-right" href="/admin/uncheckin">Un Check In</a>
+                <a class="btn btn-warning pull-right" href="/admin/checkin">Check In</a>
             </header>
         </div>
     </div>
@@ -133,14 +133,14 @@
                         <tbody class="list">
                             {% for h in data.hackers %}
                             <tr name="hackerData" id="{{ h.userId }}">
-							    <td                  class="id"     style="display:none;">{{ h.userId }}</td>
+                                <td                  class="id"     style="display:none;">{{ h.userId }}</td>
                                 <td name="tname"     class="name"    >{{ h.name }}</td>
                                 <td name="temail"    class="email"   >{{ h.email }}</td>
                                 <td name="tgender"   class="gender"  >{{ h.gender }}</td>
                                 <td name="tschool"   class="school"  >{{ h.school }}</td>
                                 <td name="tshirt"    class="shirt"   >{{ h.shirt }}</td>
 
-								<td name="tcheckin"  class="checkin" ><button class="btn btn-success status-btn aButton width100">Check In!</button></td>
+                                <td name="tcheckin"  class="checkin" ><button class="btn btn-danger status-btn aButton width100">Un Check In</button></td>
                                 <td name="tnumber"   class="number"  ><input type="text" class="width100" placeholder="Phone Number" id="input_number"></td>
                                 <td name="tnotes"    class="notes"   ><input type="text" class="width100" placeholder="Notes" id="input_notes"></td>
                             </tr>
@@ -196,7 +196,7 @@
                         userId = $(this).closest('tr').get(0).id,
                         r = confirm("Check In " + name + "?");
                     if (r == true) {
-                        var posting = $.post("/admin/checkin", {"userId": userId, "number": number, "notes": notes});
+                        var posting = $.post("/admin/uncheckin", {"userId": userId, "number": number, "notes": notes});
                         posting.done(function(data) {
                             if (data != "Success") {
                                 alert(data);

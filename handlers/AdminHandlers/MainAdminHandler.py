@@ -42,9 +42,9 @@ class BaseAdminHandler(MainHandler.Handler):
 
         email = user.email()
 
-        if email == "checkin@hackillinois.org":
-            if "/admin/checkin" not in self.request.path:
-                return self.redirect("/admin/checkin")
+        # if email == "checkin@hackillinois.org":
+        #     if "/admin/checkin" not in self.request.path or "/admin/uncheckin" not in self.request.path:
+        #         return self.redirect("/admin/checkin")
 
         domain = email.split('@')[1] if len(email.split('@')) == 2 else None  # Sanity check
 

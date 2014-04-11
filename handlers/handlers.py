@@ -79,6 +79,7 @@ handlers = [
     RedirectRoute('/admin/staffphonenumbers', handler=AdminHandlers.StaffPhoneNumbersHandler.StaffPhoneNumbersHandler, name='AdminStaffPhoneNumbers', strict_slash=True),
 
     RedirectRoute('/admin/checkin', handler=AdminHandlers.CheckInHandler.CheckInHandler, name='CheckIn', strict_slash=True),
+    RedirectRoute('/admin/uncheckin', handler=AdminHandlers.UnCheckInHandler.UnCheckInHandler, name='UnCheckIn', strict_slash=True),
 
     RedirectRoute('/admin/myprofile/edit', handler=AdminHandlers.EditMyProfileHandler.EditMyProfileHandler, name='AdminEditMyProfile', strict_slash=True),
     RedirectRoute('/admin/myprofile', handler=AdminHandlers.MyProfileHandler.MyProfileHandler, name='AdminMyProfile', strict_slash=True),
