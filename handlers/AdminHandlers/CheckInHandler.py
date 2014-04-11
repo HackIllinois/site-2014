@@ -1,16 +1,15 @@
-from AdminHandlers import MainAdminHandler
+import MainAdminHandler
 import urllib
 from db.Attendee import Attendee
-from db.Status import Status
 from db import constants
 from google.appengine.api import memcache
 import logging
 from datetime import datetime
 
 class CheckInHandler(MainAdminHandler.BaseAdminHandler):
-    def get(self, status=None, category=None, route=None):
+    def get(self):
         data = {}
-        data['hackers'] = self.get_hackers_better_memcache(status, category, route)
+        data['hackers'] = self.get_hackers_better_memcache("Rsvp Coming", None, None)
 
         return self.render("checkin.html", data=data)
 

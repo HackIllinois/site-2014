@@ -7,7 +7,6 @@ import json
 class Admin(Model):
     Model._automatically_add_event_as_ancestor()
 
-    email = ndb.StringProperty()
     googleUser = ndb.UserProperty()
 
     # For user object look at https://developers.google.com/appengine/docs/python/users/userclass
@@ -18,7 +17,7 @@ class Admin(Model):
     '''These are all computed from the googleUser property'''
 
     # these vairables are needed for mobile
-    # userId = ndb.StringProperty(default='')
+    email = ndb.StringProperty()
     name = ndb.StringProperty(default='')
     school = ndb.TextProperty(default='')
     year = ndb.TextProperty(default='')
