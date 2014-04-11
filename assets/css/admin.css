@@ -5,3 +5,48 @@
   text-align: center;
 }
 
+
+.event-container{
+  background: #F3F3F3;
+}
+
+.row.event.card{
+  margin: 15px;
+}
+
+.card {
+  padding:1.5rem;
+  box-shadow:0 1px 2px #aaa;
+  background:white;
+  margin:0 1rem 1rem;
+  border-radius:3px;
+  user-select:none;
+  animation:fly-in-from-left .5s 1s ease both;
+  transform-origin:top left;
+}
+
+.main-content{
+  text-align: left;
+  margin-left: 25px;
+
+  p{
+    margin: 0;
+  }
+}
+
+.description {
+  font-size: 1rem;
+}
+
+
+
+.event-name{
+  font-size: 2.3rem;
+}
+.logistics {
+  text-align: right;
+}
+
+form{
+  padding: 15px;
+}

@@ -2,7 +2,6 @@ import MainAdminHandler
 import json
 import urllib
 import time
-import re
 from db.Schedule import Schedule
 
 class ScheduleHandler(MainAdminHandler.BaseAdminHandler):
@@ -13,8 +12,25 @@ class ScheduleHandler(MainAdminHandler.BaseAdminHandler):
         if not admin_user.mobileAccess:
             return self.abort(401, detail='User does not have permission to update the mobile newsfeed.')
 
-        data = {}
-        return self.render("admin_mobile_schedule.html", data=data, access=json.loads(admin_user.access))
+        feed = []
+
+        for num in range(10):
+          feed.append(
+          {
+          "event_name" : "A fine Event {}".format(num) ,
+          "description" : "kajsdnfkansdfjkansdjkfnaskjdfnasjkdfnjasdnf",
+          "location" : "1404 SC",
+          "time" : time.time(),
+          "icon_url" : "http://www.hackillinois.org/img/icons-iOS/emergency.png",
+          "day" : "Friday"
+          }
+          )
+
+        #items = Schedule.query(ancestor=Schedule.get_default_event_parent_key()).order(-Schedule.time)
+
+
+        #print feed
+        return self.render("admin_mobile_schedule.html", feed=feed, access=json.loads(admin_user.access))
 
     def post(self):
         admin_user = self.get_admin_user()

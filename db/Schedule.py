@@ -8,7 +8,7 @@ class Schedule(Model):
 	Model._automatically_add_event_as_ancestor()
 
 	event_name = ndb.StringProperty()
-	description = ndb.TextProperty()
+	description = ndb.TextProperty()#done
 	location = ndb.StructuredProperty(Room)
 	time = ndb.IntegerProperty()
 	icon_url = ndb.TextProperty()
