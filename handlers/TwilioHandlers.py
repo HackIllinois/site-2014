@@ -13,7 +13,7 @@ class TwilioHandler(MainHandler.Handler):
         super(TwilioHandler, self).dispatch()
 
 
-class MassTextHandler(MainHandler.Handler):
+class MassTextHandler(TwilioHandler):
     def get(self):
         message = self.client.sms.messages.create(
             body="Testing HackIllinois Twilio Number",
