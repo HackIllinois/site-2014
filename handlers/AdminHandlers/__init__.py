@@ -30,3 +30,4 @@ import StaffPhoneNumbersHandler
 import MassCorporateUrlHandler
 import MyProfileHandler
 import EditMyProfileHandler
+import CheckInHandler
