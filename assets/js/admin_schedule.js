@@ -157,14 +157,31 @@ $("#bloodhound input[name='location']").typeahead({
 
     $("button[type='submit']").click(function(e){
       e.preventDefault();
+
+      //check fields
+      var data = parseForm();
+      console.log(data);
+      if(!rooms.some(function(r){ return r['room_number'] === data.location; }) ){
+        return alert("please enter a valid room");
+      }
+      var company = $("input[name='company']").val();
+      if(!company || ! companyNames.some(function(c){ return c === company; })){
+        return alert("please enter a valid company");
+      }
+
+
+
+
+
       //send post
       $.ajax({
         method: "POST",
-        data: parseForm()
+        data: data
       }).done(function(e){
         $("input[name='eventName']").val('');
         $("textarea[name='description']").val('');
         $("input[name='location']").val('');
+        $("input[name='company']").val('');
         });
 
       //clear fields
@@ -177,7 +194,7 @@ $("#bloodhound input[name='location']").typeahead({
       obj.description = $("textarea[name='description']").val();
       obj.location = $("input[name='location']").val();
       obj.img_src = getTypeUrl($("input[name='company']"));
-      obj.day = getTypeUrl($("input[name='day']:checked"));
+      obj.day = $("input[name='day']:checked").val();
       obj.time = moment().format('HH:mm:ss');
       return obj;
     }
