@@ -39,9 +39,3 @@ SUPPORT = {
     'Requests':['Food & Drinks', 'Medical', 'Equipment', 'Other'],
     'Technical':['WIFI', 'Power', 'Locked Out', 'Other']
     }
-
-SCHEDULE = {
-    'Friday':[],
-    'Saturday':[],
-    'Sunday':[]
-          }

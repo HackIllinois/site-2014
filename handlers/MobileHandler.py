@@ -8,7 +8,6 @@ from db.Admin import Admin
 from db.Skills import Skills
 from db.NewsFeedItem import NewsFeedItem
 from db.Schedule import Schedule
-from db.Room import Room
 from google.appengine.api import users, memcache
 import json
 import time
@@ -259,16 +258,26 @@ class ScheduleHandler(MainHandler.BaseMobileHandler):
 
         schedule_query = Schedule.search_database({})
 
+        # Note: shitty hacky way to write this
+        schedule_list_friday = []
+        schedule_list_saturday = []
+        schedule_list_sunday = []
         for schedule_item in schedule_query:
             item = {
                     'event_name':schedule_item.event_name,
                     'description':schedule_item.description,
                     'time':schedule_item.time - 21600, # 21600 is 6 hours in unix to compensate for time difference
-                    'icon_url':schedule_item.icon_url
-                    # 'location':
+                    'icon_url':schedule_item.icon_url,
+                    'location':schedule_item.room_obj
             }   
+            if schedule_item.day == "Friday":
+                schedule_list_friday.append(item)
+            elif schedule_item.day == "Saturday":
+                schedule_list_saturday.append(item)
+            elif schedule_item.day == "Sunday":
+                schedule_list_sunday.append(item)
 
-        return self.write(json.dumps(MobileConstants.SCHEDULE))
+        return self.write(json.dumps({'Friday':schedule_list_friday,'Saturday':schedule_list_saturday,'Sunday':schedule_list_sunday}))
 
 
 class SupportHandler(MainHandler.BaseMobileHandler):
