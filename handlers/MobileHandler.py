@@ -82,9 +82,9 @@ def get_hacker_data():
     for hackerProfile in hackers:
         name = ''
         if hackerProfile.nameFirst: 
-            name+=hackerProfile.nameFirst + ' '
+            name+=hackerProfile.nameFirst.strip() + ' '
         if hackerProfile.nameLast: 
-            name+=hackerProfile.nameLast
+            name+=hackerProfile.nameLast.strip()
         profile = {'email':hackerProfile.email, 
                     'school':hackerProfile.school, 
                     'year':hackerProfile.year, 
@@ -120,7 +120,7 @@ def get_hacker_data():
             profile['name'] = name
             data.append(profile)
 
-    return data[:800]
+    return data
 
 def get_staff_data():
     all_staff = Admin.search_database({})
@@ -200,8 +200,8 @@ def get_mentor_data():
         # else
             # filter the 3 most recent and add them into the profile
 
-
-        data.append(profile)
+        if mentor_profile.name != "":
+            data.append(profile)
 
     return data
 
