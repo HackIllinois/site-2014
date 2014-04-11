@@ -318,9 +318,13 @@ class NewsfeedHandler(MainHandler.BaseMobileHandler):
                 'emergency':feedItem.emergency,
                 'announcement':feedItem.announcement,
                 'hackillinois':feedItem.hackillinois,
-                'highlighted':[]
-                # 'highlighted':feedItem.highlighted
             }
+
+            if feedItem.highlighted:
+                item['highlighted'] = feedItem.highlighted
+            else:
+                item['highlighted'] = []
+
             newsFeedList.append(item)
 
                                    
