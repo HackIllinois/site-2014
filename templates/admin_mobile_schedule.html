@@ -72,70 +72,56 @@
         </div>
 
         <div class="form-group">
-          <label for="radioType" class="control-label">Type</label>
+          <label for="companyName" class="control-label">Company Name</label>
+          <div id="bloodhound">
+            <input class="form-control typeahead" type="text" placeholder="Company Name" name="company">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="radioType" class="control-label">Day</label>
           <div>
             <label for="radio1" class="radio-inline">
-              <input type="radio" name="type" id="radio1" value="emergency" required> Emergency
+              <input type="radio" name="day" id="radio1" value="friday" required> Friday
             </label>
-          </div>
-
-          <div>
             <label for="radio2" class="radio-inline">
-              <input type="radio" name="type" id="radio2" value="announcement" required> Announcement
+              <input type="radio" name="day" id="radio2" value="saturday" required> Saturday
             </label>
-          </div>
-
-          <div>
             <label for="radio3" class="radio-inline">
-              <input type="radio" name="type" id="radio3" value="hackillinois" required> HackIllinois
+              <input type="radio" name="day" id="radio3" value="sunday" required> Sunday
             </label>
           </div>
         </div>
-      </div>
 
-      <div class="form-group">
-        <label for="radioType" class="control-label">Day</label>
-        <div>
-          <label for="radio1" class="radio-inline">
-            <input type="radio" name="day" id="radio1" value="friday" required> Friday
-          </label>
-          <label for="radio2" class="radio-inline">
-            <input type="radio" name="day" id="radio2" value="saturday" required> Saturday
-          </label>
-          <label for="radio3" class="radio-inline">
-            <input type="radio" name="day" id="radio3" value="sunday" required> Sunday
-          </label>
+        <div class="form-group">
+          <div class="">
+            <button type="button" id="render-feeditem" class="btn btn-success">Preview</button>
+            <button type="submit" class="btn btn-primary">Send to everyone</button>
+          </div>
         </div>
-      </div>
 
-      <div class="form-group">
-        <div class="">
-          <button type="button" id="render-feeditem" class="btn btn-success">Preview</button>
-          <button type="submit" class="btn btn-primary">Send to everyone</button>
-        </div>
-      </div>
+      </form>
+    </div>
 
-    </form>
-  </div>
-
-  <div class="row rendered-container" style="display: none;">
-    <ul class="media-list">
-      <li class="media">
-        <div class="pull-left">
-          <img id="rendered-image" alt="" src="" class="media-object" style="width: 64px; height: 64px;">
-        </div>
-        <div class="media-body">
-          <p id="rendered-description"></p>
-        </div>
-      </li>
-    </ul>
-  </div>
-</section>
+    <div class="row rendered-container" style="display: none;">
+      <ul class="media-list">
+        <li class="media">
+          <div class="pull-left">
+            <img id="rendered-image" alt="" src="" class="media-object" style="width: 64px; height: 64px;">
+          </div>
+          <div class="media-body">
+            <p id="rendered-description"></p>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </section>
 
 
-{% endblock body %}
+  {% endblock body %}
 
 
-{% block scripts %}
-<script src="/js/admin_schedule.js"></script>
-{% endblock scripts%}
+  {% block scripts %}
+  <script src="/js/admin_schedule.js"></script>
+  <script src="/js/typeahead.bundle.min.js"></script>
+  {% endblock scripts%}

@@ -1,9 +1,85 @@
 $(document).ready(function() {
 
+
+  var companyNames = [
+  '3red',
+  'a16z',
+  'allston',
+  'announce',
+  'answers',
+  'ba',
+  'bloomberg',
+  'citadel',
+  'dropbox',
+  'electricimp',
+  'element',
+  'emergency',
+  'epic',
+  'etsy',
+  'firebase',
+  'ge',
+  'goldman',
+  'google',
+  'groupon',
+  'hackillinois',
+  'hudl',
+  'imo',
+  'inin',
+  'johndeere',
+  'kcg',
+  'kohls',
+  'mailgun',
+  'makerlab',
+  'neustar',
+  'niksun',
+  'octopart',
+  'onenorth',
+  'pebble',
+  'rdio',
+  'spark',
+  'sparkfun',
+  'spiceworks',
+  'spot',
+  'statefarm',
+  'tata',
+  'trunkclub',
+  'twilio',
+  'venmo',
+  'westmonroe',
+  'wolfram',
+  'yahoo',
+  ];
+
+  //RELEASE THE BLOODHOUND!!
+  var companiesHound = new Bloodhound({
+    datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
+    queryTokenizer: Bloodhound.tokenizers.whitespace,
+    local: $.map(companyNames, function(c) { return { value: c }; })
+  });
+
+// kicks off the loading/processing of `local` and `prefetch`
+companiesHound.initialize();
+
+$("input[name='company']").typeahead({
+  hint: true,
+  highlight: true,
+  minLength: 1
+},
+{
+  name: 'companies',
+  displayKey: 'value',
+  // `ttAdapter` wraps the suggestion engine in an adapter that
+  // is compatible with the typeahead jQuery plugin
+  source: companiesHound.ttAdapter()
+});
+
+
     // Character Counter for Description Box
     $("#inputDescription").on("change paste keydown keyup", function() {
       $("#char-count").text($("#inputDescription").val().length)
     });
+
+
 
 
 
