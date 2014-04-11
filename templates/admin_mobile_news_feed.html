@@ -17,6 +17,11 @@
 	.rendered-container {
 		border: 1px solid red;
 	}
+
+	.media-body {
+		word-wrap: break-word;
+	}
+
 </style>
 {% endblock head %}
 
@@ -67,7 +72,7 @@
 		<div class="form-group">
 			<div class="col-sm-offset-1 col-sm-10">
 				<button type="button" id="render-feeditem" class="btn btn-success">Render</button>
-				<button type="submit" class="btn btn-primary">Send to everyone</button>
+				<button type="submit" id="publish-feeditem" class="btn btn-primary">Send to everyone</button>
 			</div>
 		</div>
 	</form>
@@ -97,7 +102,7 @@
 				<img class="media-object" data-src="holder.js/64x64" alt="64x64" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2NCIgaGVpZ2h0PSI2NCI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiBmaWxsPSIjZWVlIj48L3JlY3Q+PHRleHQgdGV4dC1hbmNob3I9Im1pZGRsZSIgeD0iMzIiIHk9IjMyIiBzdHlsZT0iZmlsbDojYWFhO2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1zaXplOjEycHg7Zm9udC1mYW1pbHk6QXJpYWwsSGVsdmV0aWNhLHNhbnMtc2VyaWY7ZG9taW5hbnQtYmFzZWxpbmU6Y2VudHJhbCI+NjR4NjQ8L3RleHQ+PC9zdmc+" style="width: 64px; height: 64px;">
 				{% endif %}
 			</div>
-			<div class="media-body">
+			<div class="media-body" >
 				<p>{{ item.description|safe }}</p>
 			</div>
 		</li>
@@ -110,6 +115,7 @@
 {% block scripts %}
 <script type="text/javascript">
 $(document).ready(function() {
+
     // $("#addFeedItem-form").submit(function(event) { });
 	$("#inputDescription").on("change paste keydown keyup", function() {
 		$("#char-count").text($("#inputDescription").val().length)
@@ -118,7 +124,15 @@ $(document).ready(function() {
 		$(".feedform-container").slideToggle();
 		$(".rendered-container").slideUp();
 	});
-
+	$("#addFeedItem-form").on('submit',function(e) {
+		e.preventDefault();
+		$.post('/admin/mobile/newsfeed',data=$('#addFeedItem-form').serialize(), function(response) {
+				response = $.parseJSON(response);
+		        if(response['message'] != "success")
+		        	alert(response['message']);
+		    	window.location.reload();
+		    });
+	});
 	$("#render-feeditem").click(function() {
 		if ($("#inputDescription").val() && $("input[name='type']:checked").val()) {
 			type = $("input[name='type']:checked").val();
@@ -132,6 +146,7 @@ $(document).ready(function() {
 				$("#rendered-image").attr('src','http://www.hackillinois.org/img/icons-iOS/hackillinois.png');
 				$("#rendered-image").attr('alt','hackillinois');
 			}
+
 			$("#rendered-description").html($("#inputDescription").val());
 			$(".rendered-container").slideDown();
 		} else {
