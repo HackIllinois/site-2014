@@ -266,7 +266,7 @@ class ScheduleHandler(MainHandler.BaseMobileHandler):
             item = {
                     'event_name':schedule_item.event_name,
                     'description':schedule_item.description,
-                    'time':schedule_item.time, # 21600 is 6 hours in unix to compensate for time difference
+                    'time':schedule_item.time + 18000, # 21600 is 6 hours in unix to compensate for time difference
                     'icon_url':schedule_item.icon_url,
                     'location':schedule_item.room_obj
             }   
