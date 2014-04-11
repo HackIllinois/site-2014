@@ -9,7 +9,6 @@
     .t-centered {
         text-align: center;
     }
-
 </style>
 {% endblock head %}
 
@@ -18,7 +17,7 @@
 <div class="row">
     <div class="col-md-12">
         <h1 class="page-header">
-            {{ data.name }}
+            {{ admin.name }}
             <a class="btn btn-primary edit-btn" href="/admin/myprofile/edit">Edit</a>
         </h1>
     </div>
@@ -35,23 +34,15 @@
         <tbody>
             <tr>
                 <td class="pull-right">Name:</td>
-                <td id="nameFirst" name="nameFirst">{{ data.name }}</td>
-            </tr>
-            <tr>
-                <td class="pull-right">Company Name:</td>
-                <td id="companyName" name="companyName">{{ data.companyName }}</td>
-            </tr>
-            <tr>
-                <td class="pull-right">Job Title:</td>
-                <td id="nameFirst" name="nameFirst">{{ data.jobTitle }}</td>
+                <td id="name" name="name">{{ admin.name }}</td>
             </tr>
             <tr>
                 <td class="pull-right">Contact Email:</td>
-                <td name="email">{{ data.email }}</td>
+                <td name="email">{{ admin.email }}</td>
             </tr>
             <tr>
                 <td class="pull-right">Login Email:</td>
-                <td name="email">{{ data.userEmail }}</td>
+                <td name="email">{{ admin.userEmail }}</td>
             </tr>
         </tbody>
     </table>

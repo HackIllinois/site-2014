@@ -103,7 +103,7 @@ class BaseAdminHandler(MainHandler.Handler):
         user = users.get_current_user()
         if not user:
             return None
-        admin_user = Admin.search_database({'email': user.email()}).get()
+        admin_user = Admin.search_database({'userEmail': user.email()}).get()
         if not admin_user:
             return None
         return admin_user

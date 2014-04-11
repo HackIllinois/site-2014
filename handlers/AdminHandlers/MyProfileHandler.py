@@ -8,11 +8,11 @@ class MyProfileHandler(MainAdminHandler.BaseAdminHandler):
         admin_user = self.get_admin_user()
         if not admin_user: return self.abort(500, detail='User not in database')
 
-        data = {}
-        text_fields = ['email', 'companyName', 'name', 'userEmail', 'jobTitle']
+        admin = {}
+        text_fields = ['name', 'email', 'userEmail']
 
         for field in text_fields:
-            value = getattr(self.db_user, field) # Gets db_user.field using a string
-            if value is not None: data[field] = value
+            value = getattr(admin_user, field) # Gets db_user.field using a string
+            if value is not None: admin[field] = value
 
-        return self.render('admin_my_profile.html', data=data, access=json.loads(admin_user.access))
+        return self.render('admin_my_profile.html', admin=admin, access=json.loads(admin_user.access))
