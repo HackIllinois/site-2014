@@ -6,23 +6,26 @@ import random
 import json
 
 class MassCorporateUrlHandler(MainAdminHandler.BaseAdminHandler):
-
     def get(self):
-      admin_user = self.get_admin_user()
-      if not admin_user: return self.abort(500, detail='User not in database')
-      if not admin_user.corporateAdminAccess:
-          return self.abort(401, detail='User does not have permission to create corporate urls.')
-      urls = []
-      for url in self.request.get('size'):
-        # http://stackoverflow.com/questions/2782229/most-lightweight-way-to-create-a-random-string-and-a-random-hexadecimal-number
-        uniqueString = '%05x' % random.randrange(16**5)
+        admin_user = self.get_admin_user()
+        if not admin_user: return self.abort(500, detail='User not in database')
+        if not admin_user.corporateAdminAccess:
+            return self.abort(401, detail='User does not have permission to create corporate urls.')
 
-        while CorporateUrl.search_database({'uniqueString': uniqueString}).get() is not None:
+        size = int(self.request.get('size'))
+
+        urls = []
+        for url in range(size):
+            # http://stackoverflow.com/questions/2782229/most-lightweight-way-to-create-a-random-string-and-a-random-hexadecimal-number
             uniqueString = '%05x' % random.randrange(16**5)
 
-        access = self.request.get('attendeeDataAccess') == 'True'
+            while CorporateUrl.search_database({'uniqueString': uniqueString}).get() is not None:
+                uniqueString = '%05x' % random.randrange(16**5)
 
-        CorporateUrl.add({'uniqueString': uniqueString, 'attendeeDataAccess': access})
+            access = self.request.get('access') == 'True'
 
-        urls.append(self.request.host_url+'/c-registration/'+uniqueString)
-      return self.write(urls)
+            CorporateUrl.add({'uniqueString': uniqueString, 'attendeeDataAccess': access})
+
+            urls.append(self.request.host_url+'/c-registration/'+uniqueString)
+
+        return self.write('<br>'.join(urls))

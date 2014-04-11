@@ -27,3 +27,4 @@ import MassRsvpInvalidateHandler
 import NewSponsorHandler
 import CorporateUrlHandler
 import StaffPhoneNumbersHandler
+import MassCorporateUrlHandler
