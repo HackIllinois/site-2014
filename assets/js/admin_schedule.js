@@ -87,6 +87,7 @@ $(document).ready(function() {
   'yahoo',
   ];
 
+$(".form_datetime").datetimepicker({format: 'yyyy-mm-dd hh:ii'});
   //RELEASE THE BLOODHOUND!!
   var companiesHound = new Bloodhound({
     datumTokenizer: function(d) {
@@ -160,7 +161,7 @@ $("#bloodhound input[name='location']").typeahead({
 
       //check fields
       var data = parseForm();
-      console.log(data);
+
       if(!rooms.some(function(r){ return r['room_number'] === data.location; }) ){
         return alert("please enter a valid room");
       }
@@ -182,6 +183,7 @@ $("#bloodhound input[name='location']").typeahead({
         $("textarea[name='description']").val('');
         $("input[name='location']").val('');
         $("input[name='company']").val('');
+        $("input[name='time']").val('');
         });
 
       //clear fields
@@ -195,7 +197,7 @@ $("#bloodhound input[name='location']").typeahead({
       obj.location = $("input[name='location']").val();
       obj.img_src = getTypeUrl($("input[name='company']"));
       obj.day = $("input[name='day']:checked").val();
-      obj.time = moment().format('HH:mm:ss');
+      obj.time = $("input[name='time']").val();
       return obj;
     }
   });

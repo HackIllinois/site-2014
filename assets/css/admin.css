@@ -60,7 +60,7 @@ BOOTSTRAP DROPDOWN CODE
 
  */
 
-.typeahead { z-index: 1051 };
+
 
 .twitter-typeahead .tt-query,
 .twitter-typeahead .tt-hint {
@@ -85,6 +85,7 @@ BOOTSTRAP DROPDOWN CODE
   -webkit-background-clip: padding-box;
      -moz-background-clip: padding;
           background-clip: padding-box;
+  z-index: 1000;
 }
 
 .tt-suggestion {
