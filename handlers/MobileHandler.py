@@ -7,6 +7,7 @@ from db.Sponsor import Sponsor
 from db.Admin import Admin
 from db.Skills import Skills
 from db.NewsFeedItem import NewsFeedItem
+from db.Schedule import Schedule
 from google.appengine.api import users, memcache
 import json
 import time
@@ -30,6 +31,10 @@ import time
 #             x = x + 1
 #         return status_list
 
+def construct_person_profile_for_json(person):
+    person_json = {}
+
+    return person_json
 
 def _decode_list(data):
     rv = []
@@ -61,33 +66,33 @@ def check_email_for_login(email):
     if not email:
         return False
 
-    hackerProfile = Attendee.search_database({'userEmail':email}).get()
-    staffProfile = Admin.search_database({'email':email}).get()
-    mentorProfile = Sponsor.search_database({'email':email}).get()
-    
-    if hackerProfile or staffProfile or mentorProfile: 
+    if Attendee.search_database({'userEmail':email}).get():
+            return Attendee.approvalStatus.status == "Rsvp Coming"
+    elif Sponsor.search_database({'email':email}).get():
+        return True
+    elif Admin.search_database({'email':email}).get():
         return True
     else:
         return False
 
 def get_hacker_data():
     """Sets the 'hacker_mobile' key in the memcache"""
-    # hackers = Attendee.query(Attendee.approvalStatus.status == "Rsvp Coming", ancestor=Attendee.get_default_event_parent_key())
-    hackers = Attendee.search_database({})
+    hackers = Attendee.query(Attendee.approvalStatus.status == "Rsvp Coming", ancestor=Attendee.get_default_event_parent_key())
     data = []
     for hackerProfile in hackers:
         name = ''
         if hackerProfile.nameFirst: 
-            name+=hackerProfile.nameFirst + ' '
+            name+=hackerProfile.nameFirst.strip().title() + ' '
         if hackerProfile.nameLast: 
-            name+=hackerProfile.nameLast
+            name+=hackerProfile.nameLast.strip().title()
         profile = {'email':hackerProfile.email, 
-                    'school':hackerProfile.school, 
+                    'school':hackerProfile.school.title(), 
                     'year':hackerProfile.year, 
                     'homebase':hackerProfile.homebase, 
                     'fb_url':hackerProfile.pictureURL, 
                     'database_key':hackerProfile.database_key,
                     'time':hackerProfile.updatedTime, 
+                    'mac_address':hackerProfile.mac_address,
                     'type':'hacker'}
 
         if hackerProfile.skills:
@@ -115,14 +120,14 @@ def get_hacker_data():
             profile['name'] = name
             data.append(profile)
 
-    return data[:800]
+    return data
 
 def get_staff_data():
     all_staff = Admin.search_database({})
     data = []
 
     for staff_profile in all_staff:
-        profile = {'name':staff_profile.name, 
+        profile = {'name':staff_profile.name.strip().title(), 
                     'email':staff_profile.email, 
                     'company':staff_profile.companyName,
                     'job_title':staff_profile.jobTitle,
@@ -130,7 +135,8 @@ def get_staff_data():
                     'homebase':staff_profile.homebase, 
                     'fb_url':staff_profile.pictureURL, 
                     'database_key':staff_profile.database_key, 
-                    'time':staff_profile.updatedTime, 
+                    'time':staff_profile.updatedTime,
+                    'mac_address':staff_profile.mac_address, 
                     'type':'staff'}
         if staff_profile.skills:
             if staff_profile.skills[0] != "":
@@ -163,13 +169,14 @@ def get_mentor_data():
     data = []
 
     for mentor_profile in all_mentors:
-        profile = {'name':mentor_profile.name,
+        profile = {'name':mentor_profile.name.strip().title(),
                     'email':mentor_profile.email, 
                     'company':mentor_profile.companyName, 
                     'job_title':mentor_profile.jobTitle, 
                     'fb_url':mentor_profile.pictureURL, 
                     'database_key':mentor_profile.database_key, 
                     'time':mentor_profile.updatedTime, 
+                    'mac_address':mentor_profile.mac_address,
                     'type':'mentor'}
 
         if mentor_profile.skills:            
@@ -193,8 +200,8 @@ def get_mentor_data():
         # else
             # filter the 3 most recent and add them into the profile
 
-
-        data.append(profile)
+        if mentor_profile.name != "":
+            data.append(profile)
 
     return data
 
@@ -249,6 +256,20 @@ class ScheduleHandler(MainHandler.BaseMobileHandler):
         if not valid_email:
             return self.write(json.dumps({}))
 
+        schedule_query = Schedule.search_database({})
+
+        for schedule_item in schedule_query:
+            item = {
+                    'event_name':schedule_item.event_name,
+                    'description':schedule_item.description,
+                    'time':schedule_item.time,
+                    'icon_url':schedule_item.icon_url
+            }
+
+            # # TODO: set up loction in schedule json
+            # for map_item in MobileConstants.MAP:
+            #     pass
+
         return self.write(json.dumps(MobileConstants.SCHEDULE))
 
 
@@ -279,12 +300,6 @@ class MapHandler(MainHandler.BaseMobileHandler):
 
 
 class NewsfeedHandler(MainHandler.BaseMobileHandler):
-    '''
-        
-        @parameter before Top bound on the time for the NewsFeed
-        @parameter since Bottom bound on the time for the NewsFeed (default should be your last time of the NewFeed card you have)
-        @return The NewFeed models that are between the before and since parameters
-        '''
     def get(self):
         valid_email = False
         if 'Email' in self.request.headers:
@@ -292,27 +307,21 @@ class NewsfeedHandler(MainHandler.BaseMobileHandler):
 
         if not valid_email:
             return self.write(json.dumps([]))
-        
-        empty_list = []
-        newsFeedList = [{'description':'ANNOUNCEMENT - Puppies are available in the main atrium for your delight.', 'time':1396584900, 'icon_url':'http://www.hackillinois.org/img/icons-iOS/announce.png', 'highlighted':[[[0,12],[165,165,165]]], 'emergency':False},
-                                   {'description':'We are having open office hours with HackIllinois Technical Staff in SC 1404! Bring your computers with you!', 'time':1396583100, 'icon_url':'http://www.hackillinois.org/img/icons-iOS/hackillinois.png', 'highlighted':[[[68,76],[27,77,104]]], 'emergency':False},
-                                   {'description':'The first 100 people to tweet something to @hackillinois will win a HackIllinois blanket.', 'time':1396269004, 'icon_url':'http://www.hackillinois.org/img/icons-iOS/hackillinois.png', 'highlighted':[[[43,56],[27,77,104]]], 'emergency':False},
-                                   {'description':'Event ends - You have 5 hours left to finish your hacks!', 'time':1396585500, 'icon_url':'http://www.hackillinois.org/img/icons-iOS/emergency.png', 'highlighted':[[[0,10],[167,65,46]]], 'emergency':True}]
-                                   # {'description':'', 'time':23423, 'icon_url':'http://www.tarkettsportsindoor.com/sites/tarkett_indoor/assets/Resicore-PU-Midnight-Blue.png', 'highlighted':[], 'emergency':False},
-                                   # {'description':'', 'time':765524333, 'icon_url':'https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcSNwVLUS8TsSni5_gXYPWDVBehYxMHnQj5RIWITO11uACXHhky5', 'highlighted':[[[0,5],[25,25,112]]], 'emergency':True},
-                                   # {'description':'', 'time':88923443, 'icon_url':'http://www.tarkettsportsindoor.com/sites/tarkett_indoor/assets/Resicore-PU-Midnight-Blue.png', 'highlighted':[[[7,12],[139,0,0]]], 'emergency':False}]
 
-        # newsFeed = NewsFeedItem.search_database({})
-        # newsFeedList = []
-        # for feedItem in newsFeed:
-        #     item = {
-        #         'description':feedItem.description,
-        #         'time':feedItem.time,
-        #         'icon_url':feedItem.icon_url,
-        #         'emergency':feedItem.emergency,
-        #         'highlighted':[]
-        #     }
-        #     newsFeedList.append(item)
+        newsFeed = NewsFeedItem.search_database({})
+        newsFeedList = []
+        for feedItem in newsFeed:
+            item = {
+                'description':feedItem.description,
+                'time':feedItem.time,
+                'icon_url':feedItem.icon_url,
+                'emergency':feedItem.emergency,
+                'announcement':feedItem.announcement,
+                'hackillinois':feedItem.hackillinois,
+                'highlighted':[]
+                # 'highlighted':feedItem.highlighted
+            }
+            newsFeedList.append(item)
 
                                    
         return self.write(json.dumps(newsFeedList))
@@ -352,6 +361,15 @@ class PersonHandler(MainHandler.BaseMobileHandler):
 
             for personProfile in allProfiles:
                 if personProfile['database_key'] == int(keyParams):
+                    return self.write(json.dumps([personProfile]))
+
+        elif self.request.get('mac_address'):
+            keyParams = self.request.get('mac_address')
+
+            allProfiles = get_people_memecache('all')
+
+            for personProfile in allProfiles:
+                if personProfile['mac_address'] == keyParams:
                     return self.write(json.dumps([personProfile]))
 
         else:
@@ -428,6 +446,11 @@ class PersonHandler(MainHandler.BaseMobileHandler):
                             memcache_profile['status'] = updatedProfileDict['status_list']
                         else:
                             return self.write(json.dumps({'message':'Invalid status'}))
+                    elif 'mac_address' in updatedKeys:
+                        if isinstance(updatedProfileDict['mac_address'],str):
+                            memcache_profile['mac_address'] = updatedProfileDict['mac_address']
+                        else:
+                            return self.write(json.dumps({'message':'Invalid mac_address'}))
                     
             if memcache.replace('all', all_profiles, time=constants.MOBILE_MEMCACHE_TIMEOUT):
                 return self.write(json.dumps({'message':'Updated Profile'}))
@@ -494,17 +517,17 @@ class LoginHandler(MainHandler.BaseMobileHandler):
         
         if hackerProfile:
             name = ''
-            if hackerProfile.nameFirst: name+=hackerProfile.nameFirst + ' '
-            if hackerProfile.nameLast: name+=hackerProfile.nameLast
+            if hackerProfile.nameFirst: name+=hackerProfile.nameFirst.strip().title() + ' '
+            if hackerProfile.nameLast: name+=hackerProfile.nameLast.strip().title()
             profile = {'name':name, 
             'email':hackerProfile.email, 
-            'school':hackerProfile.school, 
+            'school':hackerProfile.school.title(), 
             'year':hackerProfile.year,
             'homebase':hackerProfile.homebase, 
             'fb_url':hackerProfile.pictureURL, 
-            'status':hackerProfile.status_list, 
             'database_key':hackerProfile.database_key ,
             'time':hackerProfile.updatedTime,
+            'mac_address':hackerProfile.mac_address,
             'type':'hacker'}
 
             if hackerProfile.skills:
@@ -526,16 +549,16 @@ class LoginHandler(MainHandler.BaseMobileHandler):
 
             list_profile.append(profile)
         elif staffProfile:
-            profile = {'name':staffProfile.name, 
+            profile = {'name':staffProfile.name.strip().title(), 
             'email':staffProfile.email, 
             'company':staffProfile.companyName,
             'job_title':staffProfile.jobTitle,
             'year':staffProfile.year,
             'homebase':staffProfile.homebase, 
             'fb_url':staffProfile.pictureURL, 
-            'status':staffProfile.status_list, 
             'database_key':staffProfile.database_key, 
             'time':staffProfile.updatedTime,
+            'mac_address':staffProfile.mac_address,
             'type':'staff'}
 
             if staffProfile.skills:
@@ -556,14 +579,14 @@ class LoginHandler(MainHandler.BaseMobileHandler):
 
             list_profile.append(profile)
         elif mentorProfile:
-            profile = {'name':mentorProfile.name,
+            profile = {'name':mentorProfile.name.strip().title(),
             'email':mentorProfile.email, 
             'company':mentorProfile.companyName, 
             'job_title':mentorProfile.jobTitle, 
             'fb_url':mentorProfile.pictureURL, 
-            'status':mentorProfile.status_list, 
             'database_key':mentorProfile.database_key , 
             'time':mentorProfile.updatedTime,
+            'mac_address':mentorProfile.mac_address,
             'type':'mentor'}
             
             if mentorProfile.skills:

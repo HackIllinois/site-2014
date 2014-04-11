@@ -12,7 +12,8 @@ class NewsFeedItem(Model):
 	icon_url = ndb.TextProperty()
 	highlighted = ndb.JsonProperty() #[[range,color],[range,color]],
 	emergency = ndb.BooleanProperty()
-
+	hackillinois = ndb.BooleanProperty(default=False)
+	announcement = ndb.BooleanProperty(default=False)
 
 	@classmethod
 	def new(cls, data):
