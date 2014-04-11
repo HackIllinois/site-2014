@@ -32,18 +32,17 @@ class ScheduleHandler(MainAdminHandler.BaseAdminHandler):
         #create room from request
         roomnumber = self.request.get('location')
         rooms = filter(lambda x: x['room_number'] == roomnumber, MAP)
-        #query for room number
-        r = Room.query()
-        #room object from Room ID
 
         #check all fields valid
         Schedule(
             event_name=self.request.get('event_name'),
             description=self.request.get('description'),
-            location= r,
+            room_obj=rooms[0],
             time=int(time.time()),
             icon_url= self.request.get('img_src'),
             day = str(urllib.unquote(self.request.get('day')))
         ).put()
 
-        return self.write(json.dumps({'message':'success'}))
+        self.response.headers['Content-Type'] = 'application/json'
+        #return self.response.write("<h1> HELLO WORLD </h1>")
+        return self.response.write(json.dumps({'message':'success'}))

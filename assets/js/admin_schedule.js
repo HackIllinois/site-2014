@@ -155,19 +155,17 @@ $("#bloodhound input[name='location']").typeahead({
     });
 
 
-    $("button[type='submit']").click(function(){
+    $("button[type='submit']").click(function(e){
+      e.preventDefault();
       //send post
-      $.post({
-        url: window.location.pathname,
-        data: parseForm(),
-        success: function(data, status){
-          alert(status);
-          //clear form fields
-          $("input[name='eventName']").val('');
-          obj.description = $("textarea[name='description']").val('');
-          obj.location = $("input[name='location']").val('');
-        }
-      });
+      $.ajax({
+        method: "POST",
+        data: parseForm()
+      }).done(function(e){
+        $("input[name='eventName']").val('');
+        $("textarea[name='description']").val('');
+        $("input[name='location']").val('');
+        });
 
       //clear fields
 
@@ -181,11 +179,8 @@ $("#bloodhound input[name='location']").typeahead({
       obj.img_src = getTypeUrl($("input[name='company']"));
       obj.day = getTypeUrl($("input[name='day']:checked"));
       obj.time = moment().format('HH:mm:ss');
-
       return obj;
     }
-
-
   });
 
 function getTypeUrl(field){
@@ -195,7 +190,7 @@ function getTypeUrl(field){
   if( !field.val() ){
     return def;
   }
-  else return "/img/icons-iOS/" + field.val().toLowerCase() + ".png"
+  else return "/img/icons-iOS/" + field.val().toLowerCase() + ".png";
 }
 
 
