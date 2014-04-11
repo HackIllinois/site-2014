@@ -56,13 +56,15 @@ class ScheduleHandler(MainAdminHandler.BaseAdminHandler):
 
         if schedule_item.day == 'Friday':
             s = "11/04/2014" + " " + self.request.get('time')
-            schedule_item['time'] = time.mktime(datetime.datetime.strptime(s, "%d/%m/%Y %H:%M").timetuple())
+            schedule_item.time = long(time.mktime(datetime.datetime.strptime(s, "%d/%m/%Y %H:%M").timetuple()))
         elif schedule_item.day == 'Saturday':
             s = "12/04/2014" + " " + self.request.get('time')
-            schedule_item['time'] = time.mktime(datetime.datetime.strptime(s, "%d/%m/%Y %H:%M").timetuple())
+            schedule_item.time = long(time.mktime(datetime.datetime.strptime(s, "%d/%m/%Y %H:%M").timetuple()))
         elif schedule_item.day == 'Sunday':
             s = "13/04/2014" + " " + self.request.get('time')
-            schedule_item['time'] = time.mktime(datetime.datetime.strptime(s, "%d/%m/%Y %H:%M").timetuple())
+            schedule_item.time = long(time.mktime(datetime.datetime.strptime(s, "%d/%m/%Y %H:%M").timetuple()))
+
+        schedule_item.put()
 
         self.response.headers['Content-Type'] = 'application/json'
         return self.response.write(json.dumps({'message':'success'}))
