@@ -28,6 +28,7 @@ class Sponsor(Model):
     skills = ndb.JsonProperty(default=[''])
     status = ndb.TextProperty(default='')
     pictureURL = ndb.TextProperty(default='')
+    homebase = ndb.TextProperty(default='')
     updatedTime = ndb.IntegerProperty()
     email_lower = ndb.ComputedProperty(lambda self: self.email.lower())
     database_key = ndb.IntegerProperty(default=0)
