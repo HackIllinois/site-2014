@@ -87,7 +87,7 @@ $(document).ready(function() {
   'yahoo',
   ];
 
-$(".form_datetime").datetimepicker({format: 'yyyy-mm-dd hh:ii'});
+$('#timepicker1').timepicker();
   //RELEASE THE BLOODHOUND!!
   var companiesHound = new Bloodhound({
     datumTokenizer: function(d) {
