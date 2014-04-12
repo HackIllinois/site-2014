@@ -75,15 +75,17 @@ $(document).ready(function(){
     hours = Math.floor(moment.duration(ms).asHours());
     hours=hours+24
 
-    console.log(hours);
+    //console.log(hours);
     then = then.subtract('hours', hours);
-    console.log(hours);
+
     // update the duration in ms
     ms = then.diff(now, 'milliseconds', true);
     minutes = Math.floor(moment.duration(ms).asMinutes());
     minutes=minutes+1400;
     minutes=Math.abs(minutes);
     then = then.subtract('minutes', minutes);
+    //console.log(minutes);
+    minutes-=1;
     if(minutes<10) {
 
         minn = String(minutes);
