@@ -156,3 +156,13 @@ li.after-no-dot {
 .bus-text {
     text-align: center;
 }
+
+.status-grid-scaffold {
+    width: 1000px;
+    display: block;
+    margin: 0 auto;
+}
+
+.status-footer {
+    max-width:1000px; 
+}

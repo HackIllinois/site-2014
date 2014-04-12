@@ -16,6 +16,7 @@ import AdminHandlers
 import MobileHandler
 import ErrorHandlers
 import TwilioHandlers
+import StatusHandler
 
 handlers = [
     RedirectRoute('/', handler=IndexHandler, name='Index', strict_slash=True),
@@ -44,6 +45,8 @@ handlers = [
     RedirectRoute('/research/<form>', handler=ResearchRedirect, name='ResearchRedirect', strict_slash=True),
 
     RedirectRoute('/mentor', handler=MentorHandler.RenderHandler, name='Mentor', strict_slash=True),
+
+    RedirectRoute('/status', handler=StatusHandler.StatusHandler, name='Status', strict_slash=True),
 
     RedirectRoute('/applycount', handler=ApplyCountHandler, name='ApplyCount', strict_slash=True),
 
