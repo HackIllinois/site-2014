@@ -31,3 +31,8 @@ class SponsorFAQHandler(MainHandler.Handler):
     """ Handler for the sponsor FAQ subpage """
     def get(self):
         self.render("sponsor_faq.html")
+
+class AppsPageHandler(MainHandler.Handler):
+    """ Handler for the apps FAQ subpage """
+    def get(self):
+        self.render("apps.html")
