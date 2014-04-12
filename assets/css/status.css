@@ -122,6 +122,9 @@ body {
 	background: #fff;
 	border-radius: 25px;
 	float: left;
+}
+
+.update-img:first-child img {
 	-webkit-animation: image-blink 2s infinite;
   	-moz-animation:    image-blink 2s infinite;
   	-o-animation:      image-blink 2s infinite;
