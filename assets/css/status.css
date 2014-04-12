@@ -67,8 +67,7 @@ body {
 	0%   { opacity: 0; }
 	50%	 { opacity: 1; }
 	100% { opacity: 0; }
-
-
+}
 
 @-webkit-keyframes image-blink {
 	0%   { opacity: 1; }
@@ -157,7 +156,9 @@ body {
 	font-size: 12px;
 }
 
-@media (max-width: 1000px) {
+@media only screen
+and (max-width: 1000px) {
 	.status-grid-scaffold {
 		width: 100%;
 	}
+}
