@@ -55,6 +55,10 @@ handlers = [
     RedirectRoute('/staff', handler=SubpageHandlers.StaffHandler, name='Staff', strict_slash=True),
     RedirectRoute('/apps', handler=SubpageHandlers.AppsPageHandler, name='Apps', strict_slash=True),
 
+
+    RedirectRoute('/status', handler=SubpageHandlers.EventStatusPageHandler, name='Status', strict_slash=True),
+    
+
     RedirectRoute('/tropo', handler=TropoHandler, name='Tropo', strict_slash=True),
 
     RedirectRoute('/sponsor/download', handler=SponsorDownloadHandler, name='SponsorDownload', strict_slash=True),
