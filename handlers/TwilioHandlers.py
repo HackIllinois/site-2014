@@ -67,7 +67,7 @@ class TextEveryoneHandler(TwilioHandler):
 
             urllib2.Request('23.236.61.209:5000/send', data=urllib.urlencode(data))
 
-            logging.info("%s sent a message to everyone with body: %s" % (authorized_senders[from_number], body))
+            logging.info("%s sent a message to everyone with body: %s" % (from_number, body))
         else:
             # TODO: Change to send email to support@hackillinois.org
             message = self.client.sms.messages.create(
