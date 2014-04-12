@@ -2,7 +2,7 @@
 
 {% block subpage_body %}
 <div class="countdown">
-    <div id="countdown-endtext"></div>
+    <div id="countdown-endtext">Hacking ends in</div>
     <div class="countdown-time"></div>
         <div id="countdown-hours"></div>
         <div class="countdown-colon">:</div>
@@ -44,77 +44,70 @@
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.5.1/moment.min.js"></script>
 <script type="text/javascript">
-$(document).ready(function(){
+  $(document).ready(function(){
+
   countdown();
+
   setInterval(countdown, 1000);
+
   function countdown () {
   var now = moment(), // get the current moment
-    // May 28, 2013 @ 12:00AM
-    then = moment([2014, 3, 13, 10, 00, 00, 00]),
+    // having that baby on May 28, 2013 @ 12:00AM
+    then = moment([2014, 3, 13, 10, 00, 00]),
     // get the difference from now to then in ms
     ms = then.diff(now, 'milliseconds', true);
+
     // If you need years, uncomment this line and make sure you add it to the concatonated phrase
     /*
     years = Math.floor(moment.duration(ms).asYears());
     then = then.subtract('years', years);
     */
+
     // update the duration in ms
     ms = then.diff(now, 'milliseconds', true);
+
     // get the duration as months and round down
     months = Math.floor(moment.duration(ms).asMonths());
- 
+
     // subtract months from the original moment (not sure why I had to offset by 1 day)
-    then = then.subtract('months', months).subtract('days', 0);
+    then = then.subtract('months', months);
+
     // update the duration in ms
     ms = then.diff(now, 'milliseconds', true);
+
     days = Math.floor(moment.duration(ms).asDays());
 
     then = then.subtract('days', days);
     // update the duration in ms
     ms = then.diff(now, 'milliseconds', true);
+
     hours = Math.floor(moment.duration(ms).asHours());
-    hours=hours+24
 
-    //console.log(hours);
     then = then.subtract('hours', hours);
-
+    if(days===1) {hours+=24;}
     // update the duration in ms
     ms = then.diff(now, 'milliseconds', true);
+
     minutes = Math.floor(moment.duration(ms).asMinutes());
-    minutes=minutes+1400;
-    minutes=Math.abs(minutes);
-    then = then.subtract('minutes', minutes);
-    //console.log(minutes);
-    minutes-=1;
-    if(minutes<10) {
 
-        minn = String(minutes);
-        final_min = "0"+minn;
-        minutes = final_min;
-    }
+    then = then.subtract('minutes', minutes);
+
     // update the duration in ms
     ms = then.diff(now, 'milliseconds', true);
+
     seconds = Math.floor(moment.duration(ms).asSeconds());
- 
-    // concatenate the variables
-
-    if(hours>36) {
-        hours = hours-36;
-        hackingStatus = "Hacking starts in";
-        diffHours = '<span class="num">' + hours + '</span>';
-        diffMins = '<span class="num">' + minutes + '</span>';
+    if(seconds<10) {
+        string_secs = String(seconds);
+        string_secs = "0"+string_secs;
+        seconds = string_secs;
     }
-    else {
-        hackingStatus = "Hacking ends in";
-        diffHours = '<span class="num">' + hours + '</span>'
-        diffMins = '<span class="num">' + minutes + '</span>';
-    }
+    // concatonate the variables
+    diff = '<span class="num">' + hours + '</span><span style="position:relative;top:-5px;padding-left:5px;padding-right:5px;">:</span><span class="num">' + minutes + '</span>';
+    colonDiff = '<span class="num">' + seconds + '</span>';
+    $('#countdown-hours').html(diff);
+    $('#countdown-minutes').html(colonDiff);
+  }
 
-    $('#countdown-endtext').html(hackingStatus);
-    $('#countdown-hours').html(diffHours);
-    $('#countdown-minutes').html(diffMins);
- }
 });
-
 </script>
 {% endblock subpage_body %}
