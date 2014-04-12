@@ -23,5 +23,6 @@ class StatusHandler(MainHandler.Handler):
                 'time':time.strftime("%I:%M %p, %A",time.localtime(item.time-5*60*60)),
                 'heading':'Emergency' if item.emergency else 'Update' if item.hackillinois else 'Announcement' if item.announcement else 'Info'
             })
-        print feed
+        # Don't do this. It floods the logs. --Matthew
+        # print feed
         return self.render("status.html", feed=feed)
