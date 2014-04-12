@@ -65,7 +65,9 @@ class TextEveryoneHandler(TwilioHandler):
                 'sms_body': body
             }
 
-            urllib2.Request('23.236.61.209:5000/send', data=urllib.urlencode(data))
+            req = urllib2.Request('23.236.61.209:5000/send', data=urllib.urlencode(data))
+            resp = urllib2.urlopen(req)
+            content = resp.read()
 
             logging.info("%s sent a message to everyone with body: %s" % (from_number, body))
         else:
