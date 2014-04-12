@@ -16,6 +16,7 @@ import AdminHandlers
 import MobileHandler
 import ErrorHandlers
 import TwilioHandlers
+import StatusHandler
 
 handlers = [
     RedirectRoute('/', handler=IndexHandler, name='Index', strict_slash=True),
@@ -45,6 +46,8 @@ handlers = [
 
     RedirectRoute('/mentor', handler=MentorHandler.RenderHandler, name='Mentor', strict_slash=True),
 
+    RedirectRoute('/status', handler=StatusHandler.StatusHandler, name='Status', strict_slash=True),
+
     RedirectRoute('/applycount', handler=ApplyCountHandler, name='ApplyCount', strict_slash=True),
 
     RedirectRoute('/rules', handler=SubpageHandlers.RulesHandler, name='Rules', strict_slash=True),
@@ -54,10 +57,6 @@ handlers = [
     RedirectRoute('/code-of-conduct', handler=SubpageHandlers.CoCHandler, name='CoC', strict_slash=True),
     RedirectRoute('/staff', handler=SubpageHandlers.StaffHandler, name='Staff', strict_slash=True),
     RedirectRoute('/apps', handler=SubpageHandlers.AppsPageHandler, name='Apps', strict_slash=True),
-
-
-    RedirectRoute('/status', handler=SubpageHandlers.EventStatusPageHandler, name='Status', strict_slash=True),
-    
 
     RedirectRoute('/tropo', handler=TropoHandler, name='Tropo', strict_slash=True),
 

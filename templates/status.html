@@ -15,206 +15,22 @@
             <div class="pure-u-17-24">
                 <div class="update-container">
                     <div class="updates">
+                        {% for item in feed %}
                         <div class="update-unit">
-                            <div class="update-img"></div>
-                            <div class="update-heading-text">Heading!</div>
-                            <div class="update-timestamp">4/11/2014</div>
+                            <div class="update-img">
+                                {% if item.img %}
+                                <img alt="{{ item.img.alt }}" src="{{ item.img.src }}">
+                                {% else %}
+                                <img data-src="holder.js/64x64" alt="64x64" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2NCIgaGVpZ2h0PSI2NCI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiBmaWxsPSIjZWVlIj48L3JlY3Q+PHRleHQgdGV4dC1hbmNob3I9Im1pZGRsZSIgeD0iMzIiIHk9IjMyIiBzdHlsZT0iZmlsbDojYWFhO2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1zaXplOjEycHg7Zm9udC1mYW1pbHk6QXJpYWwsSGVsdmV0aWNhLHNhbnMtc2VyaWY7ZG9taW5hbnQtYmFzZWxpbmU6Y2VudHJhbCI+NjR4NjQ8L3RleHQ+PC9zdmc+">
+                                {% endif %}
+                            </div>
+                            <div class="update-heading-text">{{ item.heading }}</div>
+                            <div class="update-timestamp">{{ item.time }}</div>
                             <p class="update-body-text">
-                                yfrwu
+                                {{ item.description|safe }}
                             </p>
                         </div>
-                        <div class="update-unit">
-                            <div class="update-img"></div>
-                            <div class="update-heading-text">Heading!</div>
-                            <div class="update-timestamp">4/11/2014</div>
-                            <p class="update-body-text">
-                                yfrwu
-                            </p>
-                        </div>
-                        <div class="update-unit">
-                            <div class="update-img"></div>
-                            <div class="update-heading-text">Heading!</div>
-                            <div class="update-timestamp">4/11/2014</div>
-                            <p class="update-body-text">
-                                yfrwu
-                            </p>
-                        </div>
-                        <div class="update-unit">
-                            <div class="update-img"></div>
-                            <div class="update-heading-text">Heading!</div>
-                            <div class="update-timestamp">4/11/2014</div>
-                            <p class="update-body-text">
-                                yfrwu
-                            </p>
-                        </div>
-                        <div class="update-unit">
-                            <div class="update-img"></div>
-                            <div class="update-heading-text">Heading!</div>
-                            <div class="update-timestamp">4/11/2014</div>
-                            <p class="update-body-text">
-                                yfrwu
-                            </p>
-                        </div>
-                        <div class="update-unit">
-                            <div class="update-img"></div>
-                            <div class="update-heading-text">Heading!</div>
-                            <div class="update-timestamp">4/11/2014</div>
-                            <p class="update-body-text">
-                                yfrwu
-                            </p>
-                        </div>
-                        <div class="update-unit">
-                            <div class="update-img"></div>
-                            <div class="update-heading-text">Heading!</div>
-                            <div class="update-timestamp">4/11/2014</div>
-                            <p class="update-body-text">
-                                yfrwu
-                            </p>
-                        </div>
-                        <div class="update-unit">
-                            <div class="update-img"></div>
-                            <div class="update-heading-text">Heading!</div>
-                            <div class="update-timestamp">4/11/2014</div>
-                            <p class="update-body-text">
-                                yfrwu
-                            </p>
-                        </div>
-                        <div class="update-unit">
-                            <div class="update-img"></div>
-                            <div class="update-heading-text">Heading!</div>
-                            <div class="update-timestamp">4/11/2014</div>
-                            <p class="update-body-text">
-                                yfrwu
-                            </p>
-                        </div>
-                        <div class="update-unit">
-                            <div class="update-img"></div>
-                            <div class="update-heading-text">Heading!</div>
-                            <div class="update-timestamp">4/11/2014</div>
-                            <p class="update-body-text">
-                                yfrwu
-                            </p>
-                        </div>
-                        <div class="update-unit">
-                            <div class="update-img"></div>
-                            <div class="update-heading-text">Heading!</div>
-                            <div class="update-timestamp">4/11/2014</div>
-                            <p class="update-body-text">
-                                yfrwu
-                            </p>
-                        </div>
-                        <div class="update-unit">
-                            <div class="update-img"></div>
-                            <div class="update-heading-text">Heading!</div>
-                            <div class="update-timestamp">4/11/2014</div>
-                            <p class="update-body-text">
-                                yfrwu
-                            </p>
-                        </div>
-                        <div class="update-unit">
-                            <div class="update-img"></div>
-                            <div class="update-heading-text">Heading!</div>
-                            <div class="update-timestamp">4/11/2014</div>
-                            <p class="update-body-text">
-                                yfrwu
-                            </p>
-                        </div>
-                        <div class="update-unit">
-                            <div class="update-img"></div>
-                            <div class="update-heading-text">Heading!</div>
-                            <div class="update-timestamp">4/11/2014</div>
-                            <p class="update-body-text">
-                                yfrwu
-                            </p>
-                        </div>
-                        <div class="update-unit">
-                            <div class="update-img"></div>
-                            <div class="update-heading-text">Heading!</div>
-                            <div class="update-timestamp">4/11/2014</div>
-                            <p class="update-body-text">
-                                yfrwu
-                            </p>
-                        </div>
-                        <div class="update-unit">
-                            <div class="update-img"></div>
-                            <div class="update-heading-text">Heading!</div>
-                            <div class="update-timestamp">4/11/2014</div>
-                            <p class="update-body-text">
-                                yfrwu
-                            </p>
-                        </div>
-                        <div class="update-unit">
-                            <div class="update-img"></div>
-                            <div class="update-heading-text">Heading!</div>
-                            <div class="update-timestamp">4/11/2014</div>
-                            <p class="update-body-text">
-                                yfrwu
-                            </p>
-                        </div>
-                        <div class="update-unit">
-                            <div class="update-img"></div>
-                            <div class="update-heading-text">Heading!</div>
-                            <div class="update-timestamp">4/11/2014</div>
-                            <p class="update-body-text">
-                                yfrwu
-                            </p>
-                        </div>
-                        <div class="update-unit">
-                            <div class="update-img"></div>
-                            <div class="update-heading-text">Heading!</div>
-                            <div class="update-timestamp">4/11/2014</div>
-                            <p class="update-body-text">
-                                yfrwu
-                            </p>
-                        </div>
-                        <div class="update-unit">
-                            <div class="update-img"></div>
-                            <div class="update-heading-text">Heading!</div>
-                            <div class="update-timestamp">4/11/2014</div>
-                            <p class="update-body-text">
-                                yfrwu
-                            </p>
-                        </div>
-                        <div class="update-unit">
-                            <div class="update-img"></div>
-                            <div class="update-heading-text">Heading!</div>
-                            <div class="update-timestamp">4/11/2014</div>
-                            <p class="update-body-text">
-                                yfrwu
-                            </p>
-                        </div>
-                        <div class="update-unit">
-                            <div class="update-img"></div>
-                            <div class="update-heading-text">Heading!</div>
-                            <div class="update-timestamp">4/11/2014</div>
-                            <p class="update-body-text">
-                                yfrwu
-                            </p>
-                        </div>
-                        <div class="update-unit">
-                            <div class="update-img"></div>
-                            <div class="update-heading-text">Heading!</div>
-                            <div class="update-timestamp">4/11/2014</div>
-                            <p class="update-body-text">
-                                yfrwu
-                            </p>
-                        </div>
-                        <div class="update-unit">
-                            <div class="update-img"></div>
-                            <div class="update-heading-text">Heading!</div>
-                            <div class="update-timestamp">4/11/2014</div>
-                            <p class="update-body-text">
-                                yfrwu
-                            </p>
-                        </div>
-                        <div class="update-unit">
-                            <div class="update-img"></div>
-                            <div class="update-heading-text">Heading!</div>
-                            <div class="update-timestamp">4/11/2014</div>
-                            <p class="update-body-text">
-                                yfrwu
-                            </p>
-                        </div>
+                        {% endfor %}
                     </div>
                 </div>
             </div>

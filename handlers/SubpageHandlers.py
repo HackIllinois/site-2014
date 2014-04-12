@@ -36,9 +36,3 @@ class AppsPageHandler(MainHandler.Handler):
     """ Handler for the apps FAQ subpage """
     def get(self):
         self.render("apps.html")
-
-class EventStatusPageHandler(MainHandler.Handler):
-    """ Handler for the Event Status subpage """
-    def get(self):
-        self.render("status.html")
-
