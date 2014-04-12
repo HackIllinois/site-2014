@@ -17,9 +17,16 @@
 	padding: 0;
 }
 
-.rules-text, .about-text {
+.rules-text, .about-text, .research-text {
 	line-height: 1.6;
 	padding-bottom: 1.3em;
+}
+
+.research-link a {
+    color: white;
+    text-decoration:none;
+    background-color: #ef3e36;
+    padding: 10px;
 }
 
 .first-text {
