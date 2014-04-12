@@ -31,6 +31,18 @@
                             </p>
                         </div>
                         {% endfor %}
+                        <div class="update-unit">
+                            <div class="update-img">
+                                
+                                <img alt="HackIllinois" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADwAAAA8CAMAAAANIilAAAAAM1BMVEWztLS4ubm9vb3BwsLGx8fLy8vQ0NDU1dXZ2tre3t7j4+Pn6Ojs7Ozx8fH29vb6+vr///9/1bl/AAAA7ElEQVRIx+3WwY6DMAwE0DFxSSBOmf//2j2UdittSYQtdS/MEXgogcQOcOXKf0arFXHamSTNbdfbxuS1gFHd1od368JP68Ev68C/9jx+szsWq3re7jiRrJ21lipfWd8uqwCAGtkO9bR9tI+ICnJH586LUbndMJPLwf3C0t8hMwo5OTCmRirufyc0xFJXkcY7Zm6ncSKbKJmEByumN+xMZjQWNObzc15oWFlgBw8N8eLEkWGHPljoV4UWyXh5hjZGaEsitY96sTQuBrEyNCiApt8ovbGiH2s3sUYXa7Gx5h47VsQONLGj1JUrwfwAtW4S4Rw10e8AAAAASUVORK5CYII=">
+                                
+                            </div>
+                            <div class="update-heading-text">Announcement</div>
+                            <div class="update-timestamp">04:05 AM, Saturday</div>
+                            <p class="update-body-text">
+                                Looking for a place to take a nap? We have converted room 1131 to a sleep room in addition to 1103 and 1241.
+                            </p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -101,6 +113,17 @@
         string_secs = "0"+string_secs;
         seconds = string_secs;
     }
+    if(minutes<10) {
+        string_mins = String(minutes);
+        string_mins = "0"+string_mins;
+        minutes = string_mins;
+    }
+    if(hours<10) {
+        string_hours = String(hours);
+        string_hours = "0"+string_mins;
+        hours = string_mins;
+    }
+
     // concatonate the variables
     diff = '<span class="num">' + hours + '</span><span style="position:relative;top:-5px;padding-left:5px;padding-right:5px;">:</span><span class="num">' + minutes + '</span>';
     colonDiff = '<span class="num">' + seconds + '</span>';
