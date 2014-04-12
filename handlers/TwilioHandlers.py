@@ -1,6 +1,6 @@
 import json
-from urllib import urlencode
-from httplib2 import Http
+import urllib
+import urllib2
 import MainHandler
 from db import constants
 from db.PhoneNumber import PhoneNumber
@@ -61,14 +61,14 @@ class TextEveryoneHandler(TwilioHandler):
         authorized_senders = [i.number for i in q]
 
         if from_number in authorized_senders:
-            h = Http()
             data = {
                 'sms_body': body
             }
-            resp, content = h.request('http://23.236.61.209:5000/send', 'POST', urlencode(data))
 
-            logging.info("%s sent a message to everyone with body: %s and content: %s" % (
-                authorized_senders[from_number], body, content))
+            urllib2.Request('23.236.61.209:5000/send', data=urllib.urlencode(data))
+
+            logging.info("%s sent a message to everyone with body: %s" % (
+                authorized_senders[from_number], body))
         else:
             # TODO: Change to send email to support@hackillinois.org
             message = self.client.sms.messages.create(
