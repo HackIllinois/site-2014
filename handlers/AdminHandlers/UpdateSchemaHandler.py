@@ -29,9 +29,9 @@ def UpdateSchema(cursor=None, count=0):
 
     to_put = []
     for p in data:
-        # if not p.database_key:
-        #     p.database_key = get_next_key()
-        p.isCheckedIn = False
+        if not p.database_key or p.database_key == 0:
+            p.database_key = get_next_key()
+        # p.isCheckedIn = False
         to_put.append(p)
 
     if to_put:
