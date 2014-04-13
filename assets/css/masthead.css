@@ -22,11 +22,22 @@
 	padding-bottom: 1.3em;
 }
 
+.research-link {
+    margin:auto;
+    display: block;
+    width:500px;
+}
+
+.research-padding {
+    margin: 20px;
+}
+
 .research-link a {
     color: white;
     text-decoration:none;
     background-color: #ef3e36;
     padding: 10px;
+    display: inline;
 }
 
 .first-text {
