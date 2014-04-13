@@ -141,6 +141,7 @@ handlers = [
 
     RedirectRoute('/twilio/sendmasstext', handler=TwilioHandlers.MassTextHandler, name='TwilioMassText', strict_slash=True),
     RedirectRoute('/twilio/texteveryone', handler=TwilioHandlers.TextEveryoneHandler, name='TwilioTextEveryone', strict_slash=True),
+    RedirectRoute('/twilio/allnumbers', handler=TwilioHandlers.AllNumbersHandler, name='TwilioAllNumbersHandler', strict_slash=True),
 ]
 
 errorHandlers = {
