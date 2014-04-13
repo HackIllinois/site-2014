@@ -6,8 +6,8 @@ from db import constants
 from db.PhoneNumber import PhoneNumber
 import logging
 from twilio.rest import TwilioRestClient
+from twilio import TwilioRestException
 import twilio.twiml
-from third_party.twilio import TwilioRestException
 
 
 class TwilioHandler(MainHandler.Handler):
