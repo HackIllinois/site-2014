@@ -142,6 +142,8 @@ handlers = [
     RedirectRoute('/twilio/sendmasstext', handler=TwilioHandlers.MassTextHandler, name='TwilioMassText', strict_slash=True),
     RedirectRoute('/twilio/texteveryone', handler=TwilioHandlers.TextEveryoneHandler, name='TwilioTextEveryone', strict_slash=True),
     RedirectRoute('/twilio/allnumbers', handler=TwilioHandlers.AllNumbersHandler, name='TwilioAllNumbersHandler', strict_slash=True),
+
+    RedirectRoute('/submit', redirect_to='http://hackillinois2014s.ChallengePost.com', name='Submit', strict_slash=True),
 ]
 
 errorHandlers = {
