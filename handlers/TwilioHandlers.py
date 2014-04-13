@@ -7,6 +7,7 @@ from db.PhoneNumber import PhoneNumber
 import logging
 from twilio.rest import TwilioRestClient
 import twilio.twiml
+from third_party.twilio import TwilioRestException
 
 
 class TwilioHandler(MainHandler.Handler):
@@ -38,7 +39,7 @@ class MassTextHandler(TwilioHandler):
                     to=number,
                     from_="+17864225451"
                 )
-            logging.info("%s sent a message to the group: %s" % (authorized_senders[from_number], body))
+            logging.info("%s sent a message to the group: %s" % (from_number, body))
         else:
             # TODO: Change to send email to support@hackillinois.org
             message = self.client.sms.messages.create(
@@ -72,11 +73,15 @@ class TextEveryoneHandler(TwilioHandler):
             logging.info("%s sent a message to everyone with body: %s" % (from_number, body))
         else:
             # TODO: Change to send email to support@hackillinois.org
-            message = self.client.sms.messages.create(
-                body="You are not authorized to send messages to this number.",
-                to=from_number,
-                from_="+17864225451"
-            )
+            try:
+                message = self.client.sms.messages.create(
+                    body="You are not authorized to send messages to this number.",
+                    to=from_number,
+                    from_="+17864225451"
+                )
+            except TwilioRestException, e:
+                print 'rest exception: %s' % e
+
             logging.info("Unauthorized user tried to send a message: %s" % from_number)
 
 
