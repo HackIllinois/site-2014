@@ -1,17 +1,10 @@
 from handlers import MainHandler
 from db.CorporateUrl import CorporateUrl
+from db.Sponsor import Sponsor
+from google.appengine.api import users
 
 class RegistrationHandler(MainHandler.Handler):
     def get(self, key):
-        # 1. Check if key is in database
-            # No: Give error page
-            # Yes: Goto 2
-        # 2. Check if key is enabled
-            # No: Give error page
-            # Yes: Goto 3
-        # 3. Render page explaining that we will be using their google account as a login so we do not have to store their password
-        # 4. Button that confirms they understand and redirects to /corporate/register/<key>
-
         if not key:
             return self.redirect('/corporate/invalidurl')
 
@@ -23,6 +16,18 @@ class RegistrationHandler(MainHandler.Handler):
 
         if db_url.enabled == False:
             return self.redirect('/corporate/urlalreadyused')
+
+        google_user = users.get_current_user()
+        if google_user:
+            db_user = Sponsor.search_database({'userId': google_user.user_id()}).get()
+            if db_user:
+                if db_user.attendeeDataAccess == False:
+                    db_user.attendeeDataAccess = db_url.attendeeDataAccess
+                    db_user.put()
+                if db_user.attendeeDataAccess == False:
+                    return self.redirect('/corporate')
+                else:
+                    return self.redirect('/corporate/hackers')
 
         data = {}
         data['redirectUrl'] = '/corporate/register/' + key

@@ -14,12 +14,6 @@ class RegisterHandler(MainHandler.Handler):
             self.abort(500, detail='User not logged in')
             return None
 
-        # If user is already in database, redirect to /corporate
-        db_user = Sponsor.search_database({'userId': google_user.user_id()}).get()
-        if db_user:
-            self.redirect('/corporate')
-            return None
-
         if not key:
             self.redirect('/corporate/invalidurl')
             return None
@@ -27,12 +21,24 @@ class RegisterHandler(MainHandler.Handler):
         key = str(key)
 
         db_url = CorporateUrl.search_database({'uniqueString': key}).get()
+
         if not db_url:
             self.redirect('/corporate/invalidurl')
             return None
 
         if db_url.enabled == False:
             self.redirect('/corporate/urlalreadyused')
+            return None
+
+        db_user = Sponsor.search_database({'userId': google_user.user_id()}).get()
+        if db_user:
+            if db_user.attendeeDataAccess == False:
+                db_user.attendeeDataAccess = db_url.attendeeDataAccess
+                db_user.put()
+            if db_user.attendeeDataAccess == False:
+                self.redirect('/corporate')
+            else:
+                self.redirect('/corporate/hackers')
             return None
 
         return google_user, db_url
@@ -68,9 +74,13 @@ class RegisterHandler(MainHandler.Handler):
             database_key=self.get_next_key()
         ).put()
 
-        db_url.enabled = False
-        db_url.googleUser = google_user
-        db_url.registerTime = datetime.now()
-        db_url.put()
+        if db_url.uniqueString not in constants.ALWAYS_ENABLED_URLS:
+            db_url.enabled = False
+            db_url.googleUser = google_user
+            db_url.registerTime = datetime.now()
+            db_url.put()
 
-        return self.redirect("/corporate/editprofile")
+        if db_url.attendeeDataAccess == False:
+            return self.redirect('/corporate')
+        else:
+            return self.redirect('/corporate/hackers')
