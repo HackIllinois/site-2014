@@ -5,7 +5,7 @@ BUCKET = 'hackillinois'
 TWILIO_ACCOUNT_SID = "ACbb49f22ced63701bdc7e7391489d1720"
 TWILIO_AUTH_TOKEN = "77878e6db49a1635bf767dc64d203a5b"
 
-ALWAYS_ENABLED_URLS = [ "a98c0" ]
+ALWAYS_ENABLED_URLS = [ "00dbc" ]
 
 MEMCACHE_TIMEOUT = 10800 # seconds = 3 hours , once we close registration increase to 1 day
 MOBILE_MEMCACHE_TIMEOUT = 86400 # second = 1 day (24 hours)
