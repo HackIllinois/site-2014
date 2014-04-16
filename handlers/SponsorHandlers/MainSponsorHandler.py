@@ -33,7 +33,7 @@ class BaseSponsorHandler(MainHandler.Handler):
         if not self.google_user: return self.abort(500, detail='User not logged in')
 
         self.db_user = Sponsor.search_database({'userId': self.google_user.user_id()}).get()
-        if not self.db_user: return self.redirect('/corporate/notregistered')
+        if not self.db_user: return self.redirect('/corp/notregistered')
 
         # logging.info('%s attempted to access an admin page but was denied.', email)
         # return self.abort(401)

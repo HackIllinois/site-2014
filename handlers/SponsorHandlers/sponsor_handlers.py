@@ -31,9 +31,9 @@ sponsor_handlers = [
 
     RedirectRoute('/corporate/queue',           handler=QueueHandler.QueueHandler,              name='SponsorQueue',            strict_slash=True),
 
-    RedirectRoute('/corporate/notregistered',   handler=SimpleHandlers.NotRegisteredHandler,    name='SponsorNotRegistered',    strict_slash=True),
-    RedirectRoute('/corporate/invalidurl',      handler=SimpleHandlers.InvalidUrlHandler,       name='SponsorInvalidUrl',       strict_slash=True),
-    RedirectRoute('/corporate/urlalreadyused',  handler=SimpleHandlers.UrlAlreadyUsedHandler,   name='SponsorUrlAlreadyUsed',   strict_slash=True),
+    RedirectRoute('/corp/notregistered',   handler=SimpleHandlers.NotRegisteredHandler,    name='SponsorNotRegistered',    strict_slash=True),
+    RedirectRoute('/corp/invalidurl',      handler=SimpleHandlers.InvalidUrlHandler,       name='SponsorInvalidUrl',       strict_slash=True),
+    RedirectRoute('/corp/urlalreadyused',  handler=SimpleHandlers.UrlAlreadyUsedHandler,   name='SponsorUrlAlreadyUsed',   strict_slash=True),
 
     # Not a /corporate url on purpose
     RedirectRoute('/c-registration/<key>',      handler=RegistrationHandler.RegistrationHandler, name='SponsorRegistration',    strict_slash=True),

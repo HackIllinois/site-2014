@@ -6,16 +6,16 @@ from google.appengine.api import users
 class RegistrationHandler(MainHandler.Handler):
     def get(self, key):
         if not key:
-            return self.redirect('/corporate/invalidurl')
+            return self.redirect('/corp/invalidurl')
 
         key = str(key)
 
         db_url = CorporateUrl.search_database({'uniqueString': key}).get()
         if not db_url:
-            return self.redirect('/corporate/invalidurl')
+            return self.redirect('/corp/invalidurl')
 
         if db_url.enabled == False:
-            return self.redirect('/corporate/urlalreadyused')
+            return self.redirect('/corp/urlalreadyused')
 
         google_user = users.get_current_user()
         if google_user:

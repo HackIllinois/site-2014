@@ -15,7 +15,7 @@ class RegisterHandler(MainHandler.Handler):
             return None
 
         if not key:
-            self.redirect('/corporate/invalidurl')
+            self.redirect('/corp/invalidurl')
             return None
 
         key = str(key)
@@ -23,11 +23,11 @@ class RegisterHandler(MainHandler.Handler):
         db_url = CorporateUrl.search_database({'uniqueString': key}).get()
 
         if not db_url:
-            self.redirect('/corporate/invalidurl')
+            self.redirect('/corp/invalidurl')
             return None
 
         if db_url.enabled == False:
-            self.redirect('/corporate/urlalreadyused')
+            self.redirect('/corp/urlalreadyused')
             return None
 
         db_user = Sponsor.search_database({'userId': google_user.user_id()}).get()
