@@ -6,6 +6,12 @@ runtime: python27
 api_version: 1
 threadsafe: yes
 default_expiration: "10m"
+instance_class: F1
+automatic_scaling:
+  min_idle_instances: 1
+  max_idle_instances: automatic
+  min_pending_latency: automatic
+  max_pending_latency: automatic
 
 handlers:
 - url: /favicon\.ico
@@ -97,3 +103,6 @@ builtins:
 - appstats: on
 - remote_api: on
 - deferred: on
+
+inbound_services:
+- warmup
